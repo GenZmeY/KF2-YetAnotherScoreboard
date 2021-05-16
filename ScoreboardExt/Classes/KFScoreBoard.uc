@@ -233,7 +233,7 @@ function DrawTextWCenter(string Str, float XPos, float YPos, float BoxWidth, flo
 
 	//Canvas.SetPos(XPos + (BoxWidth - TextWidth)/2 , YPos);
 	//Canvas.DrawText(Str, , FontScalar, FontScalar);
-	Owner.CurrentStyle.DrawTextShadow(Str, XPos, YPos, 1, FontScalar);
+	Owner.CurrentStyle.DrawTextShadow(Str, XPos + (BoxWidth - TextWidth)/2 , YPos, 1, FontScalar);
 }
 
 function DrawTextWLeft(string Str, float XPos, float YPos, float FontScalar)
