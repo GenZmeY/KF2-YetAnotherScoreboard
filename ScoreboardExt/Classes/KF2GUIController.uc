@@ -267,7 +267,6 @@ simulated function RenderMenu( Canvas C )
     if( !KFPlayerController(PlayerOwner).MyGFxManager.bMenusActive )
     {
         HUDOwner.Canvas = C;
-        HUDOwner.RenderKFHUD(KFPawn_Human(PlayerOwner.Pawn));
         
         for( i=(HUDOwner.HUDWidgets.Length-1); i>=0; --i )
         {
