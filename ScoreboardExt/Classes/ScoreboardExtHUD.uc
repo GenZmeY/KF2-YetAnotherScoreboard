@@ -1,5 +1,5 @@
-class ClassicKFHUD extends KFGFxHudWrapper
-    config(ClassicHUD);
+class ScoreboardExtHUD extends KFGFxHudWrapper
+    config(ScoreboardExtMut);
 
 const GFxListenerPriority = 80000;
     
@@ -608,7 +608,7 @@ function PostRender()
         
     if( GUIController==None || GUIController.bIsInvalid )
     {
-        GUIController = Class'KFClassicHUD.KF2GUIController'.Static.GetGUIController(PlayerOwner);
+        GUIController = Class'ScoreboardExt.KF2GUIController'.Static.GetGUIController(PlayerOwner);
         if( GUIController!=None )
         {
             GUIStyle = GUIController.CurrentStyle;
@@ -3725,7 +3725,7 @@ simulated function CheckAndDrawHiddenPlayerIcons( array<PlayerReplicationInfo> V
 
 exec function OpenSettingsMenu()
 {
-    GUIController.OpenMenu(class'KFClassicHUD.UI_MidGameMenu');
+    GUIController.OpenMenu(class'ScoreboardExt.UI_MidGameMenu');
 }
 
 exec function SetShowScores(bool bNewValue)

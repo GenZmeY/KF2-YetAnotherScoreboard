@@ -2,9 +2,9 @@ class KF1HUD_WeaponSelectWidget extends KFGFxHUD_WeaponSelectWidget;
 
 function SetSelectedWeapon(int GroupIndex, int SelectedIndex)
 {
-    local ClassicKFHUD HUD;
+    local ScoreboardExtHUD HUD;
     
-    HUD = ClassicKFHUD(GetPC().MyHUD);
+    HUD = ScoreboardExtHUD(GetPC().MyHUD);
     if( !HUD.bDisplayInventory )
     {
         HUD.bDisplayInventory = true;

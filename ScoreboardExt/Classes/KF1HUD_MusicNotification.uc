@@ -1,12 +1,13 @@
-class KF1HUD_MusicNotification extends KFGFxWidget_MusicNotification;
+class KF1HUD_MusicNotification extends KFGFxWidget_MusicNotification
+	dependson(ScoreboardExtHUD);
 
 function ShowSongInfo(string SongInfoString)
 {
 	local KFGameEngine KFEngine;   
-    local ClassicKFHUD HUD;
+    local ScoreboardExtHUD HUD;
     local PopupMessage Msg;
     
-    HUD = ClassicKFHUD(GetPC().MyHUD);
+    HUD = ScoreboardExtHUD(GetPC().MyHUD);
 	KFEngine = KFGameEngine(Class'Engine'.static.GetEngine());
     
 	if(KFEngine != none && KFEngine.MusicVolumeMultiplier > 0)

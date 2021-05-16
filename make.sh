@@ -162,7 +162,7 @@ echo "Map=\"KF-Outpost\"
 Game=\"KFGameContent.KFGameInfo_Survival\"
 Difficulty=\"0\"
 GameLength=\"0\"
-Mutators=\"KFClassicHUD.ClassicHUD\"
+Mutators=\"ScoreboardExt.ScoreboardExtMut\"
 Args=\"\"" > "$MutTestingIni"
 }
 

@@ -4,7 +4,7 @@ Class KF2GUIController extends Info
 var() class<GUIStyleBase> DefaultStyle;
 
 var PlayerController PlayerOwner;
-var ClassicKFHUD HUDOwner;
+var ScoreboardExtHUD HUDOwner;
 var transient KF2GUIInput CustomInput;
 var transient PlayerInput BackupInput;
 var transient GameViewportClient ClientViewport;
@@ -44,7 +44,7 @@ static function KF2GUIController GetGUIController( PlayerController PC )
         return None;
     }
         
-    foreach PC.ChildActors(class'KFClassicHUD.KF2GUIController',G)
+    foreach PC.ChildActors(class'ScoreboardExt.KF2GUIController',G)
     {
         if( !G.bIsInvalid )
         {
@@ -54,7 +54,7 @@ static function KF2GUIController GetGUIController( PlayerController PC )
     
     if( G==None )
     {
-        G = PC.Spawn(class'KFClassicHUD.KF2GUIController',PC);
+        G = PC.Spawn(class'ScoreboardExt.KF2GUIController',PC);
     }
         
     return G;
@@ -64,7 +64,7 @@ simulated function PostBeginPlay()
 {
     PlayerOwner = PlayerController(Owner);
     ClientViewport = LocalPlayer(PlayerOwner.Player).ViewportClient;
-    HUDOwner = ClassicKFHUD(PlayerOwner.myHUD);
+    HUDOwner = ScoreboardExtHUD(PlayerOwner.myHUD);
     
     CurrentStyle = new (None) DefaultStyle;
     CurrentStyle.InitStyle();
@@ -232,7 +232,7 @@ simulated function HandleDrawMenu()
 {
     if( HackConsole==None )
     {
-        HackConsole = new(ClientViewport)class'KFClassicHUD.KFGUIConsoleHack';
+        HackConsole = new(ClientViewport)class'ScoreboardExt.KFGUIConsoleHack';
         HackConsole.OutputObject = Self;
     }
     if( HackConsole!=ClientViewport.ViewportConsole )
@@ -352,7 +352,7 @@ simulated final function SetMenuState( bool bActive )
     {
         if( CustomInput==None )
         {
-            CustomInput = new (KFPlayerController(PlayerOwner)) class'KFClassicHUD.KF2GUIInput';
+            CustomInput = new (KFPlayerController(PlayerOwner)) class'ScoreboardExt.KF2GUIInput';
             CustomInput.ControllerOwner = Self;
             CustomInput.OnReceivedNativeInputKey = ReceivedInputKey;
             CustomInput.BaseInput = PlayerOwner.PlayerInput;

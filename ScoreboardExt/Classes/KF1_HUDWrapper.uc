@@ -1,4 +1,5 @@
-class KF1_HUDWrapper extends KFGFxMoviePlayer_HUD;
+class KF1_HUDWrapper extends KFGFxMoviePlayer_HUD
+	dependson(ScoreboardExtHUD);
 
 event bool WidgetInitialized(name WidgetName, name WidgetPath, GFxObject Widget)
 {
@@ -145,7 +146,7 @@ function DisplayPriorityMessage(string InPrimaryMessageString, string InSecondar
             break;
     }
                     
-    ClassicKFHUD(KFPC.myHUD).ShowPriorityMessage(PriorityMsg);
+    ScoreboardExtHUD(KFPC.myHUD).ShowPriorityMessage(PriorityMsg);
 }
 
 function string GetExpandedWaveInfo()
@@ -205,7 +206,7 @@ function ShowKillMessage(PlayerReplicationInfo PRI1, PlayerReplicationInfo PRI2,
         KilledName=PRI2.PlayerName;
     }
 
-    ClassicKFHUD(KFPC.myHUD).ShowKillMessage(PRI1, PRI2, bHumanDeath, KilledName, KillerName);
+    ScoreboardExtHUD(KFPC.myHUD).ShowKillMessage(PRI1, PRI2, bHumanDeath, KilledName, KillerName);
 }
 
 DefaultProperties

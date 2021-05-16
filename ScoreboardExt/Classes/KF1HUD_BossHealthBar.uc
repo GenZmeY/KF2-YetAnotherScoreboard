@@ -2,9 +2,9 @@ class KF1HUD_BossHealthBar extends KFGFxWidget_BossHealthBar;
 
 function TickHud(float DeltaTime)
 {
-    local ClassicKFHUD HUD;
+    local ScoreboardExtHUD HUD;
     
-    HUD = ClassicKFHUD(KFPC.MyHUD);
+    HUD = ScoreboardExtHUD(KFPC.MyHUD);
     if(KFPC.bHideBossHealthBar != bLastHideValue)
     {
         bLastHideValue = KFPC.bHideBossHealthBar;
@@ -18,9 +18,9 @@ function TickHud(float DeltaTime)
 
 function SetEscortPawn(KFPawn_Scripted NewPawn)
 {
-    local ClassicKFHUD HUD;
+    local ScoreboardExtHUD HUD;
     
-    HUD = ClassicKFHUD(KFPC.MyHUD);
+    HUD = ScoreboardExtHUD(KFPC.MyHUD);
 	if (NewPawn == none)
 		return;
         
@@ -37,25 +37,25 @@ function SetBossPawn(KFInterface_MonsterBoss NewBoss)
     if(NewBoss == None || KFPC.bHideBossHealthBar)
         return;
 
-    ClassicKFHUD(KFPC.MyHUD).BossInfoIcon = Texture2D(DynamicLoadObject(NewBoss.GetIconPath(),class'Texture2D'));
-    ClassicKFHUD(KFPC.MyHUD).BossPawn = NewBoss;
+    ScoreboardExtHUD(KFPC.MyHUD).BossInfoIcon = Texture2D(DynamicLoadObject(NewBoss.GetIconPath(),class'Texture2D'));
+    ScoreboardExtHUD(KFPC.MyHUD).BossPawn = NewBoss;
 }
 
 function UpdateBossShield(float NewShieldPercect)
 {
-    ClassicKFHUD(KFPC.MyHUD).BossShieldPct = NewShieldPercect;
+    ScoreboardExtHUD(KFPC.MyHUD).BossShieldPct = NewShieldPercect;
 }
 
 function UpdateBossBattlePhase(int BattlePhase)
 {
-    ClassicKFHUD(KFPC.MyHUD).BossBattlePhaseColor = ClassicKFHUD(KFPC.MyHUD).BattlePhaseColors[Max(BattlePhase - 1, 0)];
+    ScoreboardExtHUD(KFPC.MyHUD).BossBattlePhaseColor = ScoreboardExtHUD(KFPC.MyHUD).BattlePhaseColors[Max(BattlePhase - 1, 0)];
 }
 
 function OnNamePlateHidden()
 {
-    local ClassicKFHUD HUD;
+    local ScoreboardExtHUD HUD;
     
-    HUD = ClassicKFHUD(KFPC.MyHUD);
+    HUD = ScoreboardExtHUD(KFPC.MyHUD);
     if(KFPC.bHideBossHealthBar && HUD.ScriptedPawn == none)
         return;
 
@@ -66,9 +66,9 @@ function OnNamePlateHidden()
 
 simulated function Deactivate()
 {
-    local ClassicKFHUD HUD;
+    local ScoreboardExtHUD HUD;
     
-    HUD = ClassicKFHUD(KFPC.MyHUD);
+    HUD = ScoreboardExtHUD(KFPC.MyHUD);
     
     HUD.BossInfoIcon = None;
     HUD.BossPawn = None;

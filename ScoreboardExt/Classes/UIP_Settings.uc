@@ -5,7 +5,7 @@ var KFGUI_TextLable ResetColorLabel,PerkStarsLabel,PerkStarsRowLabel,ControllerT
 var KFGUI_EditBox PerkStarsBox, PerkRowsBox;
 var KFGUI_ComboBox ControllerBox;
 
-var ClassicKFHUD HUD;
+var ScoreboardExtHUD HUD;
 var KFPlayerController PC;
 
 function InitMenu()
@@ -13,7 +13,7 @@ function InitMenu()
     local string S;
     
     PC = KFPlayerController(GetPlayer());
-    HUD = ClassicKFHUD(PC.myHUD);
+    HUD = ScoreboardExtHUD(PC.myHUD);
     
     Super.InitMenu();
 

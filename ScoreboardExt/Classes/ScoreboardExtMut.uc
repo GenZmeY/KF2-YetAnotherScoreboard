@@ -1,4 +1,4 @@
-class ClassicHUD extends KFMutator;
+class ScoreboardExtMut extends KFMutator;
 
 var KFPawn LastHitZed;
 var int LastHitHP;
@@ -16,7 +16,7 @@ var array<RepInfoS> DamageReplicationInfos;
 function PostBeginPlay()
 {
     Super.PostBeginPlay();
-    WorldInfo.Game.HUDType = class'ClassicKFHUD'; 
+    WorldInfo.Game.HUDType = class'ScoreboardExtHUD'; 
 }
 
 function NetDamage(int OriginalDamage, out int Damage, Pawn Injured, Controller InstigatedBy, vector HitLocation, out vector Momentum, class<DamageType> DamageType, Actor DamageCauser)

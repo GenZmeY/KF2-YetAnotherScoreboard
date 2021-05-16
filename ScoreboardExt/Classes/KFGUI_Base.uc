@@ -3,7 +3,7 @@ Class KFGUI_Base extends Object
     abstract;
 
 var KF2GUIController Owner;
-var ClassicKFHUD HUDOwner;
+var ScoreboardExtHUD HUDOwner;
 var KFGUI_Base ParentComponent; // Parent component if any.
 var transient Canvas Canvas;
 

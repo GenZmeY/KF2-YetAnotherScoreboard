@@ -2,11 +2,11 @@ Class UIP_ColorSettings extends KFGUI_MultiComponent;
 
 var KFGUI_ComponentList SettingsBox;
 var KFGUI_ColorSlider MainHudSlider,OutlineSlider,FontSlider,ArmorSlider,HealthSlider;
-var ClassicKFHUD HUD;
+var ScoreboardExtHUD HUD;
 
 function InitMenu()
 {
-    HUD = ClassicKFHUD(GetPlayer().myHUD);
+    HUD = ScoreboardExtHUD(GetPlayer().myHUD);
     
     Super.InitMenu();
 

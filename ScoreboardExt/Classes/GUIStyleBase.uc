@@ -11,7 +11,7 @@ var() byte MaxFontScale;
 var float DefaultHeight; // Default font text size.
 var transient Canvas Canvas;
 var transient KF2GUIController Owner;
-var transient ClassicKFHUD HUDOwner;
+var transient ScoreboardExtHUD HUDOwner;
 
 var Font MainFont, NumberFont, InfiniteFont;
 var Color BlurColor, BlurColor2;
