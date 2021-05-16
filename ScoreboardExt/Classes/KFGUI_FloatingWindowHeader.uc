@@ -4,20 +4,20 @@ var bool bDragWindow;
 
 function PreDraw()
 {
-    ComputeCoords();
+	ComputeCoords();
 }
 function MouseClick( bool bRight )
 {
-    if( !bRight )
-        KFGUI_FloatingWindow(ParentComponent).SetWindowDrag(true);
+	if( !bRight )
+		KFGUI_FloatingWindow(ParentComponent).SetWindowDrag(true);
 }
 function MouseRelease( bool bRight )
 {
-    if( !bRight )
-        KFGUI_FloatingWindow(ParentComponent).SetWindowDrag(false);
+	if( !bRight )
+		KFGUI_FloatingWindow(ParentComponent).SetWindowDrag(false);
 }
 
 defaultproperties
 {
-    bClickable=true
+	bClickable=true
 }

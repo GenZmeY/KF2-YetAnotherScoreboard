@@ -9,19 +9,19 @@ var bool bIsHighlighted;
 
 function DrawMenu()
 {
-    Owner.CurrentStyle.RenderButton(Self);
+	Owner.CurrentStyle.RenderButton(Self);
 }
 
 function bool GetUsingGamepad()
 {
-    return Owner.bUsingGamepad && GamepadButtonName != "";
+	return Owner.bUsingGamepad && GamepadButtonName != "";
 }
 
 function HandleMouseClick( bool bRight )
 {
-    if( bRight )
-        OnClickRight(Self);
-    else OnClickLeft(Self);
+	if( bRight )
+		OnClickRight(Self);
+	else OnClickLeft(Self);
 }
 
 Delegate OnClickLeft( KFGUI_Button Sender );
@@ -29,13 +29,13 @@ Delegate OnClickRight( KFGUI_Button Sender );
 
 Delegate bool DrawOverride(Canvas C, KFGUI_Button B)
 {
-    return false;
+	return false;
 }
 
 defaultproperties
 {
-    ButtonText="Button!"
-    TextColor=(R=0,G=0,B=0,A=255)
-    TextFontInfo=(bClipText=true,bEnableShadow=true)
-    FontScale=1
+	ButtonText="Button!"
+	TextColor=(R=0,G=0,B=0,A=255)
+	TextFontInfo=(bClipText=true,bEnableShadow=true)
+	FontScale=1
 }

@@ -5,26 +5,26 @@ var() bool bForceUniform,bChecked;
 
 function UpdateSizes()
 {
-    Super.UpdateSizes();
-    if( bForceUniform )
-        XSize = (YSize*InputPos[3]) / InputPos[2];
+	Super.UpdateSizes();
+	if( bForceUniform )
+		XSize = (YSize*InputPos[3]) / InputPos[2];
 }
 
 function DrawMenu()
 {
-    Owner.CurrentStyle.RenderCheckbox(Self);
+	Owner.CurrentStyle.RenderCheckbox(Self);
 }
 
 function HandleMouseClick( bool bRight )
 {
-    bChecked = !bChecked;
-    OnCheckChange(Self);
+	bChecked = !bChecked;
+	OnCheckChange(Self);
 }
 
 Delegate OnCheckChange( KFGUI_CheckBox Sender );
 
 defaultproperties
 {
-    bForceUniform=true
-    LableWidth=0.85
+	bForceUniform=true
+	LableWidth=0.85
 }

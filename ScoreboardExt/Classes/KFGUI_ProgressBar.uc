@@ -23,112 +23,112 @@ var byte BorderSize;
 
 function DrawMenu()
 {
-    local float Left, Top, Width, Height;
-    local float W, Sc;
-    local string S;
-    
-    Super.DrawMenu();
+	local float Left, Top, Width, Height;
+	local float W, Sc;
+	local string S;
 
-    Left = 0.f;
-    Top = 0.f;
-    Width = CompPos[2];
-    Height = CompPos[3];
-    
-    // Select the right font in the Canvas
-    Canvas.Font = Owner.CurrentStyle.PickFont(Sc); 
-    
-    if (CaptionWidth > 0.0 && Width > 0 && Len(Caption) > 0)
-    {
-        W = CaptionWidth;
+	Super.DrawMenu();
 
-        if( W < 1.0 )
-        {
-            W *= Width;
-        }
+	Left = 0.f;
+	Top = 0.f;
+	Width = CompPos[2];
+	Height = CompPos[3];
 
-        if( W > Width )
-        {
-            W = Width;
-        }
+	// Select the right font in the Canvas
+	Canvas.Font = Owner.CurrentStyle.PickFont(Sc); 
 
-        // Draw the label
-        Owner.CurrentStyle.DrawTextJustified(CaptionAlign, Left, Top, Left + W, Top + Height, Caption, Sc, Sc);
-        Left += W;
-        Width -= W;
-    }
+	if (CaptionWidth > 0.0 && Width > 0 && Len(Caption) > 0)
+	{
+		W = CaptionWidth;
 
-    if ( (bShowHigh || bShowValue) && ValueRightWidth > 0.0 && Width > 0.0)
-    {
-        W = ValueRightWidth;
+		if( W < 1.0 )
+		{
+			W *= Width;
+		}
 
-        if( W < 1.0 )
-        {
-            W *= Width;
-        }
+		if( W > Width )
+		{
+			W = Width;
+		}
 
-        if( W > Width )
-        {
-            W = Width;
-        }
+		// Draw the label
+		Owner.CurrentStyle.DrawTextJustified(CaptionAlign, Left, Top, Left + W, Top + Height, Caption, Sc, Sc);
+		Left += W;
+		Width -= W;
+	}
 
-        if( bShowValue && bShowHigh )
-        {
-            S = int(Value)$"/"$int(High);
-        }
-        else if (bShowValue)
-        {
-            S = string(int(Value));
-        }
-        else 
-        {
-            S = string(int(High));
-        }
+	if ( (bShowHigh || bShowValue) && ValueRightWidth > 0.0 && Width > 0.0)
+	{
+		W = ValueRightWidth;
 
-        Owner.CurrentStyle.DrawTextJustified(ValueRightAlign, Left + Width - W, Top, Left + Width, Top + Height, S, Sc, Sc);
+		if( W < 1.0 )
+		{
+			W *= Width;
+		}
 
-        Width -= W;
-    }
-    
-    if (Width > GraphicMargin)
-    {
-        Width -= GraphicMargin;
-        Left += GraphicMargin / 2;
-    }
+		if( W > Width )
+		{
+			W = Width;
+		}
 
-    Canvas.SetDrawColor(255, 255, 255, 255);
-    if( Width > 0.0 && BarBack != None )
-    {
-        Owner.CurrentStyle.DrawTileStretched(BarBack, Left, Top, Width, Height);
-    }
+		if( bShowValue && bShowHigh )
+		{
+			S = int(Value)$"/"$int(High);
+		}
+		else if (bShowValue)
+		{
+			S = string(int(Value));
+		}
+		else 
+		{
+			S = string(int(High));
+		}
 
-    if( Width > 0.0 && BarTop != None && Value > Low )
-    {
-        Canvas.DrawColor = BarColor;
-        Owner.CurrentStyle.DrawTileStretched(BarTop, Left + BorderSize, Top + BorderSize, (Width - (BorderSize * 2)) * (Value/High), Height - (BorderSize * 2));
-    }
+		Owner.CurrentStyle.DrawTextJustified(ValueRightAlign, Left + Width - W, Top, Left + Width, Top + Height, S, Sc, Sc);
+
+		Width -= W;
+	}
+
+	if (Width > GraphicMargin)
+	{
+		Width -= GraphicMargin;
+		Left += GraphicMargin / 2;
+	}
+
+	Canvas.SetDrawColor(255, 255, 255, 255);
+	if( Width > 0.0 && BarBack != None )
+	{
+		Owner.CurrentStyle.DrawTileStretched(BarBack, Left, Top, Width, Height);
+	}
+
+	if( Width > 0.0 && BarTop != None && Value > Low )
+	{
+		Canvas.DrawColor = BarColor;
+		Owner.CurrentStyle.DrawTileStretched(BarTop, Left + BorderSize, Top + BorderSize, (Width - (BorderSize * 2)) * (Value/High), Height - (BorderSize * 2));
+	}
 }
 
 function SetValue(float val)
 {
-    Value=val;
+	Value=val;
 }
 
 function float GetValue()
 {
-    return Value;
+	return Value;
 }
 
 defaultproperties
 {
-    BarColor=(R=255,G=255,B=255,A=255)
-    Low=0.f
-    High=100.f
-    Value=0.f
-    bShowLow=false
-    bShowHigh=false
-    bShowValue=true
-    CaptionWidth=0.45
-    ValueRightWidth=0.2
-    ValueRightAlign=0
-    NumDecimals=0
+	BarColor=(R=255,G=255,B=255,A=255)
+	Low=0.f
+	High=100.f
+	Value=0.f
+	bShowLow=false
+	bShowHigh=false
+	bShowValue=true
+	CaptionWidth=0.45
+	ValueRightWidth=0.2
+	ValueRightAlign=0
+	NumDecimals=0
 }

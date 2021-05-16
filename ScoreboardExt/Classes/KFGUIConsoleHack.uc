@@ -5,5 +5,5 @@ var KF2GUIController OutputObject;
 
 function PostRender_Console(Canvas Canvas)
 {
-    OutputObject.RenderMenu(Canvas);
+	OutputObject.RenderMenu(Canvas);
 }

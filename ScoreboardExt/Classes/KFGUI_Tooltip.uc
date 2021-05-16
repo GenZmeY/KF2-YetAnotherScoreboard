@@ -6,37 +6,37 @@ var byte CurrentAlpha;
 
 function InputMouseMoved()
 {
-    DropInputFocus();
+	DropInputFocus();
 }
 function MouseClick( bool bRight )
 {
-    DropInputFocus();
+	DropInputFocus();
 }
 function MouseRelease( bool bRight )
 {
-    DropInputFocus();
+	DropInputFocus();
 }
 function ShowMenu()
 {
-    CurrentAlpha = 1;
+	CurrentAlpha = 1;
 }
 
 final function SetText( string S )
 {
-    ParseStringIntoArray(S,Lines,"<SEPERATOR>",false);
+	ParseStringIntoArray(S,Lines,"<SEPERATOR>",false);
 }
 
 function PreDraw()
 {
-    if( !bVisible )
-        return;
-        
-    Owner.CurrentStyle.RenderToolTip(Self);
+	if( !bVisible )
+		return;
+
+	Owner.CurrentStyle.RenderToolTip(Self);
 }
 
 defaultproperties
 {
-    TextFontInfo=(bClipText=true,bEnableShadow=true)
-    bCanFocus=false
-    bFocusedPostDrawItem=true
+	TextFontInfo=(bClipText=true,bEnableShadow=true)
+	bCanFocus=false
+	bFocusedPostDrawItem=true
 }
