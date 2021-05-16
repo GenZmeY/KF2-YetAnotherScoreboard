@@ -72,13 +72,13 @@ function restore_kfeditorconf ()
 
 function setup_modpackages ()
 {
-	multini --set "$KFEditorConf" 'ModPackages' 'ModPackages' 'KFClassicHUD'
+	multini --set "$KFEditorConf" 'ModPackages' 'ModPackages' 'ScoreboardExt'
 	multini --set "$KFEditorConf" 'ModPackages' 'ModPackagesInPath' "$(unixpath2win "$MutSource")"
 }
 
 function compiled ()
 {
-	test -f "$MutStructScript/KFClassicHUD.u"
+	test -f "$MutStructScript/ScoreboardExt.u"
 }
 
 function compile ()
@@ -95,7 +95,7 @@ function compile ()
 		"$MutStructScript" \
 		"$MutStructPackages"
 	
-	cp -rf "$MutSource/KFClassicHUD/Assets"/*.upk "$MutStructPackages"
+	cp -rf "$MutSource/ScoreboardExt/Assets"/*.upk "$MutStructPackages"
 	
 	CMD //C "$(unixpath2win "$KFEditor")" make -useunpublished &
 	local PID="$!"
