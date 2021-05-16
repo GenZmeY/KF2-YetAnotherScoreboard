@@ -423,7 +423,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 	C.TextSize(MaxPing, XL, YL, FontScalar, FontScalar);
 
-	DrawTextWLeft(S, PingXPos, TextYOffset, FontScalar);
+	DrawTextWCenter(S, PingXPos, TextYOffset, PingWBox/2, FontScalar);
 
 	DrawPingBars(C, YOffset + (Height/2) - ((Height*0.5)/2), Width - (Height*0.5) - (Owner.HUDOwner.ScaledBorderSize*2), Height*0.5, Height*0.5, float(Ping));
 }
