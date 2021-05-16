@@ -110,5 +110,5 @@ exec function SetShowScores(bool bNewValue)
 defaultproperties
 {
     ScoreboardClass=class'KFScoreBoard'
-	RepObject=ObjectReferencer'KFClassicMode_Assets.ObjectRef.MainObj_List'
+	RepObject=ObjectReferencer'KFScoreboardExt_Assets.ObjectRef.MainObj_List'
 }

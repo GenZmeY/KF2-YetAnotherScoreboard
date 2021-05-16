@@ -859,7 +859,7 @@ static final function string Trim(coerce string S)
 
 defaultproperties
 {
-    MainFont=Font'KFClassicMode_Assets.Font.KFMainFont'
+    MainFont=Font'KFScoreboardExt_Assets.Font.KFMainFont'
     NumberFont=Font'UI_Canvas_Fonts.Font_General'
-    InfiniteFont=Font'KFClassicMode_Assets.Font.KFInfiniteFont'
+    InfiniteFont=Font'KFScoreboardExt_Assets.Font.KFInfiniteFont'
 }
