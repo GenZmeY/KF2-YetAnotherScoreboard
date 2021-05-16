@@ -165,7 +165,7 @@ final function float ScreenScale( float Size, optional float MaxRes=1920.f )
 {
 	return Size * ( HUDOwner.SizeX / MaxRes );
 }
-final function float GetFontScaler(optional float Scaler=0.375f, optional float Min=0.175f, optional float Max=0.375f)
+final function float GetFontScaler(optional float Scaler=0.750f, optional float Min=0.175f, optional float Max=1.0f)
 {
 	return FClamp((HUDOwner.SizeX / 1920.f) * Scaler, Min, Max);
 }
@@ -860,7 +860,10 @@ static final function string Trim(coerce string S)
 defaultproperties
 {
 	// Font'UI_Canvas_Fonts.Font_Main'
-	MainFont=Font'KFScoreboardExt_Assets.Font.KFMainFont'
+	//MainFont=Font'KFScoreboardExt_Assets.Font.KFMainFont'
+	//InfiniteFont=Font'KFScoreboardExt_Assets.Font.KFInfiniteFont'
+	
+	MainFont=Font'UI_Canvas_Fonts.Font_Main'
 	NumberFont=Font'UI_Canvas_Fonts.Font_General'
-	InfiniteFont=Font'KFScoreboardExt_Assets.Font.KFInfiniteFont'
+	InfiniteFont=Font'UI_Canvas_Fonts.Font_Main'
 }

@@ -231,14 +231,16 @@ function DrawTextWCenter(string Str, float XPos, float YPos, float BoxWidth, flo
 
 	Canvas.TextSize(Str, TextWidth, TextHeight, FontScalar, FontScalar);
 
-	Canvas.SetPos(XPos + (BoxWidth - TextWidth)/2 , YPos);
-	Canvas.DrawText(Str, , FontScalar, FontScalar);
+	//Canvas.SetPos(XPos + (BoxWidth - TextWidth)/2 , YPos);
+	//Canvas.DrawText(Str, , FontScalar, FontScalar);
+	Owner.CurrentStyle.DrawTextShadow(Str, XPos, YPos, 1, FontScalar);
 }
 
 function DrawTextWLeft(string Str, float XPos, float YPos, float FontScalar)
 {
-	Canvas.SetPos(XPos, YPos);
-	Canvas.DrawText(Str, , FontScalar, FontScalar);
+	//Canvas.SetPos(XPos, YPos);
+	//Canvas.DrawText(Str, , FontScalar, FontScalar);
+	Owner.CurrentStyle.DrawTextShadow(Str, XPos, YPos, 1, FontScalar);
 }
 
 function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus )

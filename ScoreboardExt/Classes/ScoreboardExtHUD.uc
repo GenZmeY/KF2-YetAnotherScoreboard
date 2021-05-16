@@ -9,8 +9,6 @@ var array<KFGUI_Base> HUDWidgets;
 var class<KFScoreBoard> ScoreboardClass;
 var KFScoreBoard Scoreboard;
 
-var ObjectReferencer RepObject;
-
 var transient KF2GUIController GUIController;
 var transient GUIStyleBase GUIStyle;
 
@@ -110,5 +108,4 @@ exec function SetShowScores(bool bNewValue)
 defaultproperties
 {
 	ScoreboardClass=class'KFScoreBoard'
-	RepObject=ObjectReferencer'KFScoreboardExt_Assets.ObjectRef.MainObj_List'
 }
