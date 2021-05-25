@@ -208,14 +208,14 @@ function DrawMenu()
 	PingWBox   = Width	    - PingXPos;
 
 	// Header texts
-	DrawTextWLeft("STATUS", XPos + StatusXPos, YPos, FontScalar);
-	DrawTextWLeft(class'KFGFxHUD_ScoreboardWidget'.default.PlayerString, XPos + PlayerXPos, YPos, FontScalar);
-	DrawTextWLeft(class'KFGFxMenu_Inventory'.default.PerkFilterString, XPos + PerkXPos, YPos, FontScalar);
-	DrawTextWCenter(class'KFGFxHUD_ScoreboardWidget'.default.KillsString, XPos + KillsXPos, YPos, KillsWBox, FontScalar);
-	DrawTextWCenter(class'KFGFxHUD_ScoreboardWidget'.default.AssistsString, XPos + AssistXPos, YPos, AssistWBox, FontScalar);
-	DrawTextWCenter(class'KFGFxHUD_ScoreboardWidget'.default.DoshString, XPos + CashXPos, YPos, CashWBox, FontScalar);
-	DrawTextWCenter("HEALTH", XPos + HealthXPos, YPos, HealthWBox, FontScalar);
-	DrawTextWCenter(class'KFGFxHUD_ScoreboardWidget'.default.PingString, XPos + PingXPos, YPos, PingWBox, FontScalar);
+	DrawTextShadowHLeftVCenter("STATUS", XPos + StatusXPos, YPos, FontScalar);
+	DrawTextShadowHLeftVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PlayerString, XPos + PlayerXPos, YPos, FontScalar);
+	DrawTextShadowHLeftVCenter(class'KFGFxMenu_Inventory'.default.PerkFilterString, XPos + PerkXPos, YPos, FontScalar);
+	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.KillsString, XPos + KillsXPos, YPos, KillsWBox, FontScalar);
+	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.AssistsString, XPos + AssistXPos, YPos, AssistWBox, FontScalar);
+	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.DoshString, XPos + CashXPos, YPos, CashWBox, FontScalar);
+	DrawTextShadowHVCenter("HEALTH", XPos + HealthXPos, YPos, HealthWBox, FontScalar);
+	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PingString, XPos + PingXPos, YPos, PingWBox, FontScalar);
 
 	PlayersList.XPosition = ((Canvas.ClipX - Width) * 0.5) / InputPos[2];
 	PlayersList.YPosition = (YPos + (YL + 4)) / InputPos[3];
@@ -224,7 +224,7 @@ function DrawMenu()
 	PlayersList.ChangeListSize(KFPRIArray.Length);
 }
 
-function DrawTextWCenter(string Str, float XPos, float YPos, float BoxWidth, float FontScalar)
+function DrawTextShadowHVCenter(string Str, float XPos, float YPos, float BoxWidth, float FontScalar)
 {
 	local float TextWidth;
 	local float TextHeight;
@@ -236,7 +236,7 @@ function DrawTextWCenter(string Str, float XPos, float YPos, float BoxWidth, flo
 	Owner.CurrentStyle.DrawTextShadow(Str, XPos + (BoxWidth - TextWidth)/2 , YPos, 1, FontScalar);
 }
 
-function DrawTextWLeft(string Str, float XPos, float YPos, float FontScalar)
+function DrawTextShadowHLeftVCenter(string Str, float XPos, float YPos, float FontScalar)
 {
 	//Canvas.SetPos(XPos, YPos);
 	//Canvas.DrawText(Str, , FontScalar, FontScalar);
@@ -278,7 +278,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	{
 		S = "Player";
 	}
-	DrawTextWLeft(S, StatusXPos, TextYOffset, FontScalar);
+	DrawTextShadowHLeftVCenter(S, StatusXPos, TextYOffset, FontScalar);
 
 	// Perk
 	if( bIsZED )
@@ -288,7 +288,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		C.DrawRect (Height-5, Height-5, Texture2D'UI_Widgets.MenuBarWidget_SWF_IF');
 
 		S = "ZED";
-		DrawTextWLeft(S, PerkXPos + Height, TextYOffset, FontScalar);
+		DrawTextShadowHLeftVCenter(S, PerkXPos + Height, TextYOffset, FontScalar);
 	}
 	else
 	{
@@ -319,13 +319,13 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 			C.SetDrawColor(250,250,250,255);
 			S = Level@KFPRI.CurrentPerkClass.default.PerkName;
-			DrawTextWLeft(S, PerkIconPosX + PerkIconSize + (Owner.HUDOwner.ScaledBorderSize*2), TextYOffset, FontScalar);
+			DrawTextShadowHLeftVCenter(S, PerkIconPosX + PerkIconSize + (Owner.HUDOwner.ScaledBorderSize*2), TextYOffset, FontScalar);
 		}
 		else
 		{
 			C.SetDrawColor(250,250,250,255);
 			S = "No Perk";
-			DrawTextWLeft(S, PerkXPos + Height, TextYOffset, FontScalar);
+			DrawTextShadowHLeftVCenter(S, PerkXPos + Height, TextYOffset, FontScalar);
 		}
 	}
 
@@ -347,15 +347,15 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	if( Len(KFPRI.PlayerName) > 25 )
 		S = Left(KFPRI.PlayerName, 25);
 	else S = KFPRI.PlayerName;
-	DrawTextWLeft(S, PlayerXPos, TextYOffset, FontScalar);
+	DrawTextShadowHLeftVCenter(S, PlayerXPos, TextYOffset, FontScalar);
 
 	C.SetDrawColor(255,255,255,255);
 
 	// Kill
-	DrawTextWCenter(string (KFPRI.Kills), KillsXPos, TextYOffset, KillsWBox, FontScalar);
+	DrawTextShadowHVCenter(string (KFPRI.Kills), KillsXPos, TextYOffset, KillsWBox, FontScalar);
 
 	// Assist
-	DrawTextWCenter(string (KFPRI.Assists), AssistXPos, TextYOffset, AssistWBox, FontScalar);
+	DrawTextShadowHVCenter(string (KFPRI.Assists), AssistXPos, TextYOffset, AssistWBox, FontScalar);
 
 	// Cash
 	if( bIsZED )
@@ -368,7 +368,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		C.SetDrawColor(250, 250, 100, 255);
 		StrValue = GetNiceSize(int(KFPRI.Score));
 	}
-	DrawTextWCenter(StrValue, CashXPos, TextYOffset, CashWBox, FontScalar);
+	DrawTextShadowHVCenter(StrValue, CashXPos, TextYOffset, CashWBox, FontScalar);
 
 	C.SetDrawColor(255,255,255,255);
 
@@ -403,7 +403,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 		S =  string (KFPRI.PlayerHealth) @"HP";
 	}
-	DrawTextWCenter(S, HealthXPos, TextYOffset, HealthWBox, FontScalar);
+	DrawTextShadowHVCenter(S, HealthXPos, TextYOffset, HealthWBox, FontScalar);
 
 	C.SetDrawColor(250,250,250,255);
 
@@ -425,7 +425,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 	C.TextSize(MaxPing, XL, YL, FontScalar, FontScalar);
 
-	DrawTextWCenter(S, PingXPos, TextYOffset, PingWBox/2, FontScalar);
+	DrawTextShadowHVCenter(S, PingXPos, TextYOffset, PingWBox/2, FontScalar);
 
 	DrawPingBars(C, YOffset + (Height/2) - ((Height*0.5)/2), Width - (Height*0.5) - (Owner.HUDOwner.ScaledBorderSize*2), Height*0.5, Height*0.5, float(Ping));
 }
