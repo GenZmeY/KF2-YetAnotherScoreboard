@@ -125,8 +125,7 @@ function DrawMenu()
 
 	// Header font info.
 	Canvas.Font = Owner.CurrentStyle.PickFont(FontScalar);
-	YL = Owner.CurrentStyle.DefaultHeight;
-	DefFontHeight = YL;
+	DefFontHeight = Owner.CurrentStyle.DefaultHeight;
 
 	XPosCenter = (Canvas.ClipX * 0.5);
 
