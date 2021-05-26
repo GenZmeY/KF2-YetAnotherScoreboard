@@ -62,7 +62,7 @@ function DrawMenu()
 	local PlayerController PC;
 	local KFPlayerReplicationInfo KFPRI;
 	local PlayerReplicationInfo PRI;
-	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, DefFontHeight, BoxW, BoxX;
+	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH;
 	local int i, j, NumSpec, NumPlayer, NumAlivePlayer, Width;
 
 	PC = GetPlayer();
@@ -125,30 +125,30 @@ function DrawMenu()
 
 	// Header font info.
 	Canvas.Font = Owner.CurrentStyle.PickFont(FontScalar);
-	DefFontHeight = Owner.CurrentStyle.DefaultHeight;
 
 	XPosCenter = (Canvas.ClipX * 0.5);
 
 	// Server Name
 
-	XPos = XPosCenter;
-	YPos += DefFontHeight;
-
 	S = KFGRI.ServerName;
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
+	
+	XPos = XPosCenter;
+	YPos += YL;
 
 	BoxW = XL + (Owner.HUDOwner.ScaledBorderSize*4);
 	BoxX = XPos - (BoxW * 0.5);
+	BoxH = YL + (Owner.HUDOwner.ScaledBorderSize);
 	Canvas.SetDrawColor(10, 10, 10, 200);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, DefFontHeight, 4);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 4);
 	Canvas.SetDrawColor(250, 0, 0, 255);
 
-	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos + ((DefFontHeight-YL) * 0.5f), 1, FontScalar);
+	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos, 1, FontScalar);
 
 	// Deficulty | Wave | MapName
 
 	XPos = XPosCenter;
-	YPos += DefFontHeight+Owner.HUDOwner.ScaledBorderSize;
+	YPos += YL+Owner.HUDOwner.ScaledBorderSize*2;
 
 	S = Class'KFCommon_LocalizedStrings'.Static.GetDifficultyString (KFGRI.GameDifficulty) $"  |  "$class'KFGFxHUD_ScoreboardMapInfoContainer'.default.WaveString@KFGRI.WaveNum $"  |  " $class'KFCommon_LocalizedStrings'.static.GetFriendlyMapName(PC.WorldInfo.GetMapName(true));
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
@@ -156,15 +156,15 @@ function DrawMenu()
 	BoxW = XL + (Owner.HUDOwner.ScaledBorderSize*4);
 	BoxX = XPos - (BoxW * 0.5);
 	Canvas.SetDrawColor(10, 10, 10, 200);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, DefFontHeight, 4);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 4);
 	Canvas.SetDrawColor(0, 250, 0, 255);
 
-	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos + ((DefFontHeight-YL) * 0.5f), 1, FontScalar);
+	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos, 1, FontScalar);
 
 	// Players | Spectators | Alive | Time
 
 	XPos = XPosCenter;
-	YPos += DefFontHeight+Owner.HUDOwner.ScaledBorderSize;
+	YPos += YL+Owner.HUDOwner.ScaledBorderSize*2;
 
 	S = " Players : " $ NumPlayer $ "  |  Spectators : " $ NumSpec $ "  |  Alive : " $ NumAlivePlayer $ "  |  Elapsed Time : " $ Owner.CurrentStyle.GetTimeString(KFGRI.ElapsedTime) $ " ";
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
@@ -172,18 +172,18 @@ function DrawMenu()
 	BoxW = XL + (Owner.HUDOwner.ScaledBorderSize*4);
 	BoxX = XPos - (BoxW * 0.5);
 	Canvas.SetDrawColor(10, 10, 10, 200);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, DefFontHeight, 4);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 4);
 	Canvas.SetDrawColor(250, 250, 0, 255);
 
-	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos + ((DefFontHeight-YL) * 0.5f), 1, FontScalar);
+	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos, 1, FontScalar);
 
 	Width = Canvas.ClipX * 0.625;
 
 	XPos = (Canvas.ClipX - Width) * 0.5;
-	YPos += DefFontHeight * 2.0;
+	YPos += YL * 2.0;
 
 	Canvas.SetDrawColor (10, 10, 10, 200);
-	Owner.CurrentStyle.DrawRectBox(XPos, YPos, Width, DefFontHeight, 4);
+	Owner.CurrentStyle.DrawRectBox(XPos, YPos, Width, BoxH, 4);
 
 	Canvas.SetDrawColor(250, 250, 250, 255);
 
@@ -259,7 +259,9 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 	C.Font = Owner.CurrentStyle.PickFont(FontScalar);
 
-	TextYOffset = YOffset + (Height * 0.5f) - (Owner.CurrentStyle.DefaultHeight * 0.5f);
+	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
+	
+	TextYOffset = YOffset + (Height * 0.5f) - (YL * 0.5f);
 	if (PlayerIndex == Index)
 		C.SetDrawColor (51, 30, 101, 150);
 	else C.SetDrawColor (30, 30, 30, 150);

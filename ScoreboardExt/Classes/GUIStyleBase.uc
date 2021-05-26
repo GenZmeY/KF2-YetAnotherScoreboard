@@ -162,13 +162,13 @@ function PickDefaultFontSize( float YRes )
 
 	DefaultHeight=float(YL)*YRes;
 }
-final function float ScreenScale( float Size, optional float MaxRes=1920.f )
+final function float ScreenScale( float Size, optional float MaxRes=1080.f )
 {
-	return Size * ( HUDOwner.SizeX / MaxRes );
+	return Size * ( HUDOwner.SizeY / MaxRes );
 }
 final function float GetFontScaler(optional float Scaler=0.750f, optional float Min=0.175f, optional float Max=1.0f)
 {
-	return FClamp((HUDOwner.SizeX / 1920.f) * Scaler, Min, Max);
+	return FClamp((HUDOwner.SizeY / 1080.f) * Scaler, Min, Max);
 }
 final function DrawText( coerce string S )
 {
