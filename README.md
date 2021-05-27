@@ -1,9 +1,8 @@
 # ScoreboardExt
 
 **TODO:**
-1. Customizable colors for ping (thresholds)
-2. Customizable colors for player level (depending on difficulty)
-3. Customizable statuses:
+1. Customizable colors for player level (depending on difficulty)
+2. Customizable statuses:
 	- status name (String)
 	- status color (RGB)
 	- apply status color to:
@@ -13,4 +12,4 @@
 		- kills (bool)
 		- assists (bool)
 	- ovverride admin status (bool)
-4. Players and status relations
+3. Players and status relations
