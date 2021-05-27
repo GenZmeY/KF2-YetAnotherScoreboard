@@ -230,15 +230,11 @@ function DrawTextShadowHVCenter(string Str, float XPos, float YPos, float BoxWid
 
 	Canvas.TextSize(Str, TextWidth, TextHeight, FontScalar, FontScalar);
 
-	//Canvas.SetPos(XPos + (BoxWidth - TextWidth)/2 , YPos);
-	//Canvas.DrawText(Str, , FontScalar, FontScalar);
 	Owner.CurrentStyle.DrawTextShadow(Str, XPos + (BoxWidth - TextWidth)/2 , YPos, 1, FontScalar);
 }
 
 function DrawTextShadowHLeftVCenter(string Str, float XPos, float YPos, float FontScalar)
 {
-	//Canvas.SetPos(XPos, YPos);
-	//Canvas.DrawText(Str, , FontScalar, FontScalar);
 	Owner.CurrentStyle.DrawTextShadow(Str, XPos, YPos, 1, FontScalar);
 }
 

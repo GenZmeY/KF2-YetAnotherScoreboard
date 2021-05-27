@@ -142,7 +142,6 @@ function RenderComboList( KFGUI_ComboSelector C );
 function Font PickFont( out float Scaler, optional bool bNumbersOnly, optional bool bInfinite )
 {
 	Scaler = GetFontScaler();
-	//Scaler = class'KFGameEngine'.static.GetKFFontScale();
 
 	if( bNumbersOnly )
 		return NumberFont;
