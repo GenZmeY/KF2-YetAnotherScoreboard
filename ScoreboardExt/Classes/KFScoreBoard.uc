@@ -294,9 +294,9 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 			PrestigeLevel = KFPRI.GetActivePerkPrestigeLevel();
 			Level = KFPRI.GetActivePerkLevel();
 
-			PerkIconPosX = PerkXPos;
 			PerkIconPosY = YOffset + (Owner.HUDOwner.ScaledBorderSize * 2);
 			PerkIconSize = Height-(Owner.HUDOwner.ScaledBorderSize * 4);
+			PerkIconPosX = PerkXPos - PerkIconSize - (Owner.HUDOwner.ScaledBorderSize*2);
 			PrestigeIconScale = 0.6625f;
 
 			C.DrawColor = HUDOwner.WhiteColor;
@@ -316,13 +316,13 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 			C.SetDrawColor(250,250,250,255);
 			S = Level@KFPRI.CurrentPerkClass.default.PerkName;
-			DrawTextShadowHLeftVCenter(S, PerkIconPosX + PerkIconSize + (Owner.HUDOwner.ScaledBorderSize*2), TextYOffset, FontScalar);
+			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
 		}
 		else
 		{
 			C.SetDrawColor(250,250,250,255);
 			S = "No Perk";
-			DrawTextShadowHLeftVCenter(S, PerkXPos + Height, TextYOffset, FontScalar);
+			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
 		}
 	}
 
