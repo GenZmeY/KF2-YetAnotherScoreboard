@@ -217,7 +217,7 @@ function DrawMenu()
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PingString, XPos + PingXPos, YPos, PingWBox, FontScalar);
 
 	PlayersList.XPosition = ((Canvas.ClipX - Width) * 0.5) / InputPos[2];
-	PlayersList.YPosition = (YPos + (YL + 4)) / InputPos[3];
+	PlayersList.YPosition = (YPos + (YL + Owner.HUDOwner.ScaledBorderSize*2)) / InputPos[3];
 	PlayersList.YSize = (1.f - PlayersList.YPosition) - 0.15;
 
 	PlayersList.ChangeListSize(KFPRIArray.Length);

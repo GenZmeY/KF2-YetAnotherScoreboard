@@ -11,6 +11,6 @@
 		- perk (bool)
 		- kills (bool)
 		- assists (bool)
-	- ovverride admin status (bool)
+	- override admin status (bool)
 3. Players and status relations
 4. Check fields char capacity (crop if text is large then cap)
