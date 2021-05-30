@@ -92,11 +92,8 @@ function compile ()
 	rm -rf "$MutUnpublish"
 	mkdir -p \
 		"$MutUnpublish" \
-		"$MutStructScript" \
-		"$MutStructPackages"
-	
-	cp -rf "$MutSource/ScoreboardExt/Assets"/*.upk "$MutStructPackages"
-	
+		"$MutStructScript"
+
 	CMD //C "$(unixpath2win "$KFEditor")" make -useunpublished &
 	local PID="$!"
 	while ps -p "$PID" &> /dev/null
