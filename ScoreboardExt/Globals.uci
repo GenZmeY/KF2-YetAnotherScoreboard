@@ -19,19 +19,9 @@
 `define ITEMBOX_DISABLED	1
 `define ITEMBOX_HIGHLIGHTED	2
 
-`define ITEMBOX_BAR_NORMAL		3
-`define ITEMBOX_BAR_DISABLED	4
-`define ITEMBOX_BAR_HIGHLIGHTED	5
-
-`define PROGRESS_BAR_NORMAL		0
-`define PROGRESS_BAR_SELECTED	1
-
 `define CHECKMARK_NORMAL		0
 `define CHECKMARK_DISABLED		1
 `define CHECKMARK_HIGHLIGHTED	2
-
-`define PERK_BOX_SELECTED	0
-`define PERK_BOX_UNSELECTED	1
 
 `define	ARROW_DOWN		0
 `define	ARROW_LEFT		1
@@ -50,13 +40,7 @@
 `define PEN_BLACK	1
 `define PEN_GRAY	2
 
-`define SLIDER_NORMAL 	0
-`define SLIDER_GRIP		1
-`define SLIDER_DISABLED	2
-
 `define CURSOR_DEFAULT 		0
 `define CURSOR_SELECTION 	1
 `define CURSOR_RESIZEVERT	2
 `define CURSOR_RESIZEHORZ 	3
-
-`define Print(log) LocalPlayer(class'WorldInfo'.static.GetWorldInfo().GetALocalPlayerController().Player).ViewportClient.ViewportConsole.OutputText(`log)

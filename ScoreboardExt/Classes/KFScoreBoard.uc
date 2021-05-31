@@ -1,4 +1,5 @@
-class KFScoreBoard extends KFGUI_Page;
+class KFScoreBoard extends KFGUI_Page
+	dependson(Types);
 
 var transient float StatusXPos, PerkXPos, PlayerXPos, HealthXPos, TimeXPos, KillsXPos, AssistXPos, CashXPos, DeathXPos, PingXPos;
 var transient float StatusWBox, PlayerWBox, PerkWBox, CashWBox, KillsWBox, AssistWBox, HealthWBox, PingWBox;
@@ -15,6 +16,18 @@ var KFPlayerController OwnerPC;
 
 var Color PingColor;
 var float PingBars,IdealPing,MaxPing;
+
+// Groups
+var array<PlayerGroupEntry> PlayerGroups;
+var array<UIDInfoEntry>     PlayerInfos;
+
+var string    SystemAdminRank;
+var TextColor SystemAdminColor;
+var Fields    SystemAdminApplyColorToFields;
+
+var string    SystemPlayerRank;
+var TextColor SystemPlayerColor;
+var Fields    SystemPlayerApplyColorToFields;
 
 function InitMenu()
 {
@@ -246,9 +259,47 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	local byte Level, PrestigeLevel;
 	local bool bIsZED;
 	local int Ping;
+	
+	local PlayerGroupEntry Group;
+	local bool HasGroup;
+	local int PlayerInfoIndex, PlayerGroupIndex;
 
 	YOffset *= 1.05;
 	KFPRI = KFPRIArray[Index];
+	
+	HasGroup = false;
+	PlayerInfoIndex = PlayerInfos.Find('UID', KFPRI.UniqueId);
+	if (PlayerInfoIndex != INDEX_NONE )
+	{
+		PlayerGroupIndex = PlayerGroups.Find('ID', PlayerInfos[PlayerInfoIndex].GroupID);
+		if (PlayerGroupIndex != INDEX_NONE)
+		{
+			HasGroup = true;
+			Group = PlayerGroups[PlayerGroupIndex];
+		}
+	}
+	
+	if (KFPRI.bAdmin)
+	{
+		if (!HasGroup || (HasGroup && !Group.OverrideAdminRank))
+		{
+			Group.Rank = SystemAdminRank;
+			Group.Color = SystemAdminColor;
+			Group.ApplyColorToFields = SystemAdminApplyColorToFields;
+			HasGroup = true;
+		}
+	}
+	else // Player
+	{
+		if (!HasGroup)
+		{
+			Group.Rank = SystemPlayerRank;
+			Group.Color = SystemPlayerColor;
+			Group.ApplyColorToFields = SystemPlayerApplyColorToFields;
+			HasGroup = true;
+		}
+	}
+	// Now all players belongs to 'Group'
 
 	if( KFGRI.bVersusGame )
 		bIsZED = KFTeamInfo_Zeds(KFPRI.Team) != None;
@@ -266,21 +317,19 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 	C.SetDrawColor(250,250,250,255);
 
-	// Status
-	if (KFPRI.bAdmin)
-	{
-		S = "Admin";
-	}
-	else
-	{
-		S = "Player";
-	}
+	// Rank
+	if (Group.ApplyColorToFields.Rank)
+		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
+	S = Group.Rank;
 	DrawTextShadowHLeftVCenter(S, StatusXPos, TextYOffset, FontScalar);
+	C.SetDrawColor(250,250,250,255);
 
 	// Perk
 	if( bIsZED )
 	{
 		C.SetDrawColor(255,0,0,255);
+		if (Group.ApplyColorToFields.Perk)
+			C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
 		C.SetPos (PerkXPos, YOffset - ((Height-5) * 0.5f));
 		C.DrawRect (Height-5, Height-5, Texture2D'UI_Widgets.MenuBarWidget_SWF_IF');
 
@@ -315,16 +364,21 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 			}		
 
 			C.SetDrawColor(250,250,250,255);
+			if (Group.ApplyColorToFields.Perk)
+				C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
 			S = Level@KFPRI.CurrentPerkClass.default.PerkName;
 			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
 		}
 		else
 		{
 			C.SetDrawColor(250,250,250,255);
+			if (Group.ApplyColorToFields.Perk)
+				C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
 			S = "No Perk";
 			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
 		}
 	}
+	C.SetDrawColor(250,250,250,255);
 
 	// Avatar
 	if( KFPRI.Avatar != None )
@@ -339,20 +393,29 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	}
 	else if( !KFPRI.bBot )
 		CheckAvatar(KFPRI, OwnerPC);
+	C.SetDrawColor(250,250,250,255);
 
 	// Player
+	if (Group.ApplyColorToFields.Player)
+		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
 	if( Len(KFPRI.PlayerName) > 25 )
 		S = Left(KFPRI.PlayerName, 25);
 	else S = KFPRI.PlayerName;
 	DrawTextShadowHLeftVCenter(S, PlayerXPos, TextYOffset, FontScalar);
 
-	C.SetDrawColor(255,255,255,255);
+	C.SetDrawColor(250,250,250,255);
 
 	// Kill
+	if (Group.ApplyColorToFields.Kills)
+		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
 	DrawTextShadowHVCenter(string (KFPRI.Kills), KillsXPos, TextYOffset, KillsWBox, FontScalar);
+	C.SetDrawColor(250,250,250,255);
 
 	// Assist
+	if (Group.ApplyColorToFields.Assists)
+		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
 	DrawTextShadowHVCenter(string (KFPRI.Assists), AssistXPos, TextYOffset, AssistWBox, FontScalar);
+	C.SetDrawColor(250,250,250,255);
 
 	// Cash
 	if( bIsZED )
@@ -365,9 +428,11 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		C.SetDrawColor(250, 250, 100, 255);
 		StrValue = GetNiceSize(int(KFPRI.Score));
 	}
+	if (Group.ApplyColorToFields.Dosh)
+		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
 	DrawTextShadowHVCenter(StrValue, CashXPos, TextYOffset, CashWBox, FontScalar);
 
-	C.SetDrawColor(255,255,255,255);
+	C.SetDrawColor(250,250,250,255);
 
 	// Health
 	if( !KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun )
@@ -400,6 +465,8 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 		S =  string (KFPRI.PlayerHealth) @"HP";
 	}
+	if (Group.ApplyColorToFields.Health)
+		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
 	DrawTextShadowHVCenter(S, HealthXPos, TextYOffset, HealthWBox, FontScalar);
 
 	C.SetDrawColor(250,250,250,255);
@@ -421,8 +488,10 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	}
 
 	C.TextSize(MaxPing, XL, YL, FontScalar, FontScalar);
-
+	if (Group.ApplyColorToFields.Ping)
+		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
 	DrawTextShadowHVCenter(S, PingXPos, TextYOffset, PingWBox/2, FontScalar);
+	C.SetDrawColor(250,250,250,255);
 
 	DrawPingBars(C, YOffset + (Height/2) - ((Height*0.5)/2), Width - (Height*0.5) - (Owner.HUDOwner.ScaledBorderSize*2), Height*0.5, Height*0.5, float(Ping));
 }
