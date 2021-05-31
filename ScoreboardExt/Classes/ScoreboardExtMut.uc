@@ -43,40 +43,59 @@ private function InitConfig()
 {
 	local PlayerGroupEntry ExampleGroup;
 	local PlayerInfoEntry  ExamplePlayer;
+	local SteamGroupEntry  ExampleSteamGroup;
 	
 	// Update from config version to current version if needed
 	switch (ConfigVersion)
 	{
 		case 0: // which means there is no config right now
-			// Default admin
+			SaveConfig(); // because I want the main settings to be at the beginning of the config :)
+			
+			// Default admin rank
 			class'SystemAdminGroup'.default.Rank     = "Admin";
 			class'SystemAdminGroup'.default.Color.R  = 250;
 			class'SystemAdminGroup'.default.Color.G  = 0;
 			class'SystemAdminGroup'.default.Color.B  = 0;
-			class'SystemAdminGroup'.static.StaticSaveConfig();
 	
-			// Default player
+			// Default player rank
 			class'SystemPlayerGroup'.default.Rank    = "Player";
 			class'SystemPlayerGroup'.default.Color.R = 250;
 			class'SystemPlayerGroup'.default.Color.G = 250;
 			class'SystemPlayerGroup'.default.Color.B = 250;
-			class'SystemPlayerGroup'.static.StaticSaveConfig();
 			
-			// Example group
+			// Example rank for player(s)
 			ExampleGroup.ID                          = 0;
-			ExampleGroup.Rank                        = "Scoreboard Creator";
+			ExampleGroup.Rank                        = "SCE Creator";
 			ExampleGroup.Color.R                     = 130;
 			ExampleGroup.Color.G                     = 250;
 			ExampleGroup.Color.B                     = 235;
 			ExampleGroup.OverrideAdminRank           = true;
 			class'PlayerGroups'.default.PlayerGroup.AddItem(ExampleGroup);
-			class'PlayerGroups'.static.StaticSaveConfig();
 
 			// Example player
 			ExamplePlayer.PlayerID                   = "76561198001617867"; // GenZmeY SteamID64
 			ExamplePlayer.GroupID                    = ExampleGroup.ID;
 			class'PlayerInfos'.default.PlayerInfo.AddItem(ExamplePlayer);
+			
+			// Example rank for steam group members
+			ExampleGroup.ID                          = 1;
+			ExampleGroup.Rank                        = "[MSK-GS]";
+			ExampleGroup.Color.R                     = 130;
+			ExampleGroup.Color.G                     = 250;
+			ExampleGroup.Color.B                     = 130;
+			ExampleGroup.OverrideAdminRank           = false;
+			class'PlayerGroups'.default.PlayerGroup.AddItem(ExampleGroup);
+			
+			// Example steam group
+			ExampleSteamGroup.SteamGroupID           = "103582791465384046"; // MSK-GS SteamID64
+			ExampleSteamGroup.GroupID                = ExampleGroup.ID;
+			class'SteamGroups'.default.SteamGroup.AddItem(ExampleSteamGroup);
+
+			class'SystemAdminGroup'.static.StaticSaveConfig();
+			class'SystemPlayerGroup'.static.StaticSaveConfig();
+			class'PlayerGroups'.static.StaticSaveConfig();
 			class'PlayerInfos'.static.StaticSaveConfig();
+			class'SteamGroups'.static.StaticSaveConfig();
 
 		case 2147483647:
 			`log("[ScoreboardExt] Config updated to version"@CurrentVersion);
@@ -124,9 +143,9 @@ function AddPlayerInfo(Controller C)
 {
 	local KFPlayerController KFPC;
 	local SClient RepClient;
-
+	
 	KFPC = KFPlayerController(C);
-	if (KFPC == None || !KFPC.bIsPlayer)
+	if (KFPC == None)
 		return;
 
 	RepClient.RepInfo = Spawn(class'ScoreboardExtRepInfo', KFPC);
@@ -134,15 +153,16 @@ function AddPlayerInfo(Controller C)
 	
 	RepClients.AddItem(RepClient);
 	
-	RepClient.RepInfo.ClientInit(
-		class'PlayerGroups'.default.PlayerGroup,
-		UIDInfos,
-		class'SystemAdminGroup'.default.Rank,
-		class'SystemAdminGroup'.default.Color,
-		class'SystemAdminGroup'.default.ApplyColorToFields,
-		class'SystemPlayerGroup'.default.Rank,
-		class'SystemPlayerGroup'.default.Color,
-		class'SystemPlayerGroup'.default.ApplyColorToFields);
+	RepClient.RepInfo.PlayerInfos = UIDInfos;
+	RepClient.RepInfo.PlayerGroups = class'PlayerGroups'.default.PlayerGroup;
+	RepClient.RepInfo.SystemAdminRank = class'SystemAdminGroup'.default.Rank;
+	RepClient.RepInfo.SystemAdminColor = class'SystemAdminGroup'.default.Color;
+	RepClient.RepInfo.SystemAdminApplyColorToFields = class'SystemAdminGroup'.default.ApplyColorToFields;
+	RepClient.RepInfo.SystemPlayerRank = class'SystemPlayerGroup'.default.Rank;
+	RepClient.RepInfo.SystemPlayerColor = class'SystemPlayerGroup'.default.Color;
+	RepClient.RepInfo.SystemPlayerApplyColorToFields = class'SystemPlayerGroup'.default.ApplyColorToFields;
+	
+	RepClient.RepInfo.ClientStartReplication();
 }
 
 function RemovePlayerInfo(Controller C)

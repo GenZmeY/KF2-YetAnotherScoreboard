@@ -1,19 +1,100 @@
 class ScoreboardExtRepInfo extends ReplicationInfo;
 
-var private array<UIDInfoEntry>     PlayerInfos;
-var private array<PlayerGroupEntry> PlayerGroups;
+var public array<UIDInfoEntry>     PlayerInfos;
+var public array<PlayerGroupEntry> PlayerGroups;
 
-var private string    SystemAdminRank;
-var private TextColor SystemAdminColor;
-var private Fields    SystemAdminApplyColorToFields;
+var public string    SystemAdminRank;
+var public TextColor SystemAdminColor;
+var public Fields    SystemAdminApplyColorToFields;
 
-var private string    SystemPlayerRank;
-var private TextColor SystemPlayerColor;
-var private Fields    SystemPlayerApplyColorToFields;
+var public string    SystemPlayerRank;
+var public TextColor SystemPlayerColor;
+var public Fields    SystemPlayerApplyColorToFields;
 
-public reliable client final function ClientInit(
-	array<PlayerGroupEntry> _PlayerGroups,
-	array<UIDInfoEntry>     _PlayerInfos,
+var private bool SystemFinished, GroupsFinished, InfosFinished;
+var private int InfosReplicateProgress, GroupsReplicateProgress;
+
+var private KFScoreBoard SC;
+
+public final function ClientStartReplication()
+{
+	GetScoreboard();
+	
+	ClientInitSystem(
+		SystemAdminRank,
+		SystemAdminColor,
+		SystemAdminApplyColorToFields,
+		SystemPlayerRank,
+		SystemPlayerColor,
+		SystemPlayerApplyColorToFields);
+		
+	SetTimer(0.01f, true, nameof(ClientReplicateGroups));
+	SetTimer(0.01f, true, nameof(ClientReplicateInfos));
+}
+
+public final function ClientReplicateGroups()
+{
+	if (GroupsReplicateProgress < PlayerGroups.Length)
+	{
+		ClientAddPlayerGroup(PlayerGroups[GroupsReplicateProgress]);
+		++GroupsReplicateProgress;
+	}
+	else
+	{
+		ClearTimer(nameof(ClientReplicateGroups));
+		GroupReplicationFinished();
+	}
+}
+
+public final function ClientReplicateInfos()
+{
+	if (InfosReplicateProgress < PlayerInfos.Length)
+	{
+		ClientAddPlayerInfo(PlayerInfos[InfosReplicateProgress]);
+		++InfosReplicateProgress;
+	}
+	else
+	{
+		ClearTimer(nameof(ClientReplicateInfos));
+		InfosReplicationFinished();
+	}
+}
+
+private reliable client final function GetScoreboard()
+{
+	if (SC != None)
+	{
+		ClearTimer(nameof(GetScoreboard));
+		return;
+	}
+	
+	SC = ScoreboardExtHUD(GetALocalPlayerController().myHUD).Scoreboard;
+	SetTimer(0.1f, false, nameof(GetScoreboard));
+}
+
+private reliable client final function ClientAddPlayerGroup(PlayerGroupEntry Group)
+{
+	PlayerGroups.AddItem(Group);
+}
+
+private reliable client final function ClientAddPlayerInfo(UIDInfoEntry PlayerInfo)
+{
+	PlayerInfos.AddItem(PlayerInfo);
+}
+
+private reliable client final function GroupReplicationFinished()
+{
+	GroupsFinished = true;
+	ClientGroupsApply();
+}
+
+private reliable client final function InfosReplicationFinished()
+{
+	InfosFinished = true;
+	ClientInfosApply();
+}
+
+private reliable client final function ClientInitSystem(
 	string                  _SystemAdminRank,
 	TextColor               _SystemAdminColor,
 	Fields                  _SystemAdminApplyColorToFields,
@@ -21,8 +102,6 @@ public reliable client final function ClientInit(
 	TextColor               _SystemPlayerColor,
 	Fields                  _SystemPlayerApplyColorToFields)
 {
-	PlayerGroups                   = _PlayerGroups;
-	PlayerInfos                    = _PlayerInfos;
 	SystemAdminRank                = _SystemAdminRank;
 	SystemAdminColor               = _SystemAdminColor;
 	SystemAdminApplyColorToFields  = _SystemAdminApplyColorToFields;
@@ -30,22 +109,17 @@ public reliable client final function ClientInit(
 	SystemPlayerColor              = _SystemPlayerColor;
 	SystemPlayerApplyColorToFields = _SystemPlayerApplyColorToFields;
 
-	ClientApply();
+	ClientSystemApply();
 }
 
-private reliable client final function ClientApply()
+private reliable client final function ClientSystemApply()
 {
-	local KFScoreBoard SC;
-	
-	SC = ScoreboardExtHUD(PlayerController(Owner).myHUD).Scoreboard;
 	if (SC == None)
 	{
-		SetTimer(0.5f, false, nameof(ClientApply));
+		SetTimer(0.1f, false, nameof(ClientSystemApply));
 		return;
 	}
 	
-	SC.PlayerGroups                   = PlayerGroups;
-	SC.PlayerInfos                    = PlayerInfos;
 	SC.SystemAdminRank                = SystemAdminRank;
 	SC.SystemAdminColor               = SystemAdminColor;
 	SC.SystemAdminApplyColorToFields  = SystemAdminApplyColorToFields;
@@ -53,10 +127,48 @@ private reliable client final function ClientApply()
 	SC.SystemPlayerColor              = SystemPlayerColor;
 	SC.SystemPlayerApplyColorToFields = SystemPlayerApplyColorToFields;
 	
-	Destroy();
+	SystemFinished = true;
+	Finished();
+}
+
+private reliable client final function ClientGroupsApply()
+{
+	if (SC == None)
+	{
+		SetTimer(0.1f, false, nameof(ClientGroupsApply));
+		return;
+	}
+	
+	SC.PlayerGroups = PlayerGroups;
+	GroupsFinished  = true;
+	Finished();
+}
+
+private reliable client final function ClientInfosApply()
+{
+	if (SC == None)
+	{
+		SetTimer(0.1f, false, nameof(ClientInfosApply));
+		return;
+	}
+	
+	SC.PlayerInfos = PlayerInfos;
+	GroupsFinished = true;
+	Finished();
+}
+
+private reliable client final function Finished()
+{
+	if (SystemFinished && GroupsFinished && InfosFinished)
+		Destroy();
 }
 
 defaultproperties
 {
+	InfosReplicateProgress=0
+	GroupsReplicateProgress=0
 	
+	SystemFinished=false
+	GroupsFinished=false
+	InfosFinished=false
 }

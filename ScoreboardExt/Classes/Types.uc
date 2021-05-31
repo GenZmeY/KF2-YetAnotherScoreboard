@@ -45,6 +45,12 @@ struct PlayerGroupEntry
 	var Fields    ApplyColorToFields;
 };
 
+struct SteamGroupEntry
+{
+	var string SteamGroupID;
+	var int    GroupID;
+};
+
 struct PlayerInfoEntry
 {
 	var string PlayerID;
