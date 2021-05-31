@@ -126,7 +126,7 @@ function AddPlayerInfo(Controller C)
 	local SClient RepClient;
 
 	KFPC = KFPlayerController(C);
-	if (KFPC == None)
+	if (KFPC == None || !KFPC.bIsPlayer)
 		return;
 
 	RepClient.RepInfo = Spawn(class'ScoreboardExtRepInfo', KFPC);
