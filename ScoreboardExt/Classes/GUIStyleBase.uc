@@ -603,11 +603,11 @@ final function DrawRectBox( float X, float Y, float Width, float Height, int Edg
 		//  \______/
 		
 		// Top left
-		Canvas.SetPos(X,Y);
+		Canvas.SetPos(X,Y-Edge);
 		DrawCornerTex(Edge,1);
 		
 		// Top right
-		Canvas.SetPos(X+Width-Edge,Y);
+		Canvas.SetPos(X+Width-Edge,Y-Edge);
 		DrawCornerTex(Edge,0);
 
 		// Bottom right
@@ -615,8 +615,8 @@ final function DrawRectBox( float X, float Y, float Width, float Height, int Edg
 		DrawCornerTex(Edge,3);
 
 		// Mid Fill
-		Canvas.SetPos(X,Y+Edge);
-		DrawWhiteBox(Width,Height-Edge*2);
+		Canvas.SetPos(X,Y);
+		DrawWhiteBox(Width,Height-Edge);
 		
 		// Bottom Fill
 		Canvas.SetPos(X+Edge,Y+Height-Edge);
