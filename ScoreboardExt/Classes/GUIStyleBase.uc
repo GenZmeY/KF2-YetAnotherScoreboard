@@ -490,78 +490,149 @@ final function DrawWhiteBox( float XS, float YS, optional bool bClip )
 	Canvas.DrawTile(ItemTex,XS,YS,19,45,1,1,,bClip);
 }
 
-final function DrawRectBox( float X, float Y, float XS, float YS, int Edge, optional byte Extrav )
+final function DrawRectBox( float X, float Y, float Width, float Height, int Edge, optional byte Extrav )
 {
 	if( Extrav==2 )
-		Edge=Min(FMin(Edge,(XS)*0.5),YS);// Verify size.
-	else Edge=Min(FMin(Edge,(XS)*0.5),(YS)*0.5);// Verify size.
+		Edge=Min(FMin(Edge,(Width)*0.5),Height);// Verify size.
+	else
+		Edge=Min(FMin(Edge,(Width)*0.5),(Height)*0.5);// Verify size.
 
 	Canvas.PreOptimizeDrawTiles(Extrav==0 ? 7 : 6, ItemTex);
-
-	// Top left
-	Canvas.SetPos(X,Y);
-	DrawCornerTex(Edge,0);
-
-	if( Extrav<=1 )
+	
+	switch (Extrav)
 	{
-		if( Extrav==0 )
-		{
-			// Top right
-			Canvas.SetPos(X+XS-Edge,Y);
-			DrawCornerTex(Edge,1);
-
-			// Bottom right
-			Canvas.SetPos(X+XS-Edge,Y+YS-Edge);
-			DrawCornerTex(Edge,3);
-
-			// Fill
-			Canvas.SetPos(X+Edge,Y);
-			DrawWhiteBox(XS-Edge*2,YS);
-			Canvas.SetPos(X,Y+Edge);
-			DrawWhiteBox(Edge,YS-Edge*2);
-			Canvas.SetPos(X+XS-Edge,Y+Edge);
-			DrawWhiteBox(Edge,YS-Edge*2);
-		}
-		else if( Extrav==1 )
-		{
-			// Top right
-			Canvas.SetPos(X+XS,Y);
-			DrawCornerTex(Edge,3);
-
-			// Bottom right
-			Canvas.SetPos(X+XS,Y+YS-Edge);
-			DrawCornerTex(Edge,1);
-
-			// Fill
-			Canvas.SetPos(X+Edge,Y);
-			DrawWhiteBox(XS-Edge,YS);
-			Canvas.SetPos(X,Y+Edge);
-			DrawWhiteBox(Edge,YS-Edge*2);
-		}
-
-		// Bottom left
-		Canvas.SetPos(X,Y+YS-Edge);
-		DrawCornerTex(Edge,2);
-	}
-	else
-	{
+		case 1:
+		//   _______
+		//  /      /
+		//  |     |
+		//  \______\
+		
+		// Top left
+		Canvas.SetPos(X,Y);
+		DrawCornerTex(Edge,0);
+	
 		// Top right
-		Canvas.SetPos(X+XS-Edge,Y);
+		Canvas.SetPos(X+Width,Y);
+		DrawCornerTex(Edge,3);
+
+		// Bottom right
+		Canvas.SetPos(X+Width,Y+Height-Edge);
+		DrawCornerTex(Edge,1);
+
+		// Fill
+		Canvas.SetPos(X+Edge,Y);
+		DrawWhiteBox(Width-Edge,Height);
+		Canvas.SetPos(X,Y+Edge);
+		DrawWhiteBox(Edge,Height-Edge*2);
+			
+		// Bottom left
+		Canvas.SetPos(X,Y+Height-Edge);
+		DrawCornerTex(Edge,2);
+		break;
+		
+		case 2:
+		//   ______
+		//  /      \
+		//  | ____ |
+		//  |/    \|
+		
+		// Top left
+		Canvas.SetPos(X,Y);
+		DrawCornerTex(Edge,0);
+		
+		// Top right
+		Canvas.SetPos(X+Width-Edge,Y);
 		DrawCornerTex(Edge,1);
 
 		// Bottom right
-		Canvas.SetPos(X+XS-Edge,Y+YS);
+		Canvas.SetPos(X+Width-Edge,Y+Height);
 		DrawCornerTex(Edge,2);
 
 		// Bottom left
-		Canvas.SetPos(X,Y+YS);
+		Canvas.SetPos(X,Y+Height);
+		DrawCornerTex(Edge,3);
+
+		// Mid Fill
+		Canvas.SetPos(X,Y+Edge);
+		DrawWhiteBox(Width,Height-Edge);
+		
+		// Top Fill
+		Canvas.SetPos(X+Edge,Y);
+		DrawWhiteBox(Width-Edge*2,Edge);
+		break;
+		
+		case 3:
+		//   _______
+		//   \      \
+		//   |      |
+		//   /______/
+		
+		// Top left
+		Canvas.SetPos(X - Edge,Y);
+		DrawCornerTex(Edge,2);
+		
+		// Top right
+		Canvas.SetPos(X+Width-Edge,Y);
+		DrawCornerTex(Edge,1);
+
+		// Bottom right
+		Canvas.SetPos(X+Width-Edge,Y+Height-Edge);
+		DrawCornerTex(Edge,3);
+
+		// Top Fill
+		Canvas.SetPos(X,Y);
+		DrawWhiteBox(Width-Edge,Edge);
+		
+		// Mid Fill
+		Canvas.SetPos(X,Y+Edge);
+		DrawWhiteBox(Width,Height-Edge*2);
+		
+		// Bottom Fill
+		Canvas.SetPos(X,Y+Height-Edge);
+		DrawWhiteBox(Width-Edge,Edge);
+
+		// Bottom left
+		Canvas.SetPos(X - Edge,Y+Height-Edge);
+		DrawCornerTex(Edge,0);
+		break;
+		
+		// case 4:
+		// 
+		//  |\____/|
+		//  |      |
+		//  \______/
+		// break;
+		
+		default:
+		//   ______
+		//  /      \
+		//  |      |
+		//  \______/
+		
+		// Top left
+		Canvas.SetPos(X,Y);
+		DrawCornerTex(Edge,0);
+		
+		// Top right
+		Canvas.SetPos(X+Width-Edge,Y);
+		DrawCornerTex(Edge,1);
+
+		// Bottom right
+		Canvas.SetPos(X+Width-Edge,Y+Height-Edge);
 		DrawCornerTex(Edge,3);
 
 		// Fill
-		Canvas.SetPos(X,Y+Edge);
-		DrawWhiteBox(XS,YS-Edge);
 		Canvas.SetPos(X+Edge,Y);
-		DrawWhiteBox(XS-Edge*2,Edge);
+		DrawWhiteBox(Width-Edge*2,Height);
+		Canvas.SetPos(X,Y+Edge);
+		DrawWhiteBox(Edge,Height-Edge*2);
+		Canvas.SetPos(X+Width-Edge,Y+Edge);
+		DrawWhiteBox(Edge,Height-Edge*2);
+			
+		// Bottom left
+		Canvas.SetPos(X,Y+Height-Edge);
+		DrawCornerTex(Edge,2);		
+		break;
 	}
 }
 
