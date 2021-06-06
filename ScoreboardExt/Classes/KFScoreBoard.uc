@@ -1,7 +1,7 @@
 class KFScoreBoard extends KFGUI_Page
 	dependson(Types);
 
-var transient float StatusXPos, PerkXPos, PlayerXPos, HealthXPos, TimeXPos, KillsXPos, AssistXPos, CashXPos, DeathXPos, PingXPos;
+var transient float RankXPos, PerkXPos, PlayerXPos, HealthXPos, TimeXPos, KillsXPos, AssistXPos, CashXPos, DeathXPos, PingXPos;
 var transient float StatusWBox, PlayerWBox, PerkWBox, CashWBox, KillsWBox, AssistWBox, HealthWBox, PingWBox;
 var transient float NextScoreboardRefresh;
 
@@ -153,7 +153,7 @@ function DrawMenu()
 	BoxX = XPos - (BoxW * 0.5);
 	BoxH = YL + (Owner.HUDOwner.ScaledBorderSize);
 	Canvas.SetDrawColor(10, 10, 10, 200);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 4);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 8);
 	Canvas.SetDrawColor(250, 0, 0, 255);
 
 	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos, 1, FontScalar);
@@ -169,7 +169,7 @@ function DrawMenu()
 	BoxW = XL + (Owner.HUDOwner.ScaledBorderSize*4);
 	BoxX = XPos - (BoxW * 0.5);
 	Canvas.SetDrawColor(10, 10, 10, 200);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 4);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 8);
 	Canvas.SetDrawColor(0, 250, 0, 255);
 
 	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos, 1, FontScalar);
@@ -185,7 +185,7 @@ function DrawMenu()
 	BoxW = XL + (Owner.HUDOwner.ScaledBorderSize*4);
 	BoxX = XPos - (BoxW * 0.5);
 	Canvas.SetDrawColor(10, 10, 10, 200);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 4);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 8);
 	Canvas.SetDrawColor(250, 250, 0, 255);
 
 	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos, 1, FontScalar);
@@ -194,14 +194,21 @@ function DrawMenu()
 
 	XPos = (Canvas.ClipX - Width) * 0.5;
 	YPos += YL * 2.0;
-
+	
+	BoxH = YL + (Owner.HUDOwner.ScaledBorderSize);
+	
 	Canvas.SetDrawColor (10, 10, 10, 200);
-	Owner.CurrentStyle.DrawRectBox(XPos, YPos, Width, BoxH, 4);
+		Owner.CurrentStyle.DrawRectBox(
+		XPos - Owner.HUDOwner.ScaledBorderSize * 2,
+		YPos,
+		Width + Owner.HUDOwner.ScaledBorderSize * 4,
+		BoxH,
+		8, 2);
 
 	Canvas.SetDrawColor(250, 250, 250, 255);
 
 	// Calc X offsets
-	StatusXPos = Width * 0.01;
+	RankXPos   = Width * 0.025;
 	PlayerXPos = Width * 0.20;
 	PerkXPos   = Width * 0.40;
 	CashXPos   = Width * 0.57;
@@ -210,7 +217,7 @@ function DrawMenu()
 	HealthXPos = Width * 0.84;
 	PingXPos   = Width * 0.93;
 
-	StatusWBox = PlayerXPos - StatusXPos;
+	StatusWBox = PlayerXPos - RankXPos;
 	PlayerWBox = PerkXPos   - PlayerXPos;
 	PerkWBox   = CashXPos   - PerkXPos;
 	CashWBox   = KillsXPos  - CashXPos;
@@ -220,7 +227,7 @@ function DrawMenu()
 	PingWBox   = Width	    - PingXPos;
 
 	// Header texts
-	DrawTextShadowHLeftVCenter("STATUS", XPos + StatusXPos, YPos, FontScalar);
+	DrawTextShadowHLeftVCenter("RANK", XPos + RankXPos, YPos, FontScalar);
 	DrawTextShadowHLeftVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PlayerString, XPos + PlayerXPos, YPos, FontScalar);
 	DrawTextShadowHLeftVCenter(class'KFGFxMenu_Inventory'.default.PerkFilterString, XPos + PerkXPos, YPos, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.KillsString, XPos + KillsXPos, YPos, KillsWBox, FontScalar);
@@ -230,7 +237,7 @@ function DrawMenu()
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PingString, XPos + PingXPos, YPos, PingWBox, FontScalar);
 
 	PlayersList.XPosition = ((Canvas.ClipX - Width) * 0.5) / InputPos[2];
-	PlayersList.YPosition = (YPos + (YL + Owner.HUDOwner.ScaledBorderSize*2)) / InputPos[3];
+	PlayersList.YPosition = (YPos + YL + Owner.HUDOwner.ScaledBorderSize*4) / InputPos[3];
 	PlayersList.YSize = (1.f - PlayersList.YPosition) - 0.15;
 
 	PlayersList.ChangeListSize(KFPRIArray.Length);
@@ -255,6 +262,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 {
 	local string S, StrValue;
 	local float FontScalar, TextYOffset, XL, YL, PerkIconPosX, PerkIconPosY, PerkIconSize, PrestigeIconScale;
+	local float XPos, BoxWidth;
 	local KFPlayerReplicationInfo KFPRI;
 	local byte Level, PrestigeLevel;
 	local bool bIsZED;
@@ -304,16 +312,43 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	if( KFGRI.bVersusGame )
 		bIsZED = KFTeamInfo_Zeds(KFPRI.Team) != None;
 
+	XPos = 0.f;
+
 	C.Font = Owner.CurrentStyle.PickFont(FontScalar);
 
 	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
 	
+	C.SetDrawColor (250, 30, 30, 150); // change color here (by HP)
+	BoxWidth = Owner.HUDOwner.ScaledBorderSize * 8;
+	Owner.CurrentStyle.DrawRectBox(
+		XPos,
+		YOffset,
+		BoxWidth,
+		Height,
+		8, 1);
+		
+	XPos += BoxWidth;
+	
 	TextYOffset = YOffset + (Height * 0.5f) - (YL * 0.5f);
 	if (PlayerIndex == Index)
 		C.SetDrawColor (51, 30, 101, 150);
-	else C.SetDrawColor (30, 30, 30, 150);
+	else
+		C.SetDrawColor (30, 30, 30, 150);
 
-	Owner.CurrentStyle.DrawRectBox(0.f, YOffset, Width, Height, 4);
+	BoxWidth = CashXPos + Owner.HUDOwner.ScaledBorderSize - BoxWidth;
+	Owner.CurrentStyle.DrawRectBox(XPos, YOffset, BoxWidth, Height, 8);
+	
+	XPos += BoxWidth;
+	
+	// Right stats box
+	BoxWidth = Width - XPos;
+	C.SetDrawColor (30, 30, 30, 150);
+	Owner.CurrentStyle.DrawRectBox(
+		XPos,
+		YOffset,
+		BoxWidth,
+		Height,
+		8, 3);
 
 	C.SetDrawColor(250,250,250,255);
 
@@ -321,7 +356,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	if (Group.ApplyColorToFields.Rank)
 		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
 	S = Group.Rank;
-	DrawTextShadowHLeftVCenter(S, StatusXPos, TextYOffset, FontScalar);
+	DrawTextShadowHLeftVCenter(S, RankXPos, TextYOffset, FontScalar);
 	C.SetDrawColor(250,250,250,255);
 
 	// Perk
