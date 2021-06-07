@@ -3,3 +3,8 @@ class SteamGroups extends Object
 	config(ScoreboardExt);
 
 var config array<SteamGroupEntry> SteamGroup;
+
+DefaultProperties
+{
+
+}
