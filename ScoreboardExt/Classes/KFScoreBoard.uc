@@ -69,6 +69,32 @@ delegate bool InOrder( KFPlayerReplicationInfo P1, KFPlayerReplicationInfo P2 )
 	return P1.Kills < P2.Kills;
 }
 
+function string WaveText()
+{
+	local int CurrentWaveNum;
+	
+	CurrentWaveNum = KFGRI.WaveNum;
+    if(KFGRI.IsBossWave())
+    {
+		return class'KFGFxHUD_WaveInfo'.default.BossWaveString;
+    }
+	else if (KFGRI.IsFinalWave())
+	{
+		return class'KFGFxHUD_ScoreboardMapInfoContainer'.default.FinalString;
+	}
+    else
+    {
+		if (KFGRI.default.bEndlessMode)
+		{
+    		return "" $ CurrentWaveNum;
+		}
+		else
+		{
+			return CurrentWaveNum $ " / " $ KFGRI.GetFinalWaveNum();
+		}
+    }
+}
+
 function DrawMenu()
 {
 	local string S;
@@ -76,7 +102,8 @@ function DrawMenu()
 	local KFPlayerReplicationInfo KFPRI;
 	local PlayerReplicationInfo PRI;
 	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH;
-	local int i, j, NumSpec, NumPlayer, NumAlivePlayer, Width;
+	local int i, j, NumSpec, NumPlayer, NumAlivePlayer, Width, Edge;
+	local float BorderSize;
 
 	PC = GetPlayer();
 	if( KFGRI==None )
@@ -136,79 +163,99 @@ function DrawMenu()
 		}
 	}
 
-	// Header font info.
 	Canvas.Font = Owner.CurrentStyle.PickFont(FontScalar);
-
-	XPosCenter = (Canvas.ClipX * 0.5);
-
-	// Server Name
-
+	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
+	BorderSize = Owner.HUDOwner.ScaledBorderSize;
+	Edge = 8;
+	
+	// Server Info
+	XPosCenter = Canvas.ClipX * 0.5;
+	Width = Canvas.ClipX * 0.4; // Full Box Width
+	XPos = XPosCenter - Width * 0.5;
+	YPos = YL;
+	
+	BoxW = Width;
+	BoxX = XPos;
+	BoxH = YL + BorderSize;
+	
+	// Top Rect (Server name)
+	Canvas.SetDrawColor(75, 0, 0, 200);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, 2);
+	
+	Canvas.SetDrawColor(250, 250, 250, 255);
 	S = KFGRI.ServerName;
-	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
+	DrawTextShadowHVCenter(S, BoxX, YPos, BoxW, FontScalar);
 	
-	XPos = XPosCenter;
-	YPos += YL;
-
-	BoxW = XL + (Owner.HUDOwner.ScaledBorderSize*4);
-	BoxX = XPos - (BoxW * 0.5);
-	BoxH = YL + (Owner.HUDOwner.ScaledBorderSize);
+	YPos += BoxH;
+	
+	// Mid Left Rect (Info)
+	BoxW = Width * 0.7;
+	BoxH = YL * 2 + BorderSize * 2;
+	Canvas.SetDrawColor(30, 30, 30, 200);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, 1);
+	
+	Canvas.SetDrawColor(250, 250, 250, 255);
+	S = class'KFCommon_LocalizedStrings'.static.GetFriendlyMapName(PC.WorldInfo.GetMapName(true));
+	DrawTextShadowHLeftVCenter(S, BoxX + Edge, YPos, FontScalar);
+	
+	S = KFGRI.GameClass.default.GameName $ " - " $ class'KFCommon_LocalizedStrings'.Static.GetDifficultyString (KFGRI.GameDifficulty);
+	DrawTextShadowHLeftVCenter(S, BoxX + Edge, YPos + YL, FontScalar);
+	
+	// Mid Right Rect (Wave)
+	BoxX = BoxX + BoxW;
+	BoxW = Width - BoxW;
 	Canvas.SetDrawColor(10, 10, 10, 200);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 8);
-	Canvas.SetDrawColor(250, 0, 0, 255);
-
-	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos, 1, FontScalar);
-
-	// Deficulty | Wave | MapName
-
-	XPos = XPosCenter;
-	YPos += YL+Owner.HUDOwner.ScaledBorderSize*2;
-
-	S = Class'KFCommon_LocalizedStrings'.Static.GetDifficultyString (KFGRI.GameDifficulty) $"  |  "$class'KFGFxHUD_ScoreboardMapInfoContainer'.default.WaveString@KFGRI.WaveNum $"  |  " $class'KFCommon_LocalizedStrings'.static.GetFriendlyMapName(PC.WorldInfo.GetMapName(true));
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, 0);
+	
+	Canvas.SetDrawColor(250, 250, 250, 255);
+	S = class'KFGFxHUD_ScoreboardMapInfoContainer'.default.WaveString; 
+	DrawTextShadowHVCenter(S, BoxX, YPos, BoxW, FontScalar);
+	DrawTextShadowHVCenter(WaveText(), BoxX, YPos + YL, BoxW, FontScalar);
+	
+	YPos += BoxH;
+	
+	// Bottom Rect (Players count)
+	BoxX = XPos;
+	BoxW = Width;
+	BoxH = YL + BorderSize;
+	Canvas.SetDrawColor(75, 0, 0, 200);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, 4);
+	
+	Canvas.SetDrawColor(250, 250, 250, 255);
+	S = "Players: " $ NumPlayer $ " / " $ KFGameInfo(PC.WorldInfo.Game).MaxPlayers $ ", " $ "Spectators: " $ NumSpec; 
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
+	DrawTextShadowHLeftVCenter(S, BoxX + Edge, YPos, FontScalar);
+	
+	S = Owner.CurrentStyle.GetTimeString(KFGRI.ElapsedTime);
+	DrawTextShadowHVCenter(S, XPos + Width * 0.7, YPos, Width * 0.3, FontScalar);
+	
+	// TODO: ranked / unranked
+	//if (KFGameInfo(PC.WorldInfo.Game).IsUnrankedGame())
+	//	S = class'KFGFxMenu_ServerBrowser'.default.UnrankedString;
+	//else
+	//	S = class'KFGFxMenu_ServerBrowser'.default.RankedString;
+	//DrawTextShadowHVCenter(S, XPos + XL, YPos, Width * 0.7 + XL, FontScalar);
+	
+	YPos += BoxH;
 
-	BoxW = XL + (Owner.HUDOwner.ScaledBorderSize*4);
-	BoxX = XPos - (BoxW * 0.5);
-	Canvas.SetDrawColor(10, 10, 10, 200);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 8);
-	Canvas.SetDrawColor(0, 250, 0, 255);
-
-	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos, 1, FontScalar);
-
-	// Players | Spectators | Alive | Time
-
-	XPos = XPosCenter;
-	YPos += YL+Owner.HUDOwner.ScaledBorderSize*2;
-
-	S = " Players : " $ NumPlayer $ "  |  Spectators : " $ NumSpec $ "  |  Alive : " $ NumAlivePlayer $ "  |  Elapsed Time : " $ Owner.CurrentStyle.GetTimeString(KFGRI.ElapsedTime) $ " ";
-	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
-
-	BoxW = XL + (Owner.HUDOwner.ScaledBorderSize*4);
-	BoxX = XPos - (BoxW * 0.5);
-	Canvas.SetDrawColor(10, 10, 10, 200);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, 8);
-	Canvas.SetDrawColor(250, 250, 0, 255);
-
-	Owner.CurrentStyle.DrawTextShadow(S, BoxX + ((BoxW-XL) * 0.5f), YPos, 1, FontScalar);
-
+	// Header
 	Width = Canvas.ClipX * 0.625;
-
 	XPos = (Canvas.ClipX - Width) * 0.5;
-	YPos += YL * 2.0;
-	
-	BoxH = YL + (Owner.HUDOwner.ScaledBorderSize);
-	
+	YPos += YL;
+	BoxH = YL + BorderSize;
 	Canvas.SetDrawColor (10, 10, 10, 200);
 		Owner.CurrentStyle.DrawRectBox(
-		XPos - Owner.HUDOwner.ScaledBorderSize * 2,
+		XPos - BorderSize * 2,
 		YPos,
-		Width + Owner.HUDOwner.ScaledBorderSize * 4,
+		Width + BorderSize * 4,
 		BoxH,
-		8, 2);
+		Edge,
+		2);
 
 	Canvas.SetDrawColor(250, 250, 250, 255);
 
 	// Calc X offsets
-	RankXPos   = Width * 0.025;
+	RankXPos   = Owner.HUDOwner.ScaledBorderSize * 8 + Edge;
 	PlayerXPos = Width * 0.20;
 	PerkXPos   = Width * 0.40;
 	CashXPos   = Width * 0.57;
@@ -237,7 +284,7 @@ function DrawMenu()
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PingString, XPos + PingXPos, YPos, PingWBox, FontScalar);
 
 	PlayersList.XPosition = ((Canvas.ClipX - Width) * 0.5) / InputPos[2];
-	PlayersList.YPosition = (YPos + YL + Owner.HUDOwner.ScaledBorderSize*4) / InputPos[3];
+	PlayersList.YPosition = (YPos + YL + BorderSize * 4) / InputPos[3];
 	PlayersList.YSize = (1.f - PlayersList.YPosition) - 0.15;
 
 	PlayersList.ChangeListSize(KFPRIArray.Length);
@@ -256,6 +303,16 @@ function DrawTextShadowHVCenter(string Str, float XPos, float YPos, float BoxWid
 function DrawTextShadowHLeftVCenter(string Str, float XPos, float YPos, float FontScalar)
 {
 	Owner.CurrentStyle.DrawTextShadow(Str, XPos, YPos, 1, FontScalar);
+}
+
+function DrawTextShadowHRightVCenter(string Str, float XPos, float YPos, float BoxWidth, float FontScalar)
+{
+	local float TextWidth;
+	local float TextHeight;
+
+	Canvas.TextSize(Str, TextWidth, TextHeight, FontScalar, FontScalar);
+	
+	Owner.CurrentStyle.DrawTextShadow(Str, XPos + BoxWidth - TextWidth, YPos, 1, FontScalar);
 }
 
 function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus )
@@ -318,7 +375,33 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
 	
-	C.SetDrawColor (250, 30, 30, 150); // change color here (by HP)
+	// change rect color by HP
+	if( !KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun )
+	{
+		C.SetDrawColor(150,150,150,150);
+	}
+	else if ( !KFGRI.bMatchHasBegun )
+	{
+		C.SetDrawColor(150,150,150,150);
+	}
+	else if( bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None )
+	{
+		C.SetDrawColor(150,150,150,150);
+	}
+	else if (KFPRI.PlayerHealth <= 0 || KFPRI.PlayerHealthPercent <= 0)
+	{
+		C.SetDrawColor(150,150,150,150);
+	}
+	else
+	{
+		if (ByteToFloat(KFPRI.PlayerHealthPercent) >= 0.8)
+			C.SetDrawColor(0,200,0,150);
+		else if (ByteToFloat(KFPRI.PlayerHealthPercent) >= 0.4)
+			C.SetDrawColor(200,200,0,150);
+		else
+			C.SetDrawColor(200,50,50,150);
+	}
+	
 	BoxWidth = Owner.HUDOwner.ScaledBorderSize * 8;
 	Owner.CurrentStyle.DrawRectBox(
 		XPos,
@@ -331,7 +414,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	
 	TextYOffset = YOffset + (Height * 0.5f) - (YL * 0.5f);
 	if (PlayerIndex == Index)
-		C.SetDrawColor (51, 30, 101, 150);
+		C.SetDrawColor (100, 10, 10, 150);
 	else
 		C.SetDrawColor (30, 30, 30, 150);
 
@@ -342,7 +425,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	
 	// Right stats box
 	BoxWidth = Width - XPos;
-	C.SetDrawColor (30, 30, 30, 150);
+	C.SetDrawColor (10, 10, 10, 150);
 	Owner.CurrentStyle.DrawRectBox(
 		XPos,
 		YOffset,
@@ -396,7 +479,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 			{
 				C.SetPos(PerkIconPosX, PerkIconPosY);
 				C.DrawTile(KFPRI.CurrentPerkClass.default.PerkIcon, PerkIconSize, PerkIconSize, 0, 0, 256, 256);
-			}		
+			}
 
 			C.SetDrawColor(250,250,250,255);
 			if (Group.ApplyColorToFields.Perk)
@@ -496,10 +579,12 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 			C.SetDrawColor(0,250,0,255);
 		else if (ByteToFloat(KFPRI.PlayerHealthPercent) >= 0.4)
 			C.SetDrawColor(250,250,0,255);
-		else C.SetDrawColor(250,100,100,255);
+		else
+			C.SetDrawColor(250,100,100,255);
 
 		S =  string (KFPRI.PlayerHealth) @"HP";
 	}
+	
 	if (Group.ApplyColorToFields.Health)
 		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
 	DrawTextShadowHVCenter(S, HealthXPos, TextYOffset, HealthWBox, FontScalar);
