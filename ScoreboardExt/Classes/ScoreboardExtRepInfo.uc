@@ -4,11 +4,11 @@ var public array<UIDInfoEntry>     PlayerInfos;
 var public array<PlayerGroupEntry> PlayerGroups;
 
 var public string    SystemAdminRank;
-var public TextColor SystemAdminColor;
+var public ColorRGB  SystemAdminColor;
 var public Fields    SystemAdminApplyColorToFields;
 
 var public string    SystemPlayerRank;
-var public TextColor SystemPlayerColor;
+var public ColorRGB  SystemPlayerColor;
 var public Fields    SystemPlayerApplyColorToFields;
 
 var private bool SystemFinished, GroupsFinished, InfosFinished;
@@ -96,10 +96,10 @@ private reliable client final function InfosReplicationFinished()
 
 private reliable client final function ClientInitSystem(
 	string                  _SystemAdminRank,
-	TextColor               _SystemAdminColor,
+	ColorRGB                _SystemAdminColor,
 	Fields                  _SystemAdminApplyColorToFields,
 	string                  _SystemPlayerRank,
-	TextColor               _SystemPlayerColor,
+	ColorRGB                _SystemPlayerColor,
 	Fields                  _SystemPlayerApplyColorToFields)
 {
 	SystemAdminRank                = _SystemAdminRank;

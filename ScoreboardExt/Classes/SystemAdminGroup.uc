@@ -3,5 +3,5 @@ class SystemAdminGroup extends Object
 	config(ScoreboardExt);
 
 var config string    Rank;
-var config TextColor Color;
+var config ColorRGB  TextColor;
 var config Fields    ApplyColorToFields;

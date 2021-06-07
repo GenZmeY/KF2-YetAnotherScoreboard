@@ -22,11 +22,11 @@ var array<PlayerGroupEntry> PlayerGroups;
 var array<UIDInfoEntry>     PlayerInfos;
 
 var string    SystemAdminRank;
-var TextColor SystemAdminColor;
+var ColorRGB  SystemAdminColor;
 var Fields    SystemAdminApplyColorToFields;
 
 var string    SystemPlayerRank;
-var TextColor SystemPlayerColor;
+var ColorRGB  SystemPlayerColor;
 var Fields    SystemPlayerApplyColorToFields;
 
 function InitMenu()
@@ -349,7 +349,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		if (!HasGroup || (HasGroup && !Group.OverrideAdminRank))
 		{
 			Group.Rank = SystemAdminRank;
-			Group.Color = SystemAdminColor;
+			Group.TextColor = SystemAdminColor;
 			Group.ApplyColorToFields = SystemAdminApplyColorToFields;
 			HasGroup = true;
 		}
@@ -359,7 +359,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		if (!HasGroup)
 		{
 			Group.Rank = SystemPlayerRank;
-			Group.Color = SystemPlayerColor;
+			Group.TextColor = SystemPlayerColor;
 			Group.ApplyColorToFields = SystemPlayerApplyColorToFields;
 			HasGroup = true;
 		}
@@ -437,7 +437,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 	// Rank
 	if (Group.ApplyColorToFields.Rank)
-		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
+		C.SetDrawColor(Group.TextColor.R,Group.TextColor.G,Group.TextColor.B,255);
 	S = Group.Rank;
 	DrawTextShadowHLeftVCenter(S, RankXPos, TextYOffset, FontScalar);
 	C.SetDrawColor(250,250,250,255);
@@ -447,7 +447,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	{
 		C.SetDrawColor(255,0,0,255);
 		if (Group.ApplyColorToFields.Perk)
-			C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
+			C.SetDrawColor(Group.TextColor.R,Group.TextColor.G,Group.TextColor.B,255);
 		C.SetPos (PerkXPos, YOffset - ((Height-5) * 0.5f));
 		C.DrawRect (Height-5, Height-5, Texture2D'UI_Widgets.MenuBarWidget_SWF_IF');
 
@@ -483,7 +483,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 			C.SetDrawColor(250,250,250,255);
 			if (Group.ApplyColorToFields.Perk)
-				C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
+				C.SetDrawColor(Group.TextColor.R,Group.TextColor.G,Group.TextColor.B,255);
 			S = Level@KFPRI.CurrentPerkClass.default.PerkName;
 			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
 		}
@@ -491,7 +491,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		{
 			C.SetDrawColor(250,250,250,255);
 			if (Group.ApplyColorToFields.Perk)
-				C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
+				C.SetDrawColor(Group.TextColor.R,Group.TextColor.G,Group.TextColor.B,255);
 			S = "No Perk";
 			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
 		}
@@ -515,7 +515,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 	// Player
 	if (Group.ApplyColorToFields.Player)
-		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
+		C.SetDrawColor(Group.TextColor.R,Group.TextColor.G,Group.TextColor.B,255);
 	if( Len(KFPRI.PlayerName) > 25 )
 		S = Left(KFPRI.PlayerName, 25);
 	else S = KFPRI.PlayerName;
@@ -525,13 +525,13 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 	// Kill
 	if (Group.ApplyColorToFields.Kills)
-		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
+		C.SetDrawColor(Group.TextColor.R,Group.TextColor.G,Group.TextColor.B,255);
 	DrawTextShadowHVCenter(string (KFPRI.Kills), KillsXPos, TextYOffset, KillsWBox, FontScalar);
 	C.SetDrawColor(250,250,250,255);
 
 	// Assist
 	if (Group.ApplyColorToFields.Assists)
-		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
+		C.SetDrawColor(Group.TextColor.R,Group.TextColor.G,Group.TextColor.B,255);
 	DrawTextShadowHVCenter(string (KFPRI.Assists), AssistXPos, TextYOffset, AssistWBox, FontScalar);
 	C.SetDrawColor(250,250,250,255);
 
@@ -547,7 +547,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		StrValue = GetNiceSize(int(KFPRI.Score));
 	}
 	if (Group.ApplyColorToFields.Dosh)
-		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
+		C.SetDrawColor(Group.TextColor.R,Group.TextColor.G,Group.TextColor.B,255);
 	DrawTextShadowHVCenter(StrValue, CashXPos, TextYOffset, CashWBox, FontScalar);
 
 	C.SetDrawColor(250,250,250,255);
@@ -586,7 +586,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	}
 	
 	if (Group.ApplyColorToFields.Health)
-		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
+		C.SetDrawColor(Group.TextColor.R,Group.TextColor.G,Group.TextColor.B,255);
 	DrawTextShadowHVCenter(S, HealthXPos, TextYOffset, HealthWBox, FontScalar);
 
 	C.SetDrawColor(250,250,250,255);
@@ -609,7 +609,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 	C.TextSize(MaxPing, XL, YL, FontScalar, FontScalar);
 	if (Group.ApplyColorToFields.Ping)
-		C.SetDrawColor(Group.Color.R,Group.Color.G,Group.Color.B,255);
+		C.SetDrawColor(Group.TextColor.R,Group.TextColor.G,Group.TextColor.B,255);
 	DrawTextShadowHVCenter(S, PingXPos, TextYOffset, PingWBox/2, FontScalar);
 	C.SetDrawColor(250,250,250,255);
 

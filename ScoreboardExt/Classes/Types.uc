@@ -1,6 +1,6 @@
 class Types extends Object;
 
-struct TextColor
+struct ColorRGB
 {
 	var byte R, G, B;
 	
@@ -9,6 +9,19 @@ struct TextColor
 		R=250
 		G=250
 		B=250
+	}
+};
+
+struct ColorRGBA
+{
+	var byte R, G, B, A;
+	
+	StructDefaultProperties
+	{
+		R=250
+		G=250
+		B=250
+		A=255
 	}
 };
 
@@ -40,7 +53,7 @@ struct PlayerGroupEntry
 {
 	var int       ID;
 	var string    Rank;
-	var TextColor Color;
+	var ColorRGB  TextColor;
 	var bool      OverrideAdminRank;
 	var Fields    ApplyColorToFields;
 };
