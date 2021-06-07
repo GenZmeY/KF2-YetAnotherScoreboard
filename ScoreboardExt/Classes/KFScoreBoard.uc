@@ -222,7 +222,7 @@ function DrawMenu()
 	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, 4);
 	
 	Canvas.SetDrawColor(250, 250, 250, 255);
-	S = "Players: " $ NumPlayer $ " / " $ KFGameInfo(PC.WorldInfo.Game).MaxPlayers $ ", " $ "Spectators: " $ NumSpec; 
+	S = "Players: " $ NumPlayer $ " / " $ KFGRI.MaxHumanCount $ "    " $ "Spectators: " $ NumSpec; 
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
 	DrawTextShadowHLeftVCenter(S, BoxX + Edge, YPos, FontScalar);
 	
@@ -390,7 +390,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	}
 	else if (KFPRI.PlayerHealth <= 0 || KFPRI.PlayerHealthPercent <= 0)
 	{
-		C.SetDrawColor(150,150,150,150);
+		C.SetDrawColor(200,0,0,150);
 	}
 	else
 	{
