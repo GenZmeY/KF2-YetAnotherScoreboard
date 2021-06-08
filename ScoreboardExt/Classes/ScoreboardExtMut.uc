@@ -1,5 +1,5 @@
 class ScoreboardExtMut extends KFMutator
-	dependson(CustomRanks, PlayerRankRelations)
+	dependson(Types)
 	config(ScoreboardExt);
 
 const SteamIDLen     = 17;
@@ -157,12 +157,14 @@ function AddPlayer(Controller C)
 	
 	RepClient.RepInfo.PlayerRankRelations = UIDRelations;
 	RepClient.RepInfo.CustomRanks = class'CustomRanks'.default.Rank;
+	/*
 	RepClient.RepInfo.SystemAdminRank = class'SystemAdminRank'.default.Rank;
 	RepClient.RepInfo.SystemAdminColor = class'SystemAdminRank'.default.TextColor;
 	RepClient.RepInfo.SystemAdminApplyColorToFields = class'SystemAdminRank'.default.ApplyColorToFields;
 	RepClient.RepInfo.SystemPlayerRank = class'SystemPlayerRank'.default.Rank;
 	RepClient.RepInfo.SystemPlayerColor = class'SystemPlayerRank'.default.TextColor;
 	RepClient.RepInfo.SystemPlayerApplyColorToFields = class'SystemPlayerRank'.default.ApplyColorToFields;
+	*/
 	
 	RepClient.RepInfo.ClientStartReplication();
 }

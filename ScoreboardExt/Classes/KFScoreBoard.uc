@@ -309,9 +309,9 @@ function DrawTextShadowHRightVCenter(string Str, float XPos, float YPos, float B
 	Owner.CurrentStyle.DrawTextShadow(Str, XPos + BoxWidth - TextWidth, YPos, 1, FontScalar);
 }
 
-function SetDrawColor(Canvas C, ColorRGBA Color)
+function SetDrawColor(Canvas C, ColorRGBA RGBA)
 {
-	C.SetDrawColor(Color.R, Color.G, Color.B, Color.A);
+	C.SetDrawColor(RGBA.R, RGBA.G, RGBA.B, RGBA.A);
 }
 
 function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus )
@@ -347,9 +347,9 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	{
 		if (!HasRank || (HasRank && !CurrentRank.OverrideAdminRank))
 		{
-			CurrentRank.Rank = SystemAdminRank;
-			CurrentRank.TextColor = SystemAdminColor;
-			CurrentRank.ApplyColorToFields = SystemAdminApplyColorToFields;
+			CurrentRank.Rank = Settings.SystemAdminRank;
+			CurrentRank.TextColor = Settings.SystemAdminColor;
+			CurrentRank.ApplyColorToFields = Settings.SystemAdminApplyColorToFields;
 			HasRank = true;
 		}
 	}
@@ -357,9 +357,9 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	{
 		if (!HasRank)
 		{
-			CurrentRank.Rank = SystemPlayerRank;
-			CurrentRank.TextColor = SystemPlayerColor;
-			CurrentRank.ApplyColorToFields = SystemPlayerApplyColorToFields;
+			CurrentRank.Rank = Settings.SystemPlayerRank;
+			CurrentRank.TextColor = Settings.SystemPlayerColor;
+			CurrentRank.ApplyColorToFields = Settings.SystemPlayerApplyColorToFields;
 			HasRank = true;
 		}
 	}

@@ -1,38 +1,102 @@
 class Types extends Object;
 
+struct ColorRGBA
+{
+	var byte R, G, B, A;
+	
+	StructDefaultProperties
+	{
+		R=250
+		G=250
+		B=250
+		A=255
+	}
+};
+
+struct Fields
+{
+	var bool Rank;
+	var bool Player;
+	var bool Perk;
+	var bool Dosh;
+	var bool Kills;
+	var bool Assists;
+	var bool Health;
+	var bool Ping;
+	
+	StructDefaultProperties
+	{
+		Rank    = true;
+		Player  = true;
+		Perk    = false;
+		Dosh    = false;
+		Kills   = false;
+		Assists = false;
+		Health  = false;
+		Ping    = false;
+	}
+};
+
+struct RankInfo
+{
+	var int       ID;
+	var string    Rank;
+	var ColorRGBA TextColor;
+	var bool      OverrideAdminRank;
+	var Fields    ApplyColorToFields;
+};
+
+struct SteamGroupRankRelation
+{
+	var string SteamGroupID;
+	var int    RankID;
+};
+
+struct PlayerRankRelation
+{
+	var string PlayerID;
+	var int    RankID;
+};
+
+struct UIDRankRelation
+{
+	var UniqueNetId UID;
+	var int RankID;
+};
+
 struct SCESettings
 {
-	string    SystemAdminRank;
-	ColorRGBA SystemAdminColor;
-	Fields    SystemAdminApplyColorToFields;
+	var string    SystemAdminRank;
+	var ColorRGBA SystemAdminColor;
+	var Fields    SystemAdminApplyColorToFields;
 
-	string    SystemPlayerRank;
-	ColorRGBA SystemPlayerColor;
-	Fields    SystemPlayerApplyColorToFields;
+	var string    SystemPlayerRank;
+	var ColorRGBA SystemPlayerColor;
+	var Fields    SystemPlayerApplyColorToFields;
 	
-	int HP_Low;
-	int HP_High;
+	var int HP_Low;
+	var int HP_High;
 
-	int Ping_Low;
-	int Ping_High;
+	var int Ping_Low;
+	var int Ping_High;
 
-	int Normal_Low;
-	int Normal_High;
-	int Hard_Low;
-	int Hard_High;
-	int Suicide_Low;
-	int Suicide_High;
-	int HellOnEarth_Low;
-	int HellOnEarth_High;
+	var int Normal_Low;
+	var int Normal_High;
+	var int Hard_Low;
+	var int Hard_High;
+	var int Suicide_Low;
+	var int Suicide_High;
+	var int HellOnEarth_Low;
+	var int HellOnEarth_High;
 	
 	StructDefaultProperties
 	{
 		SystemAdminRank="Admin"
-		SystemAdminColor=(R=250,G=0,B=0)
+		SystemAdminColor=(R=250,G=0,B=0,A=255)
 		SystemAdminApplyColorToFields=(Rank=True,Player=True,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
 
 		SystemPlayerRank="Player"
-		SystemPlayerColor=(R=250,G=250,B=250)
+		SystemPlayerColor=(R=250,G=250,B=250,A=255)
 		SystemPlayerApplyColorToFields=(Rank=True,Player=True,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
 		
 		HP_Low=40
@@ -54,55 +118,55 @@ struct SCESettings
 
 struct SCEStyle
 {
-	ColorRGBA ServerNameBoxColor;
-	ColorRGBA ServerNameTextColor
+	var ColorRGBA ServerNameBoxColor;
+	var ColorRGBA ServerNameTextColor;
 	
-	ColorRGBA GameInfoBoxColor;
-	ColorRGBA GameInfoTextColor;
+	var ColorRGBA GameInfoBoxColor;
+	var ColorRGBA GameInfoTextColor;
 	
-	ColorRGBA WaveBoxColor;
-	ColorRGBA WaveTextColor;
+	var ColorRGBA WaveBoxColor;
+	var ColorRGBA WaveTextColor;
 	
-	ColorRGBA PlayerCountBoxColor;
-	ColorRGBA PlayerCountTextColor;
+	var ColorRGBA PlayerCountBoxColor;
+	var ColorRGBA PlayerCountTextColor;
 	
-	ColorRGBA ListHeaderBoxColor;
-	ColorRGBA ListHeaderTextColor;
+	var ColorRGBA ListHeaderBoxColor;
+	var ColorRGBA ListHeaderTextColor;
 	
-	ColorRGBA LeftHPBoxColorNone;
-	ColorRGBA LeftHPBoxColorDead;
-	ColorRGBA LeftHPBoxColorLow;
-	ColorRGBA LeftHPBoxColorMid;
-	ColorRGBA LeftHPBoxColorHigh;
+	var ColorRGBA LeftHPBoxColorNone;
+	var ColorRGBA LeftHPBoxColorDead;
+	var ColorRGBA LeftHPBoxColorLow;
+	var ColorRGBA LeftHPBoxColorMid;
+	var ColorRGBA LeftHPBoxColorHigh;
 	
-	ColorRGBA PlayerOwnerBoxColor;
-	ColorRGBA PlayerBoxColor;
-	ColorRGBA StatsBoxColor;
+	var ColorRGBA PlayerOwnerBoxColor;
+	var ColorRGBA PlayerBoxColor;
+	var ColorRGBA StatsBoxColor;
 	
-	ColorRGBA RankTextColor;
-	ColorRGBA ZedTextColor;
-	ColorRGBA PerkTextColor;
-	ColorRGBA LevelTextColor;
-	ColorRGBA AvatarBorderColor;
-	ColorRGBA PlayerNameTextColor;
-	ColorRGBA KillsTextColor;
-	ColorRGBA AssistsTextColor;
-	ColorRGBA DoshTextColor;
+	var ColorRGBA RankTextColor;
+	var ColorRGBA ZedTextColor;
+	var ColorRGBA PerkTextColor;
+	var ColorRGBA LevelTextColor;
+	var ColorRGBA AvatarBorderColor;
+	var ColorRGBA PlayerNameTextColor;
+	var ColorRGBA KillsTextColor;
+	var ColorRGBA AssistsTextColor;
+	var ColorRGBA DoshTextColor;
 	
-	ColorRGBA StateTextColorLobby;
-	ColorRGBA StateTextColorReady;
-	ColorRGBA StateTextColorNotReady;
-	ColorRGBA StateTextColorNone;
-	ColorRGBA StateTextColorSpectator;
-	ColorRGBA StateTextColorDead;
-	ColorRGBA StateTextColorLowHP;
-	ColorRGBA StateTextColorMidHP;
-	ColorRGBA StateTextColorHighHP;
+	var ColorRGBA StateTextColorLobby;
+	var ColorRGBA StateTextColorReady;
+	var ColorRGBA StateTextColorNotReady;
+	var ColorRGBA StateTextColorNone;
+	var ColorRGBA StateTextColorSpectator;
+	var ColorRGBA StateTextColorDead;
+	var ColorRGBA StateTextColorLowHP;
+	var ColorRGBA StateTextColorMidHP;
+	var ColorRGBA StateTextColorHighHP;
 	
-	ColorRGBA PingTextColorNone;
-	ColorRGBA PingTextColorLow;
-	ColorRGBA PingTextColorMid
-	ColorRGBA PingTextColorHigh;
+	var ColorRGBA PingTextColorNone;
+	var ColorRGBA PingTextColorLow;
+	var ColorRGBA PingTextColorMid;
+	var ColorRGBA PingTextColorHigh;
 	
 	StructDefaultProperties
 	{
@@ -156,68 +220,5 @@ struct SCEStyle
 		PingTextColorMid=(R=250,G=250,B=0,A=255)
 		PingTextColorHigh=(R=250,G=0,B=0,A=255)
 	}
-}
-
-struct ColorRGBA
-{
-	var byte R, G, B, A;
-	
-	StructDefaultProperties
-	{
-		R=250
-		G=250
-		B=250
-		A=255
-	}
 };
 
-struct Fields
-{
-	var bool Rank;
-	var bool Player;
-	var bool Perk;
-	var bool Dosh;
-	var bool Kills;
-	var bool Assists;
-	var bool Health;
-	var bool Ping;
-	
-	StructDefaultProperties
-	{
-		Rank    = true;
-		Player  = true;
-		Perk    = false;
-		Dosh    = false;
-		Kills   = false;
-		Assists = false;
-		Health  = false;
-		Ping    = false;
-	}
-};
-
-struct RankInfo
-{
-	var int       ID;
-	var string    Rank;
-	var ColorRGB  TextColor;
-	var bool      OverrideAdminRank;
-	var Fields    ApplyColorToFields;
-};
-
-struct SteamGroupRankRelation
-{
-	var string SteamGroupID;
-	var int    RankID;
-};
-
-struct PlayerRankRelation
-{
-	var string PlayerID;
-	var int    RankID;
-};
-
-struct UIDRankRelation
-{
-	var UniqueNetId UID;
-	var int RankID;
-};

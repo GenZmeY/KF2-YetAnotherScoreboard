@@ -3,13 +3,8 @@ class ScoreboardExtRepInfo extends ReplicationInfo;
 var public array<UIDRankRelation> PlayerRankRelations;
 var public array<RankInfo> CustomRanks;
 
-var public string    SystemAdminRank;
-var public ColorRGBA SystemAdminColor;
-var public Fields    SystemAdminApplyColorToFields;
-
-var public string    SystemPlayerRank;
-var public ColorRGBA SystemPlayerColor;
-var public Fields    SystemPlayerApplyColorToFields;
+var public SCESettings Settings;
+var public SCEStyle Style;
 
 var private bool InitFinished, RanksFinished, InfosFinished;
 var private int InfosReplicateProgress, RanksReplicateProgress;
@@ -20,14 +15,7 @@ public function ClientStartReplication()
 {
 	GetScoreboard();
 	
-	ClientInitSystem(
-		SystemAdminRank,
-		SystemAdminColor,
-		SystemAdminApplyColorToFields,
-		SystemPlayerRank,
-		SystemPlayerColor,
-		SystemPlayerApplyColorToFields);
-		
+	ClientInit(Settings, Style);
 	SetTimer(0.01f, true, nameof(ClientReplicateRanks));
 	SetTimer(0.01f, true, nameof(ClientReplicateInfos));
 }
@@ -94,20 +82,10 @@ private reliable client function InfosReplicationFinished()
 	ClientInfosApply();
 }
 
-private reliable client function ClientInitSystem(
-	string                  _SystemAdminRank,
-	ColorRGBA               _SystemAdminColor,
-	Fields                  _SystemAdminApplyColorToFields,
-	string                  _SystemPlayerRank,
-	ColorRGBA               _SystemPlayerColor,
-	Fields                  _SystemPlayerApplyColorToFields)
+private reliable client function ClientInit(SCESettings _Settings, SCEStyle _Style)
 {
-	SystemAdminRank                = _SystemAdminRank;
-	SystemAdminColor               = _SystemAdminColor;
-	SystemAdminApplyColorToFields  = _SystemAdminApplyColorToFields;
-	SystemPlayerRank               = _SystemPlayerRank;
-	SystemPlayerColor              = _SystemPlayerColor;
-	SystemPlayerApplyColorToFields = _SystemPlayerApplyColorToFields;
+	Settings = _Settings;
+	Style = _Style;
 
 	ClientSystemApply();
 }
@@ -120,12 +98,8 @@ private reliable client function ClientSystemApply()
 		return;
 	}
 	
-	SC.SystemAdminRank                = SystemAdminRank;
-	SC.SystemAdminColor               = SystemAdminColor;
-	SC.SystemAdminApplyColorToFields  = SystemAdminApplyColorToFields;
-	SC.SystemPlayerRank               = SystemPlayerRank;
-	SC.SystemPlayerColor              = SystemPlayerColor;
-	SC.SystemPlayerApplyColorToFields = SystemPlayerApplyColorToFields;
+	SC.Settings = Settings;
+	SC.Style = Style;
 	
 	InitFinished = true;
 	Finished();
