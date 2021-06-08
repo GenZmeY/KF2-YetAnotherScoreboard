@@ -682,6 +682,14 @@ defaultproperties
 	IdealPing=50.0
 	MaxPing=200.0
 	PingBars=5.0
+	
+	SystemAdminRank="Admin"
+	SystemAdminColor=(R=250,G=0,B=0)
+	SystemAdminApplyColorToFields=(Rank=True,Player=True,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
+
+	SystemPlayerRank="Player"
+	SystemPlayerColor=(R=250,G=250,B=250)
+	SystemPlayerApplyColorToFields=(Rank=True,Player=True,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
 
 	Begin Object Class=KFGUI_List Name=PlayerList
 		XSize=0.625

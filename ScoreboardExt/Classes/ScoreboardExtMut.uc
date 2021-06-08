@@ -110,8 +110,11 @@ private function InitConfig()
 			break;
 	}
 
-	ConfigVersion = CurrentVersion;
-	SaveConfig();
+	if (ConfigVersion != CurrentVersion)
+	{
+		ConfigVersion = CurrentVersion;
+		SaveConfig();
+	}
 }
 
 private function LoadGroupPlayers()
