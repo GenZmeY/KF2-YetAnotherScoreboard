@@ -1,7 +1,7 @@
 class ScoreboardExtRepInfo extends ReplicationInfo;
 
-var public array<UIDRankRelation>     PlayerInfos;
-var public array<RankInfo> PlayerRanks;
+var public array<UIDRankRelation> PlayerRankRelations;
+var public array<RankInfo> CustomRanks;
 
 var public string    SystemAdminRank;
 var public ColorRGB  SystemAdminColor;
@@ -34,9 +34,9 @@ public function ClientStartReplication()
 
 public function ClientReplicateRanks()
 {
-	if (RanksReplicateProgress < PlayerRanks.Length)
+	if (RanksReplicateProgress < CustomRanks.Length)
 	{
-		ClientAddPlayerRank(PlayerRanks[RanksReplicateProgress]);
+		ClientAddPlayerRank(CustomRanks[RanksReplicateProgress]);
 		++RanksReplicateProgress;
 	}
 	else
@@ -48,9 +48,9 @@ public function ClientReplicateRanks()
 
 public function ClientReplicateInfos()
 {
-	if (InfosReplicateProgress < PlayerInfos.Length)
+	if (InfosReplicateProgress < PlayerRankRelations.Length)
 	{
-		ClientAddPlayerInfo(PlayerInfos[InfosReplicateProgress]);
+		ClientAddPlayerInfo(PlayerRankRelations[InfosReplicateProgress]);
 		++InfosReplicateProgress;
 	}
 	else
@@ -74,12 +74,12 @@ private reliable client function GetScoreboard()
 
 private reliable client function ClientAddPlayerRank(RankInfo Rank)
 {
-	PlayerRanks.AddItem(Rank);
+	CustomRanks.AddItem(Rank);
 }
 
 private reliable client function ClientAddPlayerInfo(UIDRankRelation PlayerInfo)
 {
-	PlayerInfos.AddItem(PlayerInfo);
+	PlayerRankRelations.AddItem(PlayerInfo);
 }
 
 private reliable client function RankReplicationFinished()
@@ -139,7 +139,7 @@ private reliable client function ClientRanksApply()
 		return;
 	}
 	
-	SC.PlayerRanks = PlayerRanks;
+	SC.CustomRanks = CustomRanks;
 	RanksFinished  = true;
 	Finished();
 }
@@ -152,7 +152,7 @@ private reliable client function ClientInfosApply()
 		return;
 	}
 	
-	SC.PlayerInfos = PlayerInfos;
+	SC.PlayerRankRelations = PlayerRankRelations;
 	RanksFinished = true;
 	Finished();
 }

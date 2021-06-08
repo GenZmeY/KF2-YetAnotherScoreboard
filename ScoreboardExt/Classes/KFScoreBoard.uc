@@ -18,8 +18,8 @@ var Color PingColor;
 var float PingBars,IdealPing,MaxPing;
 
 // Ranks
-var array<RankInfo> PlayerRanks;
-var array<UIDRankRelation>     PlayerInfos;
+var array<RankInfo> CustomRanks;
+var array<UIDRankRelation> PlayerRankRelations;
 
 var string    SystemAdminRank;
 var ColorRGB  SystemAdminColor;
@@ -333,14 +333,14 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	KFPRI = KFPRIArray[Index];
 	
 	HasRank = false;
-	PlayerInfoIndex = PlayerInfos.Find('UID', KFPRI.UniqueId);
+	PlayerInfoIndex = PlayerRankRelations.Find('UID', KFPRI.UniqueId);
 	if (PlayerInfoIndex != INDEX_NONE )
 	{
-		PlayerRankIndex = PlayerRanks.Find('ID', PlayerInfos[PlayerInfoIndex].RankID);
+		PlayerRankIndex = CustomRanks.Find('ID', PlayerRankRelations[PlayerInfoIndex].RankID);
 		if (PlayerRankIndex != INDEX_NONE)
 		{
 			HasRank = true;
-			CurrentRank = PlayerRanks[PlayerRankIndex];
+			CurrentRank = CustomRanks[PlayerRankIndex];
 		}
 	}
 	
