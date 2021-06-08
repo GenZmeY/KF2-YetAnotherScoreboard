@@ -3,7 +3,7 @@ class SystemPlayerRank extends Object
 	config(ScoreboardExt);
 
 var config string    Rank;
-var config ColorRGB  TextColor;
+var config ColorRGBA TextColor;
 var config Fields    ApplyColorToFields;
 
 DefaultProperties

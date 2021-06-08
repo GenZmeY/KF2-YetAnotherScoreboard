@@ -4,11 +4,11 @@ var public array<UIDRankRelation> PlayerRankRelations;
 var public array<RankInfo> CustomRanks;
 
 var public string    SystemAdminRank;
-var public ColorRGB  SystemAdminColor;
+var public ColorRGBA SystemAdminColor;
 var public Fields    SystemAdminApplyColorToFields;
 
 var public string    SystemPlayerRank;
-var public ColorRGB  SystemPlayerColor;
+var public ColorRGBA SystemPlayerColor;
 var public Fields    SystemPlayerApplyColorToFields;
 
 var private bool InitFinished, RanksFinished, InfosFinished;
@@ -96,10 +96,10 @@ private reliable client function InfosReplicationFinished()
 
 private reliable client function ClientInitSystem(
 	string                  _SystemAdminRank,
-	ColorRGB                _SystemAdminColor,
+	ColorRGBA               _SystemAdminColor,
 	Fields                  _SystemAdminApplyColorToFields,
 	string                  _SystemPlayerRank,
-	ColorRGB                _SystemPlayerColor,
+	ColorRGBA               _SystemPlayerColor,
 	Fields                  _SystemPlayerApplyColorToFields)
 {
 	SystemAdminRank                = _SystemAdminRank;
