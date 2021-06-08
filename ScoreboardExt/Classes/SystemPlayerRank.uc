@@ -1,4 +1,4 @@
-class SystemAdminGroup extends Object
+class SystemPlayerRank extends Object
 	dependson(Types)
 	config(ScoreboardExt);
 

@@ -1,7 +1,7 @@
 class ScoreboardExtRepInfo extends ReplicationInfo;
 
-var public array<UIDInfoEntry>     PlayerInfos;
-var public array<PlayerGroupEntry> PlayerGroups;
+var public array<UIDRankRelation>     PlayerInfos;
+var public array<RankInfo> PlayerRanks;
 
 var public string    SystemAdminRank;
 var public ColorRGB  SystemAdminColor;
@@ -11,12 +11,12 @@ var public string    SystemPlayerRank;
 var public ColorRGB  SystemPlayerColor;
 var public Fields    SystemPlayerApplyColorToFields;
 
-var private bool SystemFinished, GroupsFinished, InfosFinished;
-var private int InfosReplicateProgress, GroupsReplicateProgress;
+var private bool InitFinished, RanksFinished, InfosFinished;
+var private int InfosReplicateProgress, RanksReplicateProgress;
 
 var private KFScoreBoard SC;
 
-public final function ClientStartReplication()
+public function ClientStartReplication()
 {
 	GetScoreboard();
 	
@@ -28,25 +28,25 @@ public final function ClientStartReplication()
 		SystemPlayerColor,
 		SystemPlayerApplyColorToFields);
 		
-	SetTimer(0.01f, true, nameof(ClientReplicateGroups));
+	SetTimer(0.01f, true, nameof(ClientReplicateRanks));
 	SetTimer(0.01f, true, nameof(ClientReplicateInfos));
 }
 
-public final function ClientReplicateGroups()
+public function ClientReplicateRanks()
 {
-	if (GroupsReplicateProgress < PlayerGroups.Length)
+	if (RanksReplicateProgress < PlayerRanks.Length)
 	{
-		ClientAddPlayerGroup(PlayerGroups[GroupsReplicateProgress]);
-		++GroupsReplicateProgress;
+		ClientAddPlayerRank(PlayerRanks[RanksReplicateProgress]);
+		++RanksReplicateProgress;
 	}
 	else
 	{
-		ClearTimer(nameof(ClientReplicateGroups));
-		GroupReplicationFinished();
+		ClearTimer(nameof(ClientReplicateRanks));
+		RankReplicationFinished();
 	}
 }
 
-public final function ClientReplicateInfos()
+public function ClientReplicateInfos()
 {
 	if (InfosReplicateProgress < PlayerInfos.Length)
 	{
@@ -60,7 +60,7 @@ public final function ClientReplicateInfos()
 	}
 }
 
-private reliable client final function GetScoreboard()
+private reliable client function GetScoreboard()
 {
 	if (SC != None)
 	{
@@ -72,29 +72,29 @@ private reliable client final function GetScoreboard()
 	SetTimer(0.1f, false, nameof(GetScoreboard));
 }
 
-private reliable client final function ClientAddPlayerGroup(PlayerGroupEntry Group)
+private reliable client function ClientAddPlayerRank(RankInfo Rank)
 {
-	PlayerGroups.AddItem(Group);
+	PlayerRanks.AddItem(Rank);
 }
 
-private reliable client final function ClientAddPlayerInfo(UIDInfoEntry PlayerInfo)
+private reliable client function ClientAddPlayerInfo(UIDRankRelation PlayerInfo)
 {
 	PlayerInfos.AddItem(PlayerInfo);
 }
 
-private reliable client final function GroupReplicationFinished()
+private reliable client function RankReplicationFinished()
 {
-	GroupsFinished = true;
-	ClientGroupsApply();
+	RanksFinished = true;
+	ClientRanksApply();
 }
 
-private reliable client final function InfosReplicationFinished()
+private reliable client function InfosReplicationFinished()
 {
 	InfosFinished = true;
 	ClientInfosApply();
 }
 
-private reliable client final function ClientInitSystem(
+private reliable client function ClientInitSystem(
 	string                  _SystemAdminRank,
 	ColorRGB                _SystemAdminColor,
 	Fields                  _SystemAdminApplyColorToFields,
@@ -112,7 +112,7 @@ private reliable client final function ClientInitSystem(
 	ClientSystemApply();
 }
 
-private reliable client final function ClientSystemApply()
+private reliable client function ClientSystemApply()
 {
 	if (SC == None)
 	{
@@ -127,24 +127,24 @@ private reliable client final function ClientSystemApply()
 	SC.SystemPlayerColor              = SystemPlayerColor;
 	SC.SystemPlayerApplyColorToFields = SystemPlayerApplyColorToFields;
 	
-	SystemFinished = true;
+	InitFinished = true;
 	Finished();
 }
 
-private reliable client final function ClientGroupsApply()
+private reliable client function ClientRanksApply()
 {
 	if (SC == None)
 	{
-		SetTimer(0.1f, false, nameof(ClientGroupsApply));
+		SetTimer(0.1f, false, nameof(ClientRanksApply));
 		return;
 	}
 	
-	SC.PlayerGroups = PlayerGroups;
-	GroupsFinished  = true;
+	SC.PlayerRanks = PlayerRanks;
+	RanksFinished  = true;
 	Finished();
 }
 
-private reliable client final function ClientInfosApply()
+private reliable client function ClientInfosApply()
 {
 	if (SC == None)
 	{
@@ -153,22 +153,22 @@ private reliable client final function ClientInfosApply()
 	}
 	
 	SC.PlayerInfos = PlayerInfos;
-	GroupsFinished = true;
+	RanksFinished = true;
 	Finished();
 }
 
-private reliable client final function Finished()
+private reliable client function Finished()
 {
-	if (SystemFinished && GroupsFinished && InfosFinished)
+	if (InitFinished && RanksFinished && InfosFinished)
 		Destroy();
 }
 
 defaultproperties
 {
 	InfosReplicateProgress=0
-	GroupsReplicateProgress=0
+	RanksReplicateProgress=0
 	
-	SystemFinished=false
-	GroupsFinished=false
+	InitFinished=false
+	RanksFinished=false
 	InfosFinished=false
 }

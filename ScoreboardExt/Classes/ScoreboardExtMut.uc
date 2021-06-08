@@ -1,5 +1,5 @@
 class ScoreboardExtMut extends KFMutator
-	dependson(PlayerGroups, PlayerInfos)
+	dependson(PlayerRanks, PlayerInfos)
 	config(ScoreboardExt);
 
 const SteamIDLen     = 17;
@@ -17,7 +17,7 @@ struct SClient
 
 var private array<SClient> RepClients;
 
-var private array<UIDInfoEntry> UIDInfos;
+var private array<UIDRankRelation> UIDInfos;
 
 function PostBeginPlay()
 {
@@ -41,9 +41,9 @@ function NotifyLogout(Controller C)
 
 private function InitConfig()
 {
-	local PlayerGroupEntry ExampleGroup;
-	local PlayerInfoEntry  ExamplePlayer;
-	local SteamGroupEntry  ExampleSteamGroup;
+	local RankInfo ExampleRank;
+	local PlayerRankRelation  ExamplePlayer;
+	local SteamGroupRankRelation  ExampleSteamGroup;
 	
 	// Update from config version to current version if needed
 	switch (ConfigVersion)
@@ -52,48 +52,48 @@ private function InitConfig()
 			SaveConfig(); // because I want the main settings to be at the beginning of the config :)
 			
 			// Default admin rank
-			class'SystemAdminGroup'.default.Rank         = "Admin";
-			class'SystemAdminGroup'.default.TextColor.R  = 250;
-			class'SystemAdminGroup'.default.TextColor.G  = 0;
-			class'SystemAdminGroup'.default.TextColor.B  = 0;
+			class'SystemAdminRank'.default.Rank         = "Admin";
+			class'SystemAdminRank'.default.TextColor.R  = 250;
+			class'SystemAdminRank'.default.TextColor.G  = 0;
+			class'SystemAdminRank'.default.TextColor.B  = 0;
 	
 			// Default player rank
-			class'SystemPlayerGroup'.default.Rank        = "Player";
-			class'SystemPlayerGroup'.default.TextColor.R = 250;
-			class'SystemPlayerGroup'.default.TextColor.G = 250;
-			class'SystemPlayerGroup'.default.TextColor.B = 250;
+			class'SystemPlayerRank'.default.Rank        = "Player";
+			class'SystemPlayerRank'.default.TextColor.R = 250;
+			class'SystemPlayerRank'.default.TextColor.G = 250;
+			class'SystemPlayerRank'.default.TextColor.B = 250;
 			
 			// Example rank for player(s)
-			ExampleGroup.ID                              = 0;
-			ExampleGroup.Rank                            = "SCE Creator";
-			ExampleGroup.TextColor.R                     = 130;
-			ExampleGroup.TextColor.G                     = 250;
-			ExampleGroup.TextColor.B                     = 235;
-			ExampleGroup.OverrideAdminRank               = true;
-			class'PlayerGroups'.default.PlayerGroup.AddItem(ExampleGroup);
+			ExampleRank.ID                              = 0;
+			ExampleRank.Rank                            = "SCE Creator";
+			ExampleRank.TextColor.R                     = 130;
+			ExampleRank.TextColor.G                     = 250;
+			ExampleRank.TextColor.B                     = 235;
+			ExampleRank.OverrideAdminRank               = true;
+			class'PlayerRanks'.default.PlayerRank.AddItem(ExampleRank);
 
 			// Example player
 			ExamplePlayer.PlayerID                       = "76561198001617867"; // GenZmeY SteamID64
-			ExamplePlayer.GroupID                        = ExampleGroup.ID;
+			ExamplePlayer.RankID                        = ExampleRank.ID;
 			class'PlayerInfos'.default.PlayerInfo.AddItem(ExamplePlayer);
 			
 			// Example rank for steam group members
-			ExampleGroup.ID                              = 1;
-			ExampleGroup.Rank                            = "[MSK-GS]";
-			ExampleGroup.TextColor.R                     = 130;
-			ExampleGroup.TextColor.G                     = 250;
-			ExampleGroup.TextColor.B                     = 130;
-			ExampleGroup.OverrideAdminRank               = false;
-			class'PlayerGroups'.default.PlayerGroup.AddItem(ExampleGroup);
+			ExampleRank.ID                              = 1;
+			ExampleRank.Rank                            = "[MSK-GS]";
+			ExampleRank.TextColor.R                     = 130;
+			ExampleRank.TextColor.G                     = 250;
+			ExampleRank.TextColor.B                     = 130;
+			ExampleRank.OverrideAdminRank               = false;
+			class'PlayerRanks'.default.PlayerRank.AddItem(ExampleRank);
 			
 			// Example steam group
 			ExampleSteamGroup.SteamGroupID               = "103582791465384046"; // MSK-GS SteamID64
-			ExampleSteamGroup.GroupID                    = ExampleGroup.ID;
+			ExampleSteamGroup.RankID                    = ExampleRank.ID;
 			class'SteamGroups'.default.SteamGroup.AddItem(ExampleSteamGroup);
 
-			class'SystemAdminGroup'.static.StaticSaveConfig();
-			class'SystemPlayerGroup'.static.StaticSaveConfig();
-			class'PlayerGroups'.static.StaticSaveConfig();
+			class'SystemAdminRank'.static.StaticSaveConfig();
+			class'SystemPlayerRank'.static.StaticSaveConfig();
+			class'PlayerRanks'.static.StaticSaveConfig();
 			class'PlayerInfos'.static.StaticSaveConfig();
 			class'SteamGroups'.static.StaticSaveConfig();
 
@@ -119,15 +119,15 @@ private function InitConfig()
 
 private function LoadGroupPlayers()
 {
-	local PlayerInfoEntry Player;
+	local PlayerRankRelation Player;
 	local OnlineSubsystem steamworks;
-	local UIDInfoEntry UIDInfo;
+	local UIDRankRelation UIDInfo;
 	
 	steamworks = class'GameEngine'.static.GetOnlineSubsystem();
 	
 	foreach class'PlayerInfos'.default.PlayerInfo(Player)
 	{
-		UIDInfo.GroupID = Player.GroupID;
+		UIDInfo.RankID = Player.RankID;
 		if (Len(Player.PlayerID) == UniqueIDLen && steamworks.StringToUniqueNetId(Player.PlayerID, UIDInfo.UID))
 		{
 			if (UIDInfos.Find('Uid', UIDInfo.UID) == INDEX_NONE)
@@ -157,13 +157,13 @@ function AddPlayerInfo(Controller C)
 	RepClients.AddItem(RepClient);
 	
 	RepClient.RepInfo.PlayerInfos = UIDInfos;
-	RepClient.RepInfo.PlayerGroups = class'PlayerGroups'.default.PlayerGroup;
-	RepClient.RepInfo.SystemAdminRank = class'SystemAdminGroup'.default.Rank;
-	RepClient.RepInfo.SystemAdminColor = class'SystemAdminGroup'.default.TextColor;
-	RepClient.RepInfo.SystemAdminApplyColorToFields = class'SystemAdminGroup'.default.ApplyColorToFields;
-	RepClient.RepInfo.SystemPlayerRank = class'SystemPlayerGroup'.default.Rank;
-	RepClient.RepInfo.SystemPlayerColor = class'SystemPlayerGroup'.default.TextColor;
-	RepClient.RepInfo.SystemPlayerApplyColorToFields = class'SystemPlayerGroup'.default.ApplyColorToFields;
+	RepClient.RepInfo.PlayerRanks = class'PlayerRanks'.default.PlayerRank;
+	RepClient.RepInfo.SystemAdminRank = class'SystemAdminRank'.default.Rank;
+	RepClient.RepInfo.SystemAdminColor = class'SystemAdminRank'.default.TextColor;
+	RepClient.RepInfo.SystemAdminApplyColorToFields = class'SystemAdminRank'.default.ApplyColorToFields;
+	RepClient.RepInfo.SystemPlayerRank = class'SystemPlayerRank'.default.Rank;
+	RepClient.RepInfo.SystemPlayerColor = class'SystemPlayerRank'.default.TextColor;
+	RepClient.RepInfo.SystemPlayerApplyColorToFields = class'SystemPlayerRank'.default.ApplyColorToFields;
 	
 	RepClient.RepInfo.ClientStartReplication();
 }

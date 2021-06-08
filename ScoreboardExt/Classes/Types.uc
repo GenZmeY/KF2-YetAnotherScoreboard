@@ -49,7 +49,7 @@ struct Fields
 	}
 };
 
-struct PlayerGroupEntry
+struct RankInfo
 {
 	var int       ID;
 	var string    Rank;
@@ -58,20 +58,20 @@ struct PlayerGroupEntry
 	var Fields    ApplyColorToFields;
 };
 
-struct SteamGroupEntry
+struct SteamGroupRankRelation
 {
 	var string SteamGroupID;
-	var int    GroupID;
+	var int    RankID;
 };
 
-struct PlayerInfoEntry
+struct PlayerRankRelation
 {
 	var string PlayerID;
-	var int    GroupID;
+	var int    RankID;
 };
 
-struct UIDInfoEntry
+struct UIDRankRelation
 {
 	var UniqueNetId UID;
-	var int GroupID;
+	var int RankID;
 };
