@@ -64,22 +64,60 @@ struct UIDRankRelation
 	var int RankID;
 };
 
-struct SCESettings
+struct SCESettingsAdmin
 {
-	var string    SystemAdminRank;
-	var ColorRGBA SystemAdminColor;
-	var Fields    SystemAdminApplyColorToFields;
-
-	var string    SystemPlayerRank;
-	var ColorRGBA SystemPlayerColor;
-	var Fields    SystemPlayerApplyColorToFields;
+	var string    Rank;
+	var ColorRGBA TextColor;
+	var Fields    ApplyColorToFields;
 	
-	var int HP_Low;
-	var int HP_High;
+	StructDefaultProperties
+	{
+		Rank="Admin"
+		TextColor=(R=250,G=0,B=0,A=255)
+		ApplyColorToFields=(Rank=True,Player=True,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
+	}
+};
 
-	var int Ping_Low;
-	var int Ping_High;
+struct SCESettingsPlayer
+{
+	var string    Rank;
+	var ColorRGBA TextColor;
+	var Fields    ApplyColorToFields;
+	
+	StructDefaultProperties
+	{
+		Rank="Player"
+		TextColor=(R=250,G=250,B=250,A=255)
+		ApplyColorToFields=(Rank=True,Player=True,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
+	}
+};
 
+struct SCESettingsHP
+{	
+	var int Low;
+	var int High;
+	
+	StructDefaultProperties
+	{
+		Low=40
+		High=80
+	}
+};
+
+struct SCESettingsPing
+{
+	var int Low;
+	var int High;
+	
+	StructDefaultProperties
+	{
+		Low=60
+		High=120;
+	}
+};
+
+struct SCESettingsLevel
+{
 	var int Normal_Low;
 	var int Normal_High;
 	var int Hard_Low;
@@ -91,20 +129,6 @@ struct SCESettings
 	
 	StructDefaultProperties
 	{
-		SystemAdminRank="Admin"
-		SystemAdminColor=(R=250,G=0,B=0,A=255)
-		SystemAdminApplyColorToFields=(Rank=True,Player=True,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
-
-		SystemPlayerRank="Player"
-		SystemPlayerColor=(R=250,G=250,B=250,A=255)
-		SystemPlayerApplyColorToFields=(Rank=True,Player=True,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
-		
-		HP_Low=40
-		HP_High=80
-
-		Ping_Low=60
-		Ping_High=120;
-
 		Normal_Low=0;
 		Normal_High=0;
 		Hard_Low=5;
@@ -200,7 +224,7 @@ struct SCEStyle
 		PerkTextColor=(R=250,G=250,B=250,A=255)
 		LevelTextColor=(R=250,G=250,B=250,A=255)
 		AvatarBorderColor=(R=255,G=255,B=255,A=255)
-		PlayerNameColor=(R=250,G=250,B=250,A=255)
+		PlayerNameTextColor=(R=250,G=250,B=250,A=255)
 		KillsTextColor=(R=250,G=250,B=250,A=255)
 		AssistsTextColor=(R=250,G=250,B=250,A=255)
 		DoshTextColor=(R=250,G=250,B=100,A=255)
@@ -220,5 +244,15 @@ struct SCEStyle
 		PingTextColorMid=(R=250,G=250,B=0,A=255)
 		PingTextColorHigh=(R=250,G=0,B=0,A=255)
 	}
+};
+
+struct SCESettings
+{
+	var SCEStyle Style;
+	var SCESettingsAdmin Admin;
+	var SCESettingsPlayer Player;
+	var SCESettingsHP HP;
+	var SCESettingsPing Ping;
+	var SCESettingsLevel Level;
 };
 

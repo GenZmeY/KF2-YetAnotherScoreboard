@@ -17,13 +17,23 @@ struct SClient
 
 var private array<SClient> RepClients;
 var private array<UIDRankRelation> UIDRelations;
+var private SCESettings Settings;
 
 function PostBeginPlay()
 {
 	Super.PostBeginPlay();
+	
 	WorldInfo.Game.HUDType = class'ScoreboardExtHUD';
+	
 	InitConfig();
 	LoadPlayerRelations();
+	
+	Settings.Style  = class'ScoreboardStyle'.static.Settings();
+	Settings.Admin  = class'SystemAdminRank'.static.Settings();
+	Settings.Player = class'SystemPlayerRank'.static.Settings();
+	Settings.HP     = class'ThresholdsHP'.static.Settings();
+	Settings.Ping   = class'ThresholdsPing'.static.Settings();
+	Settings.Level  = class'ThresholdsLevel'.static.Settings();
 }
 
 function NotifyLogin(Controller C)
@@ -50,17 +60,12 @@ private function InitConfig()
 		case 0: // which means there is no config right now
 			SaveConfig(); // because I want the main settings to be at the beginning of the config :)
 			
-			// Default admin rank
-			class'SystemAdminRank'.default.Rank         = "Admin";
-			class'SystemAdminRank'.default.TextColor.R  = 250;
-			class'SystemAdminRank'.default.TextColor.G  = 0;
-			class'SystemAdminRank'.default.TextColor.B  = 0;
-	
-			// Default player rank
-			class'SystemPlayerRank'.default.Rank        = "Player";
-			class'SystemPlayerRank'.default.TextColor.R = 250;
-			class'SystemPlayerRank'.default.TextColor.G = 250;
-			class'SystemPlayerRank'.default.TextColor.B = 250;
+			class'SystemAdminRank'.static.WriteSettings(class'SystemAdminRank'.static.DefaultSettings());
+			class'SystemPlayerRank'.static.WriteSettings(class'SystemPlayerRank'.static.DefaultSettings());
+			class'ScoreboardStyle'.static.WriteSettings(class'ScoreboardStyle'.static.DefaultSettings());
+			class'ThresholdsHP'.static.WriteSettings(class'ThresholdsHP'.static.DefaultSettings());
+			class'ThresholdsPing'.static.WriteSettings(class'ThresholdsPing'.static.DefaultSettings());
+			class'ThresholdsLevel'.static.WriteSettings(class'ThresholdsLevel'.static.DefaultSettings());
 			
 			// Example rank for player(s)
 			ExampleRank.ID                              = 0;
@@ -90,12 +95,9 @@ private function InitConfig()
 			ExampleSteamGroup.RankID                    = ExampleRank.ID;
 			class'SteamGroupRankRelations'.default.Relation.AddItem(ExampleSteamGroup);
 
-			class'SystemAdminRank'.static.StaticSaveConfig();
-			class'SystemPlayerRank'.static.StaticSaveConfig();
 			class'CustomRanks'.static.StaticSaveConfig();
 			class'PlayerRankRelations'.static.StaticSaveConfig();
 			class'SteamGroupRankRelations'.static.StaticSaveConfig();
-
 		case 2147483647:
 			`log("[ScoreboardExt] Config updated to version"@CurrentVersion);
 			break;
@@ -157,14 +159,7 @@ function AddPlayer(Controller C)
 	
 	RepClient.RepInfo.PlayerRankRelations = UIDRelations;
 	RepClient.RepInfo.CustomRanks = class'CustomRanks'.default.Rank;
-	/*
-	RepClient.RepInfo.SystemAdminRank = class'SystemAdminRank'.default.Rank;
-	RepClient.RepInfo.SystemAdminColor = class'SystemAdminRank'.default.TextColor;
-	RepClient.RepInfo.SystemAdminApplyColorToFields = class'SystemAdminRank'.default.ApplyColorToFields;
-	RepClient.RepInfo.SystemPlayerRank = class'SystemPlayerRank'.default.Rank;
-	RepClient.RepInfo.SystemPlayerColor = class'SystemPlayerRank'.default.TextColor;
-	RepClient.RepInfo.SystemPlayerApplyColorToFields = class'SystemPlayerRank'.default.ApplyColorToFields;
-	*/
+	RepClient.RepInfo.Settings = Settings;
 	
 	RepClient.RepInfo.ClientStartReplication();
 }

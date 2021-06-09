@@ -4,7 +4,6 @@ var public array<UIDRankRelation> PlayerRankRelations;
 var public array<RankInfo> CustomRanks;
 
 var public SCESettings Settings;
-var public SCEStyle Style;
 
 var private bool InitFinished, RanksFinished, InfosFinished;
 var private int InfosReplicateProgress, RanksReplicateProgress;
@@ -15,7 +14,7 @@ public function ClientStartReplication()
 {
 	GetScoreboard();
 	
-	ClientInit(Settings, Style);
+	ClientInit(Settings);
 	SetTimer(0.01f, true, nameof(ClientReplicateRanks));
 	SetTimer(0.01f, true, nameof(ClientReplicateInfos));
 }
@@ -82,11 +81,9 @@ private reliable client function InfosReplicationFinished()
 	ClientInfosApply();
 }
 
-private reliable client function ClientInit(SCESettings _Settings, SCEStyle _Style)
+private reliable client function ClientInit(SCESettings _Settings)
 {
 	Settings = _Settings;
-	Style = _Style;
-
 	ClientSystemApply();
 }
 
@@ -99,7 +96,6 @@ private reliable client function ClientSystemApply()
 	}
 	
 	SC.Settings = Settings;
-	SC.Style = Style;
 	
 	InitFinished = true;
 	Finished();
