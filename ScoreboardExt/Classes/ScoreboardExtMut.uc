@@ -31,9 +31,9 @@ function PostBeginPlay()
 	Settings.Style  = class'ScoreboardStyle'.static.Settings();
 	Settings.Admin  = class'SystemAdminRank'.static.Settings();
 	Settings.Player = class'SystemPlayerRank'.static.Settings();
-	Settings.HP     = class'ThresholdsHP'.static.Settings();
-	Settings.Ping   = class'ThresholdsPing'.static.Settings();
-	Settings.Level  = class'ThresholdsLevel'.static.Settings();
+	Settings.State  = class'DynamicStateColor'.static.Settings();
+	Settings.Ping   = class'DynamicPingColor'.static.Settings();
+	Settings.Level  = class'DynamicLevelColor'.static.Settings();
 }
 
 function NotifyLogin(Controller C)
@@ -63,9 +63,9 @@ private function InitConfig()
 			class'SystemAdminRank'.static.WriteSettings(class'SystemAdminRank'.static.DefaultSettings());
 			class'SystemPlayerRank'.static.WriteSettings(class'SystemPlayerRank'.static.DefaultSettings());
 			class'ScoreboardStyle'.static.WriteSettings(class'ScoreboardStyle'.static.DefaultSettings());
-			class'ThresholdsHP'.static.WriteSettings(class'ThresholdsHP'.static.DefaultSettings());
-			class'ThresholdsPing'.static.WriteSettings(class'ThresholdsPing'.static.DefaultSettings());
-			class'ThresholdsLevel'.static.WriteSettings(class'ThresholdsLevel'.static.DefaultSettings());
+			class'DynamicStateColor'.static.WriteSettings(class'DynamicStateColor'.static.DefaultSettings());
+			class'DynamicPingColor'.static.WriteSettings(class'DynamicPingColor'.static.DefaultSettings());
+			class'DynamicLevelColor'.static.WriteSettings(class'DynamicLevelColor'.static.DefaultSettings());
 			
 			// Example rank for player(s)
 			ExampleRank.ID                              = 0;

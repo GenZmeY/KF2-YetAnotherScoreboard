@@ -17,6 +17,7 @@ struct Fields
 {
 	var bool Rank;
 	var bool Player;
+	var bool Level;
 	var bool Perk;
 	var bool Dosh;
 	var bool Kills;
@@ -28,6 +29,7 @@ struct Fields
 	{
 		Rank    = true;
 		Player  = true;
+		Level   = false;
 		Perk    = false;
 		Dosh    = false;
 		Kills   = false;
@@ -74,7 +76,7 @@ struct SCESettingsAdmin
 	{
 		Rank="Admin"
 		TextColor=(R=250,G=0,B=0,A=255)
-		ApplyColorToFields=(Rank=True,Player=True,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
+		ApplyColorToFields=(Rank=True,Player=True,Level=False,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
 	}
 };
 
@@ -88,17 +90,19 @@ struct SCESettingsPlayer
 	{
 		Rank="Player"
 		TextColor=(R=250,G=250,B=250,A=255)
-		ApplyColorToFields=(Rank=True,Player=True,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
+		ApplyColorToFields=(Rank=True,Player=True,Level=False,Perk=False,Dosh=False,Kills=False,Assists=False,Health=False,Ping=False)
 	}
 };
 
-struct SCESettingsHP
+struct SCESettingsState
 {	
+	var bool Dynamic;
 	var int Low;
 	var int High;
 	
 	StructDefaultProperties
 	{
+		Dynamic=True
 		Low=40
 		High=80
 	}
@@ -106,37 +110,37 @@ struct SCESettingsHP
 
 struct SCESettingsPing
 {
+	var bool Dynamic;
 	var int Low;
 	var int High;
+	var bool ShowPingBars;
 	
 	StructDefaultProperties
 	{
+		Dynamic=True
 		Low=60
-		High=120;
+		High=120
+		ShowPingBars=True
 	}
 };
 
 struct SCESettingsLevel
 {
-	var int Normal_Low;
-	var int Normal_High;
-	var int Hard_Low;
-	var int Hard_High;
-	var int Suicide_Low;
-	var int Suicide_High;
-	var int HellOnEarth_Low;
-	var int HellOnEarth_High;
+	var bool Dynamic;
+	var int Low[4];
+	var int High[4];
 	
 	StructDefaultProperties
 	{
-		Normal_Low=0;
-		Normal_High=0;
-		Hard_Low=5;
-		Hard_High=15;
-		Suicide_Low=15;
-		Suicide_High=20;
-		HellOnEarth_Low=20;
-		HellOnEarth_High=25;
+		Dynamic=True
+		Low[0]=0
+		High[0]=0
+		Low[1]=5
+		High[1]=15
+		Low[2]=15
+		High[2]=20
+		Low[3]=20
+		High[3]=25
 	}
 };
 
@@ -157,11 +161,11 @@ struct SCEStyle
 	var ColorRGBA ListHeaderBoxColor;
 	var ColorRGBA ListHeaderTextColor;
 	
-	var ColorRGBA LeftHPBoxColorNone;
-	var ColorRGBA LeftHPBoxColorDead;
-	var ColorRGBA LeftHPBoxColorLow;
-	var ColorRGBA LeftHPBoxColorMid;
-	var ColorRGBA LeftHPBoxColorHigh;
+	var ColorRGBA LeftStateBoxColor;
+	var ColorRGBA LeftStateBoxColorDead;
+	var ColorRGBA LeftStateBoxColorLow;
+	var ColorRGBA LeftStateBoxColorMid;
+	var ColorRGBA LeftStateBoxColorHigh;
 	
 	var ColorRGBA PlayerOwnerBoxColor;
 	var ColorRGBA PlayerBoxColor;
@@ -175,18 +179,22 @@ struct SCEStyle
 	var ColorRGBA KillsTextColor;
 	var ColorRGBA AssistsTextColor;
 	var ColorRGBA DoshTextColor;
+	var ColorRGBA StateTextColor;
+	var ColorRGBA PingTextColor;
 	
+	var ColorRGBA LevelTextColorLow;
+	var ColorRGBA LevelTextColorMid;
+	var ColorRGBA LevelTextColorHigh;
+
 	var ColorRGBA StateTextColorLobby;
 	var ColorRGBA StateTextColorReady;
 	var ColorRGBA StateTextColorNotReady;
-	var ColorRGBA StateTextColorNone;
 	var ColorRGBA StateTextColorSpectator;
 	var ColorRGBA StateTextColorDead;
 	var ColorRGBA StateTextColorLowHP;
 	var ColorRGBA StateTextColorMidHP;
 	var ColorRGBA StateTextColorHighHP;
 	
-	var ColorRGBA PingTextColorNone;
 	var ColorRGBA PingTextColorLow;
 	var ColorRGBA PingTextColorMid;
 	var ColorRGBA PingTextColorHigh;
@@ -208,11 +216,11 @@ struct SCEStyle
 		ListHeaderBoxColor=(R=10,G=10,B=10,A=200)
 		ListHeaderTextColor=(R=250,G=250,B=250,A=255)
 		
-		LeftHPBoxColorNone=(R=150,G=150,B=150,A=150)
-		LeftHPBoxColorDead=(R=200,G=0,B=0,A=150)
-		LeftHPBoxColorLow=(R=200,G=50,B=50,A=150)
-		LeftHPBoxColorMid=(R=200,G=200,B=0,A=150)
-		LeftHPBoxColorHigh=(R=0,G=200,B=0,A=150)
+		LeftStateBoxColor=(R=150,G=150,B=150,A=150)
+		LeftStateBoxColorDead=(R=200,G=0,B=0,A=150)
+		LeftStateBoxColorLow=(R=200,G=50,B=50,A=150)
+		LeftStateBoxColorMid=(R=200,G=200,B=0,A=150)
+		LeftStateBoxColorHigh=(R=0,G=200,B=0,A=150)
 		
 		PlayerOwnerBoxColor=(R=100,G=10,B=10,A=150)
 		PlayerBoxColor=(R=30,G=30,B=30,A=150)
@@ -226,18 +234,22 @@ struct SCEStyle
 		KillsTextColor=(R=250,G=250,B=250,A=255)
 		AssistsTextColor=(R=250,G=250,B=250,A=255)
 		DoshTextColor=(R=250,G=250,B=100,A=255)
+		StateTextColor=(R=150,G=150,B=150,A=150)
+		PingTextColor=(R=250,G=250,B=250,A=255)
+		
+		LevelTextColorLow=(R=250,G=100,B=100,A=255)
+		LevelTextColorMid=(R=250,G=250,B=0,A=255)
+		LevelTextColorHigh=(R=0,G=250,B=0,A=255)
 		
 		StateTextColorLobby=(R=150,G=150,B=150,A=150)
 		StateTextColorReady=(R=150,G=150,B=150,A=150)
 		StateTextColorNotReady=(R=150,G=150,B=150,A=150)
-		StateTextColorNone=(R=150,G=150,B=150,A=150)
 		StateTextColorSpectator=(R=150,G=150,B=150,A=150)
 		StateTextColorDead=(R=250,G=0,B=0,A=255)
 		StateTextColorLowHP=(R=250,G=100,B=100,A=255)
 		StateTextColorMidHP=(R=250,G=250,B=0,A=255)
 		StateTextColorHighHP=(R=0,G=250,B=0,A=255)
 		
-		PingTextColorNone=(R=250,G=250,B=250,A=255)
 		PingTextColorLow=(R=0,G=250,B=0,A=255)
 		PingTextColorMid=(R=250,G=250,B=0,A=255)
 		PingTextColorHigh=(R=250,G=0,B=0,A=255)
@@ -249,7 +261,7 @@ struct SCESettings
 	var SCEStyle Style;
 	var SCESettingsAdmin Admin;
 	var SCESettingsPlayer Player;
-	var SCESettingsHP HP;
+	var SCESettingsState State;
 	var SCESettingsPing Ping;
 	var SCESettingsLevel Level;
 };
