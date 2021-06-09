@@ -503,7 +503,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		if( KFPRI.Avatar == default.DefaultAvatar )
 			CheckAvatar(KFPRI, OwnerPC);
 
-		SetDrawColor(C, Settings.Style.AvatarBorderColor); // Check
+		C.SetDrawColor(255,255,255,255);
 		C.SetPos(PlayerXPos - (Height * 1.075), YOffset + (Height * 0.5f) - ((Height - 6) * 0.5f));
 		C.DrawTile(KFPRI.Avatar,Height - 6,Height - 6,0,0,KFPRI.Avatar.SizeX,KFPRI.Avatar.SizeY);
 		Owner.CurrentStyle.DrawBoxHollow(PlayerXPos - (Height * 1.075), YOffset + (Height * 0.5f) - ((Height - 6) * 0.5f), Height - 6, Height - 6, 1);

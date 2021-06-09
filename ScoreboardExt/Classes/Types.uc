@@ -171,7 +171,6 @@ struct SCEStyle
 	var ColorRGBA ZedTextColor;
 	var ColorRGBA PerkTextColor;
 	var ColorRGBA LevelTextColor;
-	var ColorRGBA AvatarBorderColor;
 	var ColorRGBA PlayerNameTextColor;
 	var ColorRGBA KillsTextColor;
 	var ColorRGBA AssistsTextColor;
@@ -223,7 +222,6 @@ struct SCEStyle
 		ZedTextColor=(R=255,G=0,B=0,A=255)
 		PerkTextColor=(R=250,G=250,B=250,A=255)
 		LevelTextColor=(R=250,G=250,B=250,A=255)
-		AvatarBorderColor=(R=255,G=255,B=255,A=255)
 		PlayerNameTextColor=(R=250,G=250,B=250,A=255)
 		KillsTextColor=(R=250,G=250,B=250,A=255)
 		AssistsTextColor=(R=250,G=250,B=250,A=255)

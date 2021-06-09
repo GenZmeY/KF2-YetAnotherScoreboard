@@ -24,7 +24,6 @@ var config ColorRGBA RankTextColor;
 var config ColorRGBA ZedTextColor;
 var config ColorRGBA PerkTextColor;
 var config ColorRGBA LevelTextColor;
-var config ColorRGBA AvatarBorderColor;
 var config ColorRGBA PlayerNameTextColor;
 var config ColorRGBA KillsTextColor;
 var config ColorRGBA AssistsTextColor;
@@ -75,7 +74,6 @@ public static function SCEStyle Settings()
 	Settings.ZedTextColor = default.ZedTextColor;
 	Settings.PerkTextColor = default.PerkTextColor;
 	Settings.LevelTextColor = default.LevelTextColor;
-	Settings.AvatarBorderColor = default.AvatarBorderColor;
 	Settings.PlayerNameTextColor = default.PlayerNameTextColor;
 	Settings.KillsTextColor = default.KillsTextColor;
 	Settings.AssistsTextColor = default.AssistsTextColor;
@@ -121,7 +119,6 @@ public static function WriteSettings(SCEStyle Settings)
 	default.ZedTextColor = Settings.ZedTextColor;
 	default.PerkTextColor = Settings.PerkTextColor;
 	default.LevelTextColor = Settings.LevelTextColor;
-	default.AvatarBorderColor = Settings.AvatarBorderColor;
 	default.PlayerNameTextColor = Settings.PlayerNameTextColor;
 	default.KillsTextColor = Settings.KillsTextColor;
 	default.AssistsTextColor = Settings.AssistsTextColor;
