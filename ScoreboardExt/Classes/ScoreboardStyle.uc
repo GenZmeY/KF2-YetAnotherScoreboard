@@ -2,6 +2,9 @@ class ScoreboardStyle extends Object
 	dependson(Types)
 	config(ScoreboardExt);
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var config ColorRGBA ServerNameBoxColor;
 var config ColorRGBA ServerNameTextColor;
 var config ColorRGBA GameInfoBoxColor;
@@ -42,15 +45,20 @@ var config ColorRGBA PingTextColorLow;
 var config ColorRGBA PingTextColorMid;
 var config ColorRGBA PingTextColorHigh;
 
-public static function SCEStyle defaultSettings()
+public static function SCEStyle DefaultSettings()
 {
 	local SCEStyle Settings;
+	
+	`callstack_static("DefaultSettings");
+	
 	return Settings;
 }
 
 public static function SCEStyle Settings()
 {
 	local SCEStyle Settings;
+	
+	`callstack_static("Settings");
 	
 	Settings.ServerNameBoxColor = default.ServerNameBoxColor;
 	Settings.ServerNameTextColor = default.ServerNameTextColor;
@@ -97,6 +105,8 @@ public static function SCEStyle Settings()
 
 public static function WriteSettings(SCEStyle Settings)
 {
+	`callstack_static("WriteSettings");
+	
 	default.ServerNameBoxColor = Settings.ServerNameBoxColor;
 	default.ServerNameTextColor = Settings.ServerNameTextColor;
 	default.GameInfoBoxColor = Settings.GameInfoBoxColor;

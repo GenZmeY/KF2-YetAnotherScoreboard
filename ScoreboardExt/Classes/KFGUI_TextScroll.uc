@@ -1,5 +1,8 @@
 Class KFGUI_TextScroll extends KFGUI_TextField;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var float ScrollSpeed;
 
 var transient float CharStartTime;

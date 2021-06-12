@@ -1,5 +1,8 @@
 Class KFGUI_TextLable extends KFGUI_Base;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var() protected string Text;
 var() color TextColor;
 var() Canvas.FontRenderInfo TextFontInfo;

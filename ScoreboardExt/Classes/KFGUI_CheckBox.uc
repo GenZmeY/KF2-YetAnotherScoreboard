@@ -1,5 +1,9 @@
 Class KFGUI_CheckBox extends KFGUI_EditControl;
 
+`include(Build.uci)
+`include(Logger.uci)
+
+
 var() Texture CheckMark,CheckDisabled,CheckIdle,CheckFocus,CheckClicked;
 var() bool bForceUniform,bChecked;
 

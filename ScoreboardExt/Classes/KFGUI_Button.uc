@@ -1,5 +1,9 @@
 Class KFGUI_Button extends KFGUI_Clickable;
 
+`include(Build.uci)
+`include(Logger.uci)
+
+
 var() Canvas.CanvasIcon OverlayTexture;
 var() string ButtonText,GamepadButtonName;
 var() color TextColor;

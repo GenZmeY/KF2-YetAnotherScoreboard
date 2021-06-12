@@ -1,5 +1,8 @@
 class Types extends Object;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 struct ColorRGBA
 {
 	var byte R, G, B, A;

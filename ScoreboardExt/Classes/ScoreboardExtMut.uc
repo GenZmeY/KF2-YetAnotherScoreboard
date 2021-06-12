@@ -2,10 +2,8 @@ class ScoreboardExtMut extends KFMutator
 	dependson(Types)
 	config(ScoreboardExt);
 
-const SteamIDLen     = 17;
-const UniqueIDLen    = 18;
-
-const CurrentVersion = 1;
+`include(Build.uci)
+`include(Logger.uci)
 
 var config int ConfigVersion;
 
@@ -25,6 +23,8 @@ var private SCESettings Settings;
 
 function PostBeginPlay()
 {
+	`callstack();
+	
 	Super.PostBeginPlay();
 	
 	WorldInfo.Game.HUDType = class'ScoreboardExtHUD';
@@ -44,14 +44,25 @@ function PostBeginPlay()
 
 function NotifyLogin(Controller C)
 {
+	`callstack();
+	
 	AddPlayer(C);
 	Super.NotifyLogin(C);
 }
 
 function NotifyLogout(Controller C)
 {
+	`callstack();
+	
 	RemovePlayer(C);
 	Super.NotifyLogout(C);
+}
+
+private function bool IsUID(String ID)
+{
+	`callstack();
+	
+	return (Left(ID, 2) ~= "0x");
 }
 
 private function InitConfig()
@@ -59,6 +70,8 @@ private function InitConfig()
 	local RankInfo ExampleRank;
 	local RankRelation ExamplePlayer;
 	local RankRelation ExampleSteamGroup;
+	
+	`callstack();
 	
 	// Update from config version to current version if needed
 	switch (ConfigVersion)
@@ -106,23 +119,23 @@ private function InitConfig()
 			class'SteamGroupRankRelations'.static.StaticSaveConfig();
 			
 		case 2147483647:
-			`log("[ScoreboardExt] Config updated to version"@CurrentVersion);
+			`info("Config updated to version"@`CurrentVersion);
 			break;
 			
-		case CurrentVersion:
-			`log("[ScoreboardExt] Config is up-to-date");
+		case `CurrentVersion:
+			`info("Config is up-to-date");
 			break;
 			
 		default:
-			`log("[ScoreboardExt] Warn: The config version is higher than the current version (are you using an old mutator?)");
-			`log("[ScoreboardExt] Warn: Config version is"@ConfigVersion@"but current version is"@CurrentVersion);
-			`log("[ScoreboardExt] Warn: The config version will be changed to "@CurrentVersion);
+			`warning("The config version is higher than the current version (are you using an old mutator?)");
+			`warning("Config version is"@ConfigVersion@"but current version is"@`CurrentVersion);
+			`warning("The config version will be changed to "@`CurrentVersion);
 			break;
 	}
 
-	if (ConfigVersion != CurrentVersion)
+	if (ConfigVersion != `CurrentVersion)
 	{
-		ConfigVersion = CurrentVersion;
+		ConfigVersion = `CurrentVersion;
 		SaveConfig();
 	}
 }
@@ -132,31 +145,38 @@ private function LoadRelations()
 	local RankRelation Player, SteamGroup;
 	local UIDRankRelation UIDInfo;
 	
+	`callstack();
+	
 	foreach class'PlayerRankRelations'.default.Relation(Player)
 	{
 		UIDInfo.RankID = Player.RankID;
-		if (Len(Player.ObjectID) == UniqueIDLen && Steamworks.StringToUniqueNetId(Player.ObjectID, UIDInfo.UID))
+		if (IsUID(Player.ObjectID) && Steamworks.StringToUniqueNetId(Player.ObjectID, UIDInfo.UID))
 		{
 			if (UIDRankRelationsPlayers.Find('Uid', UIDInfo.UID) == INDEX_NONE)
 				UIDRankRelationsPlayers.AddItem(UIDInfo);
 		}
-		else if (Len(Player.ObjectID) == SteamIDLen && Steamworks.Int64ToUniqueNetId(Player.ObjectID, UIDInfo.UID))
+		else if (Steamworks.Int64ToUniqueNetId(Player.ObjectID, UIDInfo.UID))
 		{
 			if (UIDRankRelationsPlayers.Find('Uid', UIDInfo.UID) == INDEX_NONE)
 				UIDRankRelationsPlayers.AddItem(UIDInfo);
 		}
-		else `Log("[ScoreboardExt] WARN: Can't add player:"@Player.ObjectID);
+		else `warning("Can't add player:"@Player.ObjectID);
 	}
 	
 	foreach class'SteamGroupRankRelations'.default.Relation(SteamGroup)
 	{
 		UIDInfo.RankID = SteamGroup.RankID;
-		if (Steamworks.Int64ToUniqueNetId(SteamGroup.ObjectID, UIDInfo.UID))
+		if (IsUID(SteamGroup.ObjectID) && Steamworks.StringToUniqueNetId(SteamGroup.ObjectID, UIDInfo.UID))
+		{
+			if (UIDRankRelationsPlayers.Find('Uid', UIDInfo.UID) == INDEX_NONE)
+				UIDRankRelationsPlayers.AddItem(UIDInfo);
+		}
+		else if (Steamworks.Int64ToUniqueNetId(SteamGroup.ObjectID, UIDInfo.UID))
 		{
 			if (UIDRankRelationsSteamGroups.Find('Uid', UIDInfo.UID) == INDEX_NONE)
 				UIDRankRelationsSteamGroups.AddItem(UIDInfo);
 		}
-		else `Log("[ScoreboardExt] WARN: Can't add steamgroup:"@SteamGroup.ObjectID);
+		else `warning("Can't add steamgroup:"@SteamGroup.ObjectID);
 	}
 }
 
@@ -164,37 +184,42 @@ private function AddPlayer(Controller C)
 {
 	local KFPlayerController KFPC;
 	local UIDRankRelation Relation;
-	local SClient RepClient;
+	local SClient RepClient, RepClientNew;
+	
+	`callstack();
 	
 	KFPC = KFPlayerController(C);
 	if (KFPC == None)
 		return;
 
-	RepClient.KFPC = KFPC;
-	RepClient.RepInfo = Spawn(class'ScoreboardExtRepInfo', KFPC);
-	RepClient.RepInfo.Mut = Self;
-	RepClient.RepInfo.CustomRanks = class'CustomRanks'.default.Rank;
-	RepClient.RepInfo.SteamGroupRelations = UIDRankRelationsSteamGroups;
-	RepClient.RepInfo.Settings = Settings;
-	RepClient.RepInfo.RankRelation.UID = KFPC.PlayerReplicationInfo.UniqueId;
-	RepClient.RepInfo.RankRelation.RankID = UIDRankRelationsPlayers.Find('UID', RepClient.RepInfo.RankRelation.UID);
+	RepClientNew.KFPC = KFPC;
+	RepClientNew.RepInfo = Spawn(class'ScoreboardExtRepInfo', KFPC);
+	RepClientNew.RepInfo.Mut = Self;
+	RepClientNew.RepInfo.CustomRanks = class'CustomRanks'.default.Rank;
+	RepClientNew.RepInfo.SteamGroupRelations = UIDRankRelationsSteamGroups;
+	RepClientNew.RepInfo.Settings = Settings;
+	RepClientNew.RepInfo.RankRelation.UID = KFPC.PlayerReplicationInfo.UniqueId;
+	RepClientNew.RepInfo.RankRelation.RankID = UIDRankRelationsPlayers.Find('UID', RepClientNew.RepInfo.RankRelation.UID);
 	
-	UIDRankRelationsActive.AddItem(RepClient.RepInfo.RankRelation);
+	UIDRankRelationsActive.AddItem(RepClientNew.RepInfo.RankRelation);
 	
-	RepClients.AddItem(RepClient);
+	RepClients.AddItem(RepClientNew);
 	
-	// хуйня
-	foreach UIDRankRelationsActive(Relation)
-		foreach RepClients(RepClient)
-			RepClient.RepInfo.AddRankRelation(Relation);
+	foreach UIDRankRelationsActive(Relation) // For this player
+		RepClientNew.RepInfo.AddRankRelation(Relation);
 	
-	RepClient.RepInfo.StartFirstTimeReplication();
+	RepClientNew.RepInfo.StartFirstTimeReplication();
+	
+	foreach RepClients(RepClient) // For other players
+		RepClient.RepInfo.AddRankRelation(Relation);
 }
 
 private function RemovePlayer(Controller C)
 {
 	local KFPlayerController KFPC;
 	local int Index;
+
+	`callstack();
 
 	KFPC = KFPlayerController(C);
 	if (KFPC == None)
@@ -232,6 +257,8 @@ public function UpdatePlayerRank(UIDRankRelation Rel)
 	local SClient RepClient;
 	local int Index;
 	
+	`callstack();
+	
 	Index = UIDRankRelationsActive.Find('UID', Rel.UID);
 	
 	if (Index != INDEX_NONE)
@@ -244,6 +271,9 @@ public function UpdatePlayerRank(UIDRankRelation Rel)
 public function AddPlayerRank(UIDRankRelation Rel)
 {
 	local SClient RepClient;
+	
+	`callstack();
+	
 	foreach RepClients(RepClient)
 		RepClient.RepInfo.AddRankRelation(Rel);
 }

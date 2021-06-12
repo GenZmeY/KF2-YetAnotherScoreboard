@@ -1,6 +1,9 @@
 Class GUIStyleBase extends Object
 	abstract;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var Texture2D ItemTex;
 var array<Texture2D> BorderTextures, ArrowTextures, ButtonTextures, TabTextures, ItemBoxTextures, PerkBox, CheckBoxTextures, ProgressBarTextures, SliderTextures;
 var Texture2D ScrollTexture,FavoriteIcon,BankNoteIcon; 

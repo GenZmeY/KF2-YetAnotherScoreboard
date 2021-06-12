@@ -1,5 +1,8 @@
 Class KFGUI_Image extends KFGUI_Base;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var enum eImageStyle
 {
 	ISTY_Normal,

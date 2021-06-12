@@ -1,6 +1,9 @@
 Class KFGUI_ScrollBarBase extends KFGUI_Clickable
 	abstract;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var() int MinRange,MaxRange,ScrollStride,PageStep;
 var() float ButtonScale; // Button width (scaled by default font height).
 var int CurrentScroll;

@@ -1,6 +1,9 @@
 // List box with custom render code for the items.
 Class KFGUI_List extends KFGUI_MultiComponent;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var() bool bDrawBackground, bHideScrollbar, bUseFocusSound;
 var() protectedwrite int ListCount;
 var() int ListItemsPerPage;

@@ -1,5 +1,8 @@
 Class KFGUI_ListHorz extends KFGUI_MultiComponent;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var() bool bDrawBackground, bHideScrollbar, bUseFocusSound;
 var() protected int ListCount;
 var() int ListItemsPerPage;

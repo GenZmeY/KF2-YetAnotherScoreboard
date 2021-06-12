@@ -1,6 +1,9 @@
 Class KFGUI_ListItem extends Object
 	transient;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var KFGUI_ListItem Next;
 var array<string> Columns,SortColumns;
 var int Index,Value;

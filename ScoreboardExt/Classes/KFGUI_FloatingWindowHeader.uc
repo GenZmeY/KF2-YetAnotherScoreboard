@@ -1,5 +1,8 @@
 Class KFGUI_FloatingWindowHeader extends KFGUI_Base;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var bool bDragWindow;
 
 function PreDraw()

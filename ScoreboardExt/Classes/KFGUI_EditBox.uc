@@ -1,5 +1,8 @@
 Class KFGUI_EditBox extends KFGUI_Clickable;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var enum eTextCase
 {
 	TXTC_None,

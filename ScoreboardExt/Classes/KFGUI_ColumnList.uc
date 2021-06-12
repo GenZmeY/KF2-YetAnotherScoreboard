@@ -1,6 +1,9 @@
 // Columned list box (only for text lines).
 Class KFGUI_ColumnList extends KFGUI_List;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 struct FColumnItem
 {
 	var() string Text;

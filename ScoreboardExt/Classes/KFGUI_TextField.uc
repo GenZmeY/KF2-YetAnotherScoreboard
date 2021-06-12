@@ -1,5 +1,8 @@
 Class KFGUI_TextField extends KFGUI_MultiComponent;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 enum ETextFieldStyles
 {
 	TEXT_FIELD_NONE,

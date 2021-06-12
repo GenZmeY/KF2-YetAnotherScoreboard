@@ -2,6 +2,10 @@
 Class KFGUI_Base extends Object
 	abstract;
 
+`include(Build.uci)
+`include(Logger.uci)
+
+
 var KF2GUIController Owner;
 var ScoreboardExtHUD HUDOwner;
 var KFGUI_Base ParentComponent; // Parent component if any.

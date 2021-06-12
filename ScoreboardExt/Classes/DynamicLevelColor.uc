@@ -2,6 +2,9 @@ class DynamicLevelColor extends Object
 	dependson(Types)
 	config(ScoreboardExt);
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var config bool bEnabled;
 var config int Normal_Low;
 var config int Normal_High;
@@ -15,12 +18,17 @@ var config int HellOnEarth_High;
 public static function SCESettingsLevel DefaultSettings()
 {
 	local SCESettingsLevel Settings;
+	
+	`callstack_static("DefaultSettings");
+	
 	return Settings;
 }
 
 public static function SCESettingsLevel Settings()
 {
 	local SCESettingsLevel Settings;
+	
+	`callstack_static("Settings");
 	
 	Settings.Dynamic = default.bEnabled;
 	Settings.Low[0] = default.Normal_Low;
@@ -37,6 +45,8 @@ public static function SCESettingsLevel Settings()
 
 public static function WriteSettings(SCESettingsLevel Settings)
 {
+	`callstack_static("WriteSettings");
+	
 	default.bEnabled = Settings.Dynamic;
 	default.Normal_Low = Settings.Low[0];
 	default.Normal_High = Settings.High[0];

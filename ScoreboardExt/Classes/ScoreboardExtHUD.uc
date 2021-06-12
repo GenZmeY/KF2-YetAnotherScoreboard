@@ -1,6 +1,9 @@
 class ScoreboardExtHUD extends KFGFxHudWrapper
 	config(ScoreboardExtMut);
 
+`include(Build.uci)
+`include(Logger.uci)
+
 const HUDBorderSize = 3;
 
 var float ScaledBorderSize;

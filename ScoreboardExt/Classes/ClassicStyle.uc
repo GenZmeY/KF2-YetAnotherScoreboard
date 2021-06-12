@@ -1,5 +1,8 @@
 Class ClassicStyle extends KF2Style;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 function RenderFramedWindow( KFGUI_FloatingWindow P )
 {
 	local int XS,YS,TitleHeight;

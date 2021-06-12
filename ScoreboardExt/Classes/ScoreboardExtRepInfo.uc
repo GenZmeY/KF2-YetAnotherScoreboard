@@ -1,5 +1,8 @@
 class ScoreboardExtRepInfo extends ReplicationInfo;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 // Server vars
 var public ScoreboardExtMut Mut;
 
@@ -17,6 +20,8 @@ var private int CustomRanksRepProgress, SteamGroupsRepProgress;
 
 simulated event PostBeginPlay()
 {
+	`callstack();
+	
     super.PostBeginPlay();
 
     if (bDeleteMe) return;
@@ -29,6 +34,8 @@ simulated event PostBeginPlay()
 
 private reliable client function ClientInit()
 {
+	`callstack();
+	
 	if (SC == None)
 		SC = ScoreboardExtHUD(GetALocalPlayerController().myHUD).Scoreboard;
 	
@@ -43,17 +50,23 @@ private reliable client function ClientInit()
 
 public function StartFirstTimeReplication()
 {
+	`callstack();
+	
 	SetTimer(0.01f, true, nameof(ReplicateCustomRanks));
 	SetTimer(0.01f, true, nameof(ReplicateSteamGroupRelations));
 }
 
 private reliable client function ClientSetSettings(SCESettings Set)
 {
+	`callstack();
+	
 	SC.Settings = Set;
 }
 
 private function ReplicateCustomRanks()
 {
+	`callstack();
+	
 	if (CustomRanksRepProgress < CustomRanks.Length)
 	{
 		ClientAddCustomRank(CustomRanks[CustomRanksRepProgress]);
@@ -67,11 +80,15 @@ private function ReplicateCustomRanks()
 
 private reliable client function ClientAddCustomRank(RankInfo Rank)
 {
+	`callstack();
+	
 	CustomRanks.AddItem(Rank);
 }
 
 private function ReplicateSteamGroupRelations()
 {
+	`callstack();
+	
 	if (SteamGroupsRepProgress < SteamGroupRelations.Length)
 	{
 		ClientAddSteamGroupRelation(SteamGroupRelations[SteamGroupsRepProgress]);
@@ -87,12 +104,16 @@ private function ReplicateSteamGroupRelations()
 
 private reliable client function ClientAddSteamGroupRelation(UIDRankRelation Rel)
 {
+	`callstack();
+	
 	SteamGroupRelations.AddItem(Rel);
 }
 
 private reliable client function FindMyRankInSteamGroups()
 {
 	local UIDRankRelation SteamGroupRel;
+	
+	`callstack();
 	
 	foreach SteamGroupRelations(SteamGroupRel)
 		if (SW.CheckPlayerGroup(SteamGroupRel.UID))
@@ -104,38 +125,52 @@ private reliable client function FindMyRankInSteamGroups()
 
 private reliable server function ServerApplyRank(int RankID)
 {
+	`callstack();
+	
 	RankRelation.RankID = RankID;
 	Mut.UpdatePlayerRank(RankRelation);
 }
 
 public function AddRankRelation(UIDRankRelation Rel)
 {
+	`callstack();
+	
 	ClientAddRankRelation(Rel);
 }
 
 private reliable client function ClientAddRankRelation(UIDRankRelation Rel)
 {
+	`callstack();
+	
 	SC.RankRelations.AddItem(Rel);
 }
 
 public function RemoveRankRelation(UIDRankRelation Rel)
 {
+	`callstack();
+	
 	ClientRemoveRankRelation(Rel);
 }
 
 private unreliable client function ClientRemoveRankRelation(UIDRankRelation Rel)
 {
+	`callstack();
+	
 	SC.RankRelations.RemoveItem(Rel);
 }
 
 public function UpdateRankRelation(UIDRankRelation Rel)
 {
+	`callstack();
+	
 	ClientUpdateRankRelation(Rel);
 }
 
 private reliable client function ClientUpdateRankRelation(UIDRankRelation Rel)
 {
 	local int Index;
+	
+	`callstack();
 	
 	Index = SC.RankRelations.Find('UID', Rel.UID);
 	

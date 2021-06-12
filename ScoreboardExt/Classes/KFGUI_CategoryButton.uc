@@ -1,5 +1,9 @@
 class KFGUI_CategoryButton extends KFGUI_Button;
 
+`include(Build.uci)
+`include(Logger.uci)
+
+
 var transient bool bOpened;
 var Texture2D Icon;
 var Color IconColor;

@@ -1,5 +1,8 @@
 Class KFGUI_Frame extends KFGUI_FloatingWindow;
- 
+
+`include(Build.uci)
+`include(Logger.uci)
+
 var() float EdgeSize[4]; // Pixels wide for edges (left, top, right, bottom).
 var() float HeaderSize[2]; // Pixels wide for edges (left, top).
 var() Texture FrameTex;

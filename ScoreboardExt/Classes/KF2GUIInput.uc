@@ -1,6 +1,10 @@
 // Input while in a menu.
 class KF2GUIInput extends KFPlayerInput;
 
+`include(Build.uci)
+`include(Logger.uci)
+
+
 var KF2GUIController ControllerOwner;
 var PlayerInput BaseInput;
 

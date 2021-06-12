@@ -1,6 +1,9 @@
 class KFScoreBoard extends KFGUI_Page
 	dependson(Types);
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var transient float RankXPos, PerkXPos, PlayerXPos, HealthXPos, TimeXPos, KillsXPos, AssistXPos, CashXPos, DeathXPos, PingXPos;
 var transient float StatusWBox, PlayerWBox, PerkWBox, CashWBox, KillsWBox, AssistWBox, HealthWBox, PingWBox;
 var transient float NextScoreboardRefresh;

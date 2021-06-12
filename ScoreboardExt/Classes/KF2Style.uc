@@ -1,5 +1,8 @@
 Class KF2Style extends GUIStyleBase;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var Texture2D LoadedTex[2];
 const TOOLTIP_BORDER=4;
 

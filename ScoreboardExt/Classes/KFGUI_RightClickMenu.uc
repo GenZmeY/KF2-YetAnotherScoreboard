@@ -1,5 +1,8 @@
 Class KFGUI_RightClickMenu extends KFGUI_Clickable;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 struct FRowItem
 {
 	var string Text,ToolTip;

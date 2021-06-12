@@ -1,5 +1,8 @@
 Class KFGUI_ComboSelector extends KFGUI_Clickable;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var KFGUI_ComboBox Combo;
 var int CurrentRow,OldRow;
 

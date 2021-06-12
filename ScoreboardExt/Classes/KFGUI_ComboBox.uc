@@ -1,5 +1,8 @@
 Class KFGUI_ComboBox extends KFGUI_EditControl;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var KFGUI_ComboSelector Selection;
 
 var float BorderSize;

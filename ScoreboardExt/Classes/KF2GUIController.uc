@@ -1,6 +1,9 @@
 Class KF2GUIController extends Info
 	transient;
 
+`include(Build.uci)
+`include(Logger.uci)
+
 var() class<GUIStyleBase> DefaultStyle;
 
 var PlayerController PlayerOwner;
