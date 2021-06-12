@@ -1,144 +1,150 @@
 class ScoreboardExtRepInfo extends ReplicationInfo;
 
-var public array<UIDRankRelation> PlayerRankRelations;
-var public array<RankInfo> CustomRanks;
+// Server vars
+var public ScoreboardExtMut Mut;
 
-var public SCESettings Settings;
-
-var private bool InitFinished, RanksFinished, InfosFinished;
-var private int InfosReplicateProgress, RanksReplicateProgress;
-
+// Client vars
 var private KFScoreBoard SC;
+var private OnlineSubsystemSteamworks SW;
 
-public function ClientStartReplication()
+// Fitst time replication
+var public array<UIDRankRelation> SteamGroupRelations;
+var public array<RankInfo> CustomRanks;
+var public SCESettings Settings;
+var public UIDRankRelation RankRelation; // Current player rank relation
+
+var private int CustomRanksRepProgress, SteamGroupsRepProgress;
+
+simulated event PostBeginPlay()
 {
-	GetScoreboard();
+    super.PostBeginPlay();
+
+    if (bDeleteMe) return;
 	
-	ClientInit(Settings);
-	SetTimer(0.01f, true, nameof(ClientReplicateRanks));
-	SetTimer(0.01f, true, nameof(ClientReplicateInfos));
+	if (Role < ROLE_Authority)
+	{
+		ClientInit();
+	}
 }
 
-public function ClientReplicateRanks()
+private reliable client function ClientInit()
 {
-	if (RanksReplicateProgress < CustomRanks.Length)
+	if (SC == None)
+		SC = ScoreboardExtHUD(GetALocalPlayerController().myHUD).Scoreboard;
+	
+	if (SW == None)
+		SW = OnlineSubsystemSteamworks(class'GameEngine'.static.GetOnlineSubsystem());
+	
+	if (SC == None || SW == None)
+		SetTimer(0.1f, false, nameof(ClientInit));
+	else
+		ClearTimer(nameof(ClientInit));
+}
+
+public function StartFirstTimeReplication()
+{
+	SetTimer(0.01f, true, nameof(ReplicateCustomRanks));
+	SetTimer(0.01f, true, nameof(ReplicateSteamGroupRelations));
+}
+
+private reliable client function ClientSetSettings(SCESettings Set)
+{
+	SC.Settings = Set;
+}
+
+private function ReplicateCustomRanks()
+{
+	if (CustomRanksRepProgress < CustomRanks.Length)
 	{
-		ClientAddPlayerRank(CustomRanks[RanksReplicateProgress]);
-		++RanksReplicateProgress;
+		ClientAddCustomRank(CustomRanks[CustomRanksRepProgress]);
+		++CustomRanksRepProgress;
 	}
 	else
 	{
-		ClearTimer(nameof(ClientReplicateRanks));
-		RankReplicationFinished();
+		ClearTimer(nameof(ReplicateCustomRanks));
 	}
 }
 
-public function ClientReplicateInfos()
-{
-	if (InfosReplicateProgress < PlayerRankRelations.Length)
-	{
-		ClientAddPlayerInfo(PlayerRankRelations[InfosReplicateProgress]);
-		++InfosReplicateProgress;
-	}
-	else
-	{
-		ClearTimer(nameof(ClientReplicateInfos));
-		InfosReplicationFinished();
-	}
-}
-
-private reliable client function GetScoreboard()
-{
-	if (SC != None)
-	{
-		ClearTimer(nameof(GetScoreboard));
-		return;
-	}
-	
-	SC = ScoreboardExtHUD(GetALocalPlayerController().myHUD).Scoreboard;
-	SetTimer(0.1f, false, nameof(GetScoreboard));
-}
-
-private reliable client function ClientAddPlayerRank(RankInfo Rank)
+private reliable client function ClientAddCustomRank(RankInfo Rank)
 {
 	CustomRanks.AddItem(Rank);
 }
 
-private reliable client function ClientAddPlayerInfo(UIDRankRelation PlayerInfo)
+private function ReplicateSteamGroupRelations()
 {
-	PlayerRankRelations.AddItem(PlayerInfo);
-}
-
-private reliable client function RankReplicationFinished()
-{
-	RanksFinished = true;
-	ClientRanksApply();
-}
-
-private reliable client function InfosReplicationFinished()
-{
-	InfosFinished = true;
-	ClientInfosApply();
-}
-
-private reliable client function ClientInit(SCESettings _Settings)
-{
-	Settings = _Settings;
-	ClientSystemApply();
-}
-
-private reliable client function ClientSystemApply()
-{
-	if (SC == None)
+	if (SteamGroupsRepProgress < SteamGroupRelations.Length)
 	{
-		SetTimer(0.1f, false, nameof(ClientSystemApply));
-		return;
+		ClientAddSteamGroupRelation(SteamGroupRelations[SteamGroupsRepProgress]);
+		++SteamGroupsRepProgress;
 	}
-	
-	SC.Settings = Settings;
-	
-	InitFinished = true;
-	Finished();
-}
-
-private reliable client function ClientRanksApply()
-{
-	if (SC == None)
+	else
 	{
-		SetTimer(0.1f, false, nameof(ClientRanksApply));
-		return;
+		ClearTimer(nameof(ReplicateSteamGroupRelations));
+		if (RankRelation.RankID == INDEX_NONE)
+			FindMyRankInSteamGroups();
 	}
-	
-	SC.CustomRanks = CustomRanks;
-	RanksFinished  = true;
-	Finished();
 }
 
-private reliable client function ClientInfosApply()
+private reliable client function ClientAddSteamGroupRelation(UIDRankRelation Rel)
 {
-	if (SC == None)
-	{
-		SetTimer(0.1f, false, nameof(ClientInfosApply));
-		return;
-	}
-	
-	SC.PlayerRankRelations = PlayerRankRelations;
-	RanksFinished = true;
-	Finished();
+	SteamGroupRelations.AddItem(Rel);
 }
 
-private reliable client function Finished()
+private reliable client function FindMyRankInSteamGroups()
 {
-	if (InitFinished && RanksFinished && InfosFinished)
-		Destroy();
+	local UIDRankRelation SteamGroupRel;
+	
+	foreach SteamGroupRelations(SteamGroupRel)
+		if (SW.CheckPlayerGroup(SteamGroupRel.UID))
+			RankRelation.RankID = SteamGroupRel.RankID;
+		
+	if (RankRelation.RankID != INDEX_NONE)
+		ServerApplyRank(RankRelation.RankID);
+}
+
+private reliable server function ServerApplyRank(int RankID)
+{
+	RankRelation.RankID = RankID;
+	Mut.UpdatePlayerRank(RankRelation);
+}
+
+public function AddRankRelation(UIDRankRelation Rel)
+{
+	ClientAddRankRelation(Rel);
+}
+
+private reliable client function ClientAddRankRelation(UIDRankRelation Rel)
+{
+	SC.RankRelations.AddItem(Rel);
+}
+
+public function RemoveRankRelation(UIDRankRelation Rel)
+{
+	ClientRemoveRankRelation(Rel);
+}
+
+private unreliable client function ClientRemoveRankRelation(UIDRankRelation Rel)
+{
+	SC.RankRelations.RemoveItem(Rel);
+}
+
+public function UpdateRankRelation(UIDRankRelation Rel)
+{
+	ClientUpdateRankRelation(Rel);
+}
+
+private reliable client function ClientUpdateRankRelation(UIDRankRelation Rel)
+{
+	local int Index;
+	
+	Index = SC.RankRelations.Find('UID', Rel.UID);
+	
+	if (Index != INDEX_NONE)
+		SC.RankRelations[Index] = Rel;
 }
 
 defaultproperties
-{
-	InfosReplicateProgress=0
-	RanksReplicateProgress=0
-	
-	InitFinished=false
-	RanksFinished=false
-	InfosFinished=false
+{	
+	CustomRanksRepProgress = 0;
+	SteamGroupsRepProgress = 0;
 }

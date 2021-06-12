@@ -19,7 +19,7 @@ var float PingBars,IdealPing,MaxPing;
 
 // Ranks
 var array<RankInfo> CustomRanks;
-var array<UIDRankRelation> PlayerRankRelations;
+var array<UIDRankRelation> RankRelations;
 
 var SCESettings Settings;
 
@@ -331,10 +331,10 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	KFPRI = KFPRIArray[Index];
 	
 	HasRank = false;
-	PlayerInfoIndex = PlayerRankRelations.Find('UID', KFPRI.UniqueId);
+	PlayerInfoIndex = RankRelations.Find('UID', KFPRI.UniqueId);
 	if (PlayerInfoIndex != INDEX_NONE )
 	{
-		PlayerRankIndex = CustomRanks.Find('ID', PlayerRankRelations[PlayerInfoIndex].RankID);
+		PlayerRankIndex = CustomRanks.Find('ID', RankRelations[PlayerInfoIndex].RankID);
 		if (PlayerRankIndex != INDEX_NONE)
 		{
 			HasRank = true;

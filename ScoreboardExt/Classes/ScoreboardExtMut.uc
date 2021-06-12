@@ -9,6 +9,8 @@ const CurrentVersion = 1;
 
 var config int ConfigVersion;
 
+var private OnlineSubsystem Steamworks;
+
 struct SClient
 {
 	var ScoreboardExtRepInfo RepInfo;
@@ -16,7 +18,9 @@ struct SClient
 };
 
 var private array<SClient> RepClients;
-var private array<UIDRankRelation> UIDRelations;
+var private array<UIDRankRelation> UIDRankRelationsPlayers;
+var private array<UIDRankRelation> UIDRankRelationsSteamGroups;
+var private array<UIDRankRelation> UIDRankRelationsActive;
 var private SCESettings Settings;
 
 function PostBeginPlay()
@@ -24,9 +28,11 @@ function PostBeginPlay()
 	Super.PostBeginPlay();
 	
 	WorldInfo.Game.HUDType = class'ScoreboardExtHUD';
+	Steamworks = class'GameEngine'.static.GetOnlineSubsystem();
 	
 	InitConfig();
-	LoadPlayerRelations();
+	
+	LoadRelations();
 	
 	Settings.Style  = class'ScoreboardStyle'.static.Settings();
 	Settings.Admin  = class'SystemAdminRank'.static.Settings();
@@ -51,8 +57,8 @@ function NotifyLogout(Controller C)
 private function InitConfig()
 {
 	local RankInfo ExampleRank;
-	local PlayerRankRelation ExamplePlayer;
-	local SteamGroupRankRelation ExampleSteamGroup;
+	local RankRelation ExamplePlayer;
+	local RankRelation ExampleSteamGroup;
 	
 	// Update from config version to current version if needed
 	switch (ConfigVersion)
@@ -77,7 +83,7 @@ private function InitConfig()
 			class'CustomRanks'.default.Rank.AddItem(ExampleRank);
 
 			// Example player
-			ExamplePlayer.PlayerID                      = "76561198001617867"; // GenZmeY SteamID64
+			ExamplePlayer.ObjectID                      = "76561198001617867"; // GenZmeY SteamID64
 			ExamplePlayer.RankID                        = ExampleRank.ID;
 			class'PlayerRankRelations'.default.Relation.AddItem(ExamplePlayer);
 			
@@ -91,19 +97,22 @@ private function InitConfig()
 			class'CustomRanks'.default.Rank.AddItem(ExampleRank);
 			
 			// Example steam group
-			ExampleSteamGroup.SteamGroupID              = "103582791465384046"; // MSK-GS SteamID64
+			ExampleSteamGroup.ObjectID                  = "103582791465384046"; // MSK-GS SteamID64
 			ExampleSteamGroup.RankID                    = ExampleRank.ID;
 			class'SteamGroupRankRelations'.default.Relation.AddItem(ExampleSteamGroup);
 
 			class'CustomRanks'.static.StaticSaveConfig();
 			class'PlayerRankRelations'.static.StaticSaveConfig();
 			class'SteamGroupRankRelations'.static.StaticSaveConfig();
+			
 		case 2147483647:
 			`log("[ScoreboardExt] Config updated to version"@CurrentVersion);
 			break;
+			
 		case CurrentVersion:
 			`log("[ScoreboardExt] Config is up-to-date");
 			break;
+			
 		default:
 			`log("[ScoreboardExt] Warn: The config version is higher than the current version (are you using an old mutator?)");
 			`log("[ScoreboardExt] Warn: Config version is"@ConfigVersion@"but current version is"@CurrentVersion);
@@ -118,53 +127,71 @@ private function InitConfig()
 	}
 }
 
-private function LoadPlayerRelations()
+private function LoadRelations()
 {
-	local PlayerRankRelation Player;
-	local OnlineSubsystem steamworks;
+	local RankRelation Player, SteamGroup;
 	local UIDRankRelation UIDInfo;
-	
-	steamworks = class'GameEngine'.static.GetOnlineSubsystem();
 	
 	foreach class'PlayerRankRelations'.default.Relation(Player)
 	{
 		UIDInfo.RankID = Player.RankID;
-		if (Len(Player.PlayerID) == UniqueIDLen && steamworks.StringToUniqueNetId(Player.PlayerID, UIDInfo.UID))
+		if (Len(Player.ObjectID) == UniqueIDLen && Steamworks.StringToUniqueNetId(Player.ObjectID, UIDInfo.UID))
 		{
-			if (UIDRelations.Find('Uid', UIDInfo.UID) == INDEX_NONE)
-				UIDRelations.AddItem(UIDInfo);
+			if (UIDRankRelationsPlayers.Find('Uid', UIDInfo.UID) == INDEX_NONE)
+				UIDRankRelationsPlayers.AddItem(UIDInfo);
 		}
-		else if (Len(Player.PlayerID) == SteamIDLen && steamworks.Int64ToUniqueNetId(Player.PlayerID, UIDInfo.UID))
+		else if (Len(Player.ObjectID) == SteamIDLen && Steamworks.Int64ToUniqueNetId(Player.ObjectID, UIDInfo.UID))
 		{
-			if (UIDRelations.Find('Uid', UIDInfo.UID) == INDEX_NONE)
-				UIDRelations.AddItem(UIDInfo);
+			if (UIDRankRelationsPlayers.Find('Uid', UIDInfo.UID) == INDEX_NONE)
+				UIDRankRelationsPlayers.AddItem(UIDInfo);
 		}
-		else `Log("[ScoreboardExt] WARN: Can't add player:"@Player.PlayerID);
+		else `Log("[ScoreboardExt] WARN: Can't add player:"@Player.ObjectID);
+	}
+	
+	foreach class'SteamGroupRankRelations'.default.Relation(SteamGroup)
+	{
+		UIDInfo.RankID = SteamGroup.RankID;
+		if (Steamworks.Int64ToUniqueNetId(SteamGroup.ObjectID, UIDInfo.UID))
+		{
+			if (UIDRankRelationsSteamGroups.Find('Uid', UIDInfo.UID) == INDEX_NONE)
+				UIDRankRelationsSteamGroups.AddItem(UIDInfo);
+		}
+		else `Log("[ScoreboardExt] WARN: Can't add steamgroup:"@SteamGroup.ObjectID);
 	}
 }
 
-function AddPlayer(Controller C)
+private function AddPlayer(Controller C)
 {
 	local KFPlayerController KFPC;
+	local UIDRankRelation Relation;
 	local SClient RepClient;
 	
 	KFPC = KFPlayerController(C);
 	if (KFPC == None)
 		return;
 
-	RepClient.RepInfo = Spawn(class'ScoreboardExtRepInfo', KFPC);
 	RepClient.KFPC = KFPC;
+	RepClient.RepInfo = Spawn(class'ScoreboardExtRepInfo', KFPC);
+	RepClient.RepInfo.Mut = Self;
+	RepClient.RepInfo.CustomRanks = class'CustomRanks'.default.Rank;
+	RepClient.RepInfo.SteamGroupRelations = UIDRankRelationsSteamGroups;
+	RepClient.RepInfo.Settings = Settings;
+	RepClient.RepInfo.RankRelation.UID = KFPC.PlayerReplicationInfo.UniqueId;
+	RepClient.RepInfo.RankRelation.RankID = UIDRankRelationsPlayers.Find('UID', RepClient.RepInfo.RankRelation.UID);
+	
+	UIDRankRelationsActive.AddItem(RepClient.RepInfo.RankRelation);
 	
 	RepClients.AddItem(RepClient);
 	
-	RepClient.RepInfo.PlayerRankRelations = UIDRelations;
-	RepClient.RepInfo.CustomRanks = class'CustomRanks'.default.Rank;
-	RepClient.RepInfo.Settings = Settings;
+	// хуйня
+	foreach UIDRankRelationsActive(Relation)
+		foreach RepClients(RepClient)
+			RepClient.RepInfo.AddRankRelation(Relation);
 	
-	RepClient.RepInfo.ClientStartReplication();
+	RepClient.RepInfo.StartFirstTimeReplication();
 }
 
-function RemovePlayer(Controller C)
+private function RemovePlayer(Controller C)
 {
 	local KFPlayerController KFPC;
 	local int Index;
@@ -173,6 +200,9 @@ function RemovePlayer(Controller C)
 	if (KFPC == None)
 		return;
 
+	// UID = KFPC.PlayerReplicationInfo.UniqueId;
+	// Remove Rank Relation here
+	
 	Index = RepClients.Find('KFPC', KFPC);
 	if (Index == INDEX_NONE)
 		return;
@@ -181,6 +211,41 @@ function RemovePlayer(Controller C)
 		RepClients[Index].RepInfo.Destroy();
 	
 	RepClients.Remove(Index, 1);
+}
+
+/*
+private function RemoveRankRelationByUID(UniqueNetId UID)
+{
+	local int Index;
+	Index = UIDRankRelationsActive.Find('UID', UID);
+	if (Index != INDEX_NONE)
+	{
+		Relation = UIDRankRelationsActive[Index];
+		for (i = 0; i < UIDRankRelationsActive.Length; ++i)
+			RepClients[Index].RepInfo.RemoveRankRelation(Relation);
+	}
+}
+*/
+
+public function UpdatePlayerRank(UIDRankRelation Rel)
+{
+	local SClient RepClient;
+	local int Index;
+	
+	Index = UIDRankRelationsActive.Find('UID', Rel.UID);
+	
+	if (Index != INDEX_NONE)
+		UIDRankRelationsActive[Index] = Rel;
+	
+	foreach RepClients(RepClient)
+		RepClient.RepInfo.UpdateRankRelation(Rel);
+}
+
+public function AddPlayerRank(UIDRankRelation Rel)
+{
+	local SClient RepClient;
+	foreach RepClients(RepClient)
+		RepClient.RepInfo.AddRankRelation(Rel);
 }
 
 DefaultProperties

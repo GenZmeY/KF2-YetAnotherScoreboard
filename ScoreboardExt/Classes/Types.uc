@@ -48,15 +48,9 @@ struct RankInfo
 	var Fields    ApplyColorToFields;
 };
 
-struct SteamGroupRankRelation
+struct RankRelation
 {
-	var string SteamGroupID;
-	var int    RankID;
-};
-
-struct PlayerRankRelation
-{
-	var string PlayerID;
+	var string ObjectID;
 	var int    RankID;
 };
 

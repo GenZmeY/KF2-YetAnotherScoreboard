@@ -1,8 +1,7 @@
 # ScoreboardExt
 
 **TODO:**
-1. Customizable colors for player level (depending on difficulty)
-2. Check fields char capacity (crop if text is large then cap)
-3. Check steam group (?)
-4. Rework replication
-5. Localization
+1. Check fields char capacity (crop if text is large then cap)
+2. Check steam group (?)
+3. Rework replication
+4. Localization

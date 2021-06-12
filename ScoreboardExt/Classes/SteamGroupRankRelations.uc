@@ -2,7 +2,7 @@ class SteamGroupRankRelations extends Object
 	dependson(Types)
 	config(ScoreboardExt);
 
-var config array<SteamGroupRankRelation> Relation;
+var config array<RankRelation> Relation;
 
 DefaultProperties
 {
