@@ -196,6 +196,7 @@ private function AddPlayer(Controller C)
 
 	RepClientNew.KFPC = KFPC;
 	RepClientNew.RepInfo = Spawn(class'ScoreboardExtRepInfo', KFPC);
+	
 	RepClientNew.RepInfo.Mut = Self;
 	RepClientNew.RepInfo.CustomRanks = class'CustomRanks'.default.Rank;
 	RepClientNew.RepInfo.SteamGroupRelations = UIDRankRelationsSteamGroups;
