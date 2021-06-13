@@ -26,7 +26,7 @@ function ShowMenu()
 
 final function SetText(string S)
 {
-	ParseStringIntoArray(S, Lines, " < SEPERATOR > ", false);
+	ParseStringIntoArray(S, Lines, "<SEPERATOR>", false);
 }
 
 function PreDraw()

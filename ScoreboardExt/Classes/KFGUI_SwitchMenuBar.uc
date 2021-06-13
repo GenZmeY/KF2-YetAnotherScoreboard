@@ -25,7 +25,7 @@ function CloseMenu()
 }
 
 // Remember to call InitMenu() on the newly created page after.
-final function KFGUI_Base AddPage(class < KFGUI_Base> PageClass, string Caption, string Hint, optional out KFGUI_Button Button)
+final function KFGUI_Base AddPage(class<KFGUI_Base> PageClass, string Caption, string Hint, optional out KFGUI_Button Button)
 {
 	local KFGUI_Base P;
 	local KFGUI_Button B;

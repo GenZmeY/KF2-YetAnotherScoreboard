@@ -25,7 +25,7 @@ function AddCategory(name CatID, string CatName, optional Texture2D IconMat, opt
 	B.OnClickRight = SelectedCategory;
 }
 
-function KFGUI_Base AddItemToCategory(name CatID, class < KFGUI_Base> Item)
+function KFGUI_Base AddItemToCategory(name CatID, class<KFGUI_Base> Item)
 {
 	local FCategoryItems CatItem;
 	local KFGUI_Base G;

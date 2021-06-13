@@ -66,7 +66,7 @@ final function string GetText()
 
 final function ParseTextLines()
 {
-	local array < string> SA;
+	local array<string> SA;
 	local int i, j,z;
 	local string S;
 	local color C;

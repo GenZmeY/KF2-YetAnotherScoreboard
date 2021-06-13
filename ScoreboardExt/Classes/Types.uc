@@ -229,13 +229,13 @@ struct SCEStyle
 		ShapePlayersCountBox          = 4
 		ShapeHeaderBox                = 2
 		ShapeLeftStateBoxTopPlayer    = 1
-		ShapeLeftStateBoxMidPlayer    = 0
-		ShapeLeftStateBoxBottomPlayer = 3
-		ShapePlayerBoxTopPlayer       = 1
+		ShapeLeftStateBoxMidPlayer    = 1
+		ShapeLeftStateBoxBottomPlayer = 1
+		ShapePlayerBoxTopPlayer       = 0
 		ShapePlayerBoxMidPlayer       = 0
-		ShapePlayerBoxBottomPlayer    = 3
-		ShapeStatsBoxTopPlayer        = 1
-		ShapeStatsBoxMidPlayer        = 0
+		ShapePlayerBoxBottomPlayer    = 0
+		ShapeStatsBoxTopPlayer        = 3
+		ShapeStatsBoxMidPlayer        = 3
 		ShapeStatsBoxBottomPlayer     = 3
 		
 		ServerNameBoxColor      = (R=75,  G=0,   B=0,   A=200)

@@ -429,7 +429,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	
 	if (!Settings.State.Dynamic)
 		SetDrawColor(C, Settings.Style.LeftStateBoxColor);
-	
+
 	if (KFPRIArray.Length > 1 && Index == 0)
 		Shape = Settings.Style.ShapeLeftStateBoxTopPlayer;
 	else if (KFPRIArray.Length > 1 && Index == KFPRIArray.Length - 1)

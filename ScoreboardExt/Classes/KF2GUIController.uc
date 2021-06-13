@@ -444,7 +444,7 @@ simulated final function int GetFreeIndex(bool bNewAlwaysTop ) // Find first all
 	ActiveMenus.Length = i+1;
 	return i;
 }
-simulated function KFGUI_Base InitializeHUDWidget(class < KFGUI_Base> GUIClass)
+simulated function KFGUI_Base InitializeHUDWidget(class<KFGUI_Base> GUIClass)
 {
 	local KFGUI_Base Widget;
 
@@ -466,7 +466,7 @@ simulated function KFGUI_Base InitializeHUDWidget(class < KFGUI_Base> GUIClass)
 
 	return Widget;
 }
-simulated function KFGUI_Page OpenMenu(class < KFGUI_Page> MenuClass)
+simulated function KFGUI_Page OpenMenu(class<KFGUI_Page> MenuClass)
 {
 	local int i;
 	local KFGUI_Page M;
@@ -527,7 +527,7 @@ simulated function KFGUI_Page OpenMenu(class < KFGUI_Page> MenuClass)
 	M.ShowMenu();
 	return M;
 }
-simulated function CloseMenu(class < KFGUI_Page> MenuClass, optional bool bCloseAll)
+simulated function CloseMenu(class<KFGUI_Page> MenuClass, optional bool bCloseAll)
 {
 	local int i, j;
 	local KFGUI_Page M;
@@ -623,7 +623,7 @@ simulated function BringMenuToFront(KFGUI_Page Page)
 	ActiveMenus.Insert(0, 1);
 	ActiveMenus[0] = Page;
 }
-simulated final function bool MenuIsOpen(optional class < KFGUI_Page> MenuClass)
+simulated final function bool MenuIsOpen(optional class<KFGUI_Page> MenuClass)
 {
 	local int i;
 

@@ -192,7 +192,7 @@ function KFGUI_Base FindComponentID(name InID)
 		return Self;
 	return None;
 }
-function FindAllComponentID(name InID, out array < KFGUI_Base> Res)
+function FindAllComponentID(name InID, out array<KFGUI_Base> Res)
 {
 	if (ID == InID)
 		Res[Res.Length] = Self;

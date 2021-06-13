@@ -209,7 +209,7 @@ final function DrawColoredText(coerce string S, float X, float Y, optional float
 {
 	local float XL, YL;
 	local int i, Index;
-	local array < string> SArray;
+	local array<string> SArray;
 	local string T, PrevT;
 	local Color TextColor;
 
@@ -347,8 +347,8 @@ final function DrawTexturedString(coerce string S, float X, float Y, optional fl
 	Mat = FindNextTexture(S);
 	while (Mat != None)
 	{
-		i = InStr(S, " < TEXTURE");
-		j = InStr(S, " > ");
+		i = InStr(S, "<TEXTURE");
+		j = InStr(S, ">");
 
 		D = Left(S, i);
 		S = Mid(S, j+2);
@@ -384,12 +384,12 @@ final function Texture2D FindNextTexture(out string S)
 	local FTexturePreCache Cache;
 
 	Path = S;
-	i = InStr(Path, " < Icon > ");
+	i = InStr(Path, "<Icon>");
 	if (i == INDEX_NONE)
 		return None;
 
-	j = InStr(Path, " < /Icon > ");
-	S = Left(Path, i)$" < TEXTURE > "$Mid(Path, j+6);
+	j = InStr(Path, " </Icon>");
+	S = Left(Path, i)$"<TEXTURE>"$Mid(Path, j+6);
 	Path = Mid(Path, i+6, j-(i+6));
 
 	i = PrecachedTextures.Find('Path', Path);
@@ -418,12 +418,12 @@ final function string StripTextureFromString(string S, optional bool bNoStringAd
 
 	while (true)
 	{
-		i = InStr(S, " < Icon > ");
+		i = InStr(S, "<Icon>");
 		if (i == INDEX_NONE)
 			break;
 
-		j = InStr(S, " < /Icon > ");
-		S = Left(S, i)$(bNoStringAdd ? "" : "W")$Mid(S, j+Len(" < /Icon > "));
+		j = InStr(S, "</Icon>");
+		S = Left(S, i)$(bNoStringAdd ? "" : "W")$Mid(S, j+Len("</Icon>"));
 	}
 
 	return StripColorTags(S);

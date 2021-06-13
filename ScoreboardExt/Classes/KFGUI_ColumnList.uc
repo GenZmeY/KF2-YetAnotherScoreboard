@@ -190,7 +190,7 @@ final function KFGUI_ListItem GetFromIndex(int Index)
 
 function SortColumn(int Column, optional bool bReverse)
 {
-	local array < KFGUI_ListItem> List;
+	local array<KFGUI_ListItem> List;
 	local KFGUI_ListItem Sel, N,P;
 	local int i;
 
