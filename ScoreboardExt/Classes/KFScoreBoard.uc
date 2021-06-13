@@ -18,7 +18,7 @@ var array<KFPlayerReplicationInfo> KFPRIArray;
 var KFPlayerController OwnerPC;
 
 var Color PingColor;
-var float PingBars,IdealPing,MaxPing;
+var float PingBars;
 
 // Ranks
 var array<RankInfo> CustomRanks;
@@ -236,7 +236,7 @@ function DrawMenu()
 	YPos += BoxH;
 
 	// Header
-	Width = Canvas.ClipX * 0.625;
+	Width = Canvas.ClipX * 0.7;
 	XPos = (Canvas.ClipX - Width) * 0.5;
 	YPos += YL;
 	BoxH = YL + BorderSize;
@@ -621,7 +621,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 			SetDrawColor(C, Settings.Style.StateTextColorMidHP);
 		else
 			SetDrawColor(C, Settings.Style.StateTextColorLowHP);
-		S =  string (KFPRI.PlayerHealth) @"HP";
+		S = string(KFPRI.PlayerHealth)@"HP";
 	}
 	
 	if (CurrentRank.ApplyColorToFields.Health)
@@ -652,7 +652,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		S = string(Ping);
 	}
 
-	C.TextSize(MaxPing, XL, YL, FontScalar, FontScalar);
+	C.TextSize(S, XL, YL, FontScalar, FontScalar);
 	DrawTextShadowHVCenter(S, PingXPos, TextYOffset, Settings.Ping.ShowPingBars ? PingWBox/2 : PingWBox, FontScalar);
 	C.SetDrawColor(250,250,250,255);
 	if (Settings.Ping.ShowPingBars)
@@ -722,12 +722,10 @@ defaultproperties
 	bEnableInputs=true
 
 	PingColor=(R=255,G=255,B=60,A=255)
-	IdealPing=50.0
-	MaxPing=200.0
 	PingBars=5.0
 
 	Begin Object Class=KFGUI_List Name=PlayerList
-		XSize=0.625
+		XSize=0.7
 		OnDrawItem=DrawPlayerEntry
 		ID="PlayerList"
 		bClickable=false
