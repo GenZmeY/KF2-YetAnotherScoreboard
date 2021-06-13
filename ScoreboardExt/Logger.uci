@@ -1,9 +1,9 @@
-`define scelog(text, cond) `log(`text, `cond, 'ScoreboardExt')
+`define scelog(text, cond)     `log(`text, `cond, 'ScoreboardExt')
 
-`define info(text) `scelog("[INFO]"@`text, true)
-`define warning(text) `scelog("[WARNING]"@`text, true)
-`define error(text) `scelog("[ERROR]"@`text, true)
+`define info(text)             `scelog("[INFO]"@`text, true)
+`define warning(text)          `scelog("[WARNING]"@`text, true)
+`define error(text)            `scelog("[ERROR]"@`text, true)
 
-`define debug(text) `scelog("[DEBUG]"@`text, `bEnableDebug)
-`define callstack() `scelog("[CALLSTACK]"@`Location@"ROLE="$ROLE, `bEnableCallstack)
-`define callstack_static(text) `scelog("[CALLSTACK]"@`text, `bEnableCallstack)
+`define debug(text)            if (`bEnableDebug)     { `scelog("[DEBUG]"@`text, `bEnableDebug); }
+`define callstack()            if (`bEnableCallstack) { `scelog("[CALLSTACK]"@`Location@"ROLE="$ROLE, `bEnableCallstack); }
+`define callstack_static(text) if (`bEnableCallstack) { `scelog("[CALLSTACK]"@`text, `bEnableCallstack); }
