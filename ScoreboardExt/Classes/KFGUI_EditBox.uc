@@ -12,11 +12,11 @@ var enum eTextCase
 
 var Color FontColor;
 
-var string TextStr,AllowedCharSet;
-var bool bDrawBackground,bNoClearOnEnter,bMaskText,bIntOnly,bFloatOnly,bIncludeSign,bConvertSpaces,bCtrl,bAllSelected,bForceShowCaret;
+var string TextStr, AllowedCharSet;
+var bool bDrawBackground, bNoClearOnEnter, bMaskText, bIntOnly, bFloatOnly, bIncludeSign, bConvertSpaces, bCtrl, bAllSelected, bForceShowCaret;
 var int MaxWidth;
-var bool bReadOnly,bAlwaysNotify;
-var int CaretPos,FirstVis,LastSizeX,LastCaret,LastLength;
+var bool bReadOnly, bAlwaysNotify;
+var int CaretPos, FirstVis, LastSizeX, LastCaret, LastLength;
 var float TextScale;
 
 function InitMenu()
@@ -50,7 +50,7 @@ function SetText(string NewText, optional bool bIgnoreDelegate)
 
 function bool NotifyInputChar(int Key, string Unicode)
 {
-	local string Temp,S;
+	local string Temp, S;
 
 	if (bReadOnly)
 		return false;
@@ -72,7 +72,7 @@ function bool NotifyInputChar(int Key, string Unicode)
 		bAllSelected=false;
 	}
 
-	if ((AllowedCharSet == "") || ( (bIncludeSign) && ( (S == "-") || (S == "+") ) && (TextStr == "") ) || (InStr(AllowedCharSet,S) >= 0))
+	if ((AllowedCharSet == "") || ( (bIncludeSign) && ( (S == "-") || (S == "+") ) && (TextStr == "") ) || (InStr(AllowedCharSet, S) >= 0))
 	{
 		if ((MaxWidth == 0) || (Len(TextStr) < MaxWidth))
 		{
@@ -86,7 +86,7 @@ function bool NotifyInputChar(int Key, string Unicode)
 			}
 			else
 			{
-				Temp = Left(TextStr,CaretPos)$S$Mid(TextStr,CaretPos);
+				Temp = Left(TextStr, CaretPos)$S$Mid(TextStr, CaretPos);
 				TextStr = Temp;
 				CaretPos++;
 			}
@@ -243,7 +243,7 @@ function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, floa
 			}
 			else if (CaretPos > 0)
 			{
-				SetInputText(Left(TextStr,CaretPos-1) $ Right(TextStr, Len(TextStr) - CaretPos));
+				SetInputText(Left(TextStr, CaretPos-1) $ Right(TextStr, Len(TextStr) - CaretPos));
 				CaretPos -= 1;
 			}
 
@@ -274,8 +274,8 @@ function string ConvertIllegal(string InputStr)
 	Max = Len(InputStr);
 	while ( i < Max)
 	{
-		C = Mid(InputStr,i,1);
-		if (AllowedCharSet != "" && InStr(AllowedCharSet,C) < 0)
+		C = Mid(InputStr, i,1);
+		if (AllowedCharSet != "" && InStr(AllowedCharSet, C) < 0)
 		{
 			C = "";
 		}
@@ -289,7 +289,7 @@ function string ConvertIllegal(string InputStr)
 	}
 
 	if (MaxWidth > 0)
-		return Left(Retval,MaxWidth);
+		return Left(Retval, MaxWidth);
 
 	return Retval;
 }
@@ -306,18 +306,18 @@ function TextChanged()
 
 function DrawMenu()
 {
-	local string Storage,FinalDraw,TmpString;
-	local int MaskIndex,StorageLength;
-	local float XL,YL,BoxWidth,FontScale,CursorY,BorderSize;
+	local string Storage, FinalDraw, TmpString;
+	local int MaskIndex, StorageLength;
+	local float XL, YL, BoxWidth, FontScale, CursorY, BorderSize;
 	local FontRenderInfo FRI;
 
 	Super.DrawMenu();
 
 	if (bDrawBackground)
 	{
-		Canvas.SetDrawColor(250,250,250,255);
-		Canvas.SetPos(0.f,0.f);
-		Canvas.DrawTileStretched(Owner.CurrentStyle.BorderTextures[`BOX_SMALL],CompPos[2],CompPos[3],0,0,Owner.CurrentStyle.BorderTextures[`BOX_SMALL].GetSurfaceWidth(),Owner.CurrentStyle.BorderTextures[`BOX_SMALL].GetSurfaceHeight());
+		Canvas.SetDrawColor(250, 250, 250, 255);
+		Canvas.SetPos(0.f, 0.f);
+		Canvas.DrawTileStretched(Owner.CurrentStyle.BorderTextures[`BOX_SMALL], CompPos[2], CompPos[3], 0,0, Owner.CurrentStyle.BorderTextures[`BOX_SMALL].GetSurfaceWidth(), Owner.CurrentStyle.BorderTextures[`BOX_SMALL].GetSurfaceHeight());
 	}
 
 	BorderSize = Owner.CurrentStyle.ScreenScale(4.f);
@@ -346,7 +346,7 @@ function DrawMenu()
 	if ((Len(Storage) != LastLength) || (CaretPos != LastCaret))
 	{
 		if (CaretPos <= FirstVis)
-			FirstVis = Max(0,CaretPos-1);
+			FirstVis = Max(0, CaretPos-1);
 		else
 		{
 			FinalDraw = Mid(Storage, FirstVis, CaretPos-FirstVis);
@@ -387,13 +387,13 @@ function DrawMenu()
 
 		if (bAllSelected)
 		{
-			Canvas.SetDrawColor(255,255,255,195);
+			Canvas.SetDrawColor(255, 255, 255, 195);
 			Canvas.SetPos(BorderSize, CursorY);
 			Canvas.DrawTile( Owner.DefaultPens[`PEN_WHITE], XL, YL-Owner.HUDOwner.ScaledBorderSize, 0, 0, Owner.DefaultPens[`PEN_WHITE].GetSurfaceWidth(), Owner.DefaultPens[`PEN_WHITE].GetSurfaceHeight() );
 		}
 		else
 		{
-			Canvas.SetDrawColor(255,255,255,Owner.CursorFlash);
+			Canvas.SetDrawColor(255, 255, 255, Owner.CursorFlash);
 			Canvas.SetPos(XL + (Len(FinalDraw) == 0 ? 0 : 3), CursorY);
 			Canvas.DrawTile( Owner.DefaultPens[`PEN_WHITE], 3, YL-Owner.HUDOwner.ScaledBorderSize, 0, 0, Owner.DefaultPens[`PEN_WHITE].GetSurfaceWidth(), Owner.DefaultPens[`PEN_WHITE].GetSurfaceHeight() );
 		}
@@ -401,7 +401,7 @@ function DrawMenu()
 
 	Canvas.DrawColor = FontColor;
 	Canvas.SetPos(BorderSize, (CompPos[3]/2) - (YL/2));
-	Canvas.DrawText(FinalDraw,,FontScale,FontScale,FRI);
+	Canvas.DrawText(FinalDraw, ,FontScale, FontScale, FRI);
 }
 
 function HandleMouseClick( bool bRight)
@@ -420,7 +420,7 @@ Delegate OnTextFinished(KFGUI_EditBox Sender, string S);
 
 defaultproperties
 {
-	FontColor=(R=255,G=255,B=255,A=255)
+	FontColor=(R=255, G=255, B=255, A=255)
 	MaxWidth=768
 	TextScale=1
 	TextCase=TXTC_None

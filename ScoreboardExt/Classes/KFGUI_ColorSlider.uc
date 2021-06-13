@@ -3,8 +3,8 @@ class KFGUI_ColorSlider extends KFGUI_MultiComponent;
 `include(Build.uci)
 `include(Logger.uci)
 
-var KFGUI_Slider RSlider,GSlider,BSlider,ASlider;
-var KFGUI_TextLable TextLable,RedLabel,GreenLabel,BlueLabel,AlphaLabel,RedValue,GreenValue,BlueValue,AlphaValue;
+var KFGUI_Slider RSlider, GSlider, BSlider, ASlider;
+var KFGUI_TextLable TextLable, RedLabel, GreenLabel, BlueLabel, AlphaLabel, RedValue, GreenValue, BlueValue, AlphaValue;
 var KFGUI_ComponentList SettingsBox;
 
 var Color DefaultColor;
@@ -19,10 +19,10 @@ function InitMenu()
 	TextLable = KFGUI_TextLable(FindComponentID('CaptionText'));
 	TextLable.SetText(CaptionText);
 
-	RSlider = AddSlider("Red:",'ColorSliderR',0,255,RedLabel,RedValue);
-	GSlider = AddSlider("Green:",'ColorSliderG',0,255,GreenLabel,GreenValue);
-	BSlider = AddSlider("Blue:",'ColorSliderB',0,255,BlueLabel,BlueValue);
-	ASlider = AddSlider("Alpha:",'ColorSliderA',0,255,AlphaLabel,AlphaValue);
+	RSlider = AddSlider("Red:", 'ColorSliderR', 0,255, RedLabel, RedValue);
+	GSlider = AddSlider("Green:", 'ColorSliderG', 0,255, GreenLabel, GreenValue);
+	BSlider = AddSlider("Blue:", 'ColorSliderB', 0,255, BlueLabel, BlueValue);
+	ASlider = AddSlider("Alpha:", 'ColorSliderA', 0,255, AlphaLabel, AlphaValue);
 
 	SetDefaultColor(DefaultColor);
 }
@@ -99,7 +99,7 @@ delegate OnColorSliderValueChanged(KFGUI_ColorSlider Sender, KFGUI_Slider Slider
 
 function DrawMenu()
 {
-	Owner.CurrentStyle.DrawTileStretched(Owner.CurrentStyle.BorderTextures[`BOX_SMALL],0,0,CompPos[2],CompPos[3]);
+	Owner.CurrentStyle.DrawTileStretched(Owner.CurrentStyle.BorderTextures[`BOX_SMALL], 0,0, CompPos[2], CompPos[3]);
 }
 
 defaultproperties

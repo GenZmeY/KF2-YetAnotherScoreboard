@@ -23,17 +23,17 @@ enum EMenuSound
 	MN_DropdownChange,
 };
 
-var() float XPosition,YPosition,XSize,YSize;
+var() float XPosition, YPosition, XSize, YSize;
 var() name ID; // Just for internal purposes, you can give the components unique ID values.
 var() int IDValue; // Integer ID value.
-var transient float CompPos[4],InputPos[4];
+var transient float CompPos[4], InputPos[4];
 
 var transient KFGUI_Base MouseArea; // Next in recurse line of the mouse pointer focus area.
 
-var() bool bDisabled,bClickable,bCanFocus;
+var() bool bDisabled, bClickable, bCanFocus;
 var bool bFocusedPostDrawItem; // If this component has been given input focus, should it receive draw menu call after everything else been drawn?
-var transient bool bFocused,bTextureInit,bVisible;
-var bool bIsHUDWidget,bEnableInputs,bNoLookInputs;
+var transient bool bFocused, bTextureInit, bVisible;
+var bool bIsHUDWidget, bEnableInputs, bNoLookInputs;
 var array < name> TimerNames;
 
 function InitMenu(); // Menu was initialized for the first time.
@@ -44,9 +44,9 @@ function PreDraw()
 		return;
 
 	ComputeCoords();
-	Canvas.SetDrawColor(255,255,255);
-	Canvas.SetOrigin(CompPos[0],CompPos[1]);
-	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
+	Canvas.SetDrawColor(255, 255, 255);
+	Canvas.SetOrigin(CompPos[0], CompPos[1]);
+	Canvas.SetClip(CompPos[0]+CompPos[2], CompPos[1]+CompPos[3]);
 	DrawMenu();
 }
 function DrawMenu(); // Draw menu now.
@@ -83,12 +83,12 @@ function Timer();
 function MouseEnter()
 {
 	bFocused = true;
-	OnFocus(Self,True);
+	OnFocus(Self, True);
 }
 function MouseLeave()
 {
 	bFocused = false;
-	OnFocus(Self,False);
+	OnFocus(Self, False);
 }
 function MouseClick( bool bRight );
 function MouseRelease( bool bRight );
@@ -311,7 +311,7 @@ simulated final function PlayMenuSound( EMenuSound Slot)
 	if (S != None)
 	{
 		S.VolumeMultiplier = (Engine.SFxVolumeMultiplier/100.f) * (Engine.MasterVolumeMultiplier/100.f);
-		GetPlayer().PlaySound(S,true,,false);
+		GetPlayer().PlaySound(S, true, ,false);
 	}
 }
 
@@ -335,7 +335,7 @@ static final function string MakeSortStr( int Value)
 	S = string(Value);
 	i = Len(S);
 	if (i < 10)
-		return Mid("0000000000",i)$S;
+		return Mid("0000000000", i)$S;
 	return S;
 }
 

@@ -10,7 +10,7 @@ var Color IconColor;
 
 function DrawMenu()
 {
-	local float XL,YL,TS,TextX,TextY;
+	local float XL, YL, TS, TextX, TextY;
 	local Texture2D Mat;
 	local bool bDrawOverride;
 
@@ -25,13 +25,13 @@ function DrawMenu()
 			Mat = Owner.CurrentStyle.ButtonTextures[`BUTTON_NORMAL];
 		else Mat = Owner.CurrentStyle.ButtonTextures[`BUTTON_HIGHLIGHTED];
 
-		Canvas.SetPos(0.f,0.f);
-		Canvas.DrawTileStretched(Mat,CompPos[2],CompPos[3],0,0,32,32);
+		Canvas.SetPos(0.f, 0.f);
+		Canvas.DrawTileStretched(Mat, CompPos[2], CompPos[3], 0,0, 32, 32);
 
 		if (OverlayTexture.Texture != None)
 		{
-			Canvas.SetPos(0.f,0.f);
-			Canvas.DrawTile(OverlayTexture.Texture,CompPos[2],CompPos[3],OverlayTexture.U,OverlayTexture.V,OverlayTexture.UL,OverlayTexture.VL);
+			Canvas.SetPos(0.f, 0.f);
+			Canvas.DrawTile(OverlayTexture.Texture, CompPos[2], CompPos[3], OverlayTexture.U, OverlayTexture.V, OverlayTexture.UL, OverlayTexture.VL);
 		}
 	}
 
@@ -44,7 +44,7 @@ function DrawMenu()
 
 		while( true)
 		{
-			Canvas.TextSize(ButtonText,XL,YL,TS,TS);
+			Canvas.TextSize(ButtonText, XL, YL, TS, TS);
 			if (XL < (CompPos[2]*0.9) && YL < (CompPos[3]*0.9))
 				break;
 
@@ -58,7 +58,7 @@ function DrawMenu()
 		if (bDisabled)
 			Canvas.DrawColor = TextColor*0.5f;
 		else Canvas.DrawColor = TextColor;
-		Canvas.DrawText(ButtonText,,TS,TS,TextFontInfo);
+		Canvas.DrawText(ButtonText, ,TS, TS, TextFontInfo);
 
 		if (Icon != None)
 		{
@@ -73,7 +73,7 @@ function DrawMenu()
 	}
 
 	Canvas.DrawColor = class'HUD'.default.WhiteColor;
-	Canvas.SetPos(0.f,0.f);
+	Canvas.SetPos(0.f, 0.f);
 	Canvas.DrawRect(CompPos[3], CompPos[3], bOpened ? Owner.CurrentStyle.ArrowTextures[`ARROW_DOWN] : Owner.CurrentStyle.ArrowTextures[`ARROW_RIGHT]);
 	Canvas.SetPos(CompPos[2]-CompPos[3], 0.f);
 	Canvas.DrawRect(CompPos[3], CompPos[3], bOpened ? Owner.CurrentStyle.ArrowTextures[`ARROW_DOWN] : Owner.CurrentStyle.ArrowTextures[`ARROW_LEFT]);

@@ -4,8 +4,8 @@ Class KFGUI_CheckBox extends KFGUI_EditControl;
 `include(Logger.uci)
 
 
-var() Texture CheckMark,CheckDisabled,CheckIdle,CheckFocus,CheckClicked;
-var() bool bForceUniform,bChecked;
+var() Texture CheckMark, CheckDisabled, CheckIdle, CheckFocus, CheckClicked;
+var() bool bForceUniform, bChecked;
 
 function UpdateSizes()
 {

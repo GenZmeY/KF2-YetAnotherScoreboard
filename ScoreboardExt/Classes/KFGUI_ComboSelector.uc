@@ -4,7 +4,7 @@ Class KFGUI_ComboSelector extends KFGUI_Clickable;
 `include(Logger.uci)
 
 var KFGUI_ComboBox Combo;
-var int CurrentRow,OldRow;
+var int CurrentRow, OldRow;
 
 function DrawMenu()
 {

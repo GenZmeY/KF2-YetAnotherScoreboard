@@ -5,10 +5,10 @@ Class KFGUI_Button extends KFGUI_Clickable;
 
 
 var() Canvas.CanvasIcon OverlayTexture;
-var() string ButtonText,GamepadButtonName;
+var() string ButtonText, GamepadButtonName;
 var() color TextColor;
 var() Canvas.FontRenderInfo TextFontInfo;
-var() byte FontScale,ExtravDir;
+var() byte FontScale, ExtravDir;
 var bool bIsHighlighted;
 
 function DrawMenu()
@@ -39,7 +39,7 @@ Delegate bool DrawOverride(Canvas C, KFGUI_Button B)
 defaultproperties
 {
 	ButtonText="Button!"
-	TextColor=(R=0,G=0,B=0,A=255)
-	TextFontInfo=(bClipText=true,bEnableShadow=true)
+	TextColor=(R=0, G=0, B=0, A=255)
+	TextFontInfo=(bClipText=true, bEnableShadow=true)
 	FontScale=1
 }

@@ -6,7 +6,7 @@ Class KFGUI_Frame extends KFGUI_FloatingWindow;
 var() float EdgeSize[4]; // Pixels wide for edges (left, top, right, bottom).
 var() float HeaderSize[2]; // Pixels wide for edges (left, top).
 var() Texture FrameTex;
-var() bool bDrawHeader,bHeaderCenter,bUseLegacyDrawTile,bDrawBackground;
+var() bool bDrawHeader, bHeaderCenter, bUseLegacyDrawTile, bDrawBackground;
 var() float FontScale;
  
 function InitMenu()
@@ -33,7 +33,7 @@ function DrawMenu()
 
 delegate OnDrawFrame(Canvas C, float W, Float H)
 {
-	local float T,XL,YL,HeaderH;
+	local float T, XL, YL, HeaderH;
 	local FontRenderInfo FRI;
 
 	if (FrameTex == None)
@@ -41,15 +41,15 @@ delegate OnDrawFrame(Canvas C, float W, Float H)
 		return;
 	}
 
-	C.SetDrawColor(255,255,255,FrameOpacity);
+	C.SetDrawColor(255, 255, 255, FrameOpacity);
 	if (bUseLegacyDrawTile)
 	{
-		Owner.CurrentStyle.DrawTileStretched(FrameTex,0,0,W,H);
+		Owner.CurrentStyle.DrawTileStretched(FrameTex, 0,0, W,H);
 	}
 	else 
 	{
 		Canvas.SetPos(0.f, 0.f);
-		Canvas.DrawTileStretched(FrameTex,W,H,0,0,FrameTex.GetSurfaceWidth(),FrameTex.GetSurfaceHeight());
+		Canvas.DrawTileStretched(FrameTex, W,H, 0,0, FrameTex.GetSurfaceWidth(), FrameTex.GetSurfaceHeight());
 	}
    
 	if (bDrawHeader && WindowTitle != "")
@@ -60,15 +60,15 @@ delegate OnDrawFrame(Canvas C, float W, Float H)
 		C.Font = Owner.CurrentStyle.MainFont;
 		T = Owner.CurrentStyle.ScreenScale(FontScale);
 
-		C.SetDrawColor(250,250,250,FrameOpacity);
+		C.SetDrawColor(250, 250, 250, FrameOpacity);
 		C.TextSize(WindowTitle, XL, YL, T, T);
 
 		HeaderH = EdgeSize[1]-HeaderSize[1];
 		if (bHeaderCenter)
-			C.SetPos((W/2) - (XL/2),(HeaderH/2) - (YL/2));
-		else C.SetPos(HeaderSize[0],(HeaderH/2) - (YL/2));
+			C.SetPos((W/2) - (XL/2), (HeaderH/2) - (YL/2));
+		else C.SetPos(HeaderSize[0], (HeaderH/2) - (YL/2));
 
-		C.DrawText(WindowTitle,,T,T,FRI);
+		C.DrawText(WindowTitle, ,T, T,FRI);
 	}
 }
  
@@ -95,9 +95,9 @@ function PreDraw()
 	}
  
 	ComputeCoords();
-	Canvas.SetDrawColor(255,255,255);
-	Canvas.SetOrigin(CompPos[0],CompPos[1]);
-	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
+	Canvas.SetDrawColor(255, 255, 255);
+	Canvas.SetOrigin(CompPos[0], CompPos[1]);
+	Canvas.SetClip(CompPos[0]+CompPos[2], CompPos[1]+CompPos[3]);
 	DrawMenu();
 
 	for (i=0; i < Components.Length; ++i)

@@ -5,15 +5,15 @@ Class KFGUI_RightClickMenu extends KFGUI_Clickable;
 
 struct FRowItem
 {
-	var string Text,ToolTip;
-	var bool bSplitter,bDisabled;
+	var string Text, ToolTip;
+	var bool bSplitter, bDisabled;
 };
 var array < FRowItem> ItemRows;
-var int CurrentRow,OldRow;
+var int CurrentRow, OldRow;
 var int EdgeSize;
 var int OldSizeX;
 var transient bool bDrawToolTip;
-var Color BoxColor,OutlineColor;
+var Color BoxColor, OutlineColor;
 
 function OpenMenu( KFGUI_Base Menu)
 {
@@ -25,7 +25,7 @@ function OpenMenu( KFGUI_Base Menu)
 }
 final function ComputeSize()
 {
-	local float XS,YS,XL,YL,Scalar;
+	local float XS, YS, XL, YL, Scalar;
 	local int i;
 	local string S;
 
@@ -46,9 +46,9 @@ final function ComputeSize()
 				S = "----";
 			else S = ItemRows[i].Text;
 
-			Canvas.TextSize(S,XL,YL,Scalar,Scalar);
+			Canvas.TextSize(S, XL, YL, Scalar, Scalar);
 
-			XS = FMax(XS,XL);
+			XS = FMax(XS, XL);
 			YS += YL;
 		}
 	}
@@ -101,7 +101,7 @@ function DrawMenu()
 }
 function DrawToolTip()
 {
-	local float X,Y,XL,YL,BoxW,BoxH,TextX,TextY,Scalar,CursorSize;
+	local float X, Y,XL, YL, BoxW, BoxH, TextX, TextY, Scalar, CursorSize;
 	local string S;
 
 	Canvas.Reset();
@@ -109,7 +109,7 @@ function DrawToolTip()
 
 	S = ItemRows[CurrentRow].ToolTip;
 	Canvas.Font = Owner.CurrentStyle.PickFont(Scalar);
-	Canvas.TextSize(S,XL,YL,Scalar,Scalar);
+	Canvas.TextSize(S, XL, YL, Scalar, Scalar);
 
 	CursorSize = Owner.CurrentStyle.ScreenScale(Owner.CursorSize);
 	X = Owner.MousePosition.X+CursorSize;
@@ -122,14 +122,14 @@ function DrawToolTip()
 		X -= 0.01;
 	}
 
-	Owner.CurrentStyle.DrawOutlinedBox(X, Y, BoxW, BoxH, EdgeSize, MakeColor(5,5,5,255), MakeColor(115,115,115,255));
+	Owner.CurrentStyle.DrawOutlinedBox(X, Y, BoxW, BoxH, EdgeSize, MakeColor(5, 5,5, 255), MakeColor(115, 115, 115, 255));
 
 	TextX = X + (BoxW/2) - (XL/2) - (EdgeSize/2);
 	TextY = Y + (BoxH/2) - (YL/2) - (EdgeSize/2);
 
 	Canvas.DrawColor = class'HUD'.default.WhiteColor;
 	Canvas.SetPos(TextX, TextY);
-	Canvas.DrawText(S,,Scalar,Scalar);
+	Canvas.DrawText(S, ,Scalar, Scalar);
 }
 function HandleMouseClick( bool bRight)
 {
@@ -161,6 +161,6 @@ defaultproperties
 	bFocusedPostDrawItem=true
 	bHoverSound=false
 	EdgeSize=2
-	BoxColor=(R=5,G=5,B=5,A=200)
-	OutlineColor=(R=115,G=115,B=115,A=255)
+	BoxColor=(R=5, G=5, B=5, A=200)
+	OutlineColor=(R=115, G=115, B=115, A=255)
 }

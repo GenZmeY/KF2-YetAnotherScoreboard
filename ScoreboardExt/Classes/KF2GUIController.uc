@@ -18,10 +18,10 @@ var delegate < Interaction.OnReceivedNativeInputChar> OldOnReceivedNativeInputCh
 
 var delegate < GameViewportClient.HandleInputAxis> OldHandleInputAxis;
 
-var array < KFGUI_Page> ActiveMenus,PersistentMenus;
-var transient KFGUI_Base MouseFocus,InputFocus,KeyboardFocus;
-var IntPoint MousePosition,ScreenSize,OldMousePos,LastMousePos,LastClickPos[2];
-var transient float MousePauseTime,MenuTime,LastClickTimes[2];
+var array < KFGUI_Page> ActiveMenus, PersistentMenus;
+var transient KFGUI_Base MouseFocus, InputFocus, KeyboardFocus;
+var IntPoint MousePosition, ScreenSize, OldMousePos, LastMousePos, LastClickPos[2];
+var transient float MousePauseTime, MenuTime, LastClickTimes[2];
 var transient GUIStyleBase CurrentStyle;
 
 var transient Console OrgConsole;
@@ -34,9 +34,9 @@ var int CurrentCursorIndex, CursorSize;
 var Texture DefaultPens[3];
 var byte CursorFade, FastCursorFade, CursorFlash;
 var int CursorStep, FastCursorStep;
-var int FontBlurX,FontBlurX2,FontBlurY,FontBlurY2,FastFontBlurX,FastFontBlurX2,FastFontBlurY,FastFontBlurY2;
+var int FontBlurX, FontBlurX2, FontBlurY, FontBlurY2, FastFontBlurX, FastFontBlurX2, FastFontBlurY, FastFontBlurY2;
 
-var bool bMouseWasIdle,bIsInMenuState,bAbsorbInput,bIsInvalid,bHideCursor,bUsingGamepad,bForceEngineCursor,bNoInputReset;
+var bool bMouseWasIdle, bIsInMenuState, bAbsorbInput, bIsInvalid, bHideCursor, bUsingGamepad, bForceEngineCursor, bNoInputReset;
 
 static function KF2GUIController GetGUIController( PlayerController PC)
 {
@@ -47,7 +47,7 @@ static function KF2GUIController GetGUIController( PlayerController PC)
 		return None;
 	}
 
-	foreach PC.ChildActors(class'ScoreboardExt.KF2GUIController',G)
+	foreach PC.ChildActors(class'ScoreboardExt.KF2GUIController', G)
 	{
 		if (!G.bIsInvalid)
 		{
@@ -57,7 +57,7 @@ static function KF2GUIController GetGUIController( PlayerController PC)
 
 	if (G == None)
 	{
-		G = PC.Spawn(class'ScoreboardExt.KF2GUIController',PC);
+		G = PC.Spawn(class'ScoreboardExt.KF2GUIController', PC);
 	}
 
 	return G;
@@ -158,7 +158,7 @@ simulated function HandleDrawMenu()
 simulated function RenderMenu( Canvas C)
 {
 	local int i;
-	local float OrgX,OrgY,ClipX,ClipY;
+	local float OrgX, OrgY, ClipX, ClipY;
 
 	ClientViewport.ViewportConsole = OrgConsole;
 
@@ -186,8 +186,8 @@ simulated function RenderMenu( Canvas C)
 			HUDOwner.HUDWidgets[i].PreDraw();
 		}
 
-		C.SetOrigin(OrgX,OrgY);
-		C.SetClip(ClipX,ClipY);
+		C.SetOrigin(OrgX, OrgY);
+		C.SetClip(ClipX, ClipY);
 	}
 
 	if (bIsInMenuState)
@@ -211,8 +211,8 @@ simulated function RenderMenu( Canvas C)
 			InputFocus.Canvas = C;
 			InputFocus.PreDraw();
 		}
-		C.SetOrigin(OrgX,OrgY);
-		C.SetClip(ClipX,ClipY);
+		C.SetOrigin(OrgX, OrgY);
+		C.SetClip(ClipX, ClipY);
 
 		if (!bHideCursor)
 		{
@@ -229,7 +229,7 @@ simulated function DrawCursor(Canvas C, float PosX, float PosY)
 {
 	C.SetPos(PosX, PosY);
 	C.DrawColor = CursorColor;
-	C.DrawTile(CursorTextures[CurrentCursorIndex], CurrentStyle.ScreenScale(CursorSize), CurrentStyle.ScreenScale(CursorSize), 0.f, 0.f, CursorTextures[CurrentCursorIndex].SizeX, CursorTextures[CurrentCursorIndex].SizeY,, true);
+	C.DrawTile(CursorTextures[CurrentCursorIndex], CurrentStyle.ScreenScale(CursorSize), CurrentStyle.ScreenScale(CursorSize), 0.f, 0.f, CursorTextures[CurrentCursorIndex].SizeX, CursorTextures[CurrentCursorIndex].SizeY, , true);
 }
 
 simulated final function InventoryChanged(optional KFWeapon Wep, optional bool bRemove)
@@ -238,7 +238,7 @@ simulated final function InventoryChanged(optional KFWeapon Wep, optional bool b
 
 	for (i=(ActiveMenus.Length-1); i >= 0; --i)
 	{
-		ActiveMenus[i].InventoryChanged(Wep,bRemove);
+		ActiveMenus[i].InventoryChanged(Wep, bRemove);
 	}
 }
 
@@ -281,7 +281,7 @@ simulated final function SetMenuState( bool bActive)
 		PlayerOwner.PlayerInput = CustomInput;
 
 		if (LastMousePos != default.LastMousePos)
-			ClientViewport.SetMouse(LastMousePos.X,LastMousePos.Y);
+			ClientViewport.SetMouse(LastMousePos.X, LastMousePos.Y);
 	}
 	else
 	{
@@ -437,7 +437,7 @@ simulated final function int GetFreeIndex( bool bNewAlwaysTop ) // Find first al
 	for (i=0; i < ActiveMenus.Length; ++i)
 		if (bNewAlwaysTop || !ActiveMenus[i].bAlwaysTop)
 		{
-			ActiveMenus.Insert(i,1);
+			ActiveMenus.Insert(i, 1);
 			return i;
 		}
 	i = ActiveMenus.Length;
@@ -494,7 +494,7 @@ simulated function KFGUI_Page OpenMenu( class < KFGUI_Page> MenuClass)
 				if (i > 0 && ActiveMenus[i].BringPageToFront() ) // Sort it upfront.
 				{
 					M = ActiveMenus[i];
-					ActiveMenus.Remove(i,1);
+					ActiveMenus.Remove(i, 1);
 					i = GetFreeIndex(M.bAlwaysTop);
 					ActiveMenus[i] = M;
 				}
@@ -507,7 +507,7 @@ simulated function KFGUI_Page OpenMenu( class < KFGUI_Page> MenuClass)
 				if (PersistentMenus[i].Class == MenuClass)
 				{
 					M = PersistentMenus[i];
-					PersistentMenus.Remove(i,1);
+					PersistentMenus.Remove(i, 1);
 					i = GetFreeIndex(M.bAlwaysTop);
 					ActiveMenus[i] = M;
 					M.ShowMenu();
@@ -547,7 +547,7 @@ simulated function CloseMenu( class < KFGUI_Page> MenuClass, optional bool bClos
 		if (bCloseAll || ActiveMenus[i].Class == MenuClass)
 		{
 			M = ActiveMenus[i];
-			ActiveMenus.Remove(i,1);
+			ActiveMenus.Remove(i, 1);
 			M.CloseMenu();
 
 			for (j=0; j < M.TimerNames.Length; j++)
@@ -591,7 +591,7 @@ simulated function PopCloseMenu( KFGUI_Base Item)
 		if (ActiveMenus[i] == Item)
 		{
 			M = ActiveMenus[i];
-			ActiveMenus.Remove(i,1);
+			ActiveMenus.Remove(i, 1);
 			M.CloseMenu();
 
 			// Cache menu.
@@ -613,14 +613,14 @@ simulated function BringMenuToFront( KFGUI_Page Page)
 	for (i=(ActiveMenus.Length-1); i >= 0; --i)
 		if (ActiveMenus[i] == Page)
 		{
-			ActiveMenus.Remove(i,1);
+			ActiveMenus.Remove(i, 1);
 			break;
 		}
 	if (i == -1)
 		return; // Page isn't open.
 
 	// Put on front of stack.
-	ActiveMenus.Insert(0,1);
+	ActiveMenus.Insert(0, 1);
 	ActiveMenus[0] = Page;
 }
 simulated final function bool MenuIsOpen( optional class < KFGUI_Page> MenuClass)
@@ -716,11 +716,11 @@ simulated final function bool CheckMouse( name Key, EInputEvent Event)
 		{
 		case 'XboxTypeS_A':
 		case 'LeftMouseButton':
-			GUI_InputMouse(true,false);
+			GUI_InputMouse(true, false);
 			return true;
 		case 'XboxTypeS_B':
 		case 'RightMouseButton':
-			GUI_InputMouse(true,true);
+			GUI_InputMouse(true, true);
 			return true;
 		}
 	}
@@ -730,11 +730,11 @@ simulated final function bool CheckMouse( name Key, EInputEvent Event)
 		{
 		case 'XboxTypeS_A':
 		case 'LeftMouseButton':
-			GUI_InputMouse(false,false);
+			GUI_InputMouse(false, false);
 			return true;
 		case 'XboxTypeS_B':
 		case 'RightMouseButton':
-			GUI_InputMouse(false,true);
+			GUI_InputMouse(false, true);
 			return true;
 		}
 	}
@@ -777,7 +777,7 @@ simulated function bool ReceivedInputKey( int ControllerId, name Key, EInputEven
 		}
 	}
 
-	if (!CheckMouse(Key,Event) && !OnInputKey(ControllerId,Key,Event,AmountDepressed,bGamepad))
+	if (!CheckMouse(Key, Event) && !OnInputKey(ControllerId, Key, Event, AmountDepressed, bGamepad))
 	{
 		if (bGamepad)
 		{
@@ -812,7 +812,7 @@ simulated function bool ReceivedInputAxis( int ControllerId, name Key, float Del
 {
 	local Vector2D V;
 	local KFPlayerInput KFInput;
-	local float GamepadSensitivity,OldMouseX,OldMouseY,MoveDelta,MoveDeltaInvert;
+	local float GamepadSensitivity, OldMouseX, OldMouseY, MoveDelta, MoveDeltaInvert;
 
 	if (!bIsInMenuState)
 		return false;
@@ -862,7 +862,7 @@ simulated function bool ReceivedInputChar( int ControllerId, string Unicode)
 {
 	if (!bIsInMenuState)
 		return false;
-	return OnReceivedInputChar(ControllerId,Unicode);
+	return OnReceivedInputChar(ControllerId, Unicode);
 }
 
 simulated Delegate bool OnInputKey( int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
@@ -889,7 +889,7 @@ simulated Delegate bool InternalReceivedInputChar( int ControllerId, string Unic
 defaultproperties
 {
 	CursorSize=24
-	CursorColor=(R=255,G=255,B=255,A=255)
+	CursorColor=(R=255, G=255, B=255, A=255)
 	CursorTextures[`CURSOR_DEFAULT]=Texture2D'UI_Managers.LoaderManager_SWF_I13'
 	CurrentCursorIndex=`CURSOR_DEFAULT
 

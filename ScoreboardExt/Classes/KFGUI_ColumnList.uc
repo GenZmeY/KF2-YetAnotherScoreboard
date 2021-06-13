@@ -11,12 +11,12 @@ struct FColumnItem
 	var() bool bOnlyTextures;
 
 	var transient bool bHidden;
-	var transient int X,XSize;
+	var transient int X, XSize;
 };
 var() array < FColumnItem> Columns;
 var() class < KFGUI_ListItem> ListItemClass;
 var() float FontSize;
-var() color FocusedLineColor,SelectedLineColor;
+var() color FocusedLineColor, SelectedLineColor;
 var() float EdgeSize;
 var KFGUI_ColumnTop ColumnComp;
 var Canvas.FontRenderInfo LineFontInfo;
@@ -24,10 +24,10 @@ var Canvas.FontRenderInfo LineFontInfo;
 var int SelectedRowIndex;
 var int LastSortedColumn;
 
-var transient float TextHeight,ScalerSize,TextScaler;
+var transient float TextHeight, ScalerSize, TextScaler;
 var transient int OldItemsPerFrame;
 
-var KFGUI_ListItem FirstItem,UnusedItem;
+var KFGUI_ListItem FirstItem, UnusedItem;
 
 var transient bool bListSizeDirty;
 var bool bLastSortedReverse;
@@ -38,7 +38,7 @@ delegate OnSelectedRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblClic
 
 function KFGUI_ListItem AddLine( string Value, optional int iValue, optional string SortValue, optional int Index=-1)
 {
-	local KFGUI_ListItem N,O;
+	local KFGUI_ListItem N, O;
 	local int i;
 
 	// Allocate list item object.
@@ -51,7 +51,7 @@ function KFGUI_ListItem AddLine( string Value, optional int iValue, optional str
 	else N = new (None) ListItemClass;
 
 	// Setup column text value.
-	N.SetValue(Value,iValue,SortValue);
+	N.SetValue(Value, iValue, SortValue);
 
 	// Insert into list.
 	if (bShouldSortList && Index == -1)
@@ -160,7 +160,7 @@ final function RemoveLine( KFGUI_ListItem I)
 }
 final function EmptyList()
 {
-	local KFGUI_ListItem N,I;
+	local KFGUI_ListItem N, I;
 
 	for (I=FirstItem; I != None; I=N)
 	{
@@ -191,7 +191,7 @@ final function KFGUI_ListItem GetFromIndex( int Index)
 function SortColumn( int Column, optional bool bReverse)
 {
 	local array < KFGUI_ListItem> List;
-	local KFGUI_ListItem Sel,N,P;
+	local KFGUI_ListItem Sel, N,P;
 	local int i;
 
 	if (!bCanSortColumn || Column < 0 || Column >= Columns.Length)
@@ -226,7 +226,7 @@ function SortColumn( int Column, optional bool bReverse)
 				if (List[i].Temp > N.Temp)
 					break;
 		}
-		List.Insert(i,1);
+		List.Insert(i, 1);
 		List[i] = N;
 	}
 
@@ -268,21 +268,21 @@ function InitMenu()
 
 final function DrawStrClipped( string S, optional bool bOnlyTextures)
 {
-	Canvas.PushMaskRegion(Canvas.OrgX,Canvas.OrgY,Canvas.ClipX,Canvas.ClipY);
-	Owner.CurrentStyle.DrawTexturedString(S,Canvas.CurX,Canvas.CurY,TextScaler,LineFontInfo,false,bOnlyTextures);
+	Canvas.PushMaskRegion(Canvas.OrgX, Canvas.OrgY, Canvas.ClipX, Canvas.ClipY);
+	Owner.CurrentStyle.DrawTexturedString(S, Canvas.CurX, Canvas.CurY, TextScaler, LineFontInfo, false, bOnlyTextures);
 	Canvas.PopMaskRegion();
 }
 
 function DrawMenu()
 {
-	local int i,n,j;
-	local float Y,TextY,XOffset;
+	local int i, n,j;
+	local float Y, TextY, XOffset;
 	local KFGUI_ListItem C;
 	local bool bCheckMouse;
 
-	Canvas.SetDrawColor(250,250,250,255);
-	Canvas.SetPos(0.f,0.f);
-	Canvas.DrawTileStretched(Owner.CurrentStyle.BorderTextures[`BOX_SMALL_SLIGHTTRANSPARENT],CompPos[2],CompPos[3],0,0,128,128);
+	Canvas.SetDrawColor(250, 250, 250, 255);
+	Canvas.SetPos(0.f, 0.f);
+	Canvas.DrawTileStretched(Owner.CurrentStyle.BorderTextures[`BOX_SMALL_SLIGHTTRANSPARENT], CompPos[2], CompPos[3], 0,0, 128, 128);
 
 	// Mouse focused item check.
 	bCheckMouse = bClickable && bFocused;
@@ -298,7 +298,7 @@ function DrawMenu()
 	Y = 0.f;
 	TextY = (ItemHeight-TextHeight)*0.5f;
 	XOffset = TextY*0.75;
-	Canvas.SetDrawColor(250,250,250,255);
+	Canvas.SetDrawColor(250, 250, 250, 255);
 
 	for (i=0; (i < ListItemsPerPage && C != None); ++i)
 	{
@@ -313,25 +313,25 @@ function DrawMenu()
 		// Draw selection background.
 		if (SelectedRowIndex == n ) // Selected
 		{
-			Canvas.SetPos(EdgeSize,Y);
+			Canvas.SetPos(EdgeSize, Y);
 			Canvas.DrawColor = SelectedLineColor;
-			Owner.CurrentStyle.DrawWhiteBox(CompPos[2]-(EdgeSize*2),ItemHeight);
-			Canvas.SetDrawColor(250,250,250,255);
+			Owner.CurrentStyle.DrawWhiteBox(CompPos[2]-(EdgeSize*2), ItemHeight);
+			Canvas.SetDrawColor(250, 250, 250, 255);
 		}
 		else if (FocusMouseItem == n ) // Focused
 		{
-			Canvas.SetPos(EdgeSize,Y);
+			Canvas.SetPos(EdgeSize, Y);
 			Canvas.DrawColor = FocusedLineColor;
-			Owner.CurrentStyle.DrawWhiteBox(CompPos[2]-(EdgeSize*2),ItemHeight);
-			Canvas.SetDrawColor(250,250,250,255);
+			Owner.CurrentStyle.DrawWhiteBox(CompPos[2]-(EdgeSize*2), ItemHeight);
+			Canvas.SetDrawColor(250, 250, 250, 255);
 		}
 
 		// Draw columns of text
 		for (j=0; j < Columns.Length; ++j)
 			if (!Columns[j].bHidden)
 			{
-				//Canvas.SetClip(Columns[j].X+Columns[j].XSize+EdgeSize,YClip);
-				Canvas.SetPos(Columns[j].X+XOffset+EdgeSize,TextY);
+				//Canvas.SetClip(Columns[j].X+Columns[j].XSize+EdgeSize, YClip);
+				Canvas.SetPos(Columns[j].X+XOffset+EdgeSize, TextY);
 				DrawStrClipped(C.GetDisplayStr(j), Columns[j].bOnlyTextures);
 			}
 		Y+=ItemHeight;
@@ -344,7 +344,7 @@ function DrawMenu()
 function PreDraw()
 {
 	local byte j;
-	local float XS,SpaceX;
+	local float XS, SpaceX;
 
 	if (!bVisible)
 		return;
@@ -354,7 +354,7 @@ function PreDraw()
 	// Check font to use.
 	Canvas.Font = Owner.CurrentStyle.PickFont(TextScaler);
 	TextScaler *= FontSize;
-	Canvas.TextSize("ABC",XS,TextHeight,TextScaler,TextScaler);
+	Canvas.TextSize("ABC", XS, TextHeight, TextScaler, TextScaler);
 
 	for (j=0; j < 4; ++j)
 	{
@@ -402,8 +402,8 @@ function PreDraw()
 	ScrollBar.PreDraw();
 
 	// Draw self.
-	Canvas.SetOrigin(CompPos[0],CompPos[1]);
-	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
+	Canvas.SetOrigin(CompPos[0], CompPos[1]);
+	Canvas.SetClip(CompPos[0]+CompPos[2], CompPos[1]+CompPos[3]);
 	DrawMenu();
 
 	// Reset scaling to allow mouse to capture input.
@@ -414,12 +414,12 @@ function PreDraw()
 function InternalClickedItem( int Index, bool bRight, int MouseX, int MouseY)
 {
 	SelectedRowIndex = Index;
-	OnSelectedRow(GetFromIndex(Index),Index,bRight,false);
+	OnSelectedRow(GetFromIndex(Index), Index, bRight, false);
 }
 function InternalDblClickedItem( int Index, bool bRight, int MouseX, int MouseY)
 {
 	SelectedRowIndex = Index;
-	OnSelectedRow(GetFromIndex(Index),Index,bRight,true);
+	OnSelectedRow(GetFromIndex(Index), Index, bRight, true);
 }
 
 defaultproperties
@@ -431,8 +431,8 @@ defaultproperties
 	FontSize=1.f
 	EdgeSize=5.f
 	bClickable=true
-	FocusedLineColor=(R=64,G=3,B=48,A=255)
-	SelectedLineColor=(R=84,G=26,B=128,A=255)
+	FocusedLineColor=(R=64, G=3, B=48, A=255)
+	SelectedLineColor=(R=84, G=26, B=128, A=255)
 	bCanSortColumn=true
 
 	Begin Object Class=KFGUI_ColumnTop Name=ColumnComps
@@ -444,5 +444,5 @@ defaultproperties
 	End Object
 	Components.Add(ColumnComps)
 
-	LineFontInfo=(bClipText=true,bEnableShadow=false)
+	LineFontInfo=(bClipText=true, bEnableShadow=false)
 }

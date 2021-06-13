@@ -5,7 +5,7 @@ Class ClassicStyle extends KF2Style;
 
 function RenderFramedWindow( KFGUI_FloatingWindow P)
 {
-	local int XS,YS,TitleHeight;
+	local int XS, YS, TitleHeight;
 	local float XL, YL, FontScale;
 
 	XS = Canvas.ClipX-Canvas.OrgX;
@@ -13,48 +13,48 @@ function RenderFramedWindow( KFGUI_FloatingWindow P)
 	TitleHeight = DefaultHeight;
 
 	if (P.bWindowFocused)
-		Canvas.SetDrawColor(105,105,105,255);
-	else Canvas.SetDrawColor(85,85,85,P.FrameOpacity);
+		Canvas.SetDrawColor(105, 105, 105, 255);
+	else Canvas.SetDrawColor(85, 85, 85, P.FrameOpacity);
 
 	// Frame Header
 	Canvas.SetPos(0, 0);
-	Canvas.DrawTileStretched(TabTextures[`TAB_TOP],XS,TitleHeight,0,0,128,16);
+	Canvas.DrawTileStretched(TabTextures[`TAB_TOP], XS, TitleHeight, 0,0, 128, 16);
 
 	// Frame itself.
 	Canvas.SetPos(0, TitleHeight);
-	Canvas.DrawTileStretched(BorderTextures[`BOX_SMALL_SLIGHTTRANSPARENT],XS,YS-TitleHeight,0,0,128,128);
+	Canvas.DrawTileStretched(BorderTextures[`BOX_SMALL_SLIGHTTRANSPARENT], XS, YS-TitleHeight, 0,0, 128, 128);
 
 	// Title.
 	if (P.WindowTitle != "")
 	{
 		Canvas.Font = PickFont(FontScale);
-		Canvas.TextSize(P.WindowTitle,XL,YL,FontScale,FontScale);
-		Canvas.SetDrawColor(250,250,250,255);
-		Canvas.SetPos((XS*0.5)-(XL*0.5),0);
-		Canvas.DrawText(P.WindowTitle,,FontScale,FontScale);
+		Canvas.TextSize(P.WindowTitle, XL, YL, FontScale, FontScale);
+		Canvas.SetDrawColor(250, 250, 250, 255);
+		Canvas.SetPos((XS*0.5)-(XL*0.5), 0);
+		Canvas.DrawText(P.WindowTitle, ,FontScale, FontScale);
 	}
 }
 
 function RenderWindow( KFGUI_Page P)
 {
-	local int XS,YS;
+	local int XS, YS;
 
 	XS = Canvas.ClipX-Canvas.OrgX;
 	YS = Canvas.ClipY-Canvas.OrgY;
 
 	// Frame itself.
 	if (P.bWindowFocused)
-		Canvas.SetDrawColor(105,105,105,255);
-	else Canvas.SetDrawColor(85,85,85,P.FrameOpacity);
+		Canvas.SetDrawColor(105, 105, 105, 255);
+	else Canvas.SetDrawColor(85, 85, 85, P.FrameOpacity);
 
 	Canvas.SetPos(0, 0);
-	Canvas.DrawTileStretched(BorderTextures[`BOX_SMALL_SLIGHTTRANSPARENT],XS,YS,0,0,128,128);
+	Canvas.DrawTileStretched(BorderTextures[`BOX_SMALL_SLIGHTTRANSPARENT], XS, YS, 0,0, 128, 128);
 }
 
 function RenderToolTip( KFGUI_Tooltip TT)
 {
 	local int i;
-	local float X,Y,XS,YS,TX,TY,TS,DefFontHeight;
+	local float X, Y,XS, YS, TX, TY, TS, DefFontHeight;
 
 	Canvas.Font = PickFont(TS);
 
@@ -63,8 +63,8 @@ function RenderToolTip( KFGUI_Tooltip TT)
 	for (i=0; i < TT.Lines.Length; ++i)
 	{
 		if (TT.Lines[i] != "")
-			Canvas.TextSize(TT.Lines[i],XS,YS);
-		TX = FMax(XS,TX);
+			Canvas.TextSize(TT.Lines[i], XS, YS);
+		TX = FMax(XS, TX);
 	}
 	TX*=TS;
 
@@ -82,30 +82,30 @@ function RenderToolTip( KFGUI_Tooltip TT)
 		Y = TT.CompPos[1]-TY;
 
 	if (TT.CurrentAlpha < 255)
-		TT.CurrentAlpha = Min(TT.CurrentAlpha+25,255);
+		TT.CurrentAlpha = Min(TT.CurrentAlpha+25, 255);
 
 	// Reset clipping.
-	Canvas.SetOrigin(0,0);
-	Canvas.SetClip(TT.Owner.ScreenSize.X,TT.Owner.ScreenSize.Y);
+	Canvas.SetOrigin(0, 0);
+	Canvas.SetClip(TT.Owner.ScreenSize.X, TT.Owner.ScreenSize.Y);
 
 	// Draw frame.
-	Canvas.SetDrawColor(115,115,115,TT.CurrentAlpha);
-	Canvas.SetPos(X-2,Y-2);
-	DrawBoxHollow(X-2,Y-2,TX+4,TY+4,2);
-	Canvas.SetDrawColor(5,5,5,TT.CurrentAlpha);
-	Canvas.SetPos(X,Y);
-	DrawWhiteBox(TX,TY);
+	Canvas.SetDrawColor(115, 115, 115, TT.CurrentAlpha);
+	Canvas.SetPos(X-2, Y-2);
+	DrawBoxHollow(X-2, Y-2, TX+4, TY+4, 2);
+	Canvas.SetDrawColor(5, 5,5, TT.CurrentAlpha);
+	Canvas.SetPos(X, Y);
+	DrawWhiteBox(TX, TY);
 
 	DefFontHeight = DefaultHeight;
 
 	// Draw text.
-	Canvas.SetDrawColor(255,255,255,TT.CurrentAlpha);
+	Canvas.SetDrawColor(255, 255, 255, TT.CurrentAlpha);
 	X+=TOOLTIP_BORDER;
 	Y+=TOOLTIP_BORDER;
 	for (i=0; i < TT.Lines.Length; ++i)
 	{
-		Canvas.SetPos(X,Y);
-		Canvas.DrawText(TT.Lines[i],,TS,TS,TT.TextFontInfo);
+		Canvas.SetPos(X, Y);
+		Canvas.DrawText(TT.Lines[i], ,TS, TS, TT.TextFontInfo);
 		Y+=DefFontHeight;
 	}
 }
@@ -122,7 +122,7 @@ function RenderScrollBar( KFGUI_ScrollBarBase S)
 	else Canvas.SetDrawColor(15, 15, 15, 160);
 
 	Canvas.SetPos(0.f, 0.f);
-	Canvas.DrawTileStretched(BorderTextures[`BOX_INNERBORDER],S.CompPos[2],S.CompPos[3],0,0,128,128);
+	Canvas.DrawTileStretched(BorderTextures[`BOX_INNERBORDER], S.CompPos[2], S.CompPos[3], 0,0, 128, 128);
 
 	if (S.bDisabled)
 		return;
@@ -131,7 +131,7 @@ function RenderScrollBar( KFGUI_ScrollBarBase S)
 		i = 3;
 	else i = 2;
 
-	S.SliderScale = FMax(S.PageStep * (S.CompPos[i] - 32.f) / (S.MaxRange + S.PageStep),S.CalcButtonScale);
+	S.SliderScale = FMax(S.PageStep * (S.CompPos[i] - 32.f) / (S.MaxRange + S.PageStep), S.CalcButtonScale);
 
 	if (S.bGrabbedScroller)
 	{
@@ -148,20 +148,20 @@ function RenderScrollBar( KFGUI_ScrollBarBase S)
 	S.ButtonOffset = A*(S.CompPos[i]-S.SliderScale);
 
 	if (S.bGrabbedScroller)
-		Canvas.SetDrawColor(125,125,125,200);
+		Canvas.SetDrawColor(125, 125, 125, 200);
 	else if (S.bFocused)
-		Canvas.SetDrawColor(200,200,200,200);
-	else Canvas.SetDrawColor(255,255,255,200);
+		Canvas.SetDrawColor(200, 200, 200, 200);
+	else Canvas.SetDrawColor(255, 255, 255, 200);
 
 	if (S.bVertical)
 	{
 		Canvas.SetPos(0.f, S.ButtonOffset);
-		Canvas.DrawTileStretched(ScrollTexture,S.CompPos[2],S.SliderScale,0,0,32,32);
+		Canvas.DrawTileStretched(ScrollTexture, S.CompPos[2], S.SliderScale, 0,0, 32, 32);
 	}
 	else 
 	{
 		Canvas.SetPos(S.ButtonOffset, 0.f);
-		Canvas.DrawTileStretched(ScrollTexture,S.SliderScale,S.CompPos[3],0,0,32,32);
+		Canvas.DrawTileStretched(ScrollTexture, S.SliderScale, S.CompPos[3], 0,0, 32, 32);
 	}
 }
 
@@ -169,7 +169,7 @@ function RenderCheckbox( KFGUI_CheckBox C)
 {
 	local Texture CheckMark;
 
-	DrawTileStretched(ItemBoxTextures[`ITEMBOX_DISABLED],0.f,0.f,C.CompPos[2],C.CompPos[3]);
+	DrawTileStretched(ItemBoxTextures[`ITEMBOX_DISABLED], 0.f, 0.f, C.CompPos[2], C.CompPos[3]);
 
 	if (C.bChecked)
 	{
@@ -179,48 +179,48 @@ function RenderCheckbox( KFGUI_CheckBox C)
 			CheckMark = CheckBoxTextures[`CHECKMARK_HIGHLIGHTED];
 		else CheckMark = CheckBoxTextures[`CHECKMARK_NORMAL];
 
-		Canvas.SetDrawColor(255,255,255,255);
-		Canvas.SetPos(0.f,0.f);
-		Canvas.DrawTile(CheckMark,C.CompPos[2],C.CompPos[3],0,0,CheckMark.GetSurfaceWidth(),CheckMark.GetSurfaceHeight());
+		Canvas.SetDrawColor(255, 255, 255, 255);
+		Canvas.SetPos(0.f, 0.f);
+		Canvas.DrawTile(CheckMark, C.CompPos[2], C.CompPos[3], 0,0, CheckMark.GetSurfaceWidth(), CheckMark.GetSurfaceHeight());
 	}
 }
 
 function RenderComboBox( KFGUI_ComboBox C)
 {
 	if (C.bDisabled)
-		Canvas.SetDrawColor(64,64,64,255);
+		Canvas.SetDrawColor(64, 64, 64, 255);
 	else if (C.bPressedDown)
-		Canvas.SetDrawColor(220,220,220,255);
+		Canvas.SetDrawColor(220, 220, 220, 255);
 	else if (C.bFocused)
-		Canvas.SetDrawColor(190,190,190,255);
+		Canvas.SetDrawColor(190, 190, 190, 255);
 
-	Canvas.SetPos(0.f,0.f);
-	Canvas.DrawTileStretched(BorderTextures[`BOX_INNERBORDER],C.CompPos[2],C.CompPos[3],0,0,128,128);
+	Canvas.SetPos(0.f, 0.f);
+	Canvas.DrawTileStretched(BorderTextures[`BOX_INNERBORDER], C.CompPos[2], C.CompPos[3], 0,0, 128, 128);
 
 	DrawArrowBox(3, C.CompPos[2]-32, 0.5f, 32, 32);
 
 	if (C.SelectedIndex < C.Values.Length && C.Values[C.SelectedIndex] != "")
 	{
-		Canvas.SetPos(C.BorderSize,(C.CompPos[3]-C.TextHeight)*0.5);
+		Canvas.SetPos(C.BorderSize, (C.CompPos[3]-C.TextHeight)*0.5);
 		if (C.bDisabled)
 			Canvas.DrawColor = C.TextColor*0.5f;
 		else Canvas.DrawColor = C.TextColor;
-		Canvas.PushMaskRegion(Canvas.OrgX,Canvas.OrgY,Canvas.ClipX-C.BorderSize,Canvas.ClipY);
-		Canvas.DrawText(C.Values[C.SelectedIndex],,C.TextScale,C.TextScale,C.TextFontInfo);
+		Canvas.PushMaskRegion(Canvas.OrgX, Canvas.OrgY, Canvas.ClipX-C.BorderSize, Canvas.ClipY);
+		Canvas.DrawText(C.Values[C.SelectedIndex], ,C.TextScale, C.TextScale, C.TextFontInfo);
 		Canvas.PopMaskRegion();
 	}
 }
 
 function RenderComboList( KFGUI_ComboSelector C)
 {
-	local float X,Y,YL,YP,Edge;
+	local float X, Y,YL, YP, Edge;
 	local int i;
 	local bool bCheckMouse;
 
 	// Draw background.
 	Edge = C.Combo.BorderSize;
 	Canvas.SetPos(0.f, 0.f);
-	Canvas.DrawTileStretched(BorderTextures[`BOX_SMALL_SLIGHTTRANSPARENT],C.CompPos[2],C.CompPos[3],0,0,128,128);
+	Canvas.DrawTileStretched(BorderTextures[`BOX_SMALL_SLIGHTTRANSPARENT], C.CompPos[2], C.CompPos[3], 0,0, 128, 128);
 
 	// While rendering, figure out mouse focus row.
 	X = C.Owner.MousePosition.X - Canvas.OrgX;
@@ -234,24 +234,24 @@ function RenderComboList( KFGUI_ComboSelector C)
 	YP = Edge;
 	C.CurrentRow = -1;
 
-	Canvas.PushMaskRegion(Canvas.OrgX,Canvas.OrgY,Canvas.ClipX,Canvas.ClipY);
+	Canvas.PushMaskRegion(Canvas.OrgX, Canvas.OrgY, Canvas.ClipX, Canvas.ClipY);
 	for (i=0; i < C.Combo.Values.Length; ++i)
 	{
 		if (bCheckMouse && Y >= YP && Y <= (YP+YL))
 		{
 			bCheckMouse = false;
 			C.CurrentRow = i;
-			Canvas.SetPos(4.f,YP);
-			Canvas.SetDrawColor(128,48,48,255);
-			DrawWhiteBox(C.CompPos[2]-(Edge*2.f),YL);
+			Canvas.SetPos(4.f, YP);
+			Canvas.SetDrawColor(128, 48, 48, 255);
+			DrawWhiteBox(C.CompPos[2]-(Edge*2.f), YL);
 		}
-		Canvas.SetPos(Edge,YP);
+		Canvas.SetPos(Edge, YP);
 
 		if (i == C.Combo.SelectedIndex)
 			Canvas.DrawColor = C.Combo.SelectedTextColor;
 		else Canvas.DrawColor = C.Combo.TextColor;
 
-		Canvas.DrawText(C.Combo.Values[i],,C.Combo.TextScale,C.Combo.TextScale,C.Combo.TextFontInfo);
+		Canvas.DrawText(C.Combo.Values[i], ,C.Combo.TextScale, C.Combo.TextScale, C.Combo.TextFontInfo);
 
 		YP+=YL;
 	}
@@ -265,14 +265,14 @@ function RenderComboList( KFGUI_ComboSelector C)
 
 function RenderRightClickMenu( KFGUI_RightClickMenu C)
 {
-	local float X,Y,XL,YL,YP,Edge,TextScale;
+	local float X, Y,XL, YL, YP, Edge, TextScale;
 	local int i;
 	local bool bCheckMouse;
 	local string S;
 
 	// Draw background.
 	Edge = C.EdgeSize;
-	DrawOutlinedBox(0.f,0.f,C.CompPos[2],C.CompPos[3],Edge,C.BoxColor,C.OutlineColor);
+	DrawOutlinedBox(0.f, 0.f, C.CompPos[2], C.CompPos[3], Edge, C.BoxColor, C.OutlineColor);
 
 	// While rendering, figure out mouse focus row.
 	X = C.Owner.MousePosition.X - Canvas.OrgX;
@@ -285,34 +285,34 @@ function RenderRightClickMenu( KFGUI_RightClickMenu C)
 	YP = Edge*2;
 	C.CurrentRow = -1;
 
-	Canvas.PushMaskRegion(Canvas.OrgX,Canvas.OrgY,Canvas.ClipX,Canvas.ClipY);
+	Canvas.PushMaskRegion(Canvas.OrgX, Canvas.OrgY, Canvas.ClipX, Canvas.ClipY);
 	for (i=0; i < C.ItemRows.Length; ++i)
 	{
 		if (C.ItemRows[i].bSplitter)
 			S = "-------";
 		else S = C.ItemRows[i].Text;
 
-		Canvas.TextSize(S,XL,YL,TextScale,TextScale);
+		Canvas.TextSize(S, XL, YL, TextScale, TextScale);
 
 		if (bCheckMouse && Y >= YP && Y <= (YP+YL))
 		{
 			bCheckMouse = false;
 			C.CurrentRow = i;
-			Canvas.SetPos(Edge,YP);
-			Canvas.SetDrawColor(128,0,0,255);
-			DrawWhiteBox(C.CompPos[2]-(Edge*2.f),YL);
+			Canvas.SetPos(Edge, YP);
+			Canvas.SetDrawColor(128, 0,0, 255);
+			DrawWhiteBox(C.CompPos[2]-(Edge*2.f), YL);
 		}
 
-		Canvas.SetPos(Edge*6,YP);
+		Canvas.SetPos(Edge*6, YP);
 		if (C.ItemRows[i].bSplitter)
-			Canvas.SetDrawColor(255,255,255,255);
+			Canvas.SetDrawColor(255, 255, 255, 255);
 		else
 		{
 			if (C.ItemRows[i].bDisabled)
-				Canvas.SetDrawColor(148,148,148,255);
-			else Canvas.SetDrawColor(248,248,248,255);
+				Canvas.SetDrawColor(148, 148, 148, 255);
+			else Canvas.SetDrawColor(248, 248, 248, 255);
 		}
-		Canvas.DrawText(S,,TextScale,TextScale);
+		Canvas.DrawText(S, ,TextScale, TextScale);
 
 		YP+=YL;
 	}
@@ -326,7 +326,7 @@ function RenderRightClickMenu( KFGUI_RightClickMenu C)
 
 function RenderButton( KFGUI_Button B)
 {
-	local float XL,YL,TS,AX,AY,GamepadTexSize;
+	local float XL, YL, TS, AX, AY, GamepadTexSize;
 	local Texture2D Mat, ButtonTex;
 	local bool bDrawOverride;
 
@@ -341,13 +341,13 @@ function RenderButton( KFGUI_Button B)
 			Mat = ButtonTextures[`BUTTON_HIGHLIGHTED];
 		else Mat = ButtonTextures[`BUTTON_NORMAL];
 
-		Canvas.SetPos(0.f,0.f);
-		Canvas.DrawTileStretched(Mat,B.CompPos[2],B.CompPos[3],0,0,32,32);
+		Canvas.SetPos(0.f, 0.f);
+		Canvas.DrawTileStretched(Mat, B.CompPos[2], B.CompPos[3], 0,0, 32, 32);
 
 		if (B.OverlayTexture.Texture != None)
 		{
-			Canvas.SetPos(0.f,0.f);
-			Canvas.DrawTile(B.OverlayTexture.Texture,B.CompPos[2],B.CompPos[3],B.OverlayTexture.U,B.OverlayTexture.V,B.OverlayTexture.UL,B.OverlayTexture.VL);
+			Canvas.SetPos(0.f, 0.f);
+			Canvas.DrawTile(B.OverlayTexture.Texture, B.CompPos[2], B.CompPos[3], B.OverlayTexture.U, B.OverlayTexture.V, B.OverlayTexture.UL, B.OverlayTexture.VL);
 		}
 	}
 
@@ -362,18 +362,18 @@ function RenderButton( KFGUI_Button B)
 
 		while( true)
 		{
-			Canvas.TextSize(B.ButtonText,XL,YL,TS,TS);
+			Canvas.TextSize(B.ButtonText, XL, YL, TS, TS);
 			if (XL < (B.CompPos[2]*0.9) && YL < (B.CompPos[3]*0.9))
 				break;
 
 			TS -= 0.001;
 		}
 
-		Canvas.SetPos((B.CompPos[2]-XL)*0.5,(B.CompPos[3]-YL)*0.5);
+		Canvas.SetPos((B.CompPos[2]-XL)*0.5, (B.CompPos[3]-YL)*0.5);
 		if (B.bDisabled)
 			Canvas.DrawColor = B.TextColor*0.5f;
 		else Canvas.DrawColor = B.TextColor;
-		Canvas.DrawText(B.ButtonText,,TS,TS,B.TextFontInfo);
+		Canvas.DrawText(B.ButtonText, ,TS, TS, B.TextFontInfo);
 
 		if (B.GetUsingGamepad())
 		{
@@ -399,8 +399,8 @@ function RenderButton( KFGUI_Button B)
 						break;
 				}
 
-				Canvas.SetPos(Canvas.CurX-(GamepadTexSize*1.25),(B.CompPos[3]-GamepadTexSize)*0.5);
-				Canvas.DrawRect(GamepadTexSize,GamepadTexSize,ButtonTex);
+				Canvas.SetPos(Canvas.CurX-(GamepadTexSize*1.25), (B.CompPos[3]-GamepadTexSize)*0.5);
+				Canvas.DrawRect(GamepadTexSize, GamepadTexSize, ButtonTex);
 			}
 		}
 	}

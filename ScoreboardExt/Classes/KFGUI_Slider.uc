@@ -5,7 +5,7 @@ class KFGUI_Slider extends KFGUI_MultiComponent;
 
 var KFGUI_ScrollBarH ScrollBar;
 
-var int MinValue,MaxValue;
+var int MinValue, MaxValue;
 var transient int CurrentValue;
 
 delegate OnValueChanged(KFGUI_Slider Sender, int Value);
@@ -35,7 +35,7 @@ function ValueChanged(KFGUI_ScrollBarBase Sender, int Value)
 
 function UpdateListVis()
 {
-	ScrollBar.UpdateScrollSize(CurrentValue,MaxValue,1,1,MinValue);
+	ScrollBar.UpdateScrollSize(CurrentValue, MaxValue, 1,1, MinValue);
 }
 
 function ScrollMouseWheel( bool bUp)

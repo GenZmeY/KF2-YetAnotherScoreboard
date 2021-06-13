@@ -6,10 +6,10 @@ Class KFGUI_SwitchMenuBar extends KFGUI_MultiComponent;
 
 var array < KFGUI_Base> SubPages;
 var() byte ButtonPosition; // 0 = top, 1 = bottom, 2 = left, 3 = right
-var() float BorderWidth,ButtonAxisSize; // Width for buttons.
+var() float BorderWidth, ButtonAxisSize; // Width for buttons.
 var() float PagePadding; // Padding for pages
 
-var int NumButtons,CurrentPageNum,PageComponentIndex;
+var int NumButtons, CurrentPageNum, PageComponentIndex;
 var array < KFGUI_Button> PageButtons;
 
 function ShowMenu()
@@ -90,7 +90,7 @@ final function SelectPage( int Index)
 	{
 		PageButtons[CurrentPageNum].bIsHighlighted = false;
 		SubPages[CurrentPageNum].CloseMenu();
-		Components.Remove(PageComponentIndex,1);
+		Components.Remove(PageComponentIndex, 1);
 		PageComponentIndex = -1;
 	}
 	CurrentPageNum = (Index >= 0 && Index < SubPages.Length) ? Index : -1;
@@ -114,8 +114,8 @@ function PreDraw()
 	if (CurrentPageNum == -1 && NumButtons > 0)
 		SelectPage(0);
 	ComputeCoords();
-	Canvas.SetOrigin(CompPos[0],CompPos[1]);
-	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
+	Canvas.SetOrigin(CompPos[0], CompPos[1]);
+	Canvas.SetClip(CompPos[0]+CompPos[2], CompPos[1]+CompPos[3]);
 	DrawMenu();
 	for (i=0; i < Components.Length; ++i)
 	{

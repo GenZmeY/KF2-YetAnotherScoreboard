@@ -57,7 +57,7 @@ function PlayerInput( float DeltaTime)
 function PreClientTravel( string PendingURL, ETravelType TravelType, bool bIsSeamlessTravel)
 {
 	`Log("PreClientTravel"@PendingURL@TravelType@bIsSeamlessTravel);
-	ControllerOwner.BackupInput.PreClientTravel(PendingURL,TravelType,bIsSeamlessTravel); // Let original mod do stuff too!
+	ControllerOwner.BackupInput.PreClientTravel(PendingURL, TravelType, bIsSeamlessTravel); // Let original mod do stuff too!
 	ControllerOwner.NotifyLevelChange(); // Close menu NOW!
 }
 

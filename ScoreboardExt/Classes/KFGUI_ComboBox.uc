@@ -8,7 +8,7 @@ var KFGUI_ComboSelector Selection;
 var float BorderSize;
 var() array < string> Values;
 var() int SelectedIndex;
-var() color SelectedTextColor,TextColor;
+var() color SelectedTextColor, TextColor;
 var() bool bButtonStretched;
 
 function UpdateSizes()
@@ -61,7 +61,7 @@ Delegate OnComboChanged( KFGUI_ComboBox Sender );
 
 defaultproperties
 {
-	SelectedTextColor=(R=255,G=128,B=128,A=255)
-	TextColor=(R=255,G=255,B=255,A=255)
+	SelectedTextColor=(R=255, G=128, B=128, A=255)
+	TextColor=(R=255, G=255, B=255, A=255)
 	BorderSize=4
 }

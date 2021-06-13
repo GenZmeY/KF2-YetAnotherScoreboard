@@ -119,7 +119,7 @@ function DrawMenu()
 		{
 			for (j=i-1; j >= 0; --j)
 			{
-				if (!InOrder(KFPlayerReplicationInfo(KFGRI.PRIArray[i]),KFPlayerReplicationInfo(KFGRI.PRIArray[j])))
+				if (!InOrder(KFPlayerReplicationInfo(KFGRI.PRIArray[i]), KFPlayerReplicationInfo(KFGRI.PRIArray[j])))
 				{
 					PRI = KFGRI.PRIArray[i];
 					KFGRI.PRIArray[i] = KFGRI.PRIArray[j];
@@ -530,9 +530,9 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		if (KFPRI.Avatar == default.DefaultAvatar)
 			CheckAvatar(KFPRI, OwnerPC);
 
-		C.SetDrawColor(255,255,255,255);
+		C.SetDrawColor(255, 255, 255, 255);
 		C.SetPos(PlayerXPos - (Height * 1.075), YOffset + (Height * 0.5f) - ((Height - 6) * 0.5f));
-		C.DrawTile(KFPRI.Avatar,Height - 6,Height - 6,0,0,KFPRI.Avatar.SizeX,KFPRI.Avatar.SizeY);
+		C.DrawTile(KFPRI.Avatar, Height - 6, Height - 6, 0,0, KFPRI.Avatar.SizeX, KFPRI.Avatar.SizeY);
 		Owner.CurrentStyle.DrawBoxHollow(PlayerXPos - (Height * 1.075), YOffset + (Height * 0.5f) - ((Height - 6) * 0.5f), Height - 6, Height - 6, 1);
 	}
 	else if (!KFPRI.bBot)
@@ -654,7 +654,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 
 	C.TextSize(S, XL, YL, FontScalar, FontScalar);
 	DrawTextShadowHVCenter(S, PingXPos, TextYOffset, Settings.Ping.ShowPingBars ? PingWBox/2 : PingWBox, FontScalar);
-	C.SetDrawColor(250,250,250,255);
+	C.SetDrawColor(250, 250, 250, 255);
 	if (Settings.Ping.ShowPingBars)
 		DrawPingBars(C, YOffset + (Height/2) - ((Height*0.5)/2), Width - (Height*0.5) - (Owner.HUDOwner.ScaledBorderSize*2), Height*0.5, Height*0.5, float(Ping));
 }
@@ -677,19 +677,19 @@ final function DrawPingBars( Canvas C, float YOffset, float XOffset, float W, fl
 		XPos = XOffset + ((i - 1) * BarW);
 		YPos = YOffset + (H - BarH);
 
-		C.SetPos(XPos,YPos);
+		C.SetPos(XPos, YPos);
 		C.SetDrawColor(20, 20, 20, 255);
-		Owner.CurrentStyle.DrawWhiteBox(BarW,BarH);
+		Owner.CurrentStyle.DrawWhiteBox(BarW, BarH);
 
 		if (PingMul >= (i / PingBars))
 		{
-			C.SetPos(XPos,YPos);
+			C.SetPos(XPos, YPos);
 			C.DrawColor = PingColor;
-			Owner.CurrentStyle.DrawWhiteBox(BarW,BarH);
+			Owner.CurrentStyle.DrawWhiteBox(BarW, BarH);
 		}
 
 		C.SetDrawColor(80, 80, 80, 255);
-		Owner.CurrentStyle.DrawBoxHollow(XPos,YPos,BarW,BarH,1);
+		Owner.CurrentStyle.DrawBoxHollow(XPos, YPos, BarW, BarH, 1);
 	}
 }
 
@@ -700,7 +700,7 @@ static final function Texture2D FindAvatar( KFPlayerController PC, UniqueNetId C
 	S = PC.GetSteamAvatar(ClientID);
 	if (S == "")
 		return None;
-	return Texture2D(PC.FindObject(S,class'Texture2D'));
+	return Texture2D(PC.FindObject(S, class'Texture2D'));
 }
 
 final static function string GetNiceSize(int Num)
@@ -721,7 +721,7 @@ defaultproperties
 {
 	bEnableInputs=true
 
-	PingColor=(R=255,G=255,B=60,A=255)
+	PingColor=(R=255, G=255, B=60, A=255)
 	PingBars=5.0
 
 	Begin Object Class=KFGUI_List Name=PlayerList

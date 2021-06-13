@@ -4,7 +4,7 @@ Class KFGUI_EditControl extends KFGUI_Clickable;
 `include(Logger.uci)
 
 var export editinline KFGUI_TextLable TextLable;
-var transient float TextHeight,TextScale;
+var transient float TextHeight, TextScale;
 var transient Font TextFont;
 var Canvas.FontRenderInfo TextFontInfo;
 
@@ -54,7 +54,7 @@ function PreDraw()
 	TextScale *= FontScale;
 	TextFont = Canvas.Font;
 
-	Canvas.TextSize("ABC",XS,TextHeight,TextScale,TextScale);
+	Canvas.TextSize("ABC", XS, TextHeight, TextScale, TextScale);
 
 	UpdateSizes();
 
@@ -71,13 +71,13 @@ function PreDraw()
 
 final function DrawClippedText( string S, float TScale, float MaxX)
 {
-	local int i,l;
-	local float X,XL,YL;
+	local int i, l;
+	local float X, XL, YL;
 
 	l = Len(S);
 	for (i=0; i < l; ++i)
 	{
-		Canvas.TextSize(Mid(S,i,1),XL,YL,TScale,TScale);
+		Canvas.TextSize(Mid(S, i,1), XL, YL, TScale, TScale);
 		if ((Canvas.CurX+X+XL) > MaxX)
 		{
 			--i;
@@ -85,21 +85,21 @@ final function DrawClippedText( string S, float TScale, float MaxX)
 		}
 		X+=XL;
 	}
-	Canvas.DrawText(Left(S,i),,TScale,TScale,TextFontInfo);
+	Canvas.DrawText(Left(S, i), ,TScale, TScale, TextFontInfo);
 }
 
 defaultproperties
 {
-	LableColor=(R=255,G=255,B=255,A=255)
+	LableColor=(R=255, G=255, B=255, A=255)
 	FontScale=1
 	LableWidth=0.5
 	bScaleByFontSize=true
-	TextFontInfo=(bClipText=true,bEnableShadow=true)
+	TextFontInfo=(bClipText=true, bEnableShadow=true)
 
 	Begin Object Class=KFGUI_TextLable Name=MyBoxLableText
 		AlignX=0
 		AlignY=1
-		TextFontInfo=(bClipText=true,bEnableShadow=true)
+		TextFontInfo=(bClipText=true, bEnableShadow=true)
 	End Object
 	TextLable=MyBoxLableText
 }

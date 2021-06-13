@@ -25,7 +25,7 @@ function SetText( string S)
 
 function DrawMenu()
 {
-	local int i,j,k,SLen,CurrentIndex;
+	local int i, j,k, SLen, CurrentIndex;
 	local float Y, DTime, XL, YL, MainY, MainX, CharTime;
 	local string MainString;
 	local Color MainTextColor;
@@ -49,7 +49,7 @@ function DrawMenu()
 
 	if (bShowScrollbar)
 	{
-		Canvas.SetClip(CompPos[0]+(CompPos[2]-ScrollWidth),CompPos[1]+CompPos[3]);
+		Canvas.SetClip(CompPos[0]+(CompPos[2]-ScrollWidth), CompPos[1]+CompPos[3]);
 		i = ScrollBar.GetValue();
 	}
 	else i = 0;
@@ -138,8 +138,8 @@ function DrawMenu()
 						{
 							if (CurrentIndex == k)
 							{
-								Canvas.SetDrawColor(255,255,255,255);
-								Canvas.SetPos(MainX+XL,MainY);
+								Canvas.SetDrawColor(255, 255, 255, 255);
+								Canvas.SetPos(MainX+XL, MainY);
 								Canvas.DrawTile(CurrentCursor, YL/2, YL, 0, 0, CurrentCursor.GetSurfaceWidth(), CurrentCursor.GetSurfaceHeight());
 							}
 
@@ -147,8 +147,8 @@ function DrawMenu()
 						}
 
 						Canvas.DrawColor = GetColorFromStyle(MainTextColor, TextStyle);
-						Canvas.SetPos(MainX+XL,MainY);
-						Canvas.DrawText(Mid(MainString, k, 1),,InitFontScale,InitFontScale,TextFontInfo);
+						Canvas.SetPos(MainX+XL, MainY);
+						Canvas.DrawText(Mid(MainString, k, 1), ,InitFontScale, InitFontScale, TextFontInfo);
 
 						CurrentIndex = k+1;
 

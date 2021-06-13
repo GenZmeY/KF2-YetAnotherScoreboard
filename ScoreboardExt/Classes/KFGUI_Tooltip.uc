@@ -26,7 +26,7 @@ function ShowMenu()
 
 final function SetText( string S)
 {
-	ParseStringIntoArray(S,Lines," < SEPERATOR > ",false);
+	ParseStringIntoArray(S, Lines, " < SEPERATOR > ", false);
 }
 
 function PreDraw()
@@ -39,7 +39,7 @@ function PreDraw()
 
 defaultproperties
 {
-	TextFontInfo=(bClipText=true,bEnableShadow=true)
+	TextFontInfo=(bClipText=true, bEnableShadow=true)
 	bCanFocus=false
 	bFocusedPostDrawItem=true
 }

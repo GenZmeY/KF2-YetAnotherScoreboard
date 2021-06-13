@@ -4,13 +4,13 @@ Class KFGUI_ScrollBarBase extends KFGUI_Clickable
 `include(Build.uci)
 `include(Logger.uci)
 
-var() int MinRange,MaxRange,ScrollStride,PageStep;
+var() int MinRange, MaxRange, ScrollStride, PageStep;
 var() float ButtonScale; // Button width (scaled by default font height).
 var int CurrentScroll;
 
 // In-runtime values.
 var transient float CalcButtonScale;
-var transient int SliderScale,ButtonOffset,GrabbedOffset;
+var transient int SliderScale, ButtonOffset, GrabbedOffset;
 var transient bool bGrabbedScroller;
 
 var bool bVertical, bHideScrollbar;
@@ -29,8 +29,8 @@ final function AddValue( int V)
 }
 final function SetValue( int V)
 {
-	CurrentScroll = Clamp((V / ScrollStride) * ScrollStride,MinRange,MaxRange);
-	OnScrollChange(Self,CurrentScroll);
+	CurrentScroll = Clamp((V / ScrollStride) * ScrollStride, MinRange, MaxRange);
+	OnScrollChange(Self, CurrentScroll);
 }
 final function int GetValue()
 {

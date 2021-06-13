@@ -18,7 +18,7 @@ var enum eScaleStyle
 var Color ImageColor;
 var Texture Image;
 var bool bAlignCenter, bForceUniformSize;
-var int X1,Y1,X2,Y2;
+var int X1, Y1, X2, Y2;
 var float ImageScale;
 
 function DrawMenu()
@@ -137,7 +137,7 @@ delegate DrawBackground(Canvas C, float W, Float H);
 
 defaultproperties
 {
-	ImageColor=(R=255,G=255,B=255,A=255)
+	ImageColor=(R=255, G=255, B=255, A=255)
 	ImageStyle=ISTY_Normal
 	X1=-1
 	X2=-1

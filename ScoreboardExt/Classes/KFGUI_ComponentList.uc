@@ -61,16 +61,16 @@ function InitMenu()
 {
 	Super.InitMenu();
 	ListCount = 0;
-	NumColumns = Max(NumColumns,1);
+	NumColumns = Max(NumColumns, 1);
 }
 
 function DrawMenu()
 {
 	if (bDrawBackground)
 	{
-		Canvas.SetDrawColor(250,250,250,255);
-		Canvas.SetPos(0.f,0.f);
-		Canvas.DrawTileStretched(Owner.CurrentStyle.BorderTextures[`BOX_INNERBORDER],CompPos[2],CompPos[3],0,0,128,128);
+		Canvas.SetDrawColor(250, 250, 250, 255);
+		Canvas.SetPos(0.f, 0.f);
+		Canvas.DrawTileStretched(Owner.CurrentStyle.BorderTextures[`BOX_INNERBORDER], CompPos[2], CompPos[3], 0,0, 128, 128);
 	}
 }
 
@@ -106,16 +106,16 @@ function PreDraw()
 
 		// Then downscale our selves to give room for scrollbar.
 		CompPos[2] -= ScrollBar.CompPos[2];
-		Canvas.SetOrigin(CompPos[0],CompPos[1]);
-		Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
+		Canvas.SetOrigin(CompPos[0], CompPos[1]);
+		Canvas.SetClip(CompPos[0]+CompPos[2], CompPos[1]+CompPos[3]);
 		DrawMenu();
 		PreDrawListItems();
 		CompPos[2] += ScrollBar.CompPos[2];
 	}
 	else
 	{
-		Canvas.SetOrigin(CompPos[0],CompPos[1]);
-		Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
+		Canvas.SetOrigin(CompPos[0], CompPos[1]);
+		Canvas.SetClip(CompPos[0]+CompPos[2], CompPos[1]+CompPos[3]);
 		DrawMenu();
 		PreDrawListItems();
 	}
@@ -123,8 +123,8 @@ function PreDraw()
 
 function PreDrawListItems()
 {
-	local int i,XNum,r;
-	local float XS,YS;
+	local int i, XNum, r;
+	local float XS, YS;
 
 	XNum = 0;
 	r = 0;
@@ -205,7 +205,7 @@ function InventoryChanged(optional KFWeapon Wep, optional bool bRemove)
 	local int i;
 
 	for (i=0; i < ItemComponents.Length; ++i)
-		ItemComponents[i].InventoryChanged(Wep,bRemove);
+		ItemComponents[i].InventoryChanged(Wep, bRemove);
 }
 function MenuTick( float DeltaTime)
 {

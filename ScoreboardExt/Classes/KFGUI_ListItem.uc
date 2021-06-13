@@ -5,17 +5,17 @@ Class KFGUI_ListItem extends Object
 `include(Logger.uci)
 
 var KFGUI_ListItem Next;
-var array < string> Columns,SortColumns;
-var int Index,Value;
+var array < string> Columns, SortColumns;
+var int Index, Value;
 
 var transient string Temp; // Cache sorting key.
 
 function SetValue( string S, int i, string SortStr)
 {
-	ParseStringIntoArray(S,Columns,"\n",false);
+	ParseStringIntoArray(S, Columns, "\n", false);
 	if (SortStr == "")
 		SortColumns.Length = 0;
-	else ParseStringIntoArray(Caps(SortStr),SortColumns,"\n",false);
+	else ParseStringIntoArray(Caps(SortStr), SortColumns, "\n", false);
 	Value = i;
 }
 

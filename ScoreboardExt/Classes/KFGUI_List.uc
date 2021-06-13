@@ -10,8 +10,8 @@ var() int ListItemsPerPage;
 var() color BackgroundColor;
 var KFGUI_ScrollBarV ScrollBar;
 
-var transient float OldXSize,ItemHeight,MouseYHit;
-var transient int FocusMouseItem,LastFocusItem;
+var transient float OldXSize, ItemHeight, MouseYHit;
+var transient int FocusMouseItem, LastFocusItem;
 
 var byte PressedDown[2];
 var bool bPressedDown;
@@ -32,15 +32,15 @@ function InitMenu()
 
 function DrawMenu()
 {
-	local int i,n;
+	local int i, n;
 	local float Y;
 	local bool bCheckMouse;
 
 	if (bDrawBackground)
 	{
 		Canvas.DrawColor = BackgroundColor;
-		Canvas.SetPos(0.f,0.f);
-		Canvas.DrawTileStretched(Owner.CurrentStyle.BorderTextures[`BOX_INNERBORDER],CompPos[2],CompPos[3],0,0,128,128);
+		Canvas.SetPos(0.f, 0.f);
+		Canvas.DrawTileStretched(Owner.CurrentStyle.BorderTextures[`BOX_INNERBORDER], CompPos[2], CompPos[3], 0,0, 128, 128);
 	}
 
 	// Mouse focused item check.
@@ -62,7 +62,7 @@ function DrawMenu()
 				FocusMouseItem = n;
 			else MouseYHit -= ItemHeight;
 		}
-		OnDrawItem(Canvas,n,Y,ItemHeight,CompPos[2],(FocusMouseItem == n));
+		OnDrawItem(Canvas, n,Y, ItemHeight, CompPos[2], (FocusMouseItem == n));
 		Y+=ItemHeight;
 		++n;
 	}
@@ -101,15 +101,15 @@ function PreDraw()
 
 		// Then downscale our selves to give room for scrollbar.
 		CompPos[2] -= ScrollBar.CompPos[2];
-		Canvas.SetOrigin(CompPos[0],CompPos[1]);
-		Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
+		Canvas.SetOrigin(CompPos[0], CompPos[1]);
+		Canvas.SetClip(CompPos[0]+CompPos[2], CompPos[1]+CompPos[3]);
 		DrawMenu();
 		CompPos[2] += ScrollBar.CompPos[2];
 	}
 	else
 	{
-		Canvas.SetOrigin(CompPos[0],CompPos[1]);
-		Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
+		Canvas.SetOrigin(CompPos[0], CompPos[1]);
+		Canvas.SetClip(CompPos[0]+CompPos[2], CompPos[1]+CompPos[3]);
 		DrawMenu();
 	}
 
@@ -129,12 +129,12 @@ function UpdateListVis()
 {
 	if (ListCount <= ListItemsPerPage)
 	{
-		ScrollBar.UpdateScrollSize(0,1,1,1);
+		ScrollBar.UpdateScrollSize(0, 1,1, 1);
 		ScrollBar.SetDisabled(true);
 	}
 	else
 	{
-		ScrollBar.UpdateScrollSize(ScrollBar.CurrentScroll,(ListCount-ListItemsPerPage),1,ListItemsPerPage);
+		ScrollBar.UpdateScrollSize(ScrollBar.CurrentScroll, (ListCount-ListItemsPerPage), 1,ListItemsPerPage);
 		ScrollBar.SetDisabled(false);
 	}
 }
@@ -156,7 +156,7 @@ function DoubleMouseClick( bool bRight)
 	{
 		PressedDown[byte(bRight)] = 0;
 		bPressedDown = (PressedDown[0] != 0 || PressedDown[1] != 0);
-		OnDblClickedItem(FocusMouseItem,bRight,Owner.MousePosition.X-CompPos[0],MouseYHit);
+		OnDblClickedItem(FocusMouseItem, bRight, Owner.MousePosition.X-CompPos[0], MouseYHit);
 	}
 }
 function MouseClick( bool bRight)
@@ -173,7 +173,7 @@ function MouseRelease( bool bRight)
 	{
 		PressedDown[byte(bRight)] = 0;
 		bPressedDown = (PressedDown[0] != 0 || PressedDown[1] != 0);
-		OnClickedItem(FocusMouseItem,bRight,Owner.MousePosition.X-CompPos[0],MouseYHit);
+		OnClickedItem(FocusMouseItem, bRight, Owner.MousePosition.X-CompPos[0], MouseYHit);
 	}
 }
 function MouseLeave()
@@ -207,7 +207,7 @@ defaultproperties
 {
 	ListItemsPerPage=7
 	ListCount=1
-	BackgroundColor=(R=0,G=0,B=0,A=75)
+	BackgroundColor=(R=0, G=0, B=0, A=75)
 	bDrawBackground=false
 	bUseFocusSound=false
 

@@ -123,7 +123,7 @@ function float GetValue()
 
 defaultproperties
 {
-	BarColor=(R=255,G=255,B=255,A=255)
+	BarColor=(R=255, G=255, B=255, A=255)
 	Low=0.f
 	High=100.f
 	Value=0.f

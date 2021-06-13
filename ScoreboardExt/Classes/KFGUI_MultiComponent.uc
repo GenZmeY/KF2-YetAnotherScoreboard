@@ -32,9 +32,9 @@ function PreDraw()
 		return;
 
 	ComputeCoords();
-	Canvas.SetDrawColor(255,255,255);
-	Canvas.SetOrigin(CompPos[0],CompPos[1]);
-	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
+	Canvas.SetDrawColor(255, 255, 255);
+	Canvas.SetOrigin(CompPos[0], CompPos[1]);
+	Canvas.SetClip(CompPos[0]+CompPos[2], CompPos[1]+CompPos[3]);
 	DrawMenu();
 	for (i=0; i < Components.Length; ++i)
 	{
@@ -49,7 +49,7 @@ function InventoryChanged(optional KFWeapon Wep, optional bool bRemove)
 	local int i;
 
 	for (i=0; i < Components.Length; ++i)
-		Components[i].InventoryChanged(Wep,bRemove);
+		Components[i].InventoryChanged(Wep, bRemove);
 }
 function MenuTick( float DeltaTime)
 {
@@ -125,7 +125,7 @@ function FindAllComponentID( name InID, out array < KFGUI_Base> Res)
 	if (ID == InID)
 		Res[Res.Length] = Self;
 	for (i=0; i < Components.Length; ++i)
-		Components[i].FindAllComponentID(InID,Res);
+		Components[i].FindAllComponentID(InID, Res);
 }
 function RemoveComponent( KFGUI_Base B)
 {
@@ -134,7 +134,7 @@ function RemoveComponent( KFGUI_Base B)
 	for (i=0; i < Components.Length; ++i)
 		if (Components[i] == B)
 		{
-			Components.Remove(i,1);
+			Components.Remove(i, 1);
 			B.CloseMenu();
 			return;
 		}

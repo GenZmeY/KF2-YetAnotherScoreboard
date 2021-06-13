@@ -7,10 +7,10 @@ Class KFGUI_FloatingWindow extends KFGUI_Page
 var() string WindowTitle; // Title of this window.
 var float DragOffset[2], OpenAnimSpeed;
 var KFGUI_FloatingWindowHeader HeaderComp;
-var bool bDragWindow,bUseAnimation;
+var bool bDragWindow, bUseAnimation;
 
 var float WindowFadeInTime;
-var transient float OpenStartTime,OpenEndTime;
+var transient float OpenStartTime, OpenEndTime;
 
 function InitMenu()
 {
@@ -94,8 +94,8 @@ function PreDraw()
 
 		if (bDragWindow)
 		{
-			XPosition = FClamp(Owner.MousePosition.X-DragOffset[0],0,InputPos[2]-CompPos[2]) / InputPos[2];
-			YPosition = FClamp(Owner.MousePosition.Y-DragOffset[1],0,InputPos[3]-CompPos[3]) / InputPos[3];
+			XPosition = FClamp(Owner.MousePosition.X-DragOffset[0], 0,InputPos[2]-CompPos[2]) / InputPos[2];
+			YPosition = FClamp(Owner.MousePosition.Y-DragOffset[1], 0,InputPos[3]-CompPos[3]) / InputPos[3];
 		}
 	}
 

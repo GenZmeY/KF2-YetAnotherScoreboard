@@ -7,9 +7,9 @@ Class KFGUI_ColumnTop extends KFGUI_Base;
 var() float ColumnMinSize; // Minimum pixels width allowed.
 var KFGUI_ColumnList ListOwner;
 
-var transient int PrevSortedColumn,MouseColumn,ScalingColumn;
+var transient int PrevSortedColumn, MouseColumn, ScalingColumn;
 var transient byte PressedDown[2];
-var transient bool bPressedDown,bScaleColumn,bMouseScaler;
+var transient bool bPressedDown, bScaleColumn, bMouseScaler;
 
 function InitMenu()
 {
@@ -19,8 +19,8 @@ function InitMenu()
 
 function DrawMenu()
 {
-	local int i,j;
-	local float X,XS,MouseX,GrabWidth,MinSize,Wd;
+	local int i, j;
+	local float X, XS, MouseX, GrabWidth, MinSize, Wd;
 	local bool bCheckMouse;
 
 	bClickable = ListOwner.bClickable;
@@ -110,24 +110,24 @@ function DrawMenu()
 		else
 		{
 			ListOwner.Columns[i].bHidden = false;
-			//Canvas.SetClip(X+Wd,CompPos[1]+CompPos[3]);
+			//Canvas.SetClip(X+Wd, CompPos[1]+CompPos[3]);
 
 			// Draw column.
 			if (i == j)
 			{
 				if (MouseColumn == i && !bMouseScaler)
-					Canvas.SetDrawColor(175,240,8,255);
-				else Canvas.SetDrawColor(128,200,56,255);
+					Canvas.SetDrawColor(175, 240, 8,255);
+				else Canvas.SetDrawColor(128, 200, 56, 255);
 			}
 			else if (MouseColumn == i && !bMouseScaler)
-				Canvas.SetDrawColor(220,220,8,255);
+				Canvas.SetDrawColor(220, 220, 8,255);
 
 			XS = Owner.CurrentStyle.DefaultHeight*0.5;
-			Canvas.SetPos(X,0.f);
-			Canvas.DrawTileStretched(Owner.CurrentStyle.TabTextures[`TAB_TOP],Min(Wd,CompPos[2]-X),CompPos[3],0,0,128,16);
+			Canvas.SetPos(X, 0.f);
+			Canvas.DrawTileStretched(Owner.CurrentStyle.TabTextures[`TAB_TOP], Min(Wd, CompPos[2]-X), CompPos[3], 0,0, 128, 16);
 
-			Canvas.SetDrawColor(250,250,250,255);
-			Canvas.SetPos(X+XS,(CompPos[3]-ListOwner.TextHeight)*0.5f);
+			Canvas.SetDrawColor(250, 250, 250, 255);
+			Canvas.SetPos(X+XS, (CompPos[3]-ListOwner.TextHeight)*0.5f);
 			ListOwner.DrawStrClipped(ListOwner.Columns[i].Text);
 		}
 		X+=Wd;
@@ -166,7 +166,7 @@ function MouseRelease( bool bRight)
 
 		if (MouseColumn >= 0)
 		{
-			ListOwner.SortColumn(MouseColumn,(PrevSortedColumn == MouseColumn));
+			ListOwner.SortColumn(MouseColumn, (PrevSortedColumn == MouseColumn));
 			if (PrevSortedColumn == MouseColumn)
 				PrevSortedColumn = -1;
 			else PrevSortedColumn = MouseColumn;
