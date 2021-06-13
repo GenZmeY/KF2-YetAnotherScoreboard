@@ -153,6 +153,7 @@ struct SCESettingsLevel
 
 struct SCEStyle
 {
+	var int       EdgeSize;
 	var int       ShapeServerNameBox;
 	var int       ShapeGameInfoBox;
 	var int       ShapeWaveInfoBox;
@@ -223,6 +224,8 @@ struct SCEStyle
 	
 	StructDefaultProperties
 	{
+		EdgeSize                      = 8
+		
 		ShapeServerNameBox            = 2
 		ShapeGameInfoBox              = 1
 		ShapeWaveInfoBox              = 0

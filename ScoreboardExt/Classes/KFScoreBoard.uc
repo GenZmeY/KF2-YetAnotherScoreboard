@@ -110,7 +110,7 @@ function DrawMenu()
 	local KFPlayerReplicationInfo KFPRI;
 	local PlayerReplicationInfo PRI;
 	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH, MinBoxW;
-	local int i, j, NumSpec, NumPlayer, NumAlivePlayer, Width, Edge;
+	local int i, j, NumSpec, NumPlayer, NumAlivePlayer, Width;
 	local float BorderSize;
 
 	PC = GetPlayer();
@@ -174,7 +174,6 @@ function DrawMenu()
 	Canvas.Font = Owner.CurrentStyle.PickFont(FontScalar);
 	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
 	BorderSize = Owner.HUDOwner.ScaledBorderSize;
-	Edge = 8;
 	
 	// Server Info
 	XPosCenter = Canvas.ClipX * 0.5;
@@ -188,7 +187,7 @@ function DrawMenu()
 	
 	// Top Rect (Server name)
 	SetDrawColor(Canvas, Settings.Style.ServerNameBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, Settings.Style.ShapeServerNameBox);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapeServerNameBox);
 	
 	SetDrawColor(Canvas, Settings.Style.ServerNameTextColor);
 	S = KFGRI.ServerName;
@@ -200,20 +199,20 @@ function DrawMenu()
 	BoxW = Width * 0.7;
 	BoxH = YL * 2 + BorderSize * 2;
 	SetDrawColor(Canvas, Settings.Style.GameInfoBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, Settings.Style.ShapeGameInfoBox);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapeGameInfoBox);
 	
 	SetDrawColor(Canvas, Settings.Style.GameInfoTextColor);
 	S = class'KFCommon_LocalizedStrings'.static.GetFriendlyMapName(PC.WorldInfo.GetMapName(true));
-	DrawTextShadowHLeftVCenter(S, BoxX + Edge, YPos, FontScalar);
+	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos, FontScalar);
 	
 	S = KFGRI.GameClass.default.GameName $ " - " $ class'KFCommon_LocalizedStrings'.Static.GetDifficultyString(KFGRI.GameDifficulty);
-	DrawTextShadowHLeftVCenter(S, BoxX + Edge, YPos + YL, FontScalar);
+	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos + YL, FontScalar);
 	
 	// Mid Right Rect (Wave)
 	BoxX = BoxX + BoxW;
 	BoxW = Width - BoxW;
 	SetDrawColor(Canvas, Settings.Style.WaveBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, Settings.Style.ShapeWaveInfoBox);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapeWaveInfoBox);
 	
 	SetDrawColor(Canvas, Settings.Style.WaveTextColor);
 	S = class'KFGFxHUD_ScoreboardMapInfoContainer'.default.WaveString; 
@@ -227,12 +226,12 @@ function DrawMenu()
 	BoxW = Width;
 	BoxH = YL + BorderSize;
 	SetDrawColor(Canvas, Settings.Style.PlayerCountBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, Settings.Style.ShapePlayersCountBox);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapePlayersCountBox);
 	
 	SetDrawColor(Canvas, Settings.Style.PlayerCountTextColor);
 	S = Players$": " $ NumPlayer $ " / " $ KFGRI.MaxHumanCount $ "    " $ Spectators $ ": " $ NumSpec; 
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
-	DrawTextShadowHLeftVCenter(S, BoxX + Edge, YPos, FontScalar);
+	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos, FontScalar);
 	
 	S = Owner.CurrentStyle.GetTimeString(KFGRI.ElapsedTime);
 	DrawTextShadowHVCenter(S, XPos + Width * 0.7, YPos, Width * 0.3, FontScalar);
@@ -256,13 +255,13 @@ function DrawMenu()
 		YPos,
 		Width + BorderSize * 4,
 		BoxH,
-		Edge,
+		Settings.Style.EdgeSize,
 		Settings.Style.ShapeHeaderBox);
 
 	// Calc X offsets
 	MinBoxW    = Width * 0.07; // minimum width for column 
 	
-	RankXPos   = Owner.HUDOwner.ScaledBorderSize * 8 + Edge;
+	RankXPos   = Owner.HUDOwner.ScaledBorderSize * 8 + Settings.Style.EdgeSize;
 	PlayerXPos = Width * 0.20;
 	PerkXPos   = Width * 0.40;
 	
@@ -442,7 +441,8 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		YOffset,
 		BoxWidth,
 		Height,
-		8, Shape);
+		Settings.Style.EdgeSize,
+		Shape);
 		
 	XPos += BoxWidth;
 	
@@ -460,7 +460,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		Shape = Settings.Style.ShapePlayerBoxMidPlayer;
 
 	BoxWidth = CashXPos + Owner.HUDOwner.ScaledBorderSize - BoxWidth;
-	Owner.CurrentStyle.DrawRectBox(XPos, YOffset, BoxWidth, Height, 8, Shape);
+	Owner.CurrentStyle.DrawRectBox(XPos, YOffset, BoxWidth, Height, Settings.Style.EdgeSize, Shape);
 	
 	XPos += BoxWidth;
 	
@@ -478,7 +478,8 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		YOffset,
 		BoxWidth,
 		Height,
-		8, Shape);
+		Settings.Style.EdgeSize,
+		Shape);
 
 	// Rank
 	if (CurrentRank.ApplyColorToFields.Rank)

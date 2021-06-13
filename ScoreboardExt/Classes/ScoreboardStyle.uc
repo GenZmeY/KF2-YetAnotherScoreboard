@@ -5,6 +5,7 @@ class ScoreboardStyle extends Object
 `include(Build.uci)
 `include(Logger.uci)
 
+var config int       EdgeSize;
 var config int       ShapeServerNameBox;
 var config int       ShapeGameInfoBox;
 var config int       ShapeWaveInfoBox;
@@ -74,6 +75,7 @@ public static function SCEStyle Settings()
 	
 	`callstack_static("Settings");
 	
+	Settings.EdgeSize = default.EdgeSize;
 	Settings.ShapeServerNameBox = default.ShapeServerNameBox;
 	Settings.ShapeGameInfoBox = default.ShapeGameInfoBox;
 	Settings.ShapeWaveInfoBox = default.ShapeWaveInfoBox;
@@ -135,6 +137,7 @@ public static function WriteSettings(SCEStyle Settings)
 {
 	`callstack_static("WriteSettings");
 	
+	default.EdgeSize = Settings.EdgeSize;
 	default.ShapeServerNameBox = Settings.ShapeServerNameBox;
 	default.ShapeGameInfoBox = Settings.ShapeGameInfoBox;
 	default.ShapeWaveInfoBox = Settings.ShapeWaveInfoBox;

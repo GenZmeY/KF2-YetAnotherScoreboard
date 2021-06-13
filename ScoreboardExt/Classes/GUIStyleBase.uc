@@ -642,7 +642,7 @@ final function DrawRectBox(float X, float Y, float Width, float Height, int Edge
 		Canvas.SetPos(X, Y);
 		DrawWhiteBox(Width, Height);	
 		
-		default:
+		default: // 0
 		//   ______
 		//  /      \
 		//  |      |
