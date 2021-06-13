@@ -430,9 +430,9 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	if (!Settings.State.Dynamic)
 		SetDrawColor(C, Settings.Style.LeftStateBoxColor);
 	
-	if (Index == 0)
+	if (KFPRIArray.Length > 1 && Index == 0)
 		Shape = Settings.Style.ShapeLeftStateBoxTopPlayer;
-	else if (Index == KFPRIArray.Length - 1)
+	else if (KFPRIArray.Length > 1 && Index == KFPRIArray.Length - 1)
 		Shape = Settings.Style.ShapeLeftStateBoxBottomPlayer;
 	else
 		Shape = Settings.Style.ShapeLeftStateBoxMidPlayer;
@@ -452,9 +452,9 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	else
 		SetDrawColor(C, Settings.Style.PlayerBoxColor);
 
-	if (Index == 0)
+	if (KFPRIArray.Length > 1 && Index == 0)
 		Shape = Settings.Style.ShapePlayerBoxTopPlayer;
-	else if (Index == KFPRIArray.Length - 1)
+	else if (KFPRIArray.Length > 1 && Index == KFPRIArray.Length - 1)
 		Shape = Settings.Style.ShapePlayerBoxBottomPlayer;
 	else
 		Shape = Settings.Style.ShapePlayerBoxMidPlayer;
@@ -465,9 +465,9 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	XPos += BoxWidth;
 	
 	// Right stats box
-	if (Index == 0)
+	if (KFPRIArray.Length > 1 && Index == 0)
 		Shape = Settings.Style.ShapeStatsBoxTopPlayer;
-	else if (Index == KFPRIArray.Length - 1)
+	else if (KFPRIArray.Length > 1 && Index == KFPRIArray.Length - 1)
 		Shape = Settings.Style.ShapeStatsBoxBottomPlayer;
 	else
 		Shape = Settings.Style.ShapeStatsBoxMidPlayer;
