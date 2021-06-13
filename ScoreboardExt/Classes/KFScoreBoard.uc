@@ -109,7 +109,7 @@ function DrawMenu()
 	local PlayerController PC;
 	local KFPlayerReplicationInfo KFPRI;
 	local PlayerReplicationInfo PRI;
-	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH;
+	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH, MinBoxW;
 	local int i, j, NumSpec, NumPlayer, NumAlivePlayer, Width, Edge;
 	local float BorderSize;
 
@@ -260,15 +260,32 @@ function DrawMenu()
 		2);
 
 	// Calc X offsets
+	MinBoxW    = Width * 0.07; // minimum width for column 
+	
 	RankXPos   = Owner.HUDOwner.ScaledBorderSize * 8 + Edge;
 	PlayerXPos = Width * 0.20;
 	PerkXPos   = Width * 0.40;
-	CashXPos   = Width * 0.57;
-	KillsXPos  = Width * 0.66;
-	AssistXPos = Width * 0.75;
-	HealthXPos = Width * 0.84;
-	PingXPos   = Width * 0.93;
-
+	
+	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.PingString$" ", XL, YL, FontScalar, FontScalar);
+	XL = XL < MinBoxW ? MinBoxW : XL;
+	PingXPos = Width - XL;
+	
+	Canvas.TextSize(State$" ", XL, YL, FontScalar, FontScalar);
+	XL = XL < MinBoxW ? MinBoxW : XL;
+	HealthXPos = PingXPos - XL;
+	
+	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.AssistsString$" ", XL, YL, FontScalar, FontScalar);
+	XL = XL < MinBoxW ? MinBoxW : XL;
+	AssistXPos = HealthXPos - XL;
+	
+	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.KillsString$" ", XL, YL, FontScalar, FontScalar);
+	XL = XL < MinBoxW ? MinBoxW : XL;
+	KillsXPos = AssistXPos - XL;
+	
+	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.DoshString$" ", XL, YL, FontScalar, FontScalar);
+	XL = XL < MinBoxW ? MinBoxW : XL;
+	CashXPos = KillsXPos - XL;
+	
 	StatusWBox = PlayerXPos - RankXPos;
 	PlayerWBox = PerkXPos   - PlayerXPos;
 	PerkWBox   = CashXPos   - PerkXPos;
