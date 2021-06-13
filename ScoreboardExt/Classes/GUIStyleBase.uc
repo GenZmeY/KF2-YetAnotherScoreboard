@@ -509,146 +509,151 @@ final function DrawWhiteBox(float XS, float YS, optional bool bClip)
 	Canvas.DrawTile(ItemTex, XS, YS, 19, 45, 1,1, ,bClip);
 }
 
-final function DrawCornerSmart(int CornerPosition, int CornerShape, int Edge, out float X, out float Y, out int NeedFill)
+final function DrawCornerSmart(out float X, float Y, int Edge, int CornerPosition, int CornerShape)
 {
 	switch (CornerPosition)
 	{
 	case ECP_TopLeft:
-		NeedFill = int(CornerShape != ECS_VerticalCorner);
 		switch (CornerShape)
 		{
 		case ECS_Corner:
-		Canvas.SetPos(X, Y);
-		DrawWhiteBox(Edge, Edge);
-		X = X + Edge;
-		Y = Y;
 		return;
 		case ECS_BeveledCorner:
 		Canvas.SetPos(X, Y);
 		DrawCornerTex(Edge, 0);
-		X = X + Edge;
-		Y = Y;
+		X += Edge;
 		return;
 		case ECS_VerticalCorner:
 		Canvas.SetPos(X, Y - Edge);
 		DrawCornerTex(Edge, 1);
-		X = X + Edge;
-		Y = Y;
+		X += Edge;
 		return;
 		case ECS_HorisontalCorner:
 		Canvas.SetPos(X - Edge, Y);
 		DrawCornerTex(Edge, 2);
-		X = X;
-		Y = Y;
 		return;
 		}
 	case ECP_TopRight:
-		NeedFill = int(false);
 		switch (CornerShape)
 		{
 		case ECS_Corner:
-		Canvas.SetPos(X, Y);
-		DrawWhiteBox(Edge, Edge);
-		X = X + Edge;
-		Y = Y;
 		return;
 		case ECS_BeveledCorner:
 		Canvas.SetPos(X, Y);
 		DrawCornerTex(Edge, 1);
-		X = X + Edge;
-		Y = Y + Edge;
+		X += Edge;
 		return;
 		case ECS_VerticalCorner:
 		Canvas.SetPos(X, Y - Edge);
 		DrawCornerTex(Edge, 0);
-		X = X + Edge;
-		Y = Y;
+		X += Edge;
 		return;
 		case ECS_HorisontalCorner:
 		Canvas.SetPos(X, Y);
 		DrawCornerTex(Edge, 3);
-		X = X + Edge;
-		Y = Y + Edge;
+		X += Edge;
 		return;
 		}
 	case ECP_BottomLeft:
-		NeedFill = int(CornerShape != ECS_VerticalCorner);
 		switch (CornerShape)
 		{
 		case ECS_Corner:
-		Canvas.SetPos(X, Y);
-		DrawWhiteBox(Edge, Edge);
-		X = X + Edge;
-		Y = Y;
 		return;
 		case ECS_BeveledCorner:
 		Canvas.SetPos(X, Y);
 		DrawCornerTex(Edge, 2);
-		X = X + Edge;
-		Y = Y;
+		X += Edge;
 		return;
 		case ECS_VerticalCorner:
 		Canvas.SetPos(X, Y);
 		DrawCornerTex(Edge, 3);
-		X = X + Edge;
-		Y = Y;
+		X += Edge;
 		return;
 		case ECS_HorisontalCorner:
 		Canvas.SetPos(X - Edge, Y);
 		DrawCornerTex(Edge, 0);
-		X = X;
-		Y = Y;
 		return;
 		}
 	case ECP_BottomRight:
-		NeedFill = int(false);
 		switch (CornerShape)
 		{
 		case ECS_Corner:
-		Canvas.SetPos(X, Y);
-		DrawWhiteBox(Edge, Edge);
-		X = X + Edge;
-		Y = Y + Edge;
 		return;
 		case ECS_BeveledCorner:
 		Canvas.SetPos(X, Y);
 		DrawCornerTex(Edge, 3);
-		X = X + Edge;
-		Y = Y + Edge;
+		X += Edge;
 		return;
 		case ECS_VerticalCorner:
-		Canvas.SetPos(X - Edge, Y);
+		Canvas.SetPos(X, Y); // X - Edge ?
 		DrawCornerTex(Edge, 2);
-		X = X + Edge;
-		Y = Y + Edge;
+		X += Edge;
 		return;
 		case ECS_HorisontalCorner:
 		Canvas.SetPos(X, Y);
 		DrawCornerTex(Edge, 1);
-		X = X + Edge;
-		Y = Y + Edge;
+		X +=  Edge;
 		return;
 		}
 	}
 }
 
-final function FillSmart(out float X, out float Y, float W, float H, bool NeedFill)
+final function FillSmart(out float X, float Y, float W, float H, int Edge, int LeftShape, int RightShape)
 {
-	if (NeedFill)
+	if (LeftShape != ECS_HorisontalCorner && LeftShape != ECS_Corner)
+	{
+		W -= Edge;
+	}
+	
+	if (RightShape != ECS_HorisontalCorner && RightShape != ECS_Corner)
+	{
+		W -= Edge;
+	}
+	
+	if (LeftShape != ECS_VerticalCorner)
 	{
 		Canvas.SetPos(X, Y);
 		DrawWhiteBox(W, H);
 	}
-	X = X + W;
+	
+	X += W;
+}
+
+final function DrawRectBoxSmart(float X, float Y, float W, float H, int Edge, int TopLeftShape, int TopRightShape, int BottomLeftShape, int BottomRightShape)
+{
+	local float TopY, MidY, BottomY, XPos;
+	local int FillCount;
+	local float MidRectHeight;
+	
+	FillCount = 0;
+	
+	if (TopLeftShape != ECS_VerticalCorner)
+		FillCount++;
+	if (BottomLeftShape != ECS_VerticalCorner)
+		FillCount++;
+	MidRectHeight = H - Edge * FillCount;
+
+	TopY = Y; MidY = TopY + (TopLeftShape == ECS_VerticalCorner ? 0 : Edge); BottomY = MidY + MidRectHeight;
+
+	// Top Line
+	XPos = X;
+	DrawCornerSmart(XPos, TopY, Edge, ECP_TopLeft, TopLeftShape);
+	FillSmart(XPos, TopY, W, Edge, Edge, TopLeftShape, TopRightShape);
+	DrawCornerSmart(XPos, TopY, Edge, ECP_TopRight, TopRightShape);
+	
+	// Mid Line
+	XPos = X;
+	FillSmart(XPos, MidY, W, MidRectHeight, Edge, ECS_Corner, ECS_Corner);
+	
+	// Bottom Line
+	XPos = X;
+	DrawCornerSmart(XPos, BottomY, Edge, ECP_BottomLeft, BottomLeftShape);
+	FillSmart(XPos, BottomY, W, Edge, Edge, BottomLeftShape, BottomRightShape);
+	DrawCornerSmart(XPos, BottomY, Edge, ECP_BottomRight, BottomRightShape);
 }
 
 final function DrawRectBox(float X, float Y, float Width, float Height, int Edge, optional byte Extrav)
 {
-	local float XPos, YPos;
-	local int NeedFill;
-	
-	YPos = Y;
-	
 	if (Extrav == 2)
 		Edge=Min(FMin(Edge, (Width)*0.5), Height);// Verify size.
 	else
@@ -664,22 +669,12 @@ final function DrawRectBox(float X, float Y, float Width, float Height, int Edge
 		//  |     |
 		//  \______\
 		
-		// Top
-		XPos = X;
-		DrawCornerSmart(ECP_TopLeft, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width - Edge, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_TopRight, ECS_HorisontalCorner, Edge, XPos, YPos, NeedFill);
-		
-		// Mid
-		XPos = X;
-		FillSmart(XPos, YPos, Width, Height - Edge * 2, True);
-		YPos = YPos + Height - Edge * 2;
-		
-		// Bottom
-		XPos = X;
-		DrawCornerSmart(ECP_BottomLeft, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width - Edge, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_BottomRight, ECS_HorisontalCorner, Edge, XPos, YPos, NeedFill);
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_HorisontalCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_HorisontalCorner // BottomRight
+		);
 		break;
 		
 		case 2:
@@ -688,22 +683,12 @@ final function DrawRectBox(float X, float Y, float Width, float Height, int Edge
 		//  | ____ |
 		//  |/    \|
 		
-		// Top
-		XPos = X;
-		DrawCornerSmart(ECP_TopLeft, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width - Edge * 2, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_TopRight, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);
-		
-		// Mid
-		XPos = X;
-		FillSmart(XPos, YPos, Width, Height - Edge, True);
-		YPos = YPos + Height - Edge;
-		
-		// Bottom
-		XPos = X;
-		DrawCornerSmart(ECP_BottomLeft, ECS_VerticalCorner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width - Edge, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_BottomRight, ECS_VerticalCorner, Edge, XPos, YPos, NeedFill);
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_VerticalCorner, // BottomLeft
+			ECS_VerticalCorner // BottomRight
+		);
 		break;
 		
 		case 3:
@@ -712,22 +697,12 @@ final function DrawRectBox(float X, float Y, float Width, float Height, int Edge
 		//   |      |
 		//   /______/
 		
-		// Top
-		XPos = X;
-		DrawCornerSmart(ECP_TopLeft, ECS_HorisontalCorner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width - Edge, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_TopRight, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);
-		
-		// Mid
-		XPos = X;
-		FillSmart(XPos, YPos, Width, Height - Edge * 2, True);
-		YPos = YPos + Height - Edge * 2;
-		
-		// Bottom
-		XPos = X;
-		DrawCornerSmart(ECP_BottomLeft, ECS_HorisontalCorner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width - Edge, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_BottomRight, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_HorisontalCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_HorisontalCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
 		break;
 		
 		case 4:
@@ -736,22 +711,12 @@ final function DrawRectBox(float X, float Y, float Width, float Height, int Edge
 		//  |      |
 		//  \______/
 		
-		// Top
-		XPos = X;
-		DrawCornerSmart(ECP_TopLeft, ECS_VerticalCorner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width - Edge * 2, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_TopRight, ECS_VerticalCorner, Edge, XPos, YPos, NeedFill);
-		
-		// Mid
-		XPos = X;
-		FillSmart(XPos, YPos, Width, Height - Edge, True);
-		YPos = YPos + Height - Edge;
-		
-		// Bottom
-		XPos = X;
-		DrawCornerSmart(ECP_BottomLeft, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width - Edge * 2, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_BottomRight, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_VerticalCorner, // TopLeft
+			ECS_VerticalCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
 		break;
 		
 		case 5:
@@ -760,45 +725,24 @@ final function DrawRectBox(float X, float Y, float Width, float Height, int Edge
 		//  |      |
 		//  |______|
 		
-		// Top
-		XPos = X;
-		DrawCornerSmart(ECP_TopLeft, ECS_Corner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_TopRight, ECS_Corner, Edge, XPos, YPos, NeedFill);
-		
-		// Mid
-		XPos = X;
-		FillSmart(XPos, YPos, Width, Height - Edge * 2, True);
-		YPos = YPos + Height - Edge * 2;
-		
-		// Bottom
-		XPos = X;
-		DrawCornerSmart(ECP_BottomLeft, ECS_Corner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_BottomRight, ECS_Corner, Edge, XPos, YPos, NeedFill);	
-		
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
 		default: // 0
 		//   ______
 		//  /      \
 		//  |      |
 		//  \______/
 		
-		// Top
-		XPos = X;
-		DrawCornerSmart(ECP_TopLeft, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width - Edge * 2, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_TopRight, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);
-		
-		// Mid
-		XPos = X;
-		FillSmart(XPos, YPos, Width, Height - Edge * 2, True);
-		YPos = YPos + Height - Edge * 2;
-		
-		// Bottom
-		XPos = X;
-		DrawCornerSmart(ECP_BottomLeft, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);
-		FillSmart(XPos, YPos, Width - Edge * 2, Edge, bool(NeedFill));
-		DrawCornerSmart(ECP_BottomRight, ECS_BeveledCorner, Edge, XPos, YPos, NeedFill);	
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
 		break;
 	}
 }
