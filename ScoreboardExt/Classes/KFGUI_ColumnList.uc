@@ -34,9 +34,9 @@ var bool bLastSortedReverse;
 var() bool bShouldSortList; // Should sort any new items added to the list instantly.
 var() bool bCanSortColumn; // Allow user to sort columns.
 
-delegate OnSelectedRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick );
+delegate OnSelectedRow(KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick);
 
-function KFGUI_ListItem AddLine( string Value, optional int iValue, optional string SortValue, optional int Index=-1)
+function KFGUI_ListItem AddLine(string Value, optional int iValue, optional string SortValue, optional int Index=-1)
 {
 	local KFGUI_ListItem N, O;
 	local int i;
@@ -125,7 +125,7 @@ function KFGUI_ListItem AddLine( string Value, optional int iValue, optional str
 
 	return N;
 }
-final function RemoveLine( KFGUI_ListItem I)
+final function RemoveLine(KFGUI_ListItem I)
 {
 	local KFGUI_ListItem N;
 
@@ -176,7 +176,7 @@ final function EmptyList()
 	UpdateListSize();
 }
 
-final function KFGUI_ListItem GetFromIndex( int Index)
+final function KFGUI_ListItem GetFromIndex(int Index)
 {
 	local KFGUI_ListItem N;
 
@@ -188,7 +188,7 @@ final function KFGUI_ListItem GetFromIndex( int Index)
 	return None;
 }
 
-function SortColumn( int Column, optional bool bReverse)
+function SortColumn(int Column, optional bool bReverse)
 {
 	local array < KFGUI_ListItem> List;
 	local KFGUI_ListItem Sel, N,P;
@@ -247,7 +247,7 @@ function SortColumn( int Column, optional bool bReverse)
 	}
 }
 
-function ChangeListSize( int NewSize );
+function ChangeListSize(int NewSize);
 
 final function UpdateListSize()
 {
@@ -266,7 +266,7 @@ function InitMenu()
 	ColumnComp = KFGUI_ColumnTop(FindComponentID('Columns'));
 }
 
-final function DrawStrClipped( string S, optional bool bOnlyTextures)
+final function DrawStrClipped(string S, optional bool bOnlyTextures)
 {
 	Canvas.PushMaskRegion(Canvas.OrgX, Canvas.OrgY, Canvas.ClipX, Canvas.ClipY);
 	Owner.CurrentStyle.DrawTexturedString(S, Canvas.CurX, Canvas.CurY, TextScaler, LineFontInfo, false, bOnlyTextures);
@@ -411,12 +411,12 @@ function PreDraw()
 	CompPos[2] += SpaceX;
 	CompPos[3] += ColumnComp.CompPos[3];
 }
-function InternalClickedItem( int Index, bool bRight, int MouseX, int MouseY)
+function InternalClickedItem(int Index, bool bRight, int MouseX, int MouseY)
 {
 	SelectedRowIndex = Index;
 	OnSelectedRow(GetFromIndex(Index), Index, bRight, false);
 }
-function InternalDblClickedItem( int Index, bool bRight, int MouseX, int MouseY)
+function InternalDblClickedItem(int Index, bool bRight, int MouseX, int MouseY)
 {
 	SelectedRowIndex = Index;
 	OnSelectedRow(GetFromIndex(Index), Index, bRight, true);

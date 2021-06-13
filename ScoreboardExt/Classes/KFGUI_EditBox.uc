@@ -79,7 +79,7 @@ function bool NotifyInputChar(int Key, string Unicode)
 			if ((bConvertSpaces) && ((S == " ") || (S == "?") || (S == "\\")))
 				S = "_";
 
-			if ((TextStr == "") || ( CaretPos == Len(TextStr) ))
+			if ((TextStr == "") || ( CaretPos == Len(TextStr)))
 			{
 				TextStr = TextStr$S;
 				CaretPos=Len(TextStr);
@@ -101,7 +101,7 @@ function bool NotifyInputChar(int Key, string Unicode)
 
 function SetInputText(string S)
 {
-	switch(TextCase)
+	switch (TextCase)
 	{
 		case TXTC_Upper:
 			S = Caps(S);
@@ -280,7 +280,7 @@ function string ConvertIllegal(string InputStr)
 			C = "";
 		}
 		if (bConvertSpaces &&
-			((C == " ") || (C =="?") || (C == "\\") ))
+			((C == " ") || (C =="?") || (C == "\\")))
 		{
 			C = "_";
 		}
@@ -389,13 +389,13 @@ function DrawMenu()
 		{
 			Canvas.SetDrawColor(255, 255, 255, 195);
 			Canvas.SetPos(BorderSize, CursorY);
-			Canvas.DrawTile( Owner.DefaultPens[`PEN_WHITE], XL, YL-Owner.HUDOwner.ScaledBorderSize, 0, 0, Owner.DefaultPens[`PEN_WHITE].GetSurfaceWidth(), Owner.DefaultPens[`PEN_WHITE].GetSurfaceHeight() );
+			Canvas.DrawTile(Owner.DefaultPens[`PEN_WHITE], XL, YL-Owner.HUDOwner.ScaledBorderSize, 0, 0, Owner.DefaultPens[`PEN_WHITE].GetSurfaceWidth(), Owner.DefaultPens[`PEN_WHITE].GetSurfaceHeight());
 		}
 		else
 		{
 			Canvas.SetDrawColor(255, 255, 255, Owner.CursorFlash);
 			Canvas.SetPos(XL + (Len(FinalDraw) == 0 ? 0 : 3), CursorY);
-			Canvas.DrawTile( Owner.DefaultPens[`PEN_WHITE], 3, YL-Owner.HUDOwner.ScaledBorderSize, 0, 0, Owner.DefaultPens[`PEN_WHITE].GetSurfaceWidth(), Owner.DefaultPens[`PEN_WHITE].GetSurfaceHeight() );
+			Canvas.DrawTile(Owner.DefaultPens[`PEN_WHITE], 3, YL-Owner.HUDOwner.ScaledBorderSize, 0, 0, Owner.DefaultPens[`PEN_WHITE].GetSurfaceWidth(), Owner.DefaultPens[`PEN_WHITE].GetSurfaceHeight());
 		}
 	}
 
@@ -404,7 +404,7 @@ function DrawMenu()
 	Canvas.DrawText(FinalDraw, ,FontScale, FontScale, FRI);
 }
 
-function HandleMouseClick( bool bRight)
+function HandleMouseClick(bool bRight)
 {
 	if (Owner.KeyboardFocus != self)
 	{

@@ -51,7 +51,7 @@ function InventoryChanged(optional KFWeapon Wep, optional bool bRemove)
 	for (i=0; i < Components.Length; ++i)
 		Components[i].InventoryChanged(Wep, bRemove);
 }
-function MenuTick( float DeltaTime)
+function MenuTick(float DeltaTime)
 {
 	local int i;
 
@@ -60,7 +60,7 @@ function MenuTick( float DeltaTime)
 		Components[i].MenuTick(DeltaTime);
 }
 
-function AddComponent( KFGUI_Base C)
+function AddComponent(KFGUI_Base C)
 {
 	Components[Components.Length] = C;
 	C.Owner = Owner;
@@ -104,7 +104,7 @@ function bool ReceievedControllerInput(int ControllerId, name Key, EInputEvent E
 
 	return Super.ReceievedControllerInput(ControllerId, Key, Event);
 }
-function KFGUI_Base FindComponentID( name InID)
+function KFGUI_Base FindComponentID(name InID)
 {
 	local int i;
 	local KFGUI_Base Result;
@@ -118,7 +118,7 @@ function KFGUI_Base FindComponentID( name InID)
 	}
 	return Result;
 }
-function FindAllComponentID( name InID, out array < KFGUI_Base> Res)
+function FindAllComponentID(name InID, out array < KFGUI_Base> Res)
 {
 	local int i;
 
@@ -127,7 +127,7 @@ function FindAllComponentID( name InID, out array < KFGUI_Base> Res)
 	for (i=0; i < Components.Length; ++i)
 		Components[i].FindAllComponentID(InID, Res);
 }
-function RemoveComponent( KFGUI_Base B)
+function RemoveComponent(KFGUI_Base B)
 {
 	local int i;
 

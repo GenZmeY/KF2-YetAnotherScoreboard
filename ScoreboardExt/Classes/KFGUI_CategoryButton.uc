@@ -42,7 +42,7 @@ function DrawMenu()
 		TS = Owner.CurrentStyle.GetFontScaler();
 		TS *= FontScale;
 
-		while( true)
+		while (true)
 		{
 			Canvas.TextSize(ButtonText, XL, YL, TS, TS);
 			if (XL < (CompPos[2]*0.9) && YL < (CompPos[3]*0.9))

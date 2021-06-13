@@ -9,12 +9,12 @@ function PreDraw()
 {
 	ComputeCoords();
 }
-function MouseClick( bool bRight)
+function MouseClick(bool bRight)
 {
 	if (!bRight)
 		KFGUI_FloatingWindow(ParentComponent).SetWindowDrag(true);
 }
-function MouseRelease( bool bRight)
+function MouseRelease(bool bRight)
 {
 	if (!bRight)
 		KFGUI_FloatingWindow(ParentComponent).SetWindowDrag(false);

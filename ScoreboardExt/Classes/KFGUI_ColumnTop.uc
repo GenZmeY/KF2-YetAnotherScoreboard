@@ -134,7 +134,7 @@ function DrawMenu()
 	}
 }
 
-function MouseClick( bool bRight)
+function MouseClick(bool bRight)
 {
 	if (!ListOwner.bDisabled && bClickable)
 	{
@@ -150,7 +150,7 @@ function MouseClick( bool bRight)
 		}
 	}
 }
-function MouseRelease( bool bRight)
+function MouseRelease(bool bRight)
 {
 	if (bScaleColumn && !bRight)
 	{

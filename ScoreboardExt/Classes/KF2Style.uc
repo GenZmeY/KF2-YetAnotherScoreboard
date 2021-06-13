@@ -20,7 +20,7 @@ function InitStyle()
 			LoadedTex[i] = Texture2D'EngineMaterials.DefaultWhiteGrid';
 	}
 }
-function RenderFramedWindow( KFGUI_FloatingWindow P)
+function RenderFramedWindow(KFGUI_FloatingWindow P)
 {
 	local int XS, YS, CornerSlope, TitleHeight;
 
@@ -77,7 +77,7 @@ function RenderFramedWindow( KFGUI_FloatingWindow P)
 		DrawText(P.WindowTitle);
 	}
 }
-function RenderWindow( KFGUI_Page P)
+function RenderWindow(KFGUI_Page P)
 {
 	local int XS, YS, CornerSlope;
 
@@ -106,7 +106,7 @@ function RenderWindow( KFGUI_Page P)
 	Canvas.SetPos(XS-CornerSlope, CornerSlope);
 	DrawWhiteBox(CornerSlope, YS-(CornerSlope*2));
 }
-function RenderToolTip( KFGUI_Tooltip TT)
+function RenderToolTip(KFGUI_Tooltip TT)
 {
 	local int i;
 	local float X, Y,XS, YS, TX, TY, TS, DefFontHeight;
@@ -164,7 +164,7 @@ function RenderToolTip( KFGUI_Tooltip TT)
 		Y+=DefFontHeight;
 	}
 }
-function RenderScrollBar( KFGUI_ScrollBarBase S)
+function RenderScrollBar(KFGUI_ScrollBarBase S)
 {
 	local float A;
 	local byte i;
@@ -210,7 +210,7 @@ function RenderScrollBar( KFGUI_ScrollBarBase S)
 		DrawRectBox (0.f, S.ButtonOffset, S.CompPos[2], S.SliderScale, 4);
 	else DrawRectBox (S.ButtonOffset, 0.f, S.SliderScale, S.CompPos[3], 4);
 }
-function RenderColumnHeader( KFGUI_ColumnTop C, float XPos, float Width, int Index, bool bFocus, bool bSort)
+function RenderColumnHeader(KFGUI_ColumnTop C, float XPos, float Width, int Index, bool bFocus, bool bSort)
 {
 	local int XS;
 
@@ -236,7 +236,7 @@ function RenderColumnHeader( KFGUI_ColumnTop C, float XPos, float Width, int Ind
 	Canvas.SetPos(XPos+XS, (C.CompPos[3]-C.ListOwner.TextHeight)*0.5f);
 	C.ListOwner.DrawStrClipped(C.ListOwner.Columns[Index].Text);
 }
-function RenderCheckbox( KFGUI_CheckBox C)
+function RenderCheckbox(KFGUI_CheckBox C)
 {
 	if (C.bDisabled)
 		Canvas.SetDrawColor(86, 86, 86, 255);
@@ -258,7 +258,7 @@ function RenderCheckbox( KFGUI_CheckBox C)
 		Canvas.DrawTile(LoadedTex[1], C.CompPos[2], C.CompPos[3], 0,0, LoadedTex[1].GetSurfaceWidth(), LoadedTex[1].GetSurfaceHeight());
 	}
 }
-function RenderComboBox( KFGUI_ComboBox C)
+function RenderComboBox(KFGUI_ComboBox C)
 {
 	if (C.bDisabled)
 		Canvas.SetDrawColor(64, 4,4, 255);
@@ -282,7 +282,7 @@ function RenderComboBox( KFGUI_ComboBox C)
 		Canvas.PopMaskRegion();
 	}
 }
-function RenderComboList( KFGUI_ComboSelector C)
+function RenderComboList(KFGUI_ComboSelector C)
 {
 	local float X, Y,YL, YP, Edge;
 	local int i;
@@ -337,7 +337,7 @@ function RenderComboList( KFGUI_ComboSelector C)
 		C.PlayMenuSound(MN_DropdownChange);
 	}
 }
-function RenderRightClickMenu( KFGUI_RightClickMenu C)
+function RenderRightClickMenu(KFGUI_RightClickMenu C)
 {
 	local float X, Y,YP, Edge, TextScale, TexDefHieght;
 	local int i;
@@ -399,7 +399,7 @@ function RenderRightClickMenu( KFGUI_RightClickMenu C)
 		C.PlayMenuSound(MN_DropdownChange);
 	}
 }
-function RenderButton( KFGUI_Button B)
+function RenderButton(KFGUI_Button B)
 {
 	local float XL, YL, TS;
 	local byte i;
@@ -433,7 +433,7 @@ function RenderButton( KFGUI_Button B)
 	{
 		// Chose the best font to fit this button.
 		i = Min(B.FontScale, MaxFontScale);
-		while( true)
+		while (true)
 		{
 			Canvas.Font = PickFont(TS);
 			Canvas.TextSize(B.ButtonText, XL, YL, TS, TS);

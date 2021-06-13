@@ -15,7 +15,7 @@ var int OldSizeX;
 var transient bool bDrawToolTip;
 var Color BoxColor, OutlineColor;
 
-function OpenMenu( KFGUI_Base Menu)
+function OpenMenu(KFGUI_Base Menu)
 {
 	Owner = Menu.Owner;
 	InitMenu();
@@ -68,7 +68,7 @@ function ComputePosition()
 	if ((YPosition+YSize) > 1.f)
 		YPosition -= ((YPosition+YSize)-1.f); // Move up until fit on screen.
 }
-final function AddRow( string Text, bool bDisable, optional string AltToolTip)
+final function AddRow(string Text, bool bDisable, optional string AltToolTip)
 {
 	local int i;
 
@@ -117,7 +117,7 @@ function DrawToolTip()
 	BoxW = XL * 1.05f;
 	BoxH = YL * 1.25f;
 
-	while( (X + BoxW) > Canvas.ClipX)
+	while ((X + BoxW) > Canvas.ClipX)
 	{
 		X -= 0.01;
 	}
@@ -131,7 +131,7 @@ function DrawToolTip()
 	Canvas.SetPos(TextX, TextY);
 	Canvas.DrawText(S, ,Scalar, Scalar);
 }
-function HandleMouseClick( bool bRight)
+function HandleMouseClick(bool bRight)
 {
 	if (CurrentRow >= 0 && (ItemRows[CurrentRow].bSplitter || ItemRows[CurrentRow].bDisabled))
 		return;
@@ -151,8 +151,8 @@ function NotifyMousePaused()
 		bDrawToolTip = true;
 }
 
-Delegate OnSelectedItem( int Index );
-Delegate OnBecameHidden( KFGUI_RightClickMenu M );
+Delegate OnSelectedItem(int Index);
+Delegate OnBecameHidden(KFGUI_RightClickMenu M);
 
 defaultproperties
 {

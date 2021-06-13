@@ -16,11 +16,11 @@ var transient int FocusMouseItem, LastFocusItem;
 var byte PressedDown[2];
 var bool bPressedDown;
 
-delegate OnDrawItem( Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus );
+delegate OnDrawItem(Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus);
 
 // Requires bClickable=true to receive this event.
-delegate OnClickedItem( int Index, bool bRight, int MouseX, int MouseY );
-delegate OnDblClickedItem( int Index, bool bRight, int MouseX, int MouseY );
+delegate OnClickedItem(int Index, bool bRight, int MouseX, int MouseY);
+delegate OnDblClickedItem(int Index, bool bRight, int MouseX, int MouseY);
 
 function InitMenu()
 {
@@ -138,7 +138,7 @@ function UpdateListVis()
 		ScrollBar.SetDisabled(false);
 	}
 }
-function ChangeListSize( int NewSize)
+function ChangeListSize(int NewSize)
 {
 	if (ListCount == NewSize)
 		return;
@@ -150,7 +150,7 @@ final function int GetListSize()
 	return ListCount;
 }
 
-function DoubleMouseClick( bool bRight)
+function DoubleMouseClick(bool bRight)
 {
 	if (!bDisabled && bClickable)
 	{
@@ -159,7 +159,7 @@ function DoubleMouseClick( bool bRight)
 		OnDblClickedItem(FocusMouseItem, bRight, Owner.MousePosition.X-CompPos[0], MouseYHit);
 	}
 }
-function MouseClick( bool bRight)
+function MouseClick(bool bRight)
 {
 	if (!bDisabled && bClickable)
 	{
@@ -167,7 +167,7 @@ function MouseClick( bool bRight)
 		bPressedDown = true;
 	}
 }
-function MouseRelease( bool bRight)
+function MouseRelease(bool bRight)
 {
 	if (!bDisabled && bClickable && PressedDown[byte(bRight)] == 1)
 	{
@@ -189,7 +189,7 @@ function MouseEnter()
 	LastFocusItem = -1;
 }
 
-function ScrollMouseWheel( bool bUp)
+function ScrollMouseWheel(bool bUp)
 {
 	if (!ScrollBar.bDisabled)
 		ScrollBar.ScrollMouseWheel(bUp);
@@ -201,7 +201,7 @@ function NotifyMousePaused()
 		OnMouseRest(FocusMouseItem);
 }
 
-Delegate OnMouseRest( int Item );
+Delegate OnMouseRest(int Item);
 
 defaultproperties
 {

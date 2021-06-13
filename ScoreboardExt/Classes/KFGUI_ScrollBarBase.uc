@@ -15,7 +15,7 @@ var transient bool bGrabbedScroller;
 
 var bool bVertical, bHideScrollbar;
 
-final function UpdateScrollSize( int Current, int MxRange, int Stride, int StepStride, optional int MnRange)
+final function UpdateScrollSize(int Current, int MxRange, int Stride, int StepStride, optional int MnRange)
 {
 	MaxRange = MxRange;
 	MinRange = MnRange;
@@ -23,11 +23,11 @@ final function UpdateScrollSize( int Current, int MxRange, int Stride, int StepS
 	PageStep = StepStride;
 	SetValue(Current);
 }
-final function AddValue( int V)
+final function AddValue(int V)
 {
 	SetValue(CurrentScroll+V);
 }
-final function SetValue( int V)
+final function SetValue(int V)
 {
 	CurrentScroll = Clamp((V / ScrollStride) * ScrollStride, MinRange, MaxRange);
 	OnScrollChange(Self, CurrentScroll);
@@ -36,7 +36,7 @@ final function int GetValue()
 {
 	return CurrentScroll;
 }
-Delegate OnScrollChange( KFGUI_ScrollBarBase Sender, int Value );
+Delegate OnScrollChange(KFGUI_ScrollBarBase Sender, int Value);
 
 // Get UI width.
 function float GetWidth()
@@ -59,7 +59,7 @@ function DrawMenu()
 		Owner.CurrentStyle.RenderScrollBar(Self);
 	}
 }
-function MouseClick( bool bRight)
+function MouseClick(bool bRight)
 {
 	if (bRight || bDisabled)
 		return;
@@ -91,7 +91,7 @@ function MouseClick( bool bRight)
 		else AddValue(PageStep);
 	}
 }
-function MouseRelease( bool bRight)
+function MouseRelease(bool bRight)
 {
 	if (!bRight)
 		DropInputFocus();
@@ -103,7 +103,7 @@ function LostInputFocus()
 	bPressedDown = false;
 }
 
-function ScrollMouseWheel( bool bUp)
+function ScrollMouseWheel(bool bUp)
 {
 	if (bDisabled)
 		return;

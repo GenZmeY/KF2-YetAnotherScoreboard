@@ -21,15 +21,15 @@ function bool GetUsingGamepad()
 	return Owner.bUsingGamepad && GamepadButtonName != "";
 }
 
-function HandleMouseClick( bool bRight)
+function HandleMouseClick(bool bRight)
 {
 	if (bRight)
 		OnClickRight(Self);
 	else OnClickLeft(Self);
 }
 
-Delegate OnClickLeft( KFGUI_Button Sender );
-Delegate OnClickRight( KFGUI_Button Sender );
+Delegate OnClickLeft(KFGUI_Button Sender);
+Delegate OnClickRight(KFGUI_Button Sender);
 
 Delegate bool DrawOverride(Canvas C, KFGUI_Button B)
 {

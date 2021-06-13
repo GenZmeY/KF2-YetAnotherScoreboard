@@ -11,7 +11,7 @@ function DrawMenu()
 	Owner.CurrentStyle.RenderComboList(Self);
 }
 
-function HandleMouseClick( bool bRight)
+function HandleMouseClick(bool bRight)
 {
 	PlayMenuSound(MN_ClickButton);
 	DropInputFocus();

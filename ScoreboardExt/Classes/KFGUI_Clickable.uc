@@ -20,7 +20,7 @@ function InitMenu()
 	Super.InitMenu();
 	bClickable = !bDisabled;
 }
-function MouseClick( bool bRight)
+function MouseClick(bool bRight)
 {
 	if (!bDisabled)
 	{
@@ -28,7 +28,7 @@ function MouseClick( bool bRight)
 		bPressedDown = true;
 	}
 }
-function MouseRelease( bool bRight)
+function MouseRelease(bool bRight)
 {
 	if (!bDisabled && PressedDown[byte(bRight)] == 1)
 	{
@@ -52,7 +52,7 @@ function MouseEnter()
 		PlayMenuSound(MN_FocusHover);
 }
 
-function SetDisabled( bool bDisable)
+function SetDisabled(bool bDisable)
 {
 	Super.SetDisabled(bDisable);
 	bClickable = !bDisable;
@@ -79,7 +79,7 @@ function NotifyMousePaused()
 		ToolTipItem.GetInputFocus();
 	}
 }
-final function ChangeToolTip( string S)
+final function ChangeToolTip(string S)
 {
 	if (ToolTipItem != None)
 		ToolTipItem.SetText(S);
@@ -91,7 +91,7 @@ function SetVisibility(bool Visible)
 	SetDisabled(!Visible);
 }
 
-function HandleMouseClick( bool bRight );
+function HandleMouseClick(bool bRight);
 
 defaultproperties
 {

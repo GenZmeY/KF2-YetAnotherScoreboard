@@ -38,7 +38,7 @@ var int FontBlurX, FontBlurX2, FontBlurY, FontBlurY2, FastFontBlurX, FastFontBlu
 
 var bool bMouseWasIdle, bIsInMenuState, bAbsorbInput, bIsInvalid, bHideCursor, bUsingGamepad, bForceEngineCursor, bNoInputReset;
 
-static function KF2GUIController GetGUIController( PlayerController PC)
+static function KF2GUIController GetGUIController(PlayerController PC)
 {
 	local KF2GUIController G;
 
@@ -155,7 +155,7 @@ simulated function HandleDrawMenu()
 		if (bIsInMenuState ) PlayerOwner.PlayerInput = CustomInput;
 	}
 }
-simulated function RenderMenu( Canvas C)
+simulated function RenderMenu(Canvas C)
 {
 	local int i;
 	local float OrgX, OrgY, ClipX, ClipY;
@@ -242,7 +242,7 @@ simulated final function InventoryChanged(optional KFWeapon Wep, optional bool b
 	}
 }
 
-simulated final function SetMenuState( bool bActive)
+simulated final function SetMenuState(bool bActive)
 {
 	if (PlayerOwner.PlayerInput == None)
 	{
@@ -430,7 +430,7 @@ simulated function MouseMove()
 	}
 }
 
-simulated final function int GetFreeIndex( bool bNewAlwaysTop ) // Find first allowed top index of the stack.
+simulated final function int GetFreeIndex(bool bNewAlwaysTop ) // Find first allowed top index of the stack.
 {
 	local int i;
 
@@ -444,7 +444,7 @@ simulated final function int GetFreeIndex( bool bNewAlwaysTop ) // Find first al
 	ActiveMenus.Length = i+1;
 	return i;
 }
-simulated function KFGUI_Base InitializeHUDWidget( class < KFGUI_Base> GUIClass)
+simulated function KFGUI_Base InitializeHUDWidget(class < KFGUI_Base> GUIClass)
 {
 	local KFGUI_Base Widget;
 
@@ -466,7 +466,7 @@ simulated function KFGUI_Base InitializeHUDWidget( class < KFGUI_Base> GUIClass)
 
 	return Widget;
 }
-simulated function KFGUI_Page OpenMenu( class < KFGUI_Page> MenuClass)
+simulated function KFGUI_Page OpenMenu(class < KFGUI_Page> MenuClass)
 {
 	local int i;
 	local KFGUI_Page M;
@@ -527,7 +527,7 @@ simulated function KFGUI_Page OpenMenu( class < KFGUI_Page> MenuClass)
 	M.ShowMenu();
 	return M;
 }
-simulated function CloseMenu( class < KFGUI_Page> MenuClass, optional bool bCloseAll)
+simulated function CloseMenu(class < KFGUI_Page> MenuClass, optional bool bCloseAll)
 {
 	local int i, j;
 	local KFGUI_Page M;
@@ -565,7 +565,7 @@ simulated function CloseMenu( class < KFGUI_Page> MenuClass, optional bool bClos
 		SetMenuState(false);
 	}
 }
-simulated function PopCloseMenu( KFGUI_Base Item)
+simulated function PopCloseMenu(KFGUI_Base Item)
 {
 	local int i;
 	local KFGUI_Page M;
@@ -602,7 +602,7 @@ simulated function PopCloseMenu( KFGUI_Base Item)
 	if (ActiveMenus.Length == 0)
 		SetMenuState(false);
 }
-simulated function BringMenuToFront( KFGUI_Page Page)
+simulated function BringMenuToFront(KFGUI_Page Page)
 {
 	local int i;
 
@@ -623,7 +623,7 @@ simulated function BringMenuToFront( KFGUI_Page Page)
 	ActiveMenus.Insert(0, 1);
 	ActiveMenus[0] = Page;
 }
-simulated final function bool MenuIsOpen( optional class < KFGUI_Page> MenuClass)
+simulated final function bool MenuIsOpen(optional class < KFGUI_Page> MenuClass)
 {
 	local int i;
 
@@ -632,7 +632,7 @@ simulated final function bool MenuIsOpen( optional class < KFGUI_Page> MenuClass
 			return true;
 	return false;
 }
-simulated final function GrabInputFocus( KFGUI_Base Comp, optional bool bForce)
+simulated final function GrabInputFocus(KFGUI_Base Comp, optional bool bForce)
 {
 	if (Comp == KeyboardFocus && !bForce)
 		return;
@@ -654,7 +654,7 @@ simulated final function GrabInputFocus( KFGUI_Base Comp, optional bool bForce)
 	KeyboardFocus = Comp;
 }
 
-simulated final function GUI_InputMouse( bool bPressed, bool bRight)
+simulated final function GUI_InputMouse(bool bPressed, bool bRight)
 {
 	local byte i;
 
@@ -708,11 +708,11 @@ simulated final function GUI_InputMouse( bool bPressed, bool bRight)
 			MouseFocus.MouseRelease(bRight);
 	}
 }
-simulated final function bool CheckMouse( name Key, EInputEvent Event)
+simulated final function bool CheckMouse(name Key, EInputEvent Event)
 {
 	if (Event == IE_Pressed)
 	{
-		switch( Key)
+		switch (Key)
 		{
 		case 'XboxTypeS_A':
 		case 'LeftMouseButton':
@@ -726,7 +726,7 @@ simulated final function bool CheckMouse( name Key, EInputEvent Event)
 	}
 	else if (Event == IE_Released)
 	{
-		switch( Key)
+		switch (Key)
 		{
 		case 'XboxTypeS_A':
 		case 'LeftMouseButton':
@@ -740,7 +740,7 @@ simulated final function bool CheckMouse( name Key, EInputEvent Event)
 	}
 	return false;
 }
-simulated function bool ReceivedInputKey( int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
+simulated function bool ReceivedInputKey(int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
 {
 	local KFPlayerInput KFInput;
 	local KeyBind BoundKey;
@@ -785,7 +785,7 @@ simulated function bool ReceivedInputKey( int ControllerId, name Key, EInputEven
 				return true;
 		}
 
-		switch( Key)
+		switch (Key)
 		{
 		case 'XboxTypeS_Start':
 		case 'Escape':
@@ -808,7 +808,7 @@ simulated function bool ReceivedInputKey( int ControllerId, name Key, EInputEven
 
 	return true;
 }
-simulated function bool ReceivedInputAxis( int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad)
+simulated function bool ReceivedInputAxis(int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad)
 {
 	local Vector2D V;
 	local KFPlayerInput KFInput;
@@ -832,7 +832,7 @@ simulated function bool ReceivedInputAxis( int ControllerId, name Key, float Del
 			MoveDelta = Delta * (KFInput.bInvertController ? -GamepadSensitivity : GamepadSensitivity);
 			MoveDeltaInvert = Delta * (KFInput.bInvertController ? GamepadSensitivity : -GamepadSensitivity);
 
-			switch(Key)
+			switch (Key)
 			{
 				case 'XboxTypeS_LeftX':
 				case 'XboxTypeS_RightX':
@@ -858,30 +858,30 @@ simulated function bool ReceivedInputAxis( int ControllerId, name Key, float Del
 	}
 	return OnReceivedInputAxis(ControllerId, Key, Delta, DeltaTime, bGamepad);
 }
-simulated function bool ReceivedInputChar( int ControllerId, string Unicode)
+simulated function bool ReceivedInputChar(int ControllerId, string Unicode)
 {
 	if (!bIsInMenuState)
 		return false;
 	return OnReceivedInputChar(ControllerId, Unicode);
 }
 
-simulated Delegate bool OnInputKey( int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
+simulated Delegate bool OnInputKey(int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
 {
 	return false;
 }
-simulated Delegate bool OnReceivedInputAxis( int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad)
+simulated Delegate bool OnReceivedInputAxis(int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad)
 {
 	return false;
 }
-simulated Delegate bool OnReceivedInputChar( int ControllerId, string Unicode)
+simulated Delegate bool OnReceivedInputChar(int ControllerId, string Unicode)
 {
 	return false;
 }
-simulated Delegate bool InternalInputKey( int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
+simulated Delegate bool InternalInputKey(int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
 {
 	return false;
 }
-simulated Delegate bool InternalReceivedInputChar( int ControllerId, string Unicode)
+simulated Delegate bool InternalReceivedInputChar(int ControllerId, string Unicode)
 {
 	return false;
 }

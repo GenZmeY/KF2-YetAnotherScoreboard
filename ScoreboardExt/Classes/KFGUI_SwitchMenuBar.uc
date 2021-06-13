@@ -25,7 +25,7 @@ function CloseMenu()
 }
 
 // Remember to call InitMenu() on the newly created page after.
-final function KFGUI_Base AddPage( class < KFGUI_Base> PageClass, string Caption, string Hint, optional out KFGUI_Button Button)
+final function KFGUI_Base AddPage(class < KFGUI_Base> PageClass, string Caption, string Hint, optional out KFGUI_Button Button)
 {
 	local KFGUI_Base P;
 	local KFGUI_Button B;
@@ -77,12 +77,12 @@ final function KFGUI_Base AddPage( class < KFGUI_Base> PageClass, string Caption
 	return P;
 }
 
-function PageSwitched( KFGUI_Button Sender)
+function PageSwitched(KFGUI_Button Sender)
 {
 	SelectPage(Sender.IDValue);
 }
 
-final function SelectPage( int Index)
+final function SelectPage(int Index)
 {
 	PlayMenuSound(MN_LostFocus);
 
@@ -124,7 +124,7 @@ function PreDraw()
 			Components[i].InputPos[j] = CompPos[j];
 		if (i == PageComponentIndex)
 		{
-			switch( ButtonPosition)
+			switch(ButtonPosition)
 			{
 			case 0:
 				Components[i].InputPos[1] += (InputPos[3]*BorderWidth*PagePadding);

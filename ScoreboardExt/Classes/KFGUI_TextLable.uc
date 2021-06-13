@@ -24,7 +24,7 @@ function InitSize()
 	TS = Owner.CurrentStyle.GetFontScaler();
 	TS *= FontScale;
 
-	while( true)
+	while (true)
 	{
 		Canvas.Font = Owner.CurrentStyle.MainFont;
 		if (TextFontInfo.bClipText)
@@ -51,7 +51,7 @@ function InitSize()
 	InitFont = Canvas.Font;
 	InitFontScale = TS;
 
-	switch( AlignX)
+	switch (AlignX)
 	{
 	case 0:
 		InitOffset[0] = 0;
@@ -62,7 +62,7 @@ function InitSize()
 	default:
 		InitOffset[0] = CompPos[2]-(XL+1);
 	}
-	switch( AlignY)
+	switch (AlignY)
 	{
 	case 0:
 		InitOffset[1] = 0;
@@ -74,7 +74,7 @@ function InitSize()
 		InitOffset[1] = CompPos[3]-YL;
 	}
 }
-function SetText( string S)
+function SetText(string S)
 {
 	if (Text == S)
 		return;

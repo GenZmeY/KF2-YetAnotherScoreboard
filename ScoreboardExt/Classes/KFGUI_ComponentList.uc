@@ -9,7 +9,7 @@ var() int NumColumns;
 var array < KFGUI_Base> ItemComponents;
 
 // REMEMBER to call InitMenu() on the newly created component after values are init!!!
-final function KFGUI_Base AddListComponent( class < KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f)
+final function KFGUI_Base AddListComponent(class < KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f)
 {
 	return AddComponentAtIndex(ItemComponents.Length, CompClass, XS, YS);
 }
@@ -30,17 +30,17 @@ final function KFGUI_Base CreateComponent(class < KFGUI_Base> CompClass, optiona
 	return G;
 }
 
-final function AddItem( KFGUI_Base Item)
+final function AddItem(KFGUI_Base Item)
 {
 	AddItemAtIndex(ItemComponents.Length, Item);
 }
 
-final function AddItemAtIndex( int i, KFGUI_Base Item)
+final function AddItemAtIndex(int i, KFGUI_Base Item)
 {
 	ItemComponents.InsertItem(i, Item);
 }
 
-final function KFGUI_Base AddComponentAtIndex( int i, class < KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f)
+final function KFGUI_Base AddComponentAtIndex(int i, class < KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f)
 {
 	local KFGUI_Base G;
 
@@ -153,10 +153,10 @@ function PreDrawListItems()
 	}
 }
 
-function ChangeListSize( int NewSize );
+function ChangeListSize(int NewSize);
 
-function MouseClick( bool bRight );
-function MouseRelease( bool bRight );
+function MouseClick(bool bRight);
+function MouseRelease(bool bRight);
 function MouseLeave()
 {
 	Super(KFGUI_Base).MouseLeave();
@@ -207,7 +207,7 @@ function InventoryChanged(optional KFWeapon Wep, optional bool bRemove)
 	for (i=0; i < ItemComponents.Length; ++i)
 		ItemComponents[i].InventoryChanged(Wep, bRemove);
 }
-function MenuTick( float DeltaTime)
+function MenuTick(float DeltaTime)
 {
 	local int i;
 

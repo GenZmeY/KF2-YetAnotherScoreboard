@@ -10,7 +10,7 @@ var int Index, Value;
 
 var transient string Temp; // Cache sorting key.
 
-function SetValue( string S, int i, string SortStr)
+function SetValue(string S, int i, string SortStr)
 {
 	ParseStringIntoArray(S, Columns, "\n", false);
 	if (SortStr == "")
@@ -20,7 +20,7 @@ function SetValue( string S, int i, string SortStr)
 }
 
 // Return string to draw on HUD.
-function string GetDisplayStr( int Column)
+function string GetDisplayStr(int Column)
 {
 	if (Column < Columns.Length)
 		return Columns[Column];
@@ -28,7 +28,7 @@ function string GetDisplayStr( int Column)
 }
 
 // Return string to compare string with.
-function string GetSortStr( int Column)
+function string GetSortStr(int Column)
 {
 	if (SortColumns.Length > 0)
 	{

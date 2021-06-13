@@ -41,7 +41,7 @@ var transient float MaxHeight, ScrollWidth, OldSize[2], InitFontScale, TextHeigh
 var transient Font InitFont;
 var transient bool bShowScrollbar, bTextParsed;
 
-function SetText( string S)
+function SetText(string S)
 {
 	if (Text == S)
 		return;
@@ -51,7 +51,7 @@ function SetText( string S)
 	OrgLines.Length = 0;
 	bTextParsed = false;
 }
-function AddText( string S, optional bool bIgnoreSpam)
+function AddText(string S, optional bool bIgnoreSpam)
 {
 	Text $= S;
 	OldSize[0] = -1;
@@ -85,7 +85,7 @@ final function ParseTextLines()
 			continue;
 
 		z = 0;
-		while( true)
+		while (true)
 		{
 			j = InStr(S, "#{");
 			if (j > 0)
@@ -147,7 +147,7 @@ final function ParseTextLines()
 	}
 	OrgLines = Lines; // Create a backup.
 }
-final function byte GrabHexValue( string S)
+final function byte GrabHexValue(string S)
 {
 	local byte n;
 
@@ -155,7 +155,7 @@ final function byte GrabHexValue( string S)
 	S = Mid(S, 2);
 	return n;
 }
-final function byte HexToInt( byte n)
+final function byte HexToInt(byte n)
 {
 	if (n >= 48 && n <= 57 ) // '0' - '9'
 		return n-48;
@@ -233,7 +233,7 @@ function InitSize()
 }
 
 // Parse textlines to see if they're too long.
-final function ParseLines( float ClipX)
+final function ParseLines(float ClipX)
 {
 	local float X, XS, YS;
 	local int i, j,z, n;
@@ -279,7 +279,7 @@ final function ParseLines( float ClipX)
 }
 
 // Slow, find wrapped splitting point in text.
-final function int FindSplitPoint( string S, float X, float ClipX)
+final function int FindSplitPoint(string S, float X, float ClipX)
 {
 	local int i, l,PrevWord;
 	local float XL, YL;
@@ -292,7 +292,7 @@ final function int FindSplitPoint( string S, float X, float ClipX)
 	l = Len(S);
 	PrevWord = 0;
 	bWasWhite = true;
-	while( i < l)
+	while (i < l)
 	{
 		if (Mid(S, i,1) == " ")
 		{
@@ -318,7 +318,7 @@ final function int FindSplitPoint( string S, float X, float ClipX)
 	}
 	return l;
 }
-final function string StripWhiteSpaces( string S)
+final function string StripWhiteSpaces(string S)
 {
 	if (Left(S, 1) == " ")
 		S = Mid(S, 1);
@@ -461,7 +461,7 @@ function bool CaptureMouse()
 	return (bShowScrollbar ? Super.CaptureMouse() : false); // Nope.
 }
 
-function ScrollMouseWheel( bool bUp)
+function ScrollMouseWheel(bool bUp)
 {
 	if (bShowScrollbar)
 		ScrollBar.ScrollMouseWheel(bUp);

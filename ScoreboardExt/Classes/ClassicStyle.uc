@@ -3,7 +3,7 @@ Class ClassicStyle extends KF2Style;
 `include(Build.uci)
 `include(Logger.uci)
 
-function RenderFramedWindow( KFGUI_FloatingWindow P)
+function RenderFramedWindow(KFGUI_FloatingWindow P)
 {
 	local int XS, YS, TitleHeight;
 	local float XL, YL, FontScale;
@@ -35,7 +35,7 @@ function RenderFramedWindow( KFGUI_FloatingWindow P)
 	}
 }
 
-function RenderWindow( KFGUI_Page P)
+function RenderWindow(KFGUI_Page P)
 {
 	local int XS, YS;
 
@@ -51,7 +51,7 @@ function RenderWindow( KFGUI_Page P)
 	Canvas.DrawTileStretched(BorderTextures[`BOX_SMALL_SLIGHTTRANSPARENT], XS, YS, 0,0, 128, 128);
 }
 
-function RenderToolTip( KFGUI_Tooltip TT)
+function RenderToolTip(KFGUI_Tooltip TT)
 {
 	local int i;
 	local float X, Y,XS, YS, TX, TY, TS, DefFontHeight;
@@ -110,7 +110,7 @@ function RenderToolTip( KFGUI_Tooltip TT)
 	}
 }
 
-function RenderScrollBar( KFGUI_ScrollBarBase S)
+function RenderScrollBar(KFGUI_ScrollBarBase S)
 {
 	local float A;
 	local byte i;
@@ -165,7 +165,7 @@ function RenderScrollBar( KFGUI_ScrollBarBase S)
 	}
 }
 
-function RenderCheckbox( KFGUI_CheckBox C)
+function RenderCheckbox(KFGUI_CheckBox C)
 {
 	local Texture CheckMark;
 
@@ -185,7 +185,7 @@ function RenderCheckbox( KFGUI_CheckBox C)
 	}
 }
 
-function RenderComboBox( KFGUI_ComboBox C)
+function RenderComboBox(KFGUI_ComboBox C)
 {
 	if (C.bDisabled)
 		Canvas.SetDrawColor(64, 64, 64, 255);
@@ -211,7 +211,7 @@ function RenderComboBox( KFGUI_ComboBox C)
 	}
 }
 
-function RenderComboList( KFGUI_ComboSelector C)
+function RenderComboList(KFGUI_ComboSelector C)
 {
 	local float X, Y,YL, YP, Edge;
 	local int i;
@@ -263,7 +263,7 @@ function RenderComboList( KFGUI_ComboSelector C)
 	}
 }
 
-function RenderRightClickMenu( KFGUI_RightClickMenu C)
+function RenderRightClickMenu(KFGUI_RightClickMenu C)
 {
 	local float X, Y,XL, YL, YP, Edge, TextScale;
 	local int i;
@@ -324,7 +324,7 @@ function RenderRightClickMenu( KFGUI_RightClickMenu C)
 	}
 }
 
-function RenderButton( KFGUI_Button B)
+function RenderButton(KFGUI_Button B)
 {
 	local float XL, YL, TS, AX, AY, GamepadTexSize;
 	local Texture2D Mat, ButtonTex;
@@ -360,7 +360,7 @@ function RenderButton( KFGUI_Button B)
 		TS = GetFontScaler();
 		TS *= B.FontScale;
 
-		while( true)
+		while (true)
 		{
 			Canvas.TextSize(B.ButtonText, XL, YL, TS, TS);
 			if (XL < (B.CompPos[2]*0.9) && YL < (B.CompPos[3]*0.9))
@@ -381,12 +381,12 @@ function RenderButton( KFGUI_Button B)
 			if (ButtonTex != None)
 			{
 				B.GetRealtivePos(AX, AY);
-				while( (Canvas.CurX-(GamepadTexSize*1.25)) < AX)
+				while ((Canvas.CurX-(GamepadTexSize*1.25)) < AX)
 				{
 					GamepadTexSize *= 0.95;
 				}
 
-				switch(ButtonTex.Name)
+				switch (ButtonTex.Name)
 				{
 					case 'XboxTypeS_A_Asset':
 					case 'XboxTypeS_B_Asset':

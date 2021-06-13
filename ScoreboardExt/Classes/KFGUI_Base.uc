@@ -52,7 +52,7 @@ function PreDraw()
 function DrawMenu(); // Draw menu now.
 function CloseMenu(); // Menu was closed.
 function InventoryChanged(optional KFWeapon Wep, optional bool bRemove); // Called when a players inventory is changed.
-function MenuTick( float DeltaTime );
+function MenuTick(float DeltaTime);
 
 final function SetTimer(float InRate, optional bool inbLoop, optional Name inTimerFunc='Timer')
 {
@@ -67,7 +67,7 @@ final function SetTimer(float InRate, optional bool inbLoop, optional Name inTim
 		TimerNames.AddItem(inTimerFunc);
 	}
 
-	`TimerHelper.SetTimer( InRate, inbLoop, inTimerFunc, self );
+	`TimerHelper.SetTimer(InRate, inbLoop, inTimerFunc, self);
 }
 final function ClearTimer(optional Name inTimerFunc='Timer')
 {
@@ -76,7 +76,7 @@ final function ClearTimer(optional Name inTimerFunc='Timer')
 		TimerNames.RemoveItem(inTimerFunc);
 	}
 
-	`TimerHelper.ClearTimer( inTimerFunc, self );
+	`TimerHelper.ClearTimer(inTimerFunc, self);
 }
 function Timer();
 
@@ -90,14 +90,14 @@ function MouseLeave()
 	bFocused = false;
 	OnFocus(Self, False);
 }
-function MouseClick( bool bRight );
-function MouseRelease( bool bRight );
-function DoubleMouseClick( bool bRight ) // User rapidly double clicked this component.
+function MouseClick(bool bRight);
+function MouseRelease(bool bRight);
+function DoubleMouseClick(bool bRight ) // User rapidly double clicked this component.
 {
 	MouseClick(bRight);
 }
 
-function ScrollMouseWheel( bool bUp );
+function ScrollMouseWheel(bool bUp);
 
 function bool ReceievedControllerInput(int ControllerId, name Key, EInputEvent Event)
 {
@@ -109,12 +109,12 @@ final function PlayerController GetPlayer()
 	return Owner.PlayerOwner;
 }
 
-function SetDisabled( bool bDisable)
+function SetDisabled(bool bDisable)
 {
 	bDisabled = bDisable;
 }
 
-Delegate OnFocus( KFGUI_Base Sender, bool bBecame );
+Delegate OnFocus(KFGUI_Base Sender, bool bBecame);
 
 final function ComputeCoords()
 {
@@ -126,7 +126,7 @@ final function ComputeCoords()
 
 function bool CaptureMouse()
 {
-	return bVisible && ( Owner.MousePosition.X >= CompPos[0] && Owner.MousePosition.Y >= CompPos[1] && Owner.MousePosition.X <= (CompPos[0]+CompPos[2]) && Owner.MousePosition.Y <= (CompPos[1]+CompPos[3]) );
+	return bVisible && ( Owner.MousePosition.X >= CompPos[0] && Owner.MousePosition.Y >= CompPos[1] && Owner.MousePosition.X <= (CompPos[0]+CompPos[2]) && Owner.MousePosition.Y <= (CompPos[1]+CompPos[3]));
 }
 
 final function KFGUI_Base GetMouseFocus()
@@ -186,18 +186,18 @@ final function KFGUI_Page GetPageTop()
 	{}
 	return KFGUI_Page(M);
 }
-function KFGUI_Base FindComponentID( name InID)
+function KFGUI_Base FindComponentID(name InID)
 {
 	if (ID == InID)
 		return Self;
 	return None;
 }
-function FindAllComponentID( name InID, out array < KFGUI_Base> Res)
+function FindAllComponentID(name InID, out array < KFGUI_Base> Res)
 {
 	if (ID == InID)
 		Res[Res.Length] = Self;
 }
-function RemoveComponent( KFGUI_Base B );
+function RemoveComponent(KFGUI_Base B);
 
 function GetInputFocus()
 {
@@ -227,11 +227,11 @@ final function ReleaseKeyFocus()
 }
 function LostKeyFocus();
 
-function bool NotifyInputKey( int ControllerId, name Key, EInputEvent Event, float AmountDepressed, bool bGamepad)
+function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, float AmountDepressed, bool bGamepad)
 {
 	if (bIsHUDWidget && bEnableInputs)
 	{
-		switch( Key)
+		switch (Key)
 		{
 		case 'XboxTypeS_Start':
 		case 'Escape':
@@ -254,11 +254,11 @@ function bool NotifyInputKey( int ControllerId, name Key, EInputEvent Event, flo
 
 	return false;
 }
-function bool NotifyInputAxis( int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad)
+function bool NotifyInputAxis(int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad)
 {
 	return false;
 }
-function bool NotifyInputChar( int ControllerId, string Unicode)
+function bool NotifyInputChar(int ControllerId, string Unicode)
 {
 	return false;
 }
@@ -269,25 +269,25 @@ function InputMouseMoved();
 // Notify any focused menu element that mouse has been idle over it.
 function NotifyMousePaused();
 
-final function GetActualPos( out float X, out float Y)
+final function GetActualPos(out float X, out float Y)
 {
 	X = ((XPosition+X)*InputPos[2]) + InputPos[0];
 	Y = ((YPosition+Y)*InputPos[3]) + InputPos[1];
 }
-final function GetRealtivePos( out float X, out float Y)
+final function GetRealtivePos(out float X, out float Y)
 {
 	X = X / CompPos[2];
 	Y = Y / CompPos[2];
 }
 
-simulated final function PlayMenuSound( EMenuSound Slot)
+simulated final function PlayMenuSound(EMenuSound Slot)
 {
 	local SoundCue S;
 	local KFGameEngine Engine;
 
 	Engine = KFGameEngine(class'Engine'.static.GetEngine());
 
-	switch( Slot)
+	switch (Slot)
 	{
 	case MN_FocusHover:
 	case MN_Focus:
@@ -318,7 +318,7 @@ simulated final function PlayMenuSound( EMenuSound Slot)
 // Pre level change notification.
 function NotifyLevelChange();
 
-final function SetPosition( float X, float Y, float XS, float YS)
+final function SetPosition(float X, float Y, float XS, float YS)
 {
 	XPosition = X;
 	YPosition = Y;
@@ -326,7 +326,7 @@ final function SetPosition( float X, float Y, float XS, float YS)
 	YSize = YS;
 }
 
-static final function string MakeSortStr( int Value)
+static final function string MakeSortStr(int Value)
 {
 	local string S;
 	local int i;

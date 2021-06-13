@@ -47,7 +47,7 @@ static function CheckAvatar(KFPlayerReplicationInfo KFPRI, KFPlayerController PC
 	}
 }
 
-delegate bool InOrder( KFPlayerReplicationInfo P1, KFPlayerReplicationInfo P2)
+delegate bool InOrder(KFPlayerReplicationInfo P1, KFPlayerReplicationInfo P2)
 {
 	if (P1 == None || P2 == None)
 		return true;
@@ -241,8 +241,7 @@ function DrawMenu()
 	YPos += YL;
 	BoxH = YL + BorderSize;
 	SetDrawColor(Canvas, Settings.Style.ListHeaderBoxColor);
-		Owner.CurrentStyle.DrawRectBox(
-		XPos - BorderSize * 2,
+		Owner.CurrentStyle.DrawRectBox(	XPos - BorderSize * 2,
 		YPos,
 		Width + BorderSize * 4,
 		BoxH,
@@ -316,7 +315,7 @@ function SetDrawColor(Canvas C, ColorRGBA RGBA)
 	C.SetDrawColor(RGBA.R, RGBA.G, RGBA.B, RGBA.A);
 }
 
-function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus)
+function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus)
 {
 	local string S, StrValue;
 	local float FontScalar, TextYOffset, XL, YL, PerkIconPosX, PerkIconPosY, PerkIconSize, PrestigeIconScale;
@@ -408,8 +407,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		SetDrawColor(C, Settings.Style.LeftStateBoxColor);
 	
 	BoxWidth = Owner.HUDOwner.ScaledBorderSize * 8;
-	Owner.CurrentStyle.DrawRectBox(
-		XPos,
+	Owner.CurrentStyle.DrawRectBox(	XPos,
 		YOffset,
 		BoxWidth,
 		Height,
@@ -431,8 +429,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	// Right stats box
 	BoxWidth = Width - XPos;
 	SetDrawColor(C, Settings.Style.StatsBoxColor);
-	Owner.CurrentStyle.DrawRectBox(
-		XPos,
+	Owner.CurrentStyle.DrawRectBox(	XPos,
 		YOffset,
 		BoxWidth,
 		Height,
@@ -659,7 +656,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		DrawPingBars(C, YOffset + (Height/2) - ((Height*0.5)/2), Width - (Height*0.5) - (Owner.HUDOwner.ScaledBorderSize*2), Height*0.5, Height*0.5, float(Ping));
 }
 
-final function DrawPingBars( Canvas C, float YOffset, float XOffset, float W, float H, float Ping)
+final function DrawPingBars(Canvas C, float YOffset, float XOffset, float W, float H, float Ping)
 {
 	local float PingMul, BarW, BarH, BaseH, XPos, YPos;
 	local byte i;
@@ -693,7 +690,7 @@ final function DrawPingBars( Canvas C, float YOffset, float XOffset, float W, fl
 	}
 }
 
-static final function Texture2D FindAvatar( KFPlayerController PC, UniqueNetId ClientID)
+static final function Texture2D FindAvatar(KFPlayerController PC, UniqueNetId ClientID)
 {
 	local string S;
 
@@ -712,7 +709,7 @@ final static function string GetNiceSize(int Num)
 	return (Num / 1000000000) $ "B";
 }
 
-function ScrollMouseWheel( bool bUp)
+function ScrollMouseWheel(bool bUp)
 {
 	PlayersList.ScrollMouseWheel(bUp);
 }

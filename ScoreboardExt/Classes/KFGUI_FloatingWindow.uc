@@ -44,7 +44,7 @@ function DrawMenu()
 		HeaderComp.YSize = HeaderComp.CompPos[3] / CompPos[3]; // Keep header height fit the window height.
 	}
 }
-function SetWindowDrag( bool bDrag)
+function SetWindowDrag(bool bDrag)
 {
 	bDragWindow = bDrag;
 	if (bDrag)

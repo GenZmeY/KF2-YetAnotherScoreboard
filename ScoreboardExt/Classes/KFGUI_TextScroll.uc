@@ -10,7 +10,7 @@ var transient bool bScrollCompleted, bTextDirty;
 var transient array < bool> RowsCompleted;
 var transient int MaxIndex, RowsDropped;
 
-function SetText( string S)
+function SetText(string S)
 {
 	Super.SetText(S);
 
@@ -168,7 +168,7 @@ function bool CaptureMouse()
 	return (!bScrollCompleted && Super(KFGUI_MultiComponent).CaptureMouse()) || Super.CaptureMouse();
 }
 
-function MouseClick( bool bRight)
+function MouseClick(bool bRight)
 {
 	if (bScrollCompleted)
 		return;

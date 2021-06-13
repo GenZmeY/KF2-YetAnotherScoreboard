@@ -23,7 +23,7 @@ function DrawMenu()
 	Owner.CurrentStyle.RenderComboBox(Self);
 }
 
-function HandleMouseClick( bool bRight)
+function HandleMouseClick(bool bRight)
 {
 	PlayMenuSound(MN_Dropdown);
 	if (Selection == None)
@@ -47,7 +47,7 @@ final function string GetCurrent()
 		return Values[SelectedIndex];
 	return "";
 }
-final function bool SetValue( string S)
+final function bool SetValue(string S)
 {
 	local int i;
 
@@ -57,7 +57,7 @@ final function bool SetValue( string S)
 	SelectedIndex = i;
 	return true;
 }
-Delegate OnComboChanged( KFGUI_ComboBox Sender );
+Delegate OnComboChanged(KFGUI_ComboBox Sender);
 
 defaultproperties
 {

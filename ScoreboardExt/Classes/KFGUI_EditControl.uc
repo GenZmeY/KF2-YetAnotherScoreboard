@@ -69,7 +69,7 @@ function PreDraw()
 	}
 }
 
-final function DrawClippedText( string S, float TScale, float MaxX)
+final function DrawClippedText(string S, float TScale, float MaxX)
 {
 	local int i, l;
 	local float X, XL, YL;

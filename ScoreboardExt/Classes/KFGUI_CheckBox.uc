@@ -19,13 +19,13 @@ function DrawMenu()
 	Owner.CurrentStyle.RenderCheckbox(Self);
 }
 
-function HandleMouseClick( bool bRight)
+function HandleMouseClick(bool bRight)
 {
 	bChecked = !bChecked;
 	OnCheckChange(Self);
 }
 
-Delegate OnCheckChange( KFGUI_CheckBox Sender );
+Delegate OnCheckChange(KFGUI_CheckBox Sender);
 
 defaultproperties
 {
