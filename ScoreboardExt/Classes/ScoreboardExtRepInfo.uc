@@ -88,6 +88,10 @@ private reliable client function ClientApplySettings()
 	}
 	
 	ClearTimer(nameof(ClientApplySettings));
+	
+	if (class'ScoreboardStyleClient'.default.bEnabled)
+		Settings.Style = class'ScoreboardStyleClient'.static.Settings();
+	
 	SC.Settings = Settings;
 }
 

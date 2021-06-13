@@ -4,9 +4,9 @@ class ScoreboardStyleClient extends ScoreboardStyle
 `include(Build.uci)
 `include(Logger.uci)
 
-var config bool bEnable;
+var config bool bEnabled;
 
 defaultProperties
 {
-	bEnable=false
+
 }
