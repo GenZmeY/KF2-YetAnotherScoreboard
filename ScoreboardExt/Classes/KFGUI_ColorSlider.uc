@@ -42,7 +42,7 @@ function SetDefaultColor(Color Def)
 	ASlider.UpdateListVis();
 }
 
-final function KFGUI_Slider AddSlider( string Cap, name IDN, int MinValue, int MaxValue, out KFGUI_TextLable Label, out KFGUI_TextLable ColorValueLabel )
+final function KFGUI_Slider AddSlider( string Cap, name IDN, int MinValue, int MaxValue, out KFGUI_TextLable Label, out KFGUI_TextLable ColorValueLabel)
 {
 	local KFGUI_Slider SL;
 	local KFGUI_MultiComponent MC;

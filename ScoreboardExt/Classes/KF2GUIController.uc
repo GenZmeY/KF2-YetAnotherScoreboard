@@ -4,7 +4,7 @@ Class KF2GUIController extends Info
 `include(Build.uci)
 `include(Logger.uci)
 
-var() class<GUIStyleBase> DefaultStyle;
+var() class < GUIStyleBase> DefaultStyle;
 
 var PlayerController PlayerOwner;
 var ScoreboardExtHUD HUDOwner;
@@ -12,13 +12,13 @@ var transient KF2GUIInput CustomInput;
 var transient PlayerInput BackupInput;
 var transient GameViewportClient ClientViewport;
 
-var delegate<Interaction.OnReceivedNativeInputKey> OldOnReceivedNativeInputKey;
-var delegate<Interaction.OnReceivedNativeInputAxis> OldOnReceivedNativeInputAxis;
-var delegate<Interaction.OnReceivedNativeInputChar> OldOnReceivedNativeInputChar;
+var delegate < Interaction.OnReceivedNativeInputKey> OldOnReceivedNativeInputKey;
+var delegate < Interaction.OnReceivedNativeInputAxis> OldOnReceivedNativeInputAxis;
+var delegate < Interaction.OnReceivedNativeInputChar> OldOnReceivedNativeInputChar;
 
-var delegate<GameViewportClient.HandleInputAxis> OldHandleInputAxis;
+var delegate < GameViewportClient.HandleInputAxis> OldHandleInputAxis;
 
-var array<KFGUI_Page> ActiveMenus,PersistentMenus;
+var array < KFGUI_Page> ActiveMenus,PersistentMenus;
 var transient KFGUI_Base MouseFocus,InputFocus,KeyboardFocus;
 var IntPoint MousePosition,ScreenSize,OldMousePos,LastMousePos,LastClickPos[2];
 var transient float MousePauseTime,MenuTime,LastClickTimes[2];
@@ -27,7 +27,7 @@ var transient GUIStyleBase CurrentStyle;
 var transient Console OrgConsole;
 var transient KFGUIConsoleHack HackConsole;
 
-var array<Texture2D> CursorTextures;
+var array < Texture2D> CursorTextures;
 var Color CursorColor;
 var int CurrentCursorIndex, CursorSize;
 
@@ -38,24 +38,24 @@ var int FontBlurX,FontBlurX2,FontBlurY,FontBlurY2,FastFontBlurX,FastFontBlurX2,F
 
 var bool bMouseWasIdle,bIsInMenuState,bAbsorbInput,bIsInvalid,bHideCursor,bUsingGamepad,bForceEngineCursor,bNoInputReset;
 
-static function KF2GUIController GetGUIController( PlayerController PC )
+static function KF2GUIController GetGUIController( PlayerController PC)
 {
 	local KF2GUIController G;
 
-	if( PC.Player==None )
+	if (PC.Player == None)
 	{
 		return None;
 	}
 
 	foreach PC.ChildActors(class'ScoreboardExt.KF2GUIController',G)
 	{
-		if( !G.bIsInvalid )
+		if (!G.bIsInvalid)
 		{
 			break;
 		}
 	}
 
-	if( G==None )
+	if (G == None)
 	{
 		G = PC.Spawn(class'ScoreboardExt.KF2GUIController',PC);
 	}
@@ -81,7 +81,7 @@ simulated function PostBeginPlay()
 
 simulated function SetupCursorFlash()
 {
-	if( CursorFlash == 255 )
+	if (CursorFlash == 255)
 		CursorFlash = 0;
 	else CursorFlash = 255;
 }
@@ -109,24 +109,24 @@ simulated function Tick(float DT)
 	DT /= WorldInfo.TimeDilation;
 
 	CursorFade += 255 * DT * CursorStep;
-	if( CursorFade<=0 )
+	if (CursorFade <= 0)
 	{
 		CursorFade = 0;
 		CursorStep = 1;
 	}
-	else if( CursorFade>=255 )
+	else if (CursorFade >= 255)
 	{
 		CursorFade = 255;
 		CursorStep = -1;
 	}
 
 	FastCursorFade += 8192 * DT * FastCursorStep;
-	if( FastCursorFade<=0 )
+	if (FastCursorFade <= 0)
 	{
 		FastCursorFade = 0;
 		FastCursorStep = 1;
 	}
-	else if( FastCursorFade>=255 )
+	else if (FastCursorFade >= 255)
 	{
 		FastCursorFade = 255;
 		FastCursorStep = -1;
@@ -135,27 +135,27 @@ simulated function Tick(float DT)
 
 simulated function Destroyed()
 {
-	if( PlayerOwner!=None )
+	if (PlayerOwner != None)
 		SetMenuState(false);
 }
 
 simulated function HandleDrawMenu()
 {
-	if( HackConsole==None )
+	if (HackConsole == None)
 	{
 		HackConsole = new(ClientViewport)class'ScoreboardExt.KFGUIConsoleHack';
 		HackConsole.OutputObject = Self;
 	}
-	if( HackConsole!=ClientViewport.ViewportConsole )
+	if (HackConsole != ClientViewport.ViewportConsole)
 	{
 		OrgConsole = ClientViewport.ViewportConsole;
 		ClientViewport.ViewportConsole = HackConsole;
 
 		// Make sure nothing overrides these settings while menu is being open.
-		if( bIsInMenuState ) PlayerOwner.PlayerInput = CustomInput;
+		if (bIsInMenuState ) PlayerOwner.PlayerInput = CustomInput;
 	}
 }
-simulated function RenderMenu( Canvas C )
+simulated function RenderMenu( Canvas C)
 {
 	local int i;
 	local float OrgX,OrgY,ClipX,ClipY;
@@ -172,11 +172,11 @@ simulated function RenderMenu( Canvas C )
 	CurrentStyle.Canvas = C;
 	CurrentStyle.PickDefaultFontSize(C.SizeY);
 
-	if( !KFPlayerController(PlayerOwner).MyGFxManager.bMenusActive )
+	if (!KFPlayerController(PlayerOwner).MyGFxManager.bMenusActive)
 	{
 		HUDOwner.Canvas = C;
 
-		for( i=(HUDOwner.HUDWidgets.Length-1); i>=0; --i )
+		for (i=(HUDOwner.HUDWidgets.Length-1); i >= 0; --i)
 		{
 			HUDOwner.HUDWidgets[i].InputPos[0] = 0.f;
 			HUDOwner.HUDWidgets[i].InputPos[1] = 0.f;
@@ -190,11 +190,11 @@ simulated function RenderMenu( Canvas C )
 		C.SetClip(ClipX,ClipY);
 	}
 
-	if( bIsInMenuState )
+	if (bIsInMenuState)
 	{
-		for( i=(ActiveMenus.Length-1); i>=0; --i )
+		for (i=(ActiveMenus.Length-1); i >= 0; --i)
 		{
-			ActiveMenus[i].bWindowFocused = (i==0);
+			ActiveMenus[i].bWindowFocused = (i == 0);
 			ActiveMenus[i].InputPos[0] = 0.f;
 			ActiveMenus[i].InputPos[1] = 0.f;
 			ActiveMenus[i].InputPos[2] = ScreenSize.X;
@@ -202,7 +202,7 @@ simulated function RenderMenu( Canvas C )
 			ActiveMenus[i].Canvas = C;
 			ActiveMenus[i].PreDraw();
 		}
-		if( InputFocus!=None && InputFocus.bFocusedPostDrawItem )
+		if (InputFocus != None && InputFocus.bFocusedPostDrawItem)
 		{
 			InputFocus.InputPos[0] = 0.f;
 			InputFocus.InputPos[1] = 0.f;
@@ -220,7 +220,7 @@ simulated function RenderMenu( Canvas C )
 		}
 	}
 
-	if( OrgConsole!=None )
+	if (OrgConsole != None)
 		OrgConsole.PostRender_Console(C);
 	OrgConsole = None;
 }
@@ -236,28 +236,28 @@ simulated final function InventoryChanged(optional KFWeapon Wep, optional bool b
 {
 	local int i;
 
-	for( i=(ActiveMenus.Length-1); i>=0; --i )
+	for (i=(ActiveMenus.Length-1); i >= 0; --i)
 	{
 		ActiveMenus[i].InventoryChanged(Wep,bRemove);
 	}
 }
 
-simulated final function SetMenuState( bool bActive )
+simulated final function SetMenuState( bool bActive)
 {
-	if( PlayerOwner.PlayerInput==None )
+	if (PlayerOwner.PlayerInput == None)
 	{
 		NotifyLevelChange();
 		bActive = false;
 	}
 
-	if( bIsInMenuState==bActive )
+	if (bIsInMenuState == bActive)
 		return;
 	bIsInMenuState = bActive;
 	bHideCursor = !bActive;
 
-	if( bActive )
+	if (bActive)
 	{
-		if( CustomInput==None )
+		if (CustomInput == None)
 		{
 			CustomInput = new (KFPlayerController(PlayerOwner)) class'ScoreboardExt.KF2GUIInput';
 			CustomInput.ControllerOwner = Self;
@@ -280,7 +280,7 @@ simulated final function SetMenuState( bool bActive )
 
 		PlayerOwner.PlayerInput = CustomInput;
 
-		if( LastMousePos != default.LastMousePos )
+		if (LastMousePos != default.LastMousePos)
 			ClientViewport.SetMouse(LastMousePos.X,LastMousePos.Y);
 	}
 	else
@@ -289,7 +289,7 @@ simulated final function SetMenuState( bool bActive )
 
 		ClientViewport.HandleInputAxis = None;
 
-		if( BackupInput!=None )
+		if (BackupInput != None)
 		{
 			PlayerOwner.PlayerInput = BackupInput;
 			BackupInput.OnReceivedNativeInputKey = OldOnReceivedNativeInputKey;
@@ -302,7 +302,7 @@ simulated final function SetMenuState( bool bActive )
 		LastClickTimes[1] = 0;
 	}
 
-	if( !bNoInputReset )
+	if (!bNoInputReset)
 	{
 		PlayerOwner.PlayerInput.ResetInput();
 	}
@@ -312,19 +312,19 @@ simulated function NotifyLevelChange()
 {
 	local int i;
 
-	if( bIsInvalid )
+	if (bIsInvalid)
 		return;
 	bIsInvalid = true;
 
-	if( InputFocus!=None )
+	if (InputFocus != None)
 	{
 		InputFocus.LostInputFocus();
 		InputFocus = None;
 	}
 
-	for( i=(ActiveMenus.Length-1); i>=0; --i )
+	for (i=(ActiveMenus.Length-1); i >= 0; --i)
 		ActiveMenus[i].NotifyLevelChange();
-	for( i=(PersistentMenus.Length-1); i>=0; --i )
+	for (i=(PersistentMenus.Length-1); i >= 0; --i)
 		PersistentMenus[i].NotifyLevelChange();
 
 	SetMenuState(false);
@@ -335,36 +335,36 @@ simulated function MenuInput(float DeltaTime)
 	local int i;
 	local vector2D V;
 
-	if( PlayerOwner.PlayerInput==None )
+	if (PlayerOwner.PlayerInput == None)
 	{
 		NotifyLevelChange();
 		return;
 	}
-	if( InputFocus!=None )
+	if (InputFocus != None)
 		InputFocus.MenuTick(DeltaTime);
-	for( i=0; i<ActiveMenus.Length; ++i )
+	for (i=0; i < ActiveMenus.Length; ++i)
 		ActiveMenus[i].MenuTick(DeltaTime);
 
 	// Check idle.
-	if( Abs(MousePosition.X-OldMousePos.X)>5.f || Abs(MousePosition.Y-OldMousePos.Y)>5.f || (bMouseWasIdle && MousePauseTime<0.5f) )
+	if (Abs(MousePosition.X-OldMousePos.X) > 5.f || Abs(MousePosition.Y-OldMousePos.Y) > 5.f || (bMouseWasIdle && MousePauseTime < 0.5f))
 	{
-		if( bMouseWasIdle )
+		if (bMouseWasIdle)
 		{
 			bMouseWasIdle = false;
-			if( InputFocus!=None )
+			if (InputFocus != None)
 				InputFocus.InputMouseMoved();
 		}
 		OldMousePos = MousePosition;
 		MousePauseTime = 0.f;
 	}
-	else if( !bMouseWasIdle && (MousePauseTime+=DeltaTime)>0.5f )
+	else if (!bMouseWasIdle && (MousePauseTime+=DeltaTime) > 0.5f)
 	{
 		bMouseWasIdle = true;
-		if( MouseFocus!=None )
+		if (MouseFocus != None)
 			MouseFocus.NotifyMousePaused();
 	}
 
-	if( ActiveMenus.Length>0 )
+	if (ActiveMenus.Length > 0)
 		MenuTime+=DeltaTime;
 
 	V = ClientViewport.GetMousePosition();
@@ -381,15 +381,15 @@ simulated function MouseMove()
 	local KFGUI_Base F;
 
 	// Capture mouse for GUI
-	if( InputFocus!=None && InputFocus.bCanFocus )
+	if (InputFocus != None && InputFocus.bCanFocus)
 	{
-		if( InputFocus.CaptureMouse() )
+		if (InputFocus.CaptureMouse())
 		{
 			F = InputFocus.GetMouseFocus();
-			if( F!=MouseFocus )
+			if (F != MouseFocus)
 			{
 				MousePauseTime = 0;
-				if( MouseFocus!=None )
+				if (MouseFocus != None)
 					MouseFocus.MouseLeave();
 				MouseFocus = F;
 				F.MouseEnter();
@@ -399,32 +399,32 @@ simulated function MouseMove()
 	}
 	else
 	{
-		for( i=0; i<ActiveMenus.Length; ++i )
+		for (i=0; i < ActiveMenus.Length; ++i)
 		{
-			if( ActiveMenus[i].CaptureMouse() )
+			if (ActiveMenus[i].CaptureMouse())
 			{
 				F = ActiveMenus[i].GetMouseFocus();
-				if( F!=MouseFocus )
+				if (F != MouseFocus)
 				{
 					MousePauseTime = 0;
-					if( MouseFocus!=None )
+					if (MouseFocus != None)
 						MouseFocus.MouseLeave();
 					MouseFocus = F;
 					F.MouseEnter();
 				}
 				break;
 			}
-			else if( ActiveMenus[i].bOnlyThisFocus ) // Discard any other menus after this one.
+			else if (ActiveMenus[i].bOnlyThisFocus ) // Discard any other menus after this one.
 			{
 				i = ActiveMenus.Length;
 				break;
 			}
 		}
 	}
-	if( MouseFocus!=None && i==ActiveMenus.Length ) // Hovering over nothing.
+	if (MouseFocus != None && i == ActiveMenus.Length ) // Hovering over nothing.
 	{
 		MousePauseTime = 0;
-		if( MouseFocus!=None )
+		if (MouseFocus != None)
 			MouseFocus.MouseLeave();
 		MouseFocus = None;
 	}
@@ -434,8 +434,8 @@ simulated final function int GetFreeIndex( bool bNewAlwaysTop ) // Find first al
 {
 	local int i;
 
-	for( i=0; i<ActiveMenus.Length; ++i )
-		if( bNewAlwaysTop || !ActiveMenus[i].bAlwaysTop )
+	for (i=0; i < ActiveMenus.Length; ++i)
+		if (bNewAlwaysTop || !ActiveMenus[i].bAlwaysTop)
 		{
 			ActiveMenus.Insert(i,1);
 			return i;
@@ -444,16 +444,16 @@ simulated final function int GetFreeIndex( bool bNewAlwaysTop ) // Find first al
 	ActiveMenus.Length = i+1;
 	return i;
 }
-simulated function KFGUI_Base InitializeHUDWidget( class<KFGUI_Base> GUIClass )
+simulated function KFGUI_Base InitializeHUDWidget( class < KFGUI_Base> GUIClass)
 {
 	local KFGUI_Base Widget;
 
-	if( GUIClass==None )
+	if (GUIClass == None)
 		return None;
 
 	Widget = New(None) GUIClass;
 
-	if( Widget==None )
+	if (Widget == None)
 		return None;
 
 	HUDOwner.HUDWidgets.AddItem(Widget);
@@ -466,17 +466,17 @@ simulated function KFGUI_Base InitializeHUDWidget( class<KFGUI_Base> GUIClass )
 
 	return Widget;
 }
-simulated function KFGUI_Page OpenMenu( class<KFGUI_Page> MenuClass )
+simulated function KFGUI_Page OpenMenu( class < KFGUI_Page> MenuClass)
 {
 	local int i;
 	local KFGUI_Page M;
 
-	if( MenuClass==None )
+	if (MenuClass == None)
 		return None;
 
-	if( KeyboardFocus!=None )
+	if (KeyboardFocus != None)
 		GrabInputFocus(None);
-	if( InputFocus!=None )
+	if (InputFocus != None)
 	{
 		InputFocus.LostInputFocus();
 		InputFocus = None;
@@ -486,12 +486,12 @@ simulated function KFGUI_Page OpenMenu( class<KFGUI_Page> MenuClass )
 	SetMenuState(true);
 
 	// Check if should use pre-excisting menu.
-	if( MenuClass.Default.bUnique )
+	if (MenuClass.Default.bUnique)
 	{
-		for( i=0; i<ActiveMenus.Length; ++i )
-			if( ActiveMenus[i].Class==MenuClass )
+		for (i=0; i < ActiveMenus.Length; ++i)
+			if (ActiveMenus[i].Class == MenuClass)
 			{
-				if( i>0 && ActiveMenus[i].BringPageToFront() ) // Sort it upfront.
+				if (i > 0 && ActiveMenus[i].BringPageToFront() ) // Sort it upfront.
 				{
 					M = ActiveMenus[i];
 					ActiveMenus.Remove(i,1);
@@ -501,10 +501,10 @@ simulated function KFGUI_Page OpenMenu( class<KFGUI_Page> MenuClass )
 				return M;
 			}
 
-		if( MenuClass.Default.bPersistant )
+		if (MenuClass.Default.bPersistant)
 		{
-			for( i=0; i<PersistentMenus.Length; ++i )
-				if( PersistentMenus[i].Class==MenuClass )
+			for (i=0; i < PersistentMenus.Length; ++i)
+				if (PersistentMenus[i].Class == MenuClass)
 				{
 					M = PersistentMenus[i];
 					PersistentMenus.Remove(i,1);
@@ -517,7 +517,7 @@ simulated function KFGUI_Page OpenMenu( class<KFGUI_Page> MenuClass )
 	}
 	M = New(None)MenuClass;
 
-	if( M==None ) // Probably abstract class.
+	if (M == None ) // Probably abstract class.
 		return None;
 
 	i = GetFreeIndex(M.bAlwaysTop);
@@ -527,125 +527,125 @@ simulated function KFGUI_Page OpenMenu( class<KFGUI_Page> MenuClass )
 	M.ShowMenu();
 	return M;
 }
-simulated function CloseMenu( class<KFGUI_Page> MenuClass, optional bool bCloseAll )
+simulated function CloseMenu( class < KFGUI_Page> MenuClass, optional bool bCloseAll)
 {
 	local int i, j;
 	local KFGUI_Page M;
 
-	if( !bCloseAll && MenuClass==None )
+	if (!bCloseAll && MenuClass == None)
 		return;
 
-	if( KeyboardFocus!=None )
+	if (KeyboardFocus != None)
 		GrabInputFocus(None);
-	if( InputFocus!=None )
+	if (InputFocus != None)
 	{
 		InputFocus.LostInputFocus();
 		InputFocus = None;
 	}
-	for( i=(ActiveMenus.Length-1); i>=0; --i )
+	for (i=(ActiveMenus.Length-1); i >= 0; --i)
 	{
-		if( bCloseAll || ActiveMenus[i].Class==MenuClass )
+		if (bCloseAll || ActiveMenus[i].Class == MenuClass)
 		{
 			M = ActiveMenus[i];
 			ActiveMenus.Remove(i,1);
 			M.CloseMenu();
 
-			for( j=0; j<M.TimerNames.Length; j++ )
+			for (j=0; j < M.TimerNames.Length; j++)
 			{
 				M.ClearTimer(M.TimerNames[j]);
 			}
 
 			// Cache menu.
-			if( M.bPersistant && M.bUnique )
+			if (M.bPersistant && M.bUnique)
 				PersistentMenus[PersistentMenus.Length] = M;
 		}
 	}
-	if( ActiveMenus.Length==0 )
+	if (ActiveMenus.Length == 0)
 	{
 		SetMenuState(false);
 	}
 }
-simulated function PopCloseMenu( KFGUI_Base Item )
+simulated function PopCloseMenu( KFGUI_Base Item)
 {
 	local int i;
 	local KFGUI_Page M;
 
-	if( Item==None )
+	if (Item == None)
 		return;
 
-	if( Item.bIsHUDWidget )
+	if (Item.bIsHUDWidget)
 	{
 		HUDOwner.HUDWidgets.RemoveItem(Item);
 		Item.CloseMenu();
 		return;
 	}
 
-	if( KeyboardFocus!=None )
+	if (KeyboardFocus != None)
 		GrabInputFocus(None);
-	if( InputFocus!=None )
+	if (InputFocus != None)
 	{
 		InputFocus.LostInputFocus();
 		InputFocus = None;
 	}
-	for( i=(ActiveMenus.Length-1); i>=0; --i )
-		if( ActiveMenus[i]==Item )
+	for (i=(ActiveMenus.Length-1); i >= 0; --i)
+		if (ActiveMenus[i] == Item)
 		{
 			M = ActiveMenus[i];
 			ActiveMenus.Remove(i,1);
 			M.CloseMenu();
 
 			// Cache menu.
-			if( M.bPersistant && M.bUnique )
+			if (M.bPersistant && M.bUnique)
 				PersistentMenus[PersistentMenus.Length] = M;
 			break;
 		}
-	if( ActiveMenus.Length==0 )
+	if (ActiveMenus.Length == 0)
 		SetMenuState(false);
 }
-simulated function BringMenuToFront( KFGUI_Page Page )
+simulated function BringMenuToFront( KFGUI_Page Page)
 {
 	local int i;
 
-	if( ActiveMenus[0].bAlwaysTop && !Page.bAlwaysTop )
+	if (ActiveMenus[0].bAlwaysTop && !Page.bAlwaysTop)
 		return; // Can't override this menu.
 
 	// Try to remove from current position at stack.
-	for( i=(ActiveMenus.Length-1); i>=0; --i )
-		if( ActiveMenus[i]==Page )
+	for (i=(ActiveMenus.Length-1); i >= 0; --i)
+		if (ActiveMenus[i] == Page)
 		{
 			ActiveMenus.Remove(i,1);
 			break;
 		}
-	if( i==-1 )
+	if (i == -1)
 		return; // Page isn't open.
 
 	// Put on front of stack.
 	ActiveMenus.Insert(0,1);
 	ActiveMenus[0] = Page;
 }
-simulated final function bool MenuIsOpen( optional class<KFGUI_Page> MenuClass )
+simulated final function bool MenuIsOpen( optional class < KFGUI_Page> MenuClass)
 {
 	local int i;
 
-	for( i=(ActiveMenus.Length-1); i>=0; --i )
-		if( MenuClass==None || ActiveMenus[i].Class==MenuClass )
+	for (i=(ActiveMenus.Length-1); i >= 0; --i)
+		if (MenuClass == None || ActiveMenus[i].Class == MenuClass)
 			return true;
 	return false;
 }
-simulated final function GrabInputFocus( KFGUI_Base Comp, optional bool bForce )
+simulated final function GrabInputFocus( KFGUI_Base Comp, optional bool bForce)
 {
-	if( Comp==KeyboardFocus && !bForce )
+	if (Comp == KeyboardFocus && !bForce)
 		return;
 
-	if( KeyboardFocus!=None )
+	if (KeyboardFocus != None)
 		KeyboardFocus.LostKeyFocus();
 
-	if( Comp==None )
+	if (Comp == None)
 	{
 		OnInputKey = InternalInputKey;
 		OnReceivedInputChar = InternalReceivedInputChar;
 	}
-	else if( KeyboardFocus==None )
+	else if (KeyboardFocus == None)
 	{
 		OnInputKey = Comp.NotifyInputKey;
 		OnReceivedInputChar = Comp.NotifyInputChar;
@@ -654,23 +654,23 @@ simulated final function GrabInputFocus( KFGUI_Base Comp, optional bool bForce )
 	KeyboardFocus = Comp;
 }
 
-simulated final function GUI_InputMouse( bool bPressed, bool bRight )
+simulated final function GUI_InputMouse( bool bPressed, bool bRight)
 {
 	local byte i;
 
 	MousePauseTime = 0;
 
-	if( bPressed )
+	if (bPressed)
 	{
-		if( KeyboardFocus!=None && KeyboardFocus!=MouseFocus )
+		if (KeyboardFocus != None && KeyboardFocus != MouseFocus)
 		{
 			GrabInputFocus(None);
 			LastClickTimes[0] = 0;
 			LastClickTimes[1] = 0;
 		}
-		if( MouseFocus!=None )
+		if (MouseFocus != None)
 		{
-			if( MouseFocus!=InputFocus && !MouseFocus.bClickable && !MouseFocus.IsTopMenu() && MouseFocus.BringPageToFront() )
+			if (MouseFocus != InputFocus && !MouseFocus.bClickable && !MouseFocus.IsTopMenu() && MouseFocus.BringPageToFront())
 			{
 				BringMenuToFront(MouseFocus.GetPageTop());
 				LastClickTimes[0] = 0;
@@ -679,7 +679,7 @@ simulated final function GUI_InputMouse( bool bPressed, bool bRight )
 			else
 			{
 				i = byte(bRight);
-				if( (MenuTime-LastClickTimes[i])<0.2 && Abs(LastClickPos[i].X-MousePosition.X)<5 && Abs(LastClickPos[i].Y-MousePosition.Y)<5 )
+				if ((MenuTime-LastClickTimes[i]) < 0.2 && Abs(LastClickPos[i].X-MousePosition.X) < 5 && Abs(LastClickPos[i].Y-MousePosition.Y) < 5)
 				{
 					LastClickTimes[i] = 0;
 					MouseFocus.DoubleMouseClick(bRight);
@@ -692,7 +692,7 @@ simulated final function GUI_InputMouse( bool bPressed, bool bRight )
 				}
 			}
 		}
-		else if( InputFocus!=None )
+		else if (InputFocus != None)
 		{
 			InputFocus.LostInputFocus();
 			InputFocus = None;
@@ -702,17 +702,17 @@ simulated final function GUI_InputMouse( bool bPressed, bool bRight )
 	}
 	else
 	{
-		if( InputFocus!=None )
+		if (InputFocus != None)
 			InputFocus.MouseRelease(bRight);
-		else if( MouseFocus!=None )
+		else if (MouseFocus != None)
 			MouseFocus.MouseRelease(bRight);
 	}
 }
-simulated final function bool CheckMouse( name Key, EInputEvent Event )
+simulated final function bool CheckMouse( name Key, EInputEvent Event)
 {
-	if ( Event == IE_Pressed )
+	if (Event == IE_Pressed)
 	{
-		switch( Key )
+		switch( Key)
 		{
 		case 'XboxTypeS_A':
 		case 'LeftMouseButton':
@@ -724,9 +724,9 @@ simulated final function bool CheckMouse( name Key, EInputEvent Event )
 			return true;
 		}
 	}
-	else if ( Event == IE_Released )
+	else if (Event == IE_Released)
 	{
-		switch( Key )
+		switch( Key)
 		{
 		case 'XboxTypeS_A':
 		case 'LeftMouseButton':
@@ -740,34 +740,34 @@ simulated final function bool CheckMouse( name Key, EInputEvent Event )
 	}
 	return false;
 }
-simulated function bool ReceivedInputKey( int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad )
+simulated function bool ReceivedInputKey( int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
 {
 	local KFPlayerInput KFInput;
 	local KeyBind BoundKey;
 
-	if( !bIsInMenuState )
+	if (!bIsInMenuState)
 		return false;
 
 	bUsingGamepad = bGamepad;
 
 	KFInput = KFPlayerInput(BackupInput);
-	if( KFInput == None )
+	if (KFInput == None)
 	{
 		KFInput = KFPlayerInput(PlayerOwner.PlayerInput);
 	}
 
-	if( KeyboardFocus == None )
+	if (KeyboardFocus == None)
 	{
-		if( KFInput != None )
+		if (KFInput != None)
 		{	
 			KFInput.GetKeyBindFromCommand(BoundKey, "GBA_VoiceChat", false);	
-			if( string(Key) ~= KFInput.GetBindDisplayName(BoundKey) )
+			if (string(Key) ~= KFInput.GetBindDisplayName(BoundKey))
 			{
-				if( Event == IE_Pressed )
+				if (Event == IE_Pressed)
 				{
 					KFInput.StartVoiceChat(true);
 				}
-				else if( Event == IE_Released )
+				else if (Event == IE_Released)
 				{
 					KFInput.StopVoiceChat();
 				}
@@ -777,19 +777,19 @@ simulated function bool ReceivedInputKey( int ControllerId, name Key, EInputEven
 		}
 	}
 
-	if( !CheckMouse(Key,Event) && !OnInputKey(ControllerId,Key,Event,AmountDepressed,bGamepad) )
+	if (!CheckMouse(Key,Event) && !OnInputKey(ControllerId,Key,Event,AmountDepressed,bGamepad))
 	{
-		if( bGamepad )
+		if (bGamepad)
 		{
-			if( ActiveMenus[0].ReceievedControllerInput(ControllerId, Key, Event) )
+			if (ActiveMenus[0].ReceievedControllerInput(ControllerId, Key, Event))
 				return true;
 		}
 
-		switch( Key )
+		switch( Key)
 		{
 		case 'XboxTypeS_Start':
 		case 'Escape':
-			if( Event==IE_Pressed )
+			if (Event == IE_Pressed)
 				ActiveMenus[0].UserPressedEsc(); // Pop top menu if possible. // IE_Released
 			return true;
 		case 'XboxTypeS_DPad_Up':
@@ -798,8 +798,8 @@ simulated function bool ReceivedInputKey( int ControllerId, name Key, EInputEven
 		case 'XboxTypeS_DPad_Right':
 		case 'MouseScrollDown':
 		case 'MouseScrollUp':
-			if( Event==IE_Pressed && MouseFocus!=None )
-				MouseFocus.ScrollMouseWheel(Key=='MouseScrollUp' || Key=='XboxTypeS_DPad_Up' || Key=='XboxTypeS_DPad_Left');
+			if (Event == IE_Pressed && MouseFocus != None)
+				MouseFocus.ScrollMouseWheel(Key == 'MouseScrollUp' || Key == 'XboxTypeS_DPad_Up' || Key == 'XboxTypeS_DPad_Left');
 			return true;
 		}
 
@@ -808,18 +808,18 @@ simulated function bool ReceivedInputKey( int ControllerId, name Key, EInputEven
 
 	return true;
 }
-simulated function bool ReceivedInputAxis( int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad )
+simulated function bool ReceivedInputAxis( int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad)
 {
 	local Vector2D V;
 	local KFPlayerInput KFInput;
 	local float GamepadSensitivity,OldMouseX,OldMouseY,MoveDelta,MoveDeltaInvert;
 
-	if( !bIsInMenuState )
+	if (!bIsInMenuState)
 		return false;
 
-	if( bGamepad  )
+	if (bGamepad )
 	{
-		if( Abs(Delta) > 0.2f )
+		if (Abs(Delta) > 0.2f)
 		{
 			bUsingGamepad = true;
 
@@ -836,52 +836,52 @@ simulated function bool ReceivedInputAxis( int ControllerId, name Key, float Del
 			{
 				case 'XboxTypeS_LeftX':
 				case 'XboxTypeS_RightX':
-					if( Delta < 0 )
+					if (Delta < 0)
 						V.X = Clamp(V.X - MoveDeltaInvert, 0, ScreenSize.X);
 					else V.X = Clamp(V.X + MoveDelta, 0, ScreenSize.X);
 					break;
 				case 'XboxTypeS_LeftY':
-					if( Delta < 0 )
+					if (Delta < 0)
 						V.Y = Clamp(V.Y + MoveDeltaInvert, 0, ScreenSize.Y);
 					else V.Y = Clamp(V.Y - MoveDelta, 0, ScreenSize.Y);
 					break;
 				case 'XboxTypeS_RightY':
-					if( Delta < 0 )
+					if (Delta < 0)
 						V.Y = Clamp(V.Y - MoveDeltaInvert, 0, ScreenSize.Y);
 					else V.Y = Clamp(V.Y + MoveDelta, 0, ScreenSize.Y);
 					break;
 			}
 
-			if( OldMouseX != V.X || OldMouseY != V.Y )
+			if (OldMouseX != V.X || OldMouseY != V.Y)
 				ClientViewport.SetMouse(V.X, V.Y);
 		}
 	}
 	return OnReceivedInputAxis(ControllerId, Key, Delta, DeltaTime, bGamepad);
 }
-simulated function bool ReceivedInputChar( int ControllerId, string Unicode )
+simulated function bool ReceivedInputChar( int ControllerId, string Unicode)
 {
-	if( !bIsInMenuState )
+	if (!bIsInMenuState)
 		return false;
 	return OnReceivedInputChar(ControllerId,Unicode);
 }
 
-simulated Delegate bool OnInputKey( int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad )
+simulated Delegate bool OnInputKey( int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
 {
 	return false;
 }
-simulated Delegate bool OnReceivedInputAxis( int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad )
+simulated Delegate bool OnReceivedInputAxis( int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad)
 {
 	return false;
 }
-simulated Delegate bool OnReceivedInputChar( int ControllerId, string Unicode )
+simulated Delegate bool OnReceivedInputChar( int ControllerId, string Unicode)
 {
 	return false;
 }
-simulated Delegate bool InternalInputKey( int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad )
+simulated Delegate bool InternalInputKey( int ControllerId, name Key, EInputEvent Event, optional float AmountDepressed=1.f, optional bool bGamepad)
 {
 	return false;
 }
-simulated Delegate bool InternalReceivedInputChar( int ControllerId, string Unicode )
+simulated Delegate bool InternalReceivedInputChar( int ControllerId, string Unicode)
 {
 	return false;
 }

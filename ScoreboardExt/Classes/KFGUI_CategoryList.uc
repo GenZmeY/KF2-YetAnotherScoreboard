@@ -10,7 +10,7 @@ struct FCategoryItems
 	var name ID;
 	var KFGUI_Base Item;
 };
-var array<FCategoryItems> CategoryItems;
+var array < FCategoryItems> CategoryItems;
 
 function AddCategory(name CatID, string CatName, optional Texture2D IconMat, optional Color IconClr, optional float XS=1.f, optional float YS=1.f)
 {
@@ -25,7 +25,7 @@ function AddCategory(name CatID, string CatName, optional Texture2D IconMat, opt
 	B.OnClickRight = SelectedCategory;
 }
 
-function KFGUI_Base AddItemToCategory(name CatID, class<KFGUI_Base> Item)
+function KFGUI_Base AddItemToCategory(name CatID, class < KFGUI_Base> Item)
 {
 	local FCategoryItems CatItem;
 	local KFGUI_Base G;
@@ -48,28 +48,28 @@ function SelectedCategory(KFGUI_Button Sender)
 	local KFGUI_CategoryButton CatB;
 
 	CatB = KFGUI_CategoryButton(Sender);
-	if( CatB == None )
+	if (CatB == None)
 		return;
 
 	Index = ItemComponents.Find(Sender);
-	if( Index != INDEX_NONE )
+	if (Index != INDEX_NONE)
 	{
-		if( !CatB.bOpened )
+		if (!CatB.bOpened)
 		{
 			CatB.bOpened = true;
 			j = Index+1;
-			for( i=0; i<CategoryItems.Length; i++ )
+			for (i=0; i < CategoryItems.Length; i++)
 			{
-				if( CategoryItems[i].ID == CatB.ID )
+				if (CategoryItems[i].ID == CatB.ID)
 					AddItemAtIndex(j++, CategoryItems[i].Item);
 			}
 		}
 		else
 		{
 			CatB.bOpened = false;
-			for( i=0; i<CategoryItems.Length; i++ )
+			for (i=0; i < CategoryItems.Length; i++)
 			{
-				if( CategoryItems[i].ID == CatB.ID )
+				if (CategoryItems[i].ID == CatB.ID)
 					ItemComponents.RemoveItem(CategoryItems[i].Item);
 			}
 		}
@@ -80,9 +80,9 @@ function EmptyList()
 {
 	local int i;
 
-	for( i=0; i<ItemComponents.Length; i++ )
+	for (i=0; i < ItemComponents.Length; i++)
 	{
-		if( KFGUI_CategoryButton(ItemComponents[i]) == None )
+		if (KFGUI_CategoryButton(ItemComponents[i]) == None)
 			ItemComponents.Remove(i, 1);
 	}
 	CategoryItems.Length = 0;

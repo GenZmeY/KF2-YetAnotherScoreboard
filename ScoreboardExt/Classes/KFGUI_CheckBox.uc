@@ -10,7 +10,7 @@ var() bool bForceUniform,bChecked;
 function UpdateSizes()
 {
 	Super.UpdateSizes();
-	if( bForceUniform )
+	if (bForceUniform)
 		XSize = (YSize*InputPos[3]) / InputPos[2];
 }
 
@@ -19,7 +19,7 @@ function DrawMenu()
 	Owner.CurrentStyle.RenderCheckbox(Self);
 }
 
-function HandleMouseClick( bool bRight )
+function HandleMouseClick( bool bRight)
 {
 	bChecked = !bChecked;
 	OnCheckChange(Self);

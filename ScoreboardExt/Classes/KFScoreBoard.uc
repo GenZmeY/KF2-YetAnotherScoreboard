@@ -13,7 +13,7 @@ var KFGUI_List PlayersList;
 var Texture2D DefaultAvatar;
 
 var KFGameReplicationInfo KFGRI;
-var array<KFPlayerReplicationInfo> KFPRIArray;
+var array < KFPlayerReplicationInfo> KFPRIArray;
 
 var KFPlayerController OwnerPC;
 
@@ -21,8 +21,8 @@ var Color PingColor;
 var float PingBars;
 
 // Ranks
-var array<RankInfo> CustomRanks;
-var array<UIDRankRelation> RankRelations;
+var array < RankInfo> CustomRanks;
+var array < UIDRankRelation> RankRelations;
 
 var SCESettings Settings;
 
@@ -37,27 +37,27 @@ static function CheckAvatar(KFPlayerReplicationInfo KFPRI, KFPlayerController PC
 {
 	local Texture2D Avatar;
 
-	if( KFPRI.Avatar == None || KFPRI.Avatar == default.DefaultAvatar )
+	if (KFPRI.Avatar == None || KFPRI.Avatar == default.DefaultAvatar)
 	{
 		Avatar = FindAvatar(PC, KFPRI.UniqueId);
-		if( Avatar == None )
+		if (Avatar == None)
 			Avatar = default.DefaultAvatar;
 
 		KFPRI.Avatar = Avatar;
 	}
 }
 
-delegate bool InOrder( KFPlayerReplicationInfo P1, KFPlayerReplicationInfo P2 )
+delegate bool InOrder( KFPlayerReplicationInfo P1, KFPlayerReplicationInfo P2)
 {
-	if( P1 == None || P2 == None )
+	if (P1 == None || P2 == None)
 		return true;
 
-	if( P1.GetTeamNum() < P2.GetTeamNum() )
+	if (P1.GetTeamNum() < P2.GetTeamNum())
 		return false;
 
-	if( P1.Kills == P2.Kills )
+	if (P1.Kills == P2.Kills)
 	{
-		if( P1.Assists == P2.Assists )
+		if (P1.Assists == P2.Assists)
 			return true;
 
 		return P1.Assists < P2.Assists;
@@ -71,7 +71,7 @@ function string WaveText()
 	local int CurrentWaveNum;
 	
 	CurrentWaveNum = KFGRI.WaveNum;
-    if(KFGRI.IsBossWave())
+    if (KFGRI.IsBossWave())
     {
 		return class'KFGFxHUD_WaveInfo'.default.BossWaveString;
     }
@@ -103,23 +103,23 @@ function DrawMenu()
 	local float BorderSize;
 
 	PC = GetPlayer();
-	if( KFGRI==None )
+	if (KFGRI == None)
 	{
 		KFGRI = KFGameReplicationInfo(PC.WorldInfo.GRI);
-		if( KFGRI==None )
+		if (KFGRI == None)
 			return;
 	}
 
 	// Sort player list.
-	if( NextScoreboardRefresh < PC.WorldInfo.TimeSeconds )
+	if (NextScoreboardRefresh < PC.WorldInfo.TimeSeconds)
 	{
 		NextScoreboardRefresh = PC.WorldInfo.TimeSeconds + 0.1;
 
-		for( i=(KFGRI.PRIArray.Length-1); i>0; --i )
+		for (i=(KFGRI.PRIArray.Length-1); i > 0; --i)
 		{
-			for( j=i-1; j>=0; --j )
+			for (j=i-1; j >= 0; --j)
 			{
-				if( !InOrder(KFPlayerReplicationInfo(KFGRI.PRIArray[i]),KFPlayerReplicationInfo(KFGRI.PRIArray[j])) )
+				if (!InOrder(KFPlayerReplicationInfo(KFGRI.PRIArray[i]),KFPlayerReplicationInfo(KFGRI.PRIArray[j])))
 				{
 					PRI = KFGRI.PRIArray[i];
 					KFGRI.PRIArray[i] = KFGRI.PRIArray[j];
@@ -132,30 +132,30 @@ function DrawMenu()
 	// Check players.
 	PlayerIndex = -1;
 	NumPlayer = 0;
-	for( i=(KFGRI.PRIArray.Length-1); i>=0; --i )
+	for (i=(KFGRI.PRIArray.Length-1); i >= 0; --i)
 	{
 		KFPRI = KFPlayerReplicationInfo(KFGRI.PRIArray[i]);
-		if( KFPRI==None )
+		if (KFPRI == None)
 			continue;
-		if( KFPRI.bOnlySpectator )
+		if (KFPRI.bOnlySpectator)
 		{
 			++NumSpec;
 			continue;
 		}
-		if( KFPRI.PlayerHealth>0 && KFPRI.PlayerHealthPercent>0 && KFPRI.GetTeamNum()==0 )
+		if (KFPRI.PlayerHealth > 0 && KFPRI.PlayerHealthPercent > 0 && KFPRI.GetTeamNum() == 0)
 			++NumAlivePlayer;
 		++NumPlayer;
 	}
 
 	KFPRIArray.Length = NumPlayer;
 	j = KFPRIArray.Length;
-	for( i=(KFGRI.PRIArray.Length-1); i>=0; --i )
+	for (i=(KFGRI.PRIArray.Length-1); i >= 0; --i)
 	{
 		KFPRI = KFPlayerReplicationInfo(KFGRI.PRIArray[i]);
-		if( KFPRI!=None && !KFPRI.bOnlySpectator )
+		if (KFPRI != None && !KFPRI.bOnlySpectator)
 		{
 			KFPRIArray[--j] = KFPRI;
-			if( KFPRI==PC.PlayerReplicationInfo )
+			if (KFPRI == PC.PlayerReplicationInfo)
 				PlayerIndex = j;
 		}
 	}
@@ -316,7 +316,7 @@ function SetDrawColor(Canvas C, ColorRGBA RGBA)
 	C.SetDrawColor(RGBA.R, RGBA.G, RGBA.B, RGBA.A);
 }
 
-function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus )
+function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus)
 {
 	local string S, StrValue;
 	local float FontScalar, TextYOffset, XL, YL, PerkIconPosX, PerkIconPosY, PerkIconSize, PrestigeIconScale;
@@ -368,7 +368,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	}
 	// Now all players belongs to 'Rank'
 
-	if( KFGRI.bVersusGame )
+	if (KFGRI.bVersusGame)
 		bIsZED = KFTeamInfo_Zeds(KFPRI.Team) != None;
 
 	XPos = 0.f;
@@ -378,15 +378,15 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
 	
 	// change rect color by HP
-	if( !KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun )
+	if (!KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun)
 	{
 		SetDrawColor(C, Settings.Style.LeftStateBoxColor);
 	}
-	else if ( !KFGRI.bMatchHasBegun )
+	else if (!KFGRI.bMatchHasBegun)
 	{
 		SetDrawColor(C, Settings.Style.LeftStateBoxColor);
 	}
-	else if( bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None )
+	else if (bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None)
 	{
 		SetDrawColor(C, Settings.Style.LeftStateBoxColor);
 	}
@@ -447,7 +447,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	DrawTextShadowHLeftVCenter(S, RankXPos, TextYOffset, FontScalar);
 
 	// Perk
-	if( bIsZED )
+	if (bIsZED)
 	{
 		if (CurrentRank.ApplyColorToFields.Perk)
 			SetDrawColor(C, CurrentRank.TextColor);
@@ -461,7 +461,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	}
 	else
 	{
-		if( KFPRI.CurrentPerkClass!=None )
+		if (KFPRI.CurrentPerkClass != None)
 		{
 			PrestigeLevel = KFPRI.GetActivePerkPrestigeLevel();
 			Level = KFPRI.GetActivePerkLevel();
@@ -525,9 +525,9 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	}
 
 	// Avatar
-	if( KFPRI.Avatar != None )
+	if (KFPRI.Avatar != None)
 	{
-		if( KFPRI.Avatar == default.DefaultAvatar )
+		if (KFPRI.Avatar == default.DefaultAvatar)
 			CheckAvatar(KFPRI, OwnerPC);
 
 		C.SetDrawColor(255,255,255,255);
@@ -535,7 +535,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		C.DrawTile(KFPRI.Avatar,Height - 6,Height - 6,0,0,KFPRI.Avatar.SizeX,KFPRI.Avatar.SizeY);
 		Owner.CurrentStyle.DrawBoxHollow(PlayerXPos - (Height * 1.075), YOffset + (Height * 0.5f) - ((Height - 6) * 0.5f), Height - 6, Height - 6, 1);
 	}
-	else if( !KFPRI.bBot )
+	else if (!KFPRI.bBot)
 		CheckAvatar(KFPRI, OwnerPC);
 
 	// Player
@@ -561,7 +561,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	DrawTextShadowHVCenter(string (KFPRI.Assists), AssistXPos, TextYOffset, AssistWBox, FontScalar);
 	
 	// Cash
-	if( bIsZED )
+	if (bIsZED)
 	{
 		SetDrawColor(C, Settings.Style.ZedTextColor);
 		StrValue = "Brains!";
@@ -577,12 +577,12 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	DrawTextShadowHVCenter(StrValue, CashXPos, TextYOffset, CashWBox, FontScalar);
 
 	// State
-	if( !KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun )
+	if (!KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun)
 	{
 		SetDrawColor(C, Settings.Style.StateTextColorLobby);
 		S = "LOBBY";
 	}
-	else if( !KFGRI.bMatchHasBegun )
+	else if (!KFGRI.bMatchHasBegun)
 	{
 		if (KFPRI.bReadyToPlay)
 		{
@@ -595,7 +595,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 			S = "Not Ready";	
 		}
 	}
-	else if( bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None )
+	else if (bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None)
 	{
 		SetDrawColor(C, Settings.Style.StateTextColor);
 		S = "Unknown";
@@ -659,7 +659,7 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 		DrawPingBars(C, YOffset + (Height/2) - ((Height*0.5)/2), Width - (Height*0.5) - (Owner.HUDOwner.ScaledBorderSize*2), Height*0.5, Height*0.5, float(Ping));
 }
 
-final function DrawPingBars( Canvas C, float YOffset, float XOffset, float W, float H, float Ping )
+final function DrawPingBars( Canvas C, float YOffset, float XOffset, float W, float H, float Ping)
 {
 	local float PingMul, BarW, BarH, BaseH, XPos, YPos;
 	local byte i;
@@ -671,7 +671,7 @@ final function DrawPingBars( Canvas C, float YOffset, float XOffset, float W, fl
 	PingColor.R = (1.f - PingMul) * 255;
 	PingColor.G = PingMul * 255;
 
-	for(i=1; i<PingBars; i++)
+	for (i=1; i < PingBars; i++)
 	{
 		BarH = BaseH * i;
 		XPos = XOffset + ((i - 1) * BarW);
@@ -681,7 +681,7 @@ final function DrawPingBars( Canvas C, float YOffset, float XOffset, float W, fl
 		C.SetDrawColor(20, 20, 20, 255);
 		Owner.CurrentStyle.DrawWhiteBox(BarW,BarH);
 
-		if( PingMul >= (i / PingBars) )
+		if (PingMul >= (i / PingBars))
 		{
 			C.SetPos(XPos,YPos);
 			C.DrawColor = PingColor;
@@ -693,26 +693,26 @@ final function DrawPingBars( Canvas C, float YOffset, float XOffset, float W, fl
 	}
 }
 
-static final function Texture2D FindAvatar( KFPlayerController PC, UniqueNetId ClientID )
+static final function Texture2D FindAvatar( KFPlayerController PC, UniqueNetId ClientID)
 {
 	local string S;
 
 	S = PC.GetSteamAvatar(ClientID);
-	if( S=="" )
+	if (S == "")
 		return None;
 	return Texture2D(PC.FindObject(S,class'Texture2D'));
 }
 
 final static function string GetNiceSize(int Num)
 {
-	if( Num < 1000 ) return string(Num);
-	else if( Num < 1000000 ) return (Num / 1000) $ "K";
-	else if( Num < 1000000000 ) return (Num / 1000000) $ "M";
+	if (Num < 1000 ) return string(Num);
+	else if (Num < 1000000 ) return (Num / 1000) $ "K";
+	else if (Num < 1000000000 ) return (Num / 1000000) $ "M";
 
 	return (Num / 1000000000) $ "B";
 }
 
-function ScrollMouseWheel( bool bUp )
+function ScrollMouseWheel( bool bUp)
 {
 	PlayersList.ScrollMouseWheel(bUp);
 }

@@ -15,37 +15,37 @@ function DrawMenu()
 	local bool bDrawOverride;
 
 	bDrawOverride = DrawOverride(Canvas, Self);
-	if( !bDrawOverride )
+	if (!bDrawOverride)
 	{
-		if( bDisabled )
+		if (bDisabled)
 			Mat = Owner.CurrentStyle.ButtonTextures[`BUTTON_DISABLED];
-		else if( bPressedDown )
+		else if (bPressedDown)
 			Mat = Owner.CurrentStyle.ButtonTextures[`BUTTON_PRESSED];
-		else if( bFocused || bIsHighlighted )
+		else if (bFocused || bIsHighlighted)
 			Mat = Owner.CurrentStyle.ButtonTextures[`BUTTON_NORMAL];
 		else Mat = Owner.CurrentStyle.ButtonTextures[`BUTTON_HIGHLIGHTED];
 
 		Canvas.SetPos(0.f,0.f);
 		Canvas.DrawTileStretched(Mat,CompPos[2],CompPos[3],0,0,32,32);
 
-		if( OverlayTexture.Texture!=None )
+		if (OverlayTexture.Texture != None)
 		{
 			Canvas.SetPos(0.f,0.f);
 			Canvas.DrawTile(OverlayTexture.Texture,CompPos[2],CompPos[3],OverlayTexture.U,OverlayTexture.V,OverlayTexture.UL,OverlayTexture.VL);
 		}
 	}
 
-	if( ButtonText!="" )
+	if (ButtonText != "")
 	{
 		Canvas.Font = Owner.CurrentStyle.MainFont;
 
 		TS = Owner.CurrentStyle.GetFontScaler();
 		TS *= FontScale;
 
-		while( true )
+		while( true)
 		{
 			Canvas.TextSize(ButtonText,XL,YL,TS,TS);
-			if( XL<(CompPos[2]*0.9) && YL<(CompPos[3]*0.9) )
+			if (XL < (CompPos[2]*0.9) && YL < (CompPos[3]*0.9))
 				break;
 
 			TS -= 0.001;
@@ -55,12 +55,12 @@ function DrawMenu()
 		TextY = (CompPos[3]-YL)*0.5;
 
 		Canvas.SetPos(TextX, TextY);
-		if( bDisabled )
+		if (bDisabled)
 			Canvas.DrawColor = TextColor*0.5f;
 		else Canvas.DrawColor = TextColor;
 		Canvas.DrawText(ButtonText,,TS,TS,TextFontInfo);
 
-		if( Icon != None )
+		if (Icon != None)
 		{
 			Canvas.DrawColor = IconColor;
 

@@ -34,13 +34,13 @@ var() bool bDisabled,bClickable,bCanFocus;
 var bool bFocusedPostDrawItem; // If this component has been given input focus, should it receive draw menu call after everything else been drawn?
 var transient bool bFocused,bTextureInit,bVisible;
 var bool bIsHUDWidget,bEnableInputs,bNoLookInputs;
-var array<name> TimerNames;
+var array < name> TimerNames;
 
 function InitMenu(); // Menu was initialized for the first time.
 function ShowMenu(); // Menu was opened.
 function PreDraw()
 {
-	if( !bVisible )
+	if (!bVisible)
 		return;
 
 	ComputeCoords();
@@ -56,13 +56,13 @@ function MenuTick( float DeltaTime );
 
 final function SetTimer(float InRate, optional bool inbLoop, optional Name inTimerFunc='Timer')
 {
-	if( InRate <= 0.f )
+	if (InRate <= 0.f)
 	{
 		ClearTimer(inTimerFunc);
 		return;
 	}
 
-	if( TimerNames.Find(inTimerFunc) == INDEX_NONE )
+	if (TimerNames.Find(inTimerFunc) == INDEX_NONE)
 	{
 		TimerNames.AddItem(inTimerFunc);
 	}
@@ -71,7 +71,7 @@ final function SetTimer(float InRate, optional bool inbLoop, optional Name inTim
 }
 final function ClearTimer(optional Name inTimerFunc='Timer')
 {
-	if( TimerNames.Find(inTimerFunc) != INDEX_NONE )
+	if (TimerNames.Find(inTimerFunc) != INDEX_NONE)
 	{
 		TimerNames.RemoveItem(inTimerFunc);
 	}
@@ -109,7 +109,7 @@ final function PlayerController GetPlayer()
 	return Owner.PlayerOwner;
 }
 
-function SetDisabled( bool bDisable )
+function SetDisabled( bool bDisable)
 {
 	bDisabled = bDisable;
 }
@@ -126,14 +126,14 @@ final function ComputeCoords()
 
 function bool CaptureMouse()
 {
-	return bVisible && ( Owner.MousePosition.X>=CompPos[0] && Owner.MousePosition.Y>=CompPos[1] && Owner.MousePosition.X<=(CompPos[0]+CompPos[2]) && Owner.MousePosition.Y<=(CompPos[1]+CompPos[3]) );
+	return bVisible && ( Owner.MousePosition.X >= CompPos[0] && Owner.MousePosition.Y >= CompPos[1] && Owner.MousePosition.X <= (CompPos[0]+CompPos[2]) && Owner.MousePosition.Y <= (CompPos[1]+CompPos[3]) );
 }
 
 final function KFGUI_Base GetMouseFocus()
 {
 	local KFGUI_Base M;
 
-	for( M=Self; M.MouseArea!=None; M=M.MouseArea )
+	for (M=Self; M.MouseArea != None; M=M.MouseArea)
 	{}
 	return M;
 }
@@ -147,12 +147,12 @@ function DoClose()
 {
 	local int i;
 
-	for( i=0; i<TimerNames.Length; i++ )
+	for (i=0; i < TimerNames.Length; i++)
 	{
 		ClearTimer(TimerNames[i]);
 	}
 
-	if( ParentComponent!=None )
+	if (ParentComponent != None)
 		ParentComponent.DoClose();
 	else Owner.PopCloseMenu(Self);
 }
@@ -164,50 +164,50 @@ function byte GetCursorStyle()
 
 function UserPressedEsc() // user pressed escape while this menu was active.
 {
-	if( ParentComponent!=None )
+	if (ParentComponent != None)
 		ParentComponent.UserPressedEsc();
 	else DoClose();
 }
 function bool BringPageToFront()
 {
-	if( ParentComponent!=None )
+	if (ParentComponent != None)
 		return ParentComponent.BringPageToFront();
 	return true; // Allow user to bring this page to front.
 }
 final function bool IsTopMenu()
 {
-	return (Owner.ActiveMenus.Length>0 && GetPageTop()==Owner.ActiveMenus[0]);
+	return (Owner.ActiveMenus.Length > 0 && GetPageTop() == Owner.ActiveMenus[0]);
 }
 final function KFGUI_Page GetPageTop()
 {
 	local KFGUI_Base M;
 
-	for( M=Self; M.ParentComponent!=None; M=M.ParentComponent )
+	for (M=Self; M.ParentComponent != None; M=M.ParentComponent)
 	{}
 	return KFGUI_Page(M);
 }
-function KFGUI_Base FindComponentID( name InID )
+function KFGUI_Base FindComponentID( name InID)
 {
-	if( ID==InID )
+	if (ID == InID)
 		return Self;
 	return None;
 }
-function FindAllComponentID( name InID, out array<KFGUI_Base> Res )
+function FindAllComponentID( name InID, out array < KFGUI_Base> Res)
 {
-	if( ID==InID )
+	if (ID == InID)
 		Res[Res.Length] = Self;
 }
 function RemoveComponent( KFGUI_Base B );
 
 function GetInputFocus()
 {
-	if( Owner.InputFocus!=None )
+	if (Owner.InputFocus != None)
 		Owner.InputFocus.LostInputFocus();
 	Owner.InputFocus = Self;
 }
 function DropInputFocus()
 {
-	if( Owner.InputFocus==Self )
+	if (Owner.InputFocus == Self)
 	{
 		Owner.InputFocus.LostInputFocus();
 		Owner.InputFocus = None;
@@ -222,20 +222,20 @@ final function GrabKeyFocus()
 }
 final function ReleaseKeyFocus()
 {
-	if( Owner.KeyboardFocus==Self )
+	if (Owner.KeyboardFocus == Self)
 		Owner.GrabInputFocus(None);
 }
 function LostKeyFocus();
 
-function bool NotifyInputKey( int ControllerId, name Key, EInputEvent Event, float AmountDepressed, bool bGamepad )
+function bool NotifyInputKey( int ControllerId, name Key, EInputEvent Event, float AmountDepressed, bool bGamepad)
 {
-	if( bIsHUDWidget && bEnableInputs )
+	if (bIsHUDWidget && bEnableInputs)
 	{
-		switch( Key )
+		switch( Key)
 		{
 		case 'XboxTypeS_Start':
 		case 'Escape':
-			if( Event==IE_Pressed )
+			if (Event == IE_Pressed)
 				UserPressedEsc();
 			return true;
 		case 'XboxTypeS_DPad_Up':
@@ -246,19 +246,19 @@ function bool NotifyInputKey( int ControllerId, name Key, EInputEvent Event, flo
 		case 'MouseScrollUp':
 		case 'MouseScrollDown':
 		case 'MouseScrollUp':
-			if( Event==IE_Pressed )
-				ScrollMouseWheel(Key=='MouseScrollUp' || Key=='XboxTypeS_DPad_Up' || Key=='XboxTypeS_DPad_Left');
+			if (Event == IE_Pressed)
+				ScrollMouseWheel(Key == 'MouseScrollUp' || Key == 'XboxTypeS_DPad_Up' || Key == 'XboxTypeS_DPad_Left');
 			return true;
 		}
 	}
 
 	return false;
 }
-function bool NotifyInputAxis( int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad )
+function bool NotifyInputAxis( int ControllerId, name Key, float Delta, float DeltaTime, bool bGamepad)
 {
 	return false;
 }
-function bool NotifyInputChar( int ControllerId, string Unicode )
+function bool NotifyInputChar( int ControllerId, string Unicode)
 {
 	return false;
 }
@@ -269,25 +269,25 @@ function InputMouseMoved();
 // Notify any focused menu element that mouse has been idle over it.
 function NotifyMousePaused();
 
-final function GetActualPos( out float X, out float Y )
+final function GetActualPos( out float X, out float Y)
 {
 	X = ((XPosition+X)*InputPos[2]) + InputPos[0];
 	Y = ((YPosition+Y)*InputPos[3]) + InputPos[1];
 }
-final function GetRealtivePos( out float X, out float Y )
+final function GetRealtivePos( out float X, out float Y)
 {
 	X = X / CompPos[2];
 	Y = Y / CompPos[2];
 }
 
-simulated final function PlayMenuSound( EMenuSound Slot )
+simulated final function PlayMenuSound( EMenuSound Slot)
 {
 	local SoundCue S;
 	local KFGameEngine Engine;
 
 	Engine = KFGameEngine(class'Engine'.static.GetEngine());
 
-	switch( Slot )
+	switch( Slot)
 	{
 	case MN_FocusHover:
 	case MN_Focus:
@@ -308,7 +308,7 @@ simulated final function PlayMenuSound( EMenuSound Slot )
 		break;
 	}
 
-	if( S!=None )
+	if (S != None)
 	{
 		S.VolumeMultiplier = (Engine.SFxVolumeMultiplier/100.f) * (Engine.MasterVolumeMultiplier/100.f);
 		GetPlayer().PlaySound(S,true,,false);
@@ -318,7 +318,7 @@ simulated final function PlayMenuSound( EMenuSound Slot )
 // Pre level change notification.
 function NotifyLevelChange();
 
-final function SetPosition( float X, float Y, float XS, float YS )
+final function SetPosition( float X, float Y, float XS, float YS)
 {
 	XPosition = X;
 	YPosition = Y;
@@ -326,7 +326,7 @@ final function SetPosition( float X, float Y, float XS, float YS )
 	YSize = YS;
 }
 
-static final function string MakeSortStr( int Value )
+static final function string MakeSortStr( int Value)
 {
 	local string S;
 	local int i;
@@ -334,7 +334,7 @@ static final function string MakeSortStr( int Value )
 	// Prefix with zeroes to properly sort this string.
 	S = string(Value);
 	i = Len(S);
-	if( i<10 )
+	if (i < 10)
 		return Mid("0000000000",i)$S;
 	return S;
 }

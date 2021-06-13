@@ -6,20 +6,20 @@ Class KFGUI_ComponentList extends KFGUI_List;
 
 var int VisRange[2];
 var() int NumColumns;
-var array<KFGUI_Base> ItemComponents;
+var array < KFGUI_Base> ItemComponents;
 
 // REMEMBER to call InitMenu() on the newly created component after values are init!!!
-final function KFGUI_Base AddListComponent( class<KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f )
+final function KFGUI_Base AddListComponent( class < KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f)
 {
 	return AddComponentAtIndex(ItemComponents.Length, CompClass, XS, YS);
 }
 
-final function KFGUI_Base CreateComponent(class<KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f)
+final function KFGUI_Base CreateComponent(class < KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f)
 {
 	local KFGUI_Base G;
 
 	G = new(Self)CompClass;
-	if( G==None )
+	if (G == None)
 		return None;
 
 	G.XPosition = (1.f - XS) * 0.5f;
@@ -30,17 +30,17 @@ final function KFGUI_Base CreateComponent(class<KFGUI_Base> CompClass, optional 
 	return G;
 }
 
-final function AddItem( KFGUI_Base Item )
+final function AddItem( KFGUI_Base Item)
 {
 	AddItemAtIndex(ItemComponents.Length, Item);
 }
 
-final function AddItemAtIndex( int i, KFGUI_Base Item )
+final function AddItemAtIndex( int i, KFGUI_Base Item)
 {
 	ItemComponents.InsertItem(i, Item);
 }
 
-final function KFGUI_Base AddComponentAtIndex( int i, class<KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f )
+final function KFGUI_Base AddComponentAtIndex( int i, class < KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f)
 {
 	local KFGUI_Base G;
 
@@ -66,7 +66,7 @@ function InitMenu()
 
 function DrawMenu()
 {
-	if( bDrawBackground )
+	if (bDrawBackground)
 	{
 		Canvas.SetDrawColor(250,250,250,255);
 		Canvas.SetPos(0.f,0.f);
@@ -79,25 +79,25 @@ function PreDraw()
 	local int i;
 	local byte j;
 
-	if( !bVisible )
+	if (!bVisible)
 		return;
 
 	ComputeCoords();
 
 	// Update list size
 	i = ItemComponents.Length / NumColumns;
-	if( i!=NumColumns )
+	if (i != NumColumns)
 	{
 		ListCount = i;
 		UpdateListVis();
 	}
 
-	if( !ScrollBar.bDisabled && !ScrollBar.bHideScrollbar )
+	if (!ScrollBar.bDisabled && !ScrollBar.bHideScrollbar)
 	{
 		// First draw scrollbar to allow it to resize itself.
-		for( j=0; j<4; ++j )
+		for (j=0; j < 4; ++j)
 			ScrollBar.InputPos[j] = CompPos[j];
-		if( OldXSize!=InputPos[2] )
+		if (OldXSize != InputPos[2])
 		{
 			OldXSize = InputPos[2];
 		}
@@ -132,7 +132,7 @@ function PreDrawListItems()
 	YS = CompPos[3] / ListItemsPerPage;
 	VisRange[0] = (ScrollBar.CurrentScroll*NumColumns);
 	VisRange[1] = ItemComponents.Length;
-	for( i=VisRange[0]; i<VisRange[1]; ++i )
+	for (i=VisRange[0]; i < VisRange[1]; ++i)
 	{
 		ItemComponents[i].Canvas = Canvas;
 		ItemComponents[i].InputPos[0] = CompPos[0]+XS*XNum;
@@ -141,10 +141,10 @@ function PreDrawListItems()
 		ItemComponents[i].InputPos[3] = YS;
 		ItemComponents[i].PreDraw();
 
-		if( ++XNum==NumColumns )
+		if (++XNum == NumColumns)
 		{
 			XNum = 0;
-			if( ++r==ListItemsPerPage )
+			if (++r == ListItemsPerPage)
 			{
 				VisRange[1] = i+1;
 				break;
@@ -170,11 +170,11 @@ function bool CaptureMouse()
 {
 	local int i;
 
-	if( ItemComponents.Length > 0 )
+	if (ItemComponents.Length > 0)
 	{
-		for( i=VisRange[1] - 1; i>=VisRange[0] && i<ItemComponents.Length; i-- )
+		for (i=VisRange[1] - 1; i >= VisRange[0] && i < ItemComponents.Length; i--)
 		{
-			if( ItemComponents[i].CaptureMouse() )
+			if (ItemComponents[i].CaptureMouse())
 			{
 				MouseArea = ItemComponents[i];
 				return true;
@@ -188,7 +188,7 @@ function CloseMenu()
 {
 	local int i;
 
-	for( i=0; i<ItemComponents.Length; ++i )
+	for (i=0; i < ItemComponents.Length; ++i)
 		ItemComponents[i].CloseMenu();
 	Super.CloseMenu();
 }
@@ -196,7 +196,7 @@ function NotifyLevelChange()
 {
 	local int i;
 
-	for( i=0; i<ItemComponents.Length; ++i )
+	for (i=0; i < ItemComponents.Length; ++i)
 		ItemComponents[i].NotifyLevelChange();
 	Super.NotifyLevelChange();
 }
@@ -204,15 +204,15 @@ function InventoryChanged(optional KFWeapon Wep, optional bool bRemove)
 {
 	local int i;
 
-	for( i=0; i<ItemComponents.Length; ++i )
+	for (i=0; i < ItemComponents.Length; ++i)
 		ItemComponents[i].InventoryChanged(Wep,bRemove);
 }
-function MenuTick( float DeltaTime )
+function MenuTick( float DeltaTime)
 {
 	local int i;
 
 	Super.MenuTick(DeltaTime);
-	for( i=0; i<ItemComponents.Length; ++i )
+	for (i=0; i < ItemComponents.Length; ++i)
 		ItemComponents[i].MenuTick(DeltaTime);
 }
 

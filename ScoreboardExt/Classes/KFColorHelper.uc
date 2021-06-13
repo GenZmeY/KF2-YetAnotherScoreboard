@@ -28,18 +28,18 @@ static final function HSVColour RGBToHSV(const LinearColor RGB)
 	Chroma = Max - Min;
 
 	//If Chroma is 0, then S is 0 by definition, and H is undefined but 0 by convention.
-	if(Chroma != 0)
+	if (Chroma != 0)
 	{
-		if(RGB.R == Max)
+		if (RGB.R == Max)
 		{
 			HSV.H = (RGB.G - RGB.B) / Chroma;
 
-			if(HSV.H < 0.0)
+			if (HSV.H < 0.0)
 			{
 				HSV.H += 6.0;
 			}
 		}
-		else if(RGB.G == Max)
+		else if (RGB.G == Max)
 		{
 			HSV.H = ((RGB.B - RGB.R) / Chroma) + 2.0;
 		}
@@ -70,32 +70,32 @@ static final function LinearColor HSVToRGB(const HSVColour HSV)
 	Hdash = HSV.H / 60.0;
 	X = Chroma * (1.0 - Abs((Hdash % 2.0) - 1.0));
 
-	if(Hdash < 1.0)
+	if (Hdash < 1.0)
 	{
 		RGB.R = Chroma;
 		RGB.G = X;
 	}
-	else if(Hdash < 2.0)
+	else if (Hdash < 2.0)
 	{
 		RGB.R = X;
 		RGB.G = Chroma;
 	}
-	else if(Hdash < 3.0)
+	else if (Hdash < 3.0)
 	{
 		RGB.G = Chroma;
 		RGB.B = X;
 	}
-	else if(Hdash < 4.0)
+	else if (Hdash < 4.0)
 	{
 		RGB.G= X;
 		RGB.B = Chroma;
 	}
-	else if(Hdash < 5.0)
+	else if (Hdash < 5.0)
 	{
 		RGB.R = X;
 		RGB.B = Chroma;
 	}
-	else if(Hdash < 6.0)
+	else if (Hdash < 6.0)
 	{
 		RGB.R = Chroma;
 		RGB.B = X;

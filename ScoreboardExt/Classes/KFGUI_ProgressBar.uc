@@ -44,12 +44,12 @@ function DrawMenu()
 	{
 		W = CaptionWidth;
 
-		if( W < 1.0 )
+		if (W < 1.0)
 		{
 			W *= Width;
 		}
 
-		if( W > Width )
+		if (W > Width)
 		{
 			W = Width;
 		}
@@ -60,21 +60,21 @@ function DrawMenu()
 		Width -= W;
 	}
 
-	if ( (bShowHigh || bShowValue) && ValueRightWidth > 0.0 && Width > 0.0)
+	if ((bShowHigh || bShowValue) && ValueRightWidth > 0.0 && Width > 0.0)
 	{
 		W = ValueRightWidth;
 
-		if( W < 1.0 )
+		if (W < 1.0)
 		{
 			W *= Width;
 		}
 
-		if( W > Width )
+		if (W > Width)
 		{
 			W = Width;
 		}
 
-		if( bShowValue && bShowHigh )
+		if (bShowValue && bShowHigh)
 		{
 			S = int(Value)$"/"$int(High);
 		}
@@ -99,12 +99,12 @@ function DrawMenu()
 	}
 
 	Canvas.SetDrawColor(255, 255, 255, 255);
-	if( Width > 0.0 && BarBack != None )
+	if (Width > 0.0 && BarBack != None)
 	{
 		Owner.CurrentStyle.DrawTileStretched(BarBack, Left, Top, Width, Height);
 	}
 
-	if( Width > 0.0 && BarTop != None && Value > Low )
+	if (Width > 0.0 && BarTop != None && Value > Low)
 	{
 		Canvas.DrawColor = BarColor;
 		Owner.CurrentStyle.DrawTileStretched(BarTop, Left + BorderSize, Top + BorderSize, (Width - (BorderSize * 2)) * (Value/High), Height - (BorderSize * 2));

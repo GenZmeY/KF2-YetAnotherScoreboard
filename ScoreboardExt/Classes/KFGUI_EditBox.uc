@@ -23,7 +23,7 @@ function InitMenu()
 {
 	Super.InitMenu();
 
-	if ( bIntOnly || bFloatOnly )
+	if (bIntOnly || bFloatOnly)
 	{
 		AllowedCharSet = "0123456789";
 
@@ -55,31 +55,31 @@ function bool NotifyInputChar(int Key, string Unicode)
 	if (bReadOnly)
 		return false;
 
-	if( UniCode!="" )
+	if (UniCode != "")
 		S = Unicode;
 	else S = Chr(Key);
 
-	if( Asc(S) == 13 || Asc(S) == 8 || Asc(S) == 27 )
+	if (Asc(S) == 13 || Asc(S) == 8 || Asc(S) == 27)
 		return false;
 
-	if( bCtrl )
+	if (bCtrl)
 		return false;
 
-	if(bAllSelected)
+	if (bAllSelected)
 	{
 		TextStr="";
 		CaretPos=0;
 		bAllSelected=false;
 	}
 
-	if ( (AllowedCharSet=="") || ( (bIncludeSign) && ( (S=="-") || (S=="+") ) && (TextStr=="") ) || (InStr(AllowedCharSet,S)>=0) )
+	if ((AllowedCharSet == "") || ( (bIncludeSign) && ( (S == "-") || (S == "+") ) && (TextStr == "") ) || (InStr(AllowedCharSet,S) >= 0))
 	{
-		if ( (MaxWidth==0) || (Len(TextStr)<MaxWidth) )
+		if ((MaxWidth == 0) || (Len(TextStr) < MaxWidth))
 		{
-			if ( (bConvertSpaces) && ((S==" ") || (S=="?") || (S=="\\")) )
+			if ((bConvertSpaces) && ((S == " ") || (S == "?") || (S == "\\")))
 				S = "_";
 
-			if ( (TextStr=="") || ( CaretPos==Len(TextStr) ) )
+			if ((TextStr == "") || ( CaretPos == Len(TextStr) ))
 			{
 				TextStr = TextStr$S;
 				CaretPos=Len(TextStr);
@@ -181,7 +181,7 @@ function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, floa
 {
 	local string Temp;
 
-	if( bReadOnly )
+	if (bReadOnly)
 	{
 		return false;
 	}
@@ -190,9 +190,9 @@ function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, floa
 	{
 		return false;
 	}
-	else if( Key == 'Escape' && Event == IE_Pressed )
+	else if (Key == 'Escape' && Event == IE_Pressed)
 	{
-		if( TextStr!="" )
+		if (TextStr != "")
 		{
 			SetInputText("");
 			CaretPos = 0;
@@ -200,20 +200,20 @@ function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, floa
 		}
 		else
 		{
-			if( ParentComponent != None )
+			if (ParentComponent != None)
 			{
 				ParentComponent.UserPressedEsc();
 				return true;
 			}
 		}
 	}
-	else if( Key=='Enter' && Event == IE_Released )
+	else if (Key == 'Enter' && Event == IE_Released)
 	{
-		if( TextStr!="" )
+		if (TextStr != "")
 		{
 			Temp = TextStr;
 			OnTextFinished(self, Temp);
-			if( !bNoClearOnEnter )
+			if (!bNoClearOnEnter)
 			{
 				SetInputText("");
 				CaretPos = 0;
@@ -222,26 +222,26 @@ function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, floa
 
 		return true;
 	}
-	else if ( Key=='Home' )
+	else if (Key == 'Home')
 	{
 		CaretPos = 0;
 		return true;
 	}
-	else if ( Key=='End' )
+	else if (Key == 'End')
 	{
 		CaretPos = Len(TextStr);
 		return true;
 	}
-	else if( Event == IE_Pressed || Event == IE_Repeat )
+	else if (Event == IE_Pressed || Event == IE_Repeat)
 	{
-		if( Key=='Backspace' || Key=='Delete' )
+		if (Key == 'Backspace' || Key == 'Delete')
 		{
-			if( bAllSelected )
+			if (bAllSelected)
 			{
 				SetInputText("");
 				CaretPos = 0;
 			}
-			else if( CaretPos>0 )
+			else if (CaretPos > 0)
 			{
 				SetInputText(Left(TextStr,CaretPos-1) $ Right(TextStr, Len(TextStr) - CaretPos));
 				CaretPos -= 1;
@@ -249,12 +249,12 @@ function bool NotifyInputKey(int ControllerId, name Key, EInputEvent Event, floa
 
 			return true;
 		}
-		else if ( Key=='Left' )
+		else if (Key == 'Left')
 		{
 			CaretPos = Max(0, CaretPos - 1);
 			return true;
 		}
-		else if ( Key=='Right' )
+		else if (Key == 'Right')
 		{
 			CaretPos = Min(Len(TextStr), CaretPos + 1);
 			return true;
@@ -272,15 +272,15 @@ function string ConvertIllegal(string InputStr)
 
 	i = 0;
 	Max = Len(InputStr);
-	while ( i < Max )
+	while ( i < Max)
 	{
 		C = Mid(InputStr,i,1);
-		if ( AllowedCharSet != "" && InStr(AllowedCharSet,C) < 0 )
+		if (AllowedCharSet != "" && InStr(AllowedCharSet,C) < 0)
 		{
 			C = "";
 		}
-		if ( bConvertSpaces &&
-			((C == " ") || (C =="?") || (C=="\\") ))
+		if (bConvertSpaces &&
+			((C == " ") || (C =="?") || (C == "\\") ))
 		{
 			C = "_";
 		}
@@ -313,7 +313,7 @@ function DrawMenu()
 
 	Super.DrawMenu();
 
-	if( bDrawBackground )
+	if (bDrawBackground)
 	{
 		Canvas.SetDrawColor(250,250,250,255);
 		Canvas.SetPos(0.f,0.f);
@@ -327,12 +327,12 @@ function DrawMenu()
 
 	Storage = TextStr;
 
-	if ( bMaskText && Len(Storage)>0 )
+	if (bMaskText && Len(Storage) > 0)
 	{
 		StorageLength = Len(Storage);
 
 		Storage = "";
-		for(MaskIndex=1; MaskIndex <= StorageLength; MaskIndex++ )
+		for (MaskIndex=1; MaskIndex <= StorageLength; MaskIndex++)
 		{
 			Storage $= "*";
 		}
@@ -343,16 +343,16 @@ function DrawMenu()
 
 	BoxWidth=CompPos[2]*0.9875;
 
-	if ( (Len(Storage) != LastLength) || (CaretPos!=LastCaret) )
+	if ((Len(Storage) != LastLength) || (CaretPos != LastCaret))
 	{
-		if (CaretPos<=FirstVis)
+		if (CaretPos <= FirstVis)
 			FirstVis = Max(0,CaretPos-1);
 		else
 		{
 			FinalDraw = Mid(Storage, FirstVis, CaretPos-FirstVis);
 			Canvas.TextSize(FinalDraw, XL, YL, FontScale, FontScale);
 
-			while ( (XL>=BoxWidth) && (FirstVis<Len(Storage)) )
+			while ( (XL >= BoxWidth) && (FirstVis < Len(Storage)))
 			{
 				FirstVis++;
 				FinalDraw = Mid(Storage, FirstVis, CaretPos-FirstVis);
@@ -371,7 +371,7 @@ function DrawMenu()
 
 	if (!bReadOnly && (Owner.KeyboardFocus == self || bForceShowCaret))
 	{
-		if ( (FirstVis==CaretPos) || (Len(FinalDraw)==0) )
+		if ((FirstVis == CaretPos) || (Len(FinalDraw) == 0))
 		{
 			Canvas.TextSize("W", XL, YL, FontScale, FontScale);
 			XL = BorderSize;
@@ -385,7 +385,7 @@ function DrawMenu()
 
 		CursorY = (CompPos[3]/2) - ((YL-Owner.HUDOwner.ScaledBorderSize)/2);
 
-		if(bAllSelected)
+		if (bAllSelected)
 		{
 			Canvas.SetDrawColor(255,255,255,195);
 			Canvas.SetPos(BorderSize, CursorY);
@@ -404,9 +404,9 @@ function DrawMenu()
 	Canvas.DrawText(FinalDraw,,FontScale,FontScale,FRI);
 }
 
-function HandleMouseClick( bool bRight )
+function HandleMouseClick( bool bRight)
 {
-	if( Owner.KeyboardFocus != self )
+	if (Owner.KeyboardFocus != self)
 	{
 		GrabKeyFocus();
 	}

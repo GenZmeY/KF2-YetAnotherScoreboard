@@ -29,25 +29,25 @@ function DrawMenu()
 {
 	local float TempSize;
 
-	if( bUseAnimation )
+	if (bUseAnimation)
 	{
 		TempSize = `TimeSinceEx(GetPlayer(), OpenStartTime);
-		if ( WindowFadeInTime - TempSize > 0 && FrameOpacity != default.FrameOpacity )
+		if (WindowFadeInTime - TempSize > 0 && FrameOpacity != default.FrameOpacity)
 			FrameOpacity = (1.f - ((WindowFadeInTime - TempSize) / WindowFadeInTime)) * default.FrameOpacity;
 	}
 
 	Owner.CurrentStyle.RenderFramedWindow(Self);
 
-	if( HeaderComp!=None )
+	if (HeaderComp != None)
 	{
 		HeaderComp.CompPos[3] = Owner.CurrentStyle.DefaultHeight;
 		HeaderComp.YSize = HeaderComp.CompPos[3] / CompPos[3]; // Keep header height fit the window height.
 	}
 }
-function SetWindowDrag( bool bDrag )
+function SetWindowDrag( bool bDrag)
 {
 	bDragWindow = bDrag;
-	if( bDrag )
+	if (bDrag)
 	{
 		DragOffset[0] = Owner.MousePosition.X-CompPos[0];
 		DragOffset[1] = Owner.MousePosition.Y-CompPos[1];
@@ -57,15 +57,15 @@ function bool CaptureMouse()
 {
 	local int i;
 
-	if( bDragWindow && HeaderComp!=None ) // Always keep focus on window frame now!
+	if (bDragWindow && HeaderComp != None ) // Always keep focus on window frame now!
 	{
 		MouseArea = HeaderComp;
 		return true;
 	}
 
-	for( i=0; i<Components.Length; i++ )
+	for (i=0; i < Components.Length; i++)
 	{
-		if( Components[i].CaptureMouse() )
+		if (Components[i].CaptureMouse())
 		{
 			MouseArea = Components[i];
 			return true;
@@ -80,7 +80,7 @@ function PreDraw()
 {
 	local float Frac, CenterX, CenterY;
 
-	if( bUseAnimation )
+	if (bUseAnimation)
 	{
 		Frac = Owner.CurrentStyle.TimeFraction(OpenStartTime, OpenEndTime, GetPlayer().WorldInfo.RealTimeSeconds);
 		XSize = Lerp(default.XSize*0.75, default.XSize, Frac);
@@ -92,7 +92,7 @@ function PreDraw()
 		XPosition = Lerp(CenterX, default.XPosition, Frac);
 		YPosition = Lerp(CenterY, default.YPosition, Frac);
 
-		if( bDragWindow )
+		if (bDragWindow)
 		{
 			XPosition = FClamp(Owner.MousePosition.X-DragOffset[0],0,InputPos[2]-CompPos[2]) / InputPos[2];
 			YPosition = FClamp(Owner.MousePosition.Y-DragOffset[1],0,InputPos[3]-CompPos[3]) / InputPos[3];

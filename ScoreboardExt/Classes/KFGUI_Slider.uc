@@ -38,9 +38,9 @@ function UpdateListVis()
 	ScrollBar.UpdateScrollSize(CurrentValue,MaxValue,1,1,MinValue);
 }
 
-function ScrollMouseWheel( bool bUp )
+function ScrollMouseWheel( bool bUp)
 {
-	if( !ScrollBar.bDisabled )
+	if (!ScrollBar.bDisabled)
 		ScrollBar.ScrollMouseWheel(bUp);
 }
 

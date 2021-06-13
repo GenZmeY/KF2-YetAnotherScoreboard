@@ -18,14 +18,14 @@ function DrawMenu()
 {
 	local float TempSize;
 
-	if( bUseAnimation )
+	if (bUseAnimation)
 	{
 		TempSize = `TimeSinceEx(GetPlayer(), OpenStartTime);
-		if ( WindowFadeInTime - TempSize > 0 && FrameOpacity != default.FrameOpacity )
+		if (WindowFadeInTime - TempSize > 0 && FrameOpacity != default.FrameOpacity)
 			FrameOpacity = (1.f - ((WindowFadeInTime - TempSize) / WindowFadeInTime)) * default.FrameOpacity;
 	}
 
-	if( bDrawBackground )
+	if (bDrawBackground)
 	{
 		OnDrawFrame(Canvas, CompPos[2], CompPos[3]);
 	}
@@ -36,13 +36,13 @@ delegate OnDrawFrame(Canvas C, float W, Float H)
 	local float T,XL,YL,HeaderH;
 	local FontRenderInfo FRI;
 
-	if( FrameTex == None )
+	if (FrameTex == None)
 	{
 		return;
 	}
 
 	C.SetDrawColor(255,255,255,FrameOpacity);
-	if( bUseLegacyDrawTile )
+	if (bUseLegacyDrawTile)
 	{
 		Owner.CurrentStyle.DrawTileStretched(FrameTex,0,0,W,H);
 	}
@@ -52,7 +52,7 @@ delegate OnDrawFrame(Canvas C, float W, Float H)
 		Canvas.DrawTileStretched(FrameTex,W,H,0,0,FrameTex.GetSurfaceWidth(),FrameTex.GetSurfaceHeight());
 	}
    
-	if( bDrawHeader && WindowTitle!="" )
+	if (bDrawHeader && WindowTitle != "")
 	{
 		FRI.bClipText = true;
 		FRI.bEnableShadow = true;
@@ -64,7 +64,7 @@ delegate OnDrawFrame(Canvas C, float W, Float H)
 		C.TextSize(WindowTitle, XL, YL, T, T);
 
 		HeaderH = EdgeSize[1]-HeaderSize[1];
-		if( bHeaderCenter )
+		if (bHeaderCenter)
 			C.SetPos((W/2) - (XL/2),(HeaderH/2) - (YL/2));
 		else C.SetPos(HeaderSize[0],(HeaderH/2) - (YL/2));
 
@@ -78,10 +78,10 @@ function PreDraw()
 	local byte j;
 	local float Frac, CenterX, CenterY;
 
-	if( !bVisible )
+	if (!bVisible)
 		return;
 
-	if( bUseAnimation )
+	if (bUseAnimation)
 	{
 		Frac = Owner.CurrentStyle.TimeFraction(OpenStartTime, OpenEndTime, GetPlayer().WorldInfo.RealTimeSeconds);
 		XSize = Lerp(default.XSize*0.75, default.XSize, Frac);
@@ -100,10 +100,10 @@ function PreDraw()
 	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
 	DrawMenu();
 
-	for( i=0; i<Components.Length; ++i )
+	for (i=0; i < Components.Length; ++i)
 	{
 		Components[i].Canvas = Canvas;
-		for( j=0; j<4; ++j )
+		for (j=0; j < 4; ++j)
 		{
 			Components[i].InputPos[j] = CompPos[j]+EdgeSize[j];
 		}

@@ -5,7 +5,7 @@ Class GUIStyleBase extends Object
 `include(Logger.uci)
 
 var Texture2D ItemTex;
-var array<Texture2D> BorderTextures, ArrowTextures, ButtonTextures, TabTextures, ItemBoxTextures, PerkBox, CheckBoxTextures, ProgressBarTextures, SliderTextures;
+var array < Texture2D> BorderTextures, ArrowTextures, ButtonTextures, TabTextures, ItemBoxTextures, PerkBox, CheckBoxTextures, ProgressBarTextures, SliderTextures;
 var Texture2D ScrollTexture,FavoriteIcon,BankNoteIcon; 
 
 var SoundCue MenuDown, MenuDrag, MenuEdit, MenuFade, MenuClick, MenuHover, MenuUp;
@@ -24,21 +24,21 @@ struct FColorInfo
 	var name Code;
 	var Color Color;
 };
-var array<FColorInfo> ColorCodes;
+var array < FColorInfo> ColorCodes;
 
 struct FTexturePreCache
 {
 	var string Path;
 	var Texture2D Tex;
 };
-var array<FTexturePreCache> PrecachedTextures;
+var array < FTexturePreCache> PrecachedTextures;
 
 function InitStyle()
 {
 	local FColorInfo ColorInfo;
 
 	ItemTex=Texture2D(DynamicLoadObject("UI_LevelChevrons_TEX.UI_LevelChevron_Icon_02",class'Texture2D'));
-	if( ItemTex==None )
+	if (ItemTex == None)
 		ItemTex=Texture2D'EngineMaterials.DefaultWhiteGrid';
 
 	NumberFont = Font(DynamicLoadObject("UI_Canvas_Fonts.Font_General", class'Font'));
@@ -142,19 +142,19 @@ function RenderCheckbox( KFGUI_CheckBox C );
 function RenderComboBox( KFGUI_ComboBox C );
 function RenderComboList( KFGUI_ComboSelector C );
 
-function Font PickFont( out float Scaler, optional bool bNumbersOnly, optional bool bInfinite )
+function Font PickFont( out float Scaler, optional bool bNumbersOnly, optional bool bInfinite)
 {
 	Scaler = GetFontScaler();
 
-	if( bNumbersOnly )
+	if (bNumbersOnly)
 		return NumberFont;
-	else if( bInfinite )
+	else if (bInfinite)
 		return InfiniteFont;
 
 	return MainFont;
 }
 
-function PickDefaultFontSize( float YRes )
+function PickDefaultFontSize( float YRes)
 {
 	local int XL,YL;
 	local string S;
@@ -164,7 +164,7 @@ function PickDefaultFontSize( float YRes )
 
 	DefaultHeight=float(YL)*YRes;
 }
-final function float ScreenScale( float Size, optional float MaxRes=1080.f )
+final function float ScreenScale( float Size, optional float MaxRes=1080.f)
 {
 	return Size * ( HUDOwner.SizeY / MaxRes );
 }
@@ -172,32 +172,32 @@ final function float GetFontScaler(optional float Scaler=0.750f, optional float 
 {
 	return FClamp((HUDOwner.SizeY / 1080.f) * Scaler, Min, Max);
 }
-final function DrawText( coerce string S )
+final function DrawText( coerce string S)
 {
 	local float Scale;
 
 	Canvas.Font=PickFont(Scale);
 	Canvas.DrawText(S,,Scale,Scale);
 }
-final function DrawCenteredText( coerce string S, float X, float Y, optional float Scale=1.f, optional bool bVertical, optional bool bUseOutline )
+final function DrawCenteredText( coerce string S, float X, float Y, optional float Scale=1.f, optional bool bVertical, optional bool bUseOutline)
 {
 	local float XL,YL;
 
 	Canvas.TextSize(S,XL,YL);
-	if( bVertical )
+	if (bVertical)
 		Canvas.SetPos(X,Y-(YL*Scale*0.5));
 	else Canvas.SetPos(X-(XL*Scale*0.5),Y);
 
-	if( bUseOutline )
+	if (bUseOutline)
 		DrawTextShadow(S, Canvas.CurX, Canvas.CurY, 1, Scale);
 	else Canvas.DrawText(S,,Scale,Scale);
 }
-final function string StripColorTags( coerce string S )
+final function string StripColorTags( coerce string S)
 {
 	local int Pos;
 
 	Pos = InStr(S, "\\c");
-	while( Pos != INDEX_NONE )
+	while( Pos != INDEX_NONE)
 	{
 		S = Left(S,Pos) $ Mid(S,Pos+3);
 		Pos = InStr(S, "\\c");
@@ -205,17 +205,17 @@ final function string StripColorTags( coerce string S )
 
 	return S;
 }
-final function DrawColoredText( coerce string S, float X, float Y, optional float Scale=1.f, optional bool bUseOutline )
+final function DrawColoredText( coerce string S, float X, float Y, optional float Scale=1.f, optional bool bUseOutline)
 {
 	local float XL,YL;
 	local int i, Index;
-	local array<string> SArray;
+	local array < string> SArray;
 	local string T, PrevT;
 	local Color TextColor;
 
-	if( InStr(S, "\\c") == INDEX_NONE )
+	if (InStr(S, "\\c") == INDEX_NONE)
 	{
-		if( bUseOutline )
+		if (bUseOutline)
 			DrawTextShadow(S, X, Y, 1, Scale);
 		else 
 		{
@@ -228,11 +228,11 @@ final function DrawColoredText( coerce string S, float X, float Y, optional floa
 		SArray = SplitString(S, "\\c");
 
 		PrevT = Left(S,InStr(S, "\\c"));
-		if( Len(PrevT) > 0 )
+		if (Len(PrevT) > 0)
 		{
 			Canvas.TextSize(PrevT,XL,YL,Scale,Scale);
 
-			if( bUseOutline )
+			if (bUseOutline)
 				DrawTextShadow(PrevT, X, Y, 1, Scale);
 			else 
 			{
@@ -241,13 +241,13 @@ final function DrawColoredText( coerce string S, float X, float Y, optional floa
 			}
 		}
 
-		for( i=0; i<SArray.Length; i++ )
+		for (i=0; i < SArray.Length; i++)
 		{
 			T = SArray[i];
-			if( i>0 || Left(S, 2)~="\\c" )
+			if (i > 0 || Left(S, 2)~="\\c")
 			{
 				Index = ColorCodes.Find('Code', name(Left(T, 1)));
-				if( Index != INDEX_NONE )
+				if (Index != INDEX_NONE)
 					TextColor = ColorCodes[Index].Color;
 				else TextColor = class'HUD'.default.WhiteColor;
 
@@ -259,7 +259,7 @@ final function DrawColoredText( coerce string S, float X, float Y, optional floa
 			Canvas.DrawColor = TextColor;
 			Canvas.TextSize(T,XL,YL,Scale,Scale);
 
-			if( bUseOutline )
+			if (bUseOutline)
 				DrawTextShadow(T, X, Y, 1, Scale);
 			else 
 			{
@@ -271,7 +271,7 @@ final function DrawColoredText( coerce string S, float X, float Y, optional floa
 		}
 	}
 }
-final function DrawTextBlurry( coerce string S, float X, float Y, optional float Scale=1.f )
+final function DrawTextBlurry( coerce string S, float X, float Y, optional float Scale=1.f)
 {
 	local Color OldDrawColor;
 
@@ -291,7 +291,7 @@ final function DrawTextBlurry( coerce string S, float X, float Y, optional float
 	Canvas.SetPos(X, Y);
 	Canvas.DrawText(S,,Scale,Scale);
 }
-final function DrawTextOutline( coerce string S, float X, float Y, int Size, Color OutlineColor, optional float Scale=1.f, optional FontRenderInfo FRI )
+final function DrawTextOutline( coerce string S, float X, float Y, int Size, Color OutlineColor, optional float Scale=1.f, optional FontRenderInfo FRI)
 {
 	local Color OldDrawColor;
 	local int XS, YS, Steps;
@@ -301,7 +301,7 @@ final function DrawTextOutline( coerce string S, float X, float Y, int Size, Col
 
 	Size += 1;
 	Steps = (Size * 2) / 3;
-	if( Steps < 1 ) 
+	if (Steps < 1 ) 
 	{
 		Steps = 1;
 	}
@@ -320,7 +320,7 @@ final function DrawTextOutline( coerce string S, float X, float Y, int Size, Col
 	Canvas.SetPos(X, Y);
 	Canvas.DrawText(S,, Scale, Scale, FRI);
 }
-final function DrawTextShadow( coerce string S, float X, float Y, float ShadowSize, optional float Scale=1.f )
+final function DrawTextShadow( coerce string S, float X, float Y, float ShadowSize, optional float Scale=1.f)
 {
 	local Color OldDrawColor;
 
@@ -334,7 +334,7 @@ final function DrawTextShadow( coerce string S, float X, float Y, float ShadowSi
 	Canvas.DrawColor = OldDrawColor;
 	Canvas.DrawText(S,, Scale, Scale);
 }
-final function DrawTexturedString( coerce string S, float X, float Y, optional float TextScaler=1.f, optional FontRenderInfo FRI, optional bool bUseOutline, optional bool bOnlyTexture )
+final function DrawTexturedString( coerce string S, float X, float Y, optional float TextScaler=1.f, optional FontRenderInfo FRI, optional bool bUseOutline, optional bool bOnlyTexture)
 {
 	local Texture2D Mat;
 	local string D;
@@ -345,15 +345,15 @@ final function DrawTexturedString( coerce string S, float X, float Y, optional f
 	OrgC = Canvas.DrawColor;
 
 	Mat = FindNextTexture(S);
-	while( Mat != None )
+	while( Mat != None)
 	{
-		i = InStr(S,"<TEXTURE");
-		j = InStr(S,">");
+		i = InStr(S," < TEXTURE");
+		j = InStr(S," > ");
 
 		D = Left(S,i);
 		S = Mid(S,j+2);
 
-		if( !bOnlyTexture )
+		if (!bOnlyTexture)
 		{
 			Canvas.TextSize(StripColorTags(D),XL,YL,TextScaler,TextScaler);
 			DrawColoredText(D,X,Y,TextScaler,bUseOutline);
@@ -384,20 +384,20 @@ final function Texture2D FindNextTexture(out string S)
 	local FTexturePreCache Cache;
 
 	Path = S;
-	i = InStr(Path,"<Icon>");
-	if( i == INDEX_NONE )
+	i = InStr(Path," < Icon > ");
+	if (i == INDEX_NONE)
 		return None;
 
-	j = InStr(Path,"</Icon>");
-	S = Left(Path,i)$"<TEXTURE>"$Mid(Path, j+6);
+	j = InStr(Path," < /Icon > ");
+	S = Left(Path,i)$" < TEXTURE > "$Mid(Path, j+6);
 	Path = Mid(Path, i+6, j-(i+6));
 
 	i = PrecachedTextures.Find('Path', Path);
-	if( i != INDEX_NONE )
+	if (i != INDEX_NONE)
 		return PrecachedTextures[i].Tex;
 
 	Tex = Texture2D(FindObject(Path, class'Texture2D'));
-	if( Tex != None )
+	if (Tex != None)
 	{
 		Cache.Path = Path;
 		Cache.Tex = Tex;
@@ -416,14 +416,14 @@ final function string StripTextureFromString(string S, optional bool bNoStringAd
 {
 	local int i, j;
 
-	while( true )
+	while( true)
 	{
-		i = InStr(S,"<Icon>");
-		if( i == INDEX_NONE )
+		i = InStr(S," < Icon > ");
+		if (i == INDEX_NONE)
 			break;
 
-		j = InStr(S,"</Icon>");
-		S = Left(S,i)$(bNoStringAdd ? "" : "W")$Mid(S, j+Len("</Icon>"));
+		j = InStr(S," < /Icon > ");
+		S = Left(S,i)$(bNoStringAdd ? "" : "W")$Mid(S, j+Len(" < /Icon > "));
 	}
 
 	return StripColorTags(S);
@@ -433,7 +433,7 @@ final function string GetTimeString(int Seconds)
 	local int Minutes, Hours;
 	local string Time;
 
-	if( Seconds > 3600 )
+	if (Seconds > 3600)
 	{
 		Hours = Seconds / 3600;
 		Seconds -= Hours * 3600;
@@ -443,11 +443,11 @@ final function string GetTimeString(int Seconds)
 	Minutes = Seconds / 60;
 	Seconds -= Minutes * 60;
 
-	if( Minutes >= 10 )
+	if (Minutes >= 10)
 		Time = Time $ Minutes $ ":";
 	else Time = Time $ "0" $ Minutes $ ":";
 
-	if( Seconds >= 10 )
+	if (Seconds >= 10)
 		Time = Time $ Seconds;
 	else Time = Time $ "0" $ Seconds;
 
@@ -456,7 +456,7 @@ final function string GetTimeString(int Seconds)
 
 final function DrawCornerTexNU( int SizeX, int SizeY, byte Dir ) // Draw non-uniform corner.
 {
-	switch( Dir )
+	switch( Dir)
 	{
 	case 0: // Up-left
 		Canvas.DrawTile(ItemTex,SizeX,SizeY,77,15,-66,58);
@@ -471,9 +471,9 @@ final function DrawCornerTexNU( int SizeX, int SizeY, byte Dir ) // Draw non-uni
 		Canvas.DrawTile(ItemTex,SizeX,SizeY,11,73,66,-58);
 	}
 }
-final function DrawCornerTex( int Size, byte Dir )
+final function DrawCornerTex( int Size, byte Dir)
 {
-	switch( Dir )
+	switch( Dir)
 	{
 	case 0: // Up-left
 		Canvas.DrawTile(ItemTex,Size,Size,77,15,-66,58);
@@ -488,19 +488,19 @@ final function DrawCornerTex( int Size, byte Dir )
 		Canvas.DrawTile(ItemTex,Size,Size,11,73,66,-58);
 	}
 }
-final function DrawWhiteBox( float XS, float YS, optional bool bClip )
+final function DrawWhiteBox( float XS, float YS, optional bool bClip)
 {
 	Canvas.DrawTile(ItemTex,XS,YS,19,45,1,1,,bClip);
 }
 
-final function DrawRectBox( float X, float Y, float Width, float Height, int Edge, optional byte Extrav )
+final function DrawRectBox( float X, float Y, float Width, float Height, int Edge, optional byte Extrav)
 {
-	if( Extrav==2 )
+	if (Extrav == 2)
 		Edge=Min(FMin(Edge,(Width)*0.5),Height);// Verify size.
 	else
 		Edge=Min(FMin(Edge,(Width)*0.5),(Height)*0.5);// Verify size.
 
-	Canvas.PreOptimizeDrawTiles(Extrav==0 ? 7 : 6, ItemTex);
+	Canvas.PreOptimizeDrawTiles(Extrav == 0 ? 7 : 6, ItemTex);
 	
 	switch (Extrav)
 	{
@@ -663,7 +663,7 @@ final function DrawRectBox( float X, float Y, float Width, float Height, int Edg
 	}
 }
 
-final function DrawBoxHollow( float X, float Y, float Width, float Height, float Thickness )
+final function DrawBoxHollow( float X, float Y, float Width, float Height, float Thickness)
 {
 	Canvas.PreOptimizeDrawTiles(4, ItemTex);
 
@@ -680,7 +680,7 @@ final function DrawBoxHollow( float X, float Y, float Width, float Height, float
 	DrawWhiteBox(Thickness, Height);
 }
 
-final function DrawOutlinedBox( float X, float Y, float Width, float Height, float Thickness, Color BoxColor, Color OutlineColor )
+final function DrawOutlinedBox( float X, float Y, float Width, float Height, float Thickness, Color BoxColor, Color OutlineColor)
 {
 	Canvas.DrawColor = BoxColor;
 	Canvas.SetPos(X + Thickness, Y + Thickness);
@@ -694,39 +694,39 @@ final function DrawBoxCorners(float BorderSize, float X, float Y, float W, float
 {
 	// Top left
 	Canvas.SetPos(X,Y);
-	if( TopLeft )
+	if (TopLeft)
 		DrawCornerTex(BorderSize,0);
 	else DrawWhiteBox(BorderSize, BorderSize);
 
 	// Top right
 	Canvas.SetPos(X+W-BorderSize,Y);
-	if( TopRight )
+	if (TopRight)
 		DrawCornerTex(BorderSize,1);
 	else DrawWhiteBox(BorderSize, BorderSize);
 
 	// Bottom left
 	Canvas.SetPos(X,Y+H-BorderSize);
-	if( BottomLeft )
+	if (BottomLeft)
 		DrawCornerTex(BorderSize,2);
 	else DrawWhiteBox(BorderSize, BorderSize);
 
 	// Bottom right
 	Canvas.SetPos(X+W-BorderSize,Y+H-BorderSize);
-	if( BottomRight )
+	if (BottomRight)
 		DrawCornerTex(BorderSize,3);
 	else DrawWhiteBox(BorderSize, BorderSize);
 }
 
-final function DrawRoundedBox( float BorderSize, float X, float Y, float W, float H, Color BoxColor )
+final function DrawRoundedBox( float BorderSize, float X, float Y, float W, float H, Color BoxColor)
 {
 	DrawRoundedBoxEx(BorderSize, X, Y, W, H, BoxColor, true, true, true, true);
 }
 
-final function DrawRoundedBoxEx( float BorderSize, float X, float Y, float W, float H, Color BoxColor, optional bool TopLeft, optional bool TopRight, optional bool BottomLeft, optional bool BottomRight )
+final function DrawRoundedBoxEx( float BorderSize, float X, float Y, float W, float H, Color BoxColor, optional bool TopLeft, optional bool TopRight, optional bool BottomLeft, optional bool BottomRight)
 {
 	Canvas.DrawColor = BoxColor;
 
-	if( BorderSize <= 0 )
+	if (BorderSize <= 0)
 	{
 		Canvas.SetPos(X, Y);
 		DrawWhiteBox(W, H);
@@ -749,12 +749,12 @@ final function DrawRoundedBoxEx( float BorderSize, float X, float Y, float W, fl
 	DrawBoxCorners(BorderSize, X, Y, W, H, TopLeft, TopRight, BottomLeft, BottomRight);
 }
 
-final function DrawRoundedBoxHollow( float BorderSize, float X, float Y, float W, float H, Color BoxColor )
+final function DrawRoundedBoxHollow( float BorderSize, float X, float Y, float W, float H, Color BoxColor)
 {
 	DrawRoundedBoxHollowEx(BorderSize, X, Y, W, H, BoxColor, true, true, true, true);
 }
 
-final function DrawRoundedBoxHollowEx( float BorderSize, float X, float Y, float W, float H, Color BoxColor, optional bool TopLeft, optional bool TopRight, optional bool BottomLeft, optional bool BottomRight )
+final function DrawRoundedBoxHollowEx( float BorderSize, float X, float Y, float W, float H, Color BoxColor, optional bool TopLeft, optional bool TopRight, optional bool BottomLeft, optional bool BottomRight)
 {
 	Canvas.PreOptimizeDrawTiles(8, ItemTex);
 
@@ -777,7 +777,7 @@ final function DrawRoundedBoxHollowEx( float BorderSize, float X, float Y, float
 	DrawBoxCorners(BorderSize, X, Y, W, H, TopLeft, TopRight, BottomLeft, BottomRight);
 }
 
-final function DrawRoundedBoxOutlined( float BorderSize, float X, float Y, float Width, float Height, Color BoxColor, Color OutlineColor )
+final function DrawRoundedBoxOutlined( float BorderSize, float X, float Y, float Width, float Height, Color BoxColor, Color OutlineColor)
 {
 	Canvas.DrawColor = BoxColor;
 	Canvas.SetPos(X + BorderSize, Y + BorderSize);
@@ -786,7 +786,7 @@ final function DrawRoundedBoxOutlined( float BorderSize, float X, float Y, float
 	DrawRoundedBoxHollow(BorderSize, X, Y, Width, Height, OutlineColor);
 }
 
-final function DrawRoundedBoxOutlinedEx( float BorderSize, float X, float Y, float Width, float Height, Color BoxColor, Color OutlineColor, optional bool TopLeft, optional bool TopRight, optional bool BottomLeft, optional bool BottomRight )
+final function DrawRoundedBoxOutlinedEx( float BorderSize, float X, float Y, float Width, float Height, Color BoxColor, Color OutlineColor, optional bool TopLeft, optional bool TopRight, optional bool BottomLeft, optional bool BottomRight)
 {
 	Canvas.DrawColor = BoxColor;
 	Canvas.SetPos(X + BorderSize, Y + BorderSize);
@@ -795,11 +795,11 @@ final function DrawRoundedBoxOutlinedEx( float BorderSize, float X, float Y, flo
 	DrawRoundedBoxHollowEx(BorderSize, X, Y, Width, Height, OutlineColor, TopLeft, TopRight, BottomLeft, BottomRight);
 }
 
-final function DrawArrowBox( int Direction, float X, float Y, float Width, float Height )
+final function DrawArrowBox( int Direction, float X, float Y, float Width, float Height)
 {
 	local Texture2D DirectionMat;
 
-	switch( Direction )
+	switch( Direction)
 	{
 		case 0:
 			DirectionMat=ArrowTextures[`ARROW_UP];
@@ -822,12 +822,12 @@ final function DrawArrowBox( int Direction, float X, float Y, float Width, float
 	DrawTileStretched(DirectionMat,X,Y,Width,Height);
 }
 
-final function DrawTileStretched( Texture Tex, float X, float Y, float XS, float YS )
+final function DrawTileStretched( Texture Tex, float X, float Y, float XS, float YS)
 {
 	local float mW,mH,MidX,MidY,SmallTileW,SmallTileH,fX,fY;
 	local int OptimizeTiles;
  
-	if( Tex==None ) Tex = Texture2D'EngineMaterials.DefaultDiffuse';
+	if (Tex == None ) Tex = Texture2D'EngineMaterials.DefaultDiffuse';
  
 	// Get the size of the image
 	mW = Tex.GetSurfaceWidth();
@@ -844,22 +844,22 @@ final function DrawTileStretched( Texture Tex, float X, float Y, float XS, float
 	// Optimized
 	OptimizeTiles = 4;
 
-	if( mW<XS )
+	if (mW < XS)
 		OptimizeTiles += 2;
-	if( mH<YS )
+	if (mH < YS)
 		OptimizeTiles += 2;
-	if( (mH<YS) && (mW<XS) )
+	if ((mH < YS) && (mW < XS))
 		OptimizeTiles += 1;
 
 	Canvas.PreOptimizeDrawTiles(OptimizeTiles, Tex);
  
 	// Draw the spans first
 	// Top and Bottom
-	if (mW<XS)
+	if (mW < XS)
 	{
 		fX = MidX;
  
-		if (mH>YS)
+		if (mH > YS)
 			fY = YS/2;
 		else
 			fY = MidY;
@@ -873,7 +873,7 @@ final function DrawTileStretched( Texture Tex, float X, float Y, float XS, float
 		fX = XS / 2;
  
 	// Left and Right
-	if (mH<YS)
+	if (mH < YS)
 	{
 		fY = MidY;
  
@@ -886,7 +886,7 @@ final function DrawTileStretched( Texture Tex, float X, float Y, float XS, float
 		fY = YS / 2;
  
 	// Center
-	if ( (mH<YS) && (mW<XS) )
+	if ((mH < YS) && (mW < XS))
 	{
 		Canvas.SetPos(X+fX,Y+fY);
 		Canvas.DrawTile(Tex,SmallTileW,SmallTileH,fX,fY,1,1);
@@ -903,7 +903,7 @@ final function DrawTileStretched( Texture Tex, float X, float Y, float XS, float
 	Canvas.DrawTile(Tex,fX,fY,mW-fX,mH-fY,fX,fY);
 }
 
-final function DrawTextJustified( byte Justification, float X1, float Y1, float X2, float Y2, coerce string S, optional float XS, optional float YS )
+final function DrawTextJustified( byte Justification, float X1, float Y1, float X2, float Y2, coerce string S, optional float XS, optional float YS)
 {
 	local float XL, YL;
 	local float CurY, CurX;
@@ -912,17 +912,17 @@ final function DrawTextJustified( byte Justification, float X1, float Y1, float 
 
 	CurY = ((Y2-Y1) / 2) - (YL/2);
 
-	if( Justification == 0 )
+	if (Justification == 0)
 	{
 		CurX = 0;
 	}
-	else if( Justification == 1 )
+	else if (Justification == 1)
 	{
-		if( XL > X2-X1 )
+		if (XL > X2-X1)
 			CurX = 0;
 		else CurX = ((X2-X1) / 2) - (XL/2);
 	}
-	else if( Justification == 2 )
+	else if (Justification == 2)
 	{
 		CurX = (X2-X1) - XL;
 	}
@@ -931,7 +931,7 @@ final function DrawTextJustified( byte Justification, float X1, float Y1, float 
 	Canvas.DrawText(S,,XS, YS);
 }
 
-static final function float TimeFraction( float Start, float End, float Current )
+static final function float TimeFraction( float Start, float End, float Current)
 {
 	return FClamp((Current - Start) / (End - Start), 0.f, 1.f);
 }

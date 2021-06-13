@@ -13,8 +13,8 @@ struct FColumnItem
 	var transient bool bHidden;
 	var transient int X,XSize;
 };
-var() array<FColumnItem> Columns;
-var() class<KFGUI_ListItem> ListItemClass;
+var() array < FColumnItem> Columns;
+var() class < KFGUI_ListItem> ListItemClass;
 var() float FontSize;
 var() color FocusedLineColor,SelectedLineColor;
 var() float EdgeSize;
@@ -36,13 +36,13 @@ var() bool bCanSortColumn; // Allow user to sort columns.
 
 delegate OnSelectedRow( KFGUI_ListItem Item, int Row, bool bRight, bool bDblClick );
 
-function KFGUI_ListItem AddLine( string Value, optional int iValue, optional string SortValue, optional int Index=-1 )
+function KFGUI_ListItem AddLine( string Value, optional int iValue, optional string SortValue, optional int Index=-1)
 {
 	local KFGUI_ListItem N,O;
 	local int i;
 
 	// Allocate list item object.
-	if( UnusedItem!=None )
+	if (UnusedItem != None)
 	{
 		N = UnusedItem;
 		UnusedItem = N.Next;
@@ -54,27 +54,27 @@ function KFGUI_ListItem AddLine( string Value, optional int iValue, optional str
 	N.SetValue(Value,iValue,SortValue);
 
 	// Insert into list.
-	if( bShouldSortList && Index==-1 )
+	if (bShouldSortList && Index == -1)
 	{
 		N.Temp = N.GetSortStr(LastSortedColumn);
 
-		if( ListCount==0 ) // No sorting needed yet.
+		if (ListCount == 0 ) // No sorting needed yet.
 		{
 			N.Next = FirstItem;
 			FirstItem = N;
 		}
-		else if( bLastSortedReverse )
+		else if (bLastSortedReverse)
 		{
-			if( FirstItem.Temp<N.Temp )
+			if (FirstItem.Temp < N.Temp)
 			{
 				N.Next = FirstItem;
 				FirstItem = N;
 			}
 			else
 			{
-				for( O=FirstItem; O!=None; O=O.Next )
+				for (O=FirstItem; O != None; O=O.Next)
 				{
-					if( O.Next==None || O.Next.Temp<N.Temp )
+					if (O.Next == None || O.Next.Temp < N.Temp)
 					{
 						N.Next = O.Next;
 						O.Next = N;
@@ -83,16 +83,16 @@ function KFGUI_ListItem AddLine( string Value, optional int iValue, optional str
 				}
 			}
 		}
-		else if( FirstItem.Temp>N.Temp )
+		else if (FirstItem.Temp > N.Temp)
 		{
 			N.Next = FirstItem;
 			FirstItem = N;
 		}
 		else
 		{
-			for( O=FirstItem; O!=None; O=O.Next )
+			for (O=FirstItem; O != None; O=O.Next)
 			{
-				if( O.Next==None || O.Next.Temp>N.Temp )
+				if (O.Next == None || O.Next.Temp > N.Temp)
 				{
 					N.Next = O.Next;
 					O.Next = N;
@@ -101,9 +101,9 @@ function KFGUI_ListItem AddLine( string Value, optional int iValue, optional str
 			}
 		}
 	}
-	else if( Index==-1 || Index>ListCount )
+	else if (Index == -1 || Index > ListCount)
 		Index = ListCount;
-	if( Index==0 )
+	if (Index == 0)
 	{
 		N.Next = FirstItem;
 		FirstItem = N;
@@ -111,9 +111,9 @@ function KFGUI_ListItem AddLine( string Value, optional int iValue, optional str
 	else
 	{
 		i = 0;
-		for( O=FirstItem; O!=None; O=O.Next )
+		for (O=FirstItem; O != None; O=O.Next)
 		{
-			if( (++i)==Index )
+			if ((++i) == Index)
 			{
 				N.Next = O.Next;
 				O.Next = N;
@@ -125,26 +125,26 @@ function KFGUI_ListItem AddLine( string Value, optional int iValue, optional str
 
 	return N;
 }
-final function RemoveLine( KFGUI_ListItem I )
+final function RemoveLine( KFGUI_ListItem I)
 {
 	local KFGUI_ListItem N;
 
-	if( I.Index==-1 )
+	if (I.Index == -1)
 		return;
 
 	// Update selected row info.
-	if( SelectedRowIndex==I.Index )
+	if (SelectedRowIndex == I.Index)
 		SelectedRowIndex = -1;
-	else if( SelectedRowIndex>I.Index )
+	else if (SelectedRowIndex > I.Index)
 		--SelectedRowIndex;
 
 	// Remove from list.
-	if( FirstItem==I )
+	if (FirstItem == I)
 		FirstItem = I.Next;
 	else
 	{
-		for( N=FirstItem; N!=None; N=N.Next )
-			if( N.Next==I )
+		for (N=FirstItem; N != None; N=N.Next)
+			if (N.Next == I)
 			{
 				N.Next = I.Next;
 				break;
@@ -162,7 +162,7 @@ final function EmptyList()
 {
 	local KFGUI_ListItem N,I;
 
-	for( I=FirstItem; I!=None; I=N )
+	for (I=FirstItem; I != None; I=N)
 	{
 		N = I.Next;
 
@@ -176,25 +176,25 @@ final function EmptyList()
 	UpdateListSize();
 }
 
-final function KFGUI_ListItem GetFromIndex( int Index )
+final function KFGUI_ListItem GetFromIndex( int Index)
 {
 	local KFGUI_ListItem N;
 
-	if( Index<0 || Index>=ListCount )
+	if (Index < 0 || Index >= ListCount)
 		return None;
-	for( N=FirstItem; N!=None; N=N.Next )
-		if( (Index--)==0 )
+	for (N=FirstItem; N != None; N=N.Next)
+		if ((Index--) == 0)
 			return N;
 	return None;
 }
 
-function SortColumn( int Column, optional bool bReverse )
+function SortColumn( int Column, optional bool bReverse)
 {
-	local array<KFGUI_ListItem> List;
+	local array < KFGUI_ListItem> List;
 	local KFGUI_ListItem Sel,N,P;
 	local int i;
 
-	if( !bCanSortColumn || Column<0 || Column>=Columns.Length )
+	if (!bCanSortColumn || Column < 0 || Column >= Columns.Length)
 		return;
 
 	LastSortedColumn = Column;
@@ -210,20 +210,20 @@ function SortColumn( int Column, optional bool bReverse )
 	SelectedRowIndex = -1;
 
 	// Slow, sort it all.
-	for( N=FirstItem; N!=None; N=N.Next )
+	for (N=FirstItem; N != None; N=N.Next)
 	{
 		N.Temp = N.GetSortStr(Column);
 
-		if( bReverse )
+		if (bReverse)
 		{
-			for( i=0; i<List.Length; ++i )
-				if( List[i].Temp<N.Temp )
+			for (i=0; i < List.Length; ++i)
+				if (List[i].Temp < N.Temp)
 					break;
 		}
 		else
 		{
-			for( i=0; i<List.Length; ++i )
-				if( List[i].Temp>N.Temp )
+			for (i=0; i < List.Length; ++i)
+				if (List[i].Temp > N.Temp)
 					break;
 		}
 		List.Insert(i,1);
@@ -233,14 +233,14 @@ function SortColumn( int Column, optional bool bReverse )
 	// Rebuild list.
 	FirstItem = None;
 	P = None;
-	for( i=0; i<List.Length; ++i )
+	for (i=0; i < List.Length; ++i)
 	{
 		N = List[i];
-		if( Sel==N )
+		if (Sel == N)
 			SelectedRowIndex = i;
 		N.Index = i;
 		N.Next = None;
-		if( P==None )
+		if (P == None)
 			FirstItem = N;
 		else P.Next = N;
 		P = N;
@@ -254,7 +254,7 @@ final function UpdateListSize()
 	local KFGUI_ListItem N;
 
 	ListCount = 0;
-	for( N=FirstItem; N!=None; N=N.Next )
+	for (N=FirstItem; N != None; N=N.Next)
 		N.Index = ListCount++;
 	bListSizeDirty = true;
 }
@@ -266,7 +266,7 @@ function InitMenu()
 	ColumnComp = KFGUI_ColumnTop(FindComponentID('Columns'));
 }
 
-final function DrawStrClipped( string S, optional bool bOnlyTextures )
+final function DrawStrClipped( string S, optional bool bOnlyTextures)
 {
 	Canvas.PushMaskRegion(Canvas.OrgX,Canvas.OrgY,Canvas.ClipX,Canvas.ClipY);
 	Owner.CurrentStyle.DrawTexturedString(S,Canvas.CurX,Canvas.CurY,TextScaler,LineFontInfo,false,bOnlyTextures);
@@ -287,38 +287,38 @@ function DrawMenu()
 	// Mouse focused item check.
 	bCheckMouse = bClickable && bFocused;
 	FocusMouseItem = -1;
-	if( bCheckMouse )
+	if (bCheckMouse)
 		MouseYHit = Owner.MousePosition.Y - CompPos[1];
 
 	n = ScrollBar.CurrentScroll;
 	i = 0;
-	for( C=FirstItem; C!=None; C=C.Next )
-		if( (i++)==n )
+	for (C=FirstItem; C != None; C=C.Next)
+		if ((i++) == n)
 			break;
 	Y = 0.f;
 	TextY = (ItemHeight-TextHeight)*0.5f;
 	XOffset = TextY*0.75;
 	Canvas.SetDrawColor(250,250,250,255);
 
-	for( i=0; (i<ListItemsPerPage && C!=None); ++i )
+	for (i=0; (i < ListItemsPerPage && C != None); ++i)
 	{
 		// Check for mouse hit.
-		if( bCheckMouse && FocusMouseItem==-1 )
+		if (bCheckMouse && FocusMouseItem == -1)
 		{
-			if( MouseYHit<ItemHeight )
+			if (MouseYHit < ItemHeight)
 				FocusMouseItem = n;
-			else MouseYHit-=ItemHeight;
+			else MouseYHit -= ItemHeight;
 		}
 
 		// Draw selection background.
-		if( SelectedRowIndex==n ) // Selected
+		if (SelectedRowIndex == n ) // Selected
 		{
 			Canvas.SetPos(EdgeSize,Y);
 			Canvas.DrawColor = SelectedLineColor;
 			Owner.CurrentStyle.DrawWhiteBox(CompPos[2]-(EdgeSize*2),ItemHeight);
 			Canvas.SetDrawColor(250,250,250,255);
 		}
-		else if( FocusMouseItem==n ) // Focused
+		else if (FocusMouseItem == n ) // Focused
 		{
 			Canvas.SetPos(EdgeSize,Y);
 			Canvas.DrawColor = FocusedLineColor;
@@ -327,8 +327,8 @@ function DrawMenu()
 		}
 
 		// Draw columns of text
-		for( j=0; j<Columns.Length; ++j )
-			if( !Columns[j].bHidden )
+		for (j=0; j < Columns.Length; ++j)
+			if (!Columns[j].bHidden)
 			{
 				//Canvas.SetClip(Columns[j].X+Columns[j].XSize+EdgeSize,YClip);
 				Canvas.SetPos(Columns[j].X+XOffset+EdgeSize,TextY);
@@ -346,7 +346,7 @@ function PreDraw()
 	local byte j;
 	local float XS,SpaceX;
 
-	if( !bVisible )
+	if (!bVisible)
 		return;
 
 	ComputeCoords();
@@ -356,7 +356,7 @@ function PreDraw()
 	TextScaler *= FontSize;
 	Canvas.TextSize("ABC",XS,TextHeight,TextScaler,TextScaler);
 
-	for( j=0; j<4; ++j )
+	for (j=0; j < 4; ++j)
 	{
 		ScrollBar.InputPos[j] = CompPos[j];
 		ColumnComp.InputPos[j] = CompPos[j];
@@ -364,7 +364,7 @@ function PreDraw()
 
 	// Setup positioning.
 	// First compute the width scrollbar.
-	if( OldXSize!=InputPos[2] )
+	if (OldXSize != InputPos[2])
 	{
 		OldXSize = InputPos[2];
 		ScalerSize = ScrollBar.GetWidth();
@@ -388,9 +388,9 @@ function PreDraw()
 	ItemHeight = TextHeight*1.025;
 	ListItemsPerPage = CompPos[3]/ItemHeight;
 	ItemHeight = CompPos[3]/ListItemsPerPage;
-	if( OldItemsPerFrame!=ListItemsPerPage || bListSizeDirty )
+	if (OldItemsPerFrame != ListItemsPerPage || bListSizeDirty)
 	{
-		if( SelectedRowIndex>=ListCount )
+		if (SelectedRowIndex >= ListCount)
 			SelectedRowIndex = -1;
 		OldItemsPerFrame = ListItemsPerPage;
 		bListSizeDirty = false;
@@ -411,12 +411,12 @@ function PreDraw()
 	CompPos[2] += SpaceX;
 	CompPos[3] += ColumnComp.CompPos[3];
 }
-function InternalClickedItem( int Index, bool bRight, int MouseX, int MouseY )
+function InternalClickedItem( int Index, bool bRight, int MouseX, int MouseY)
 {
 	SelectedRowIndex = Index;
 	OnSelectedRow(GetFromIndex(Index),Index,bRight,false);
 }
-function InternalDblClickedItem( int Index, bool bRight, int MouseX, int MouseY )
+function InternalDblClickedItem( int Index, bool bRight, int MouseX, int MouseY)
 {
 	SelectedRowIndex = Index;
 	OnSelectedRow(GetFromIndex(Index),Index,bRight,true);

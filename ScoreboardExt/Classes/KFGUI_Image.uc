@@ -25,7 +25,7 @@ function DrawMenu()
 {
 	local float X, Y, XL, YL;
 
-	if( Image == None )
+	if (Image == None)
 		return;
 
 	DrawBackground(Canvas, CompPos[2], CompPos[3]);
@@ -35,17 +35,17 @@ function DrawMenu()
 	switch (ImageStyle)
 	{
 		case ISTY_Normal:
-			if( X1 != -1 )
+			if (X1 != -1)
 				X = X1;
 			else X = 0;
 
-			if( Y1 != -1 )
+			if (Y1 != -1)
 				Y = Y1;
 			else Y = 0;
 
-			if( bForceUniformSize )
+			if (bForceUniformSize)
 			{
-				if( ScaleStyle == ISTY_Height )
+				if (ScaleStyle == ISTY_Height)
 				{
 					YL = CompPos[3];
 					XL = YL;
@@ -58,16 +58,16 @@ function DrawMenu()
 			}
 			else
 			{
-				if( Y2 == -1 )
+				if (Y2 == -1)
 					YL = FMin(CompPos[3], Image.GetSurfaceHeight());
 				else YL = (Y2-Y1);
 
-				if( X2 == -1 )
+				if (X2 == -1)
 					XL = FMin(CompPos[2], Image.GetSurfaceWidth());
 				else XL = (X2-X1);
 			}
 
-			if( bAlignCenter )
+			if (bAlignCenter)
 			{
 				Canvas.SetPos((CompPos[2]/2) - (XL/2), (CompPos[3]/2) - (YL/2));
 				Canvas.DrawTile(Image, XL, YL, X, Y, Image.GetSurfaceWidth(), Image.GetSurfaceHeight());
@@ -80,21 +80,21 @@ function DrawMenu()
 
 			break;
 		case ISTY_Stretched:
-			if ( X1 < 0 && X2 < 0 && Y1 < 0 && Y2 < 0 ) 
+			if (X1 < 0 && X2 < 0 && Y1 < 0 && Y2 < 0 ) 
 				Owner.CurrentStyle.DrawTileStretched(Image, 0.f, 0.f, CompPos[2], CompPos[3]);
 			else
 			{
-				if ( X1 != -1 )
+				if (X1 != -1)
 					X = X1;
 				else X = 0;
 
-				if( Y1 != -1 )
+				if (Y1 != -1)
 					Y = Y1;
 				else Y = 0;
 
-				if( bForceUniformSize )
+				if (bForceUniformSize)
 				{
-					if( ScaleStyle == ISTY_Height )
+					if (ScaleStyle == ISTY_Height)
 					{
 						YL = CompPos[3];
 						XL = YL;
@@ -107,16 +107,16 @@ function DrawMenu()
 				}
 				else
 				{
-					if( Y2 == -1 )
+					if (Y2 == -1)
 						YL = FMin(CompPos[3], Image.GetSurfaceHeight());
 					else YL = (Y2-Y1);
 
-					if( X2 == -1 )
+					if (X2 == -1)
 						XL = FMin(CompPos[2], Image.GetSurfaceWidth());
 					else XL = (X2-X1);
 				}
 
-				if( bAlignCenter )
+				if (bAlignCenter)
 				{
 					Canvas.SetPos((CompPos[2]/2) - (XL/2), (CompPos[3]/2) - (YL/2));
 					Canvas.DrawTile(Image, CompPos[2], CompPos[3], X, Y, Image.GetSurfaceWidth(), Image.GetSurfaceHeight());

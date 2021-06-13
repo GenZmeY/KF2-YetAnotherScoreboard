@@ -7,9 +7,9 @@ class ScoreboardExtHUD extends KFGFxHudWrapper
 const HUDBorderSize = 3;
 
 var float ScaledBorderSize;
-var array<KFGUI_Base> HUDWidgets;
+var array < KFGUI_Base> HUDWidgets;
 
-var class<KFScoreBoard> ScoreboardClass;
+var class < KFScoreBoard> ScoreboardClass;
 var KFScoreBoard Scoreboard;
 
 var transient KF2GUIController GUIController;
@@ -29,16 +29,16 @@ simulated function PostBeginPlay()
 
 function PostRender()
 {
-	if( KFGRI == None )
+	if (KFGRI == None)
 		KFGRI = KFGameReplicationInfo(WorldInfo.GRI);
 
-	if( GUIController!=None && PlayerOwner.PlayerInput==None )
+	if (GUIController != None && PlayerOwner.PlayerInput == None)
 		GUIController.NotifyLevelChange();
 
-	if( GUIController==None || GUIController.bIsInvalid )
+	if (GUIController == None || GUIController.bIsInvalid)
 	{
 		GUIController = Class'ScoreboardExt.KF2GUIController'.Static.GetGUIController(PlayerOwner);
-		if( GUIController!=None )
+		if (GUIController != None)
 		{
 			GUIStyle = GUIController.CurrentStyle;
 			GUIStyle.HUDOwner = self;
@@ -48,7 +48,7 @@ function PostRender()
 	GUIStyle.Canvas = Canvas;
 	GUIStyle.PickDefaultFontSize(Canvas.ClipY);
 
-	if( !GUIController.bIsInMenuState )
+	if (!GUIController.bIsInMenuState)
 		GUIController.HandleDrawMenu();
 
 	ScaledBorderSize = FMax(GUIStyle.ScreenScale(HUDBorderSize), 1.f);
@@ -66,9 +66,9 @@ function bool NotifyInputKey(int ControllerId, Name Key, EInputEvent Event, floa
 {
 	local int i;
 
-	for( i=(HUDWidgets.Length-1); i>=0; --i )
+	for (i=(HUDWidgets.Length-1); i >= 0; --i)
 	{
-		if( HUDWidgets[i].bVisible && HUDWidgets[i].NotifyInputKey(ControllerId, Key, Event, AmountDepressed, bGamepad) )
+		if (HUDWidgets[i].bVisible && HUDWidgets[i].NotifyInputKey(ControllerId, Key, Event, AmountDepressed, bGamepad))
 			return true;
 	}
 
@@ -79,9 +79,9 @@ function bool NotifyInputAxis(int ControllerId, name Key, float Delta, float Del
 {
 	local int i;
 
-	for( i=(HUDWidgets.Length-1); i>=0; --i )
+	for (i=(HUDWidgets.Length-1); i >= 0; --i)
 	{
-		if( HUDWidgets[i].bVisible && HUDWidgets[i].NotifyInputAxis(ControllerId, Key, Delta, DeltaTime, bGamepad) )
+		if (HUDWidgets[i].bVisible && HUDWidgets[i].NotifyInputAxis(ControllerId, Key, Delta, DeltaTime, bGamepad))
 			return true;
 	}
 
@@ -92,9 +92,9 @@ function bool NotifyInputChar(int ControllerId, string Unicode)
 {
 	local int i;
 
-	for( i=(HUDWidgets.Length-1); i>=0; --i )
+	for (i=(HUDWidgets.Length-1); i >= 0; --i)
 	{
-		if( HUDWidgets[i].bVisible && HUDWidgets[i].NotifyInputChar(ControllerId, Unicode) )
+		if (HUDWidgets[i].bVisible && HUDWidgets[i].NotifyInputChar(ControllerId, Unicode))
 			return true;
 	}
 

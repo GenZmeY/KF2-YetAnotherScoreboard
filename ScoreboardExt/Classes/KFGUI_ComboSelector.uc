@@ -11,11 +11,11 @@ function DrawMenu()
 	Owner.CurrentStyle.RenderComboList(Self);
 }
 
-function HandleMouseClick( bool bRight )
+function HandleMouseClick( bool bRight)
 {
 	PlayMenuSound(MN_ClickButton);
 	DropInputFocus();
-	if( CurrentRow>=0 )
+	if (CurrentRow >= 0)
 	{
 		Combo.SelectedIndex = CurrentRow;
 		Combo.OnComboChanged(Combo);

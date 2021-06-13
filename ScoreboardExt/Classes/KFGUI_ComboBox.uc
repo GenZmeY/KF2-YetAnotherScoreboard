@@ -6,7 +6,7 @@ Class KFGUI_ComboBox extends KFGUI_EditControl;
 var KFGUI_ComboSelector Selection;
 
 var float BorderSize;
-var() array<string> Values;
+var() array < string> Values;
 var() int SelectedIndex;
 var() color SelectedTextColor,TextColor;
 var() bool bButtonStretched;
@@ -14,7 +14,7 @@ var() bool bButtonStretched;
 function UpdateSizes()
 {
 	// Update height.
-	if( bScaleByFontSize )
+	if (bScaleByFontSize)
 		YSize = (TextHeight + (BorderSize*2)) / InputPos[3];
 }
 
@@ -23,10 +23,10 @@ function DrawMenu()
 	Owner.CurrentStyle.RenderComboBox(Self);
 }
 
-function HandleMouseClick( bool bRight )
+function HandleMouseClick( bool bRight)
 {
 	PlayMenuSound(MN_Dropdown);
-	if( Selection==None )
+	if (Selection == None)
 	{
 		Selection = New(None)Class'KFGUI_ComboSelector';
 		Selection.Owner = Owner;
@@ -37,22 +37,22 @@ function HandleMouseClick( bool bRight )
 	Selection.YPosition = (CompPos[1]+CompPos[3]) / Owner.ScreenSize.Y;
 	Selection.XSize = CompPos[2] / Owner.ScreenSize.X;
 	Selection.YSize = (TextHeight / Owner.ScreenSize.Y) * Values.Length + ((BorderSize*2) / Owner.ScreenSize.Y);
-	if( (Selection.YPosition+Selection.YSize)>1.f )
-		Selection.YPosition-=((Selection.YPosition+Selection.YSize)-1.f);
+	if ((Selection.YPosition+Selection.YSize) > 1.f)
+		Selection.YPosition -= ((Selection.YPosition+Selection.YSize)-1.f);
 	Selection.GetInputFocus();
 }
 final function string GetCurrent()
 {
-	if( SelectedIndex<Values.Length )
+	if (SelectedIndex < Values.Length)
 		return Values[SelectedIndex];
 	return "";
 }
-final function bool SetValue( string S )
+final function bool SetValue( string S)
 {
 	local int i;
 
 	i = Values.Find(S);
-	if( i==-1 )
+	if (i == -1)
 		return false;
 	SelectedIndex = i;
 	return true;

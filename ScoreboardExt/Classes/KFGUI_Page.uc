@@ -15,7 +15,7 @@ var bool bWindowFocused; // This page is currently focused.
 
 function DrawMenu()
 {
-	if( !bNoBackground )
+	if (!bNoBackground)
 	{
 		Owner.CurrentStyle.RenderWindow(Self);
 	}

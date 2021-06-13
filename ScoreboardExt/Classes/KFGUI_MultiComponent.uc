@@ -3,13 +3,13 @@ Class KFGUI_MultiComponent extends KFGUI_Base;
 `include(Build.uci)
 `include(Logger.uci)
 
-var() export editinline array<KFGUI_Base> Components;
+var() export editinline array < KFGUI_Base> Components;
 
 function InitMenu()
 {
 	local int i;
 
-	for( i=0; i<Components.Length; ++i )
+	for (i=0; i < Components.Length; ++i)
 	{
 		Components[i].Owner = Owner;
 		Components[i].ParentComponent = Self;
@@ -20,7 +20,7 @@ function ShowMenu()
 {
 	local int i;
 
-	for( i=0; i<Components.Length; ++i )
+	for (i=0; i < Components.Length; ++i)
 		Components[i].ShowMenu();
 }
 function PreDraw()
@@ -28,7 +28,7 @@ function PreDraw()
 	local int i;
 	local byte j;
 
-	if( !bVisible )
+	if (!bVisible)
 		return;
 
 	ComputeCoords();
@@ -36,10 +36,10 @@ function PreDraw()
 	Canvas.SetOrigin(CompPos[0],CompPos[1]);
 	Canvas.SetClip(CompPos[0]+CompPos[2],CompPos[1]+CompPos[3]);
 	DrawMenu();
-	for( i=0; i<Components.Length; ++i )
+	for (i=0; i < Components.Length; ++i)
 	{
 		Components[i].Canvas = Canvas;
-		for( j=0; j<4; ++j )
+		for (j=0; j < 4; ++j)
 			Components[i].InputPos[j] = CompPos[j];
 		Components[i].PreDraw();
 	}
@@ -48,19 +48,19 @@ function InventoryChanged(optional KFWeapon Wep, optional bool bRemove)
 {
 	local int i;
 
-	for( i=0; i<Components.Length; ++i )
+	for (i=0; i < Components.Length; ++i)
 		Components[i].InventoryChanged(Wep,bRemove);
 }
-function MenuTick( float DeltaTime )
+function MenuTick( float DeltaTime)
 {
 	local int i;
 
 	Super.MenuTick(DeltaTime);
-	for( i=0; i<Components.Length; ++i )
+	for (i=0; i < Components.Length; ++i)
 		Components[i].MenuTick(DeltaTime);
 }
 
-function AddComponent( KFGUI_Base C )
+function AddComponent( KFGUI_Base C)
 {
 	Components[Components.Length] = C;
 	C.Owner = Owner;
@@ -72,16 +72,16 @@ function CloseMenu()
 {
 	local int i;
 
-	for( i=0; i<Components.Length; ++i )
+	for (i=0; i < Components.Length; ++i)
 		Components[i].CloseMenu();
 }
 function bool CaptureMouse()
 {
 	local int i;
 
-	for( i=Components.Length - 1; i>=0; i-- )
+	for (i=Components.Length - 1; i >= 0; i--)
 	{
-		if( Components[i].CaptureMouse() )
+		if (Components[i].CaptureMouse())
 		{
 			MouseArea = Components[i];
 			return true;
@@ -94,9 +94,9 @@ function bool ReceievedControllerInput(int ControllerId, name Key, EInputEvent E
 {
 	local int i;
 
-	for( i=Components.Length - 1; i>=0; i-- )
+	for (i=Components.Length - 1; i >= 0; i--)
 	{
-		if( Components[i].ReceievedControllerInput(ControllerId, Key, Event) )
+		if (Components[i].ReceievedControllerInput(ControllerId, Key, Event))
 		{
 			return true;
 		}
@@ -104,47 +104,47 @@ function bool ReceievedControllerInput(int ControllerId, name Key, EInputEvent E
 
 	return Super.ReceievedControllerInput(ControllerId, Key, Event);
 }
-function KFGUI_Base FindComponentID( name InID )
+function KFGUI_Base FindComponentID( name InID)
 {
 	local int i;
 	local KFGUI_Base Result;
 
-	if( ID==InID )
+	if (ID == InID)
 		Result = Self;
 	else
 	{
-		for( i=0; i<Components.Length && Result==None; ++i )
+		for (i=0; i < Components.Length && Result == None; ++i)
 			Result = Components[i].FindComponentID(InID);
 	}
 	return Result;
 }
-function FindAllComponentID( name InID, out array<KFGUI_Base> Res )
+function FindAllComponentID( name InID, out array < KFGUI_Base> Res)
 {
 	local int i;
 
-	if( ID==InID )
+	if (ID == InID)
 		Res[Res.Length] = Self;
-	for( i=0; i<Components.Length; ++i )
+	for (i=0; i < Components.Length; ++i)
 		Components[i].FindAllComponentID(InID,Res);
 }
-function RemoveComponent( KFGUI_Base B )
+function RemoveComponent( KFGUI_Base B)
 {
 	local int i;
 
-	for( i=0; i<Components.Length; ++i )
-		if( Components[i]==B )
+	for (i=0; i < Components.Length; ++i)
+		if (Components[i] == B)
 		{
 			Components.Remove(i,1);
 			B.CloseMenu();
 			return;
 		}
-	for( i=0; i<Components.Length; ++i )
+	for (i=0; i < Components.Length; ++i)
 		Components[i].RemoveComponent(B);
 }
 function NotifyLevelChange()
 {
 	local int i;
 
-	for( i=0; i<Components.Length; ++i )
+	for (i=0; i < Components.Length; ++i)
 		Components[i].NotifyLevelChange();
 }

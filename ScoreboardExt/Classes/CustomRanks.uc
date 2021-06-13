@@ -5,4 +5,4 @@ class CustomRanks extends Object
 `include(Build.uci)
 `include(Logger.uci)
 
-var config array<RankInfo> Rank;
+var config array < RankInfo> Rank;

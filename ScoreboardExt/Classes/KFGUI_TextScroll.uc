@@ -7,10 +7,10 @@ var float ScrollSpeed;
 
 var transient float CharStartTime;
 var transient bool bScrollCompleted, bTextDirty;
-var transient array<bool> RowsCompleted;
+var transient array < bool> RowsCompleted;
 var transient int MaxIndex, RowsDropped;
 
-function SetText( string S )
+function SetText( string S)
 {
 	Super.SetText(S);
 
@@ -32,38 +32,38 @@ function DrawMenu()
 	local Texture CurrentCursor;
 	local ETextFieldStyles TextStyle;
 
-	if( bScrollCompleted )
+	if (bScrollCompleted)
 	{
 		Super.DrawMenu();
 		return;
 	}
 
-	if( Text=="" )
+	if (Text == "")
 		return;
 
 	// Need to figure out best fitting font.
-	if( OldSize[0]!=CompPos[2] || OldSize[1]!=CompPos[3] )
+	if (OldSize[0] != CompPos[2] || OldSize[1] != CompPos[3])
 		InitSize();
 
 	Canvas.Font = InitFont;
 
-	if( bShowScrollbar )
+	if (bShowScrollbar)
 	{
 		Canvas.SetClip(CompPos[0]+(CompPos[2]-ScrollWidth),CompPos[1]+CompPos[3]);
 		i = ScrollBar.GetValue();
 	}
 	else i = 0;
 
-	if( ScrollBar != None )
+	if (ScrollBar != None)
 	{
-		if( bTextDirty )
+		if (bTextDirty)
 		{
 			ScrollBar.bDisabled = true;
 			RowsCompleted.Length = Lines.Length;
 			bTextDirty = false;
 		}
 
-		if( RowsCompleted[Lines.Length-1] )
+		if (RowsCompleted[Lines.Length-1])
 		{
 			ScrollBar.AddValue(1);
 			ScrollBar.bDisabled = false;
@@ -74,7 +74,7 @@ function DrawMenu()
 
 			return;
 		}
-		else if( MaxIndex != 0 && RowsCompleted[MaxIndex] )
+		else if (MaxIndex != 0 && RowsCompleted[MaxIndex])
 		{
 			MaxIndex = 0;
 			ScrollBar.AddValue(1);
@@ -85,13 +85,13 @@ function DrawMenu()
 		}
 	}
 
-	if( RowsDropped > 0 )
+	if (RowsDropped > 0)
 	{
-		for( i=0; i<=RowsDropped; ++i )
+		for (i=0; i <= RowsDropped; ++i)
 		{
-			for( j=0; j<Lines[i].Text.Length; ++j )
+			for (j=0; j < Lines[i].Text.Length; ++j)
 			{
-				for( k=0; k<=Len(Lines[i].Text[j].S); ++k )
+				for (k=0; k <= Len(Lines[i].Text[j].S); ++k)
 				{
 					CharTime += ScrollSpeed;
 				}
@@ -100,24 +100,24 @@ function DrawMenu()
 	}
 
 	DTime = `TimeSinceEx(GetPlayer(), CharStartTime);
-	if( i<Lines.Length )
+	if (i < Lines.Length)
 	{
 		CurrentCursor = Owner.DefaultPens[GetCursorStyle()];
 		Y = Lines[i].Y;
-		for( i=i; i<Lines.Length; ++i )
+		for (i=i; i < Lines.Length; ++i)
 		{
-			if( (Lines[i].Y-Y+TextHeight)>=CompPos[3] )
+			if ((Lines[i].Y-Y+TextHeight) >= CompPos[3])
 			{
 				MaxIndex = i-1;
 				break;
 			}
 
-			if( Lines[i].Text.Length!=0 )
+			if (Lines[i].Text.Length != 0)
 			{
-				for( j=0; j<Lines[i].Text.Length; ++j )
+				for (j=0; j < Lines[i].Text.Length; ++j)
 				{
 					MainTextColor = Lines[i].Text[j].C;
-					if( MainTextColor.A==0 )
+					if (MainTextColor.A == 0)
 						MainTextColor = TextColor;
 
 					TextStyle = Lines[i].Text[j].TextType;
@@ -128,15 +128,15 @@ function DrawMenu()
 					SLen = Len(MainString);
 
 					CurrentIndex = 0;
-					for( k=0; k<=SLen; ++k )
+					for (k=0; k <= SLen; ++k)
 					{
 						CharTime += ScrollSpeed;
 
 						Canvas.TextSize(Mid(MainString, 0, k), XL, YL, InitFontScale, InitFontScale);
 
-						if ( CharTime > DTime )
+						if (CharTime > DTime)
 						{
-							if( CurrentIndex == k )
+							if (CurrentIndex == k)
 							{
 								Canvas.SetDrawColor(255,255,255,255);
 								Canvas.SetPos(MainX+XL,MainY);
@@ -152,7 +152,7 @@ function DrawMenu()
 
 						CurrentIndex = k+1;
 
-						if( k >= SLen )
+						if (k >= SLen)
 						{
 							RowsCompleted[i] = true;
 						}
@@ -168,12 +168,12 @@ function bool CaptureMouse()
 	return (!bScrollCompleted && Super(KFGUI_MultiComponent).CaptureMouse()) || Super.CaptureMouse();
 }
 
-function MouseClick( bool bRight )
+function MouseClick( bool bRight)
 {
-	if( bScrollCompleted )
+	if (bScrollCompleted)
 		return;
 
-	if( ScrollBar != None )
+	if (ScrollBar != None)
 		ScrollBar.bDisabled = false;
 
 	bScrollCompleted = true;

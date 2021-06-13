@@ -21,9 +21,9 @@ function bool GetUsingGamepad()
 	return Owner.bUsingGamepad && GamepadButtonName != "";
 }
 
-function HandleMouseClick( bool bRight )
+function HandleMouseClick( bool bRight)
 {
-	if( bRight )
+	if (bRight)
 		OnClickRight(Self);
 	else OnClickLeft(Self);
 }

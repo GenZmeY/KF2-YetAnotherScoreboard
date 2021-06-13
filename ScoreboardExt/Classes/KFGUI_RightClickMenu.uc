@@ -8,14 +8,14 @@ struct FRowItem
 	var string Text,ToolTip;
 	var bool bSplitter,bDisabled;
 };
-var array<FRowItem> ItemRows;
+var array < FRowItem> ItemRows;
 var int CurrentRow,OldRow;
 var int EdgeSize;
 var int OldSizeX;
 var transient bool bDrawToolTip;
 var Color BoxColor,OutlineColor;
 
-function OpenMenu( KFGUI_Base Menu )
+function OpenMenu( KFGUI_Base Menu)
 {
 	Owner = Menu.Owner;
 	InitMenu();
@@ -29,10 +29,10 @@ final function ComputeSize()
 	local int i;
 	local string S;
 
-	if( OldSizeX == Owner.ScreenSize.X )
+	if (OldSizeX == Owner.ScreenSize.X)
 		return;
  
-	if( ItemRows.Length==0 )
+	if (ItemRows.Length == 0)
 	{
 		YS = 0;
 		XS = 50;
@@ -40,9 +40,9 @@ final function ComputeSize()
 	else
 	{
 		Canvas.Font = Owner.CurrentStyle.PickFont(Scalar);
-		for( i=0; i<ItemRows.Length; ++i )
+		for (i=0; i < ItemRows.Length; ++i)
 		{
-			if( ItemRows[i].bSplitter )
+			if (ItemRows[i].bSplitter)
 				S = "----";
 			else S = ItemRows[i].Text;
 
@@ -63,18 +63,18 @@ function ComputePosition()
 {
 	XPosition = float(Owner.MousePosition.X+4) / Owner.ScreenSize.X;
 	YPosition = float(Owner.MousePosition.Y+4) / Owner.ScreenSize.Y;
-	if( (XPosition+XSize)>1.f )
+	if ((XPosition+XSize) > 1.f)
 		YPosition = (float(Owner.MousePosition.X) / Owner.ScreenSize.X) - XSize; // Move to left side of mouse pointer.
-	if( (YPosition+YSize)>1.f )
-		YPosition-=((YPosition+YSize)-1.f); // Move up until fit on screen.
+	if ((YPosition+YSize) > 1.f)
+		YPosition -= ((YPosition+YSize)-1.f); // Move up until fit on screen.
 }
-final function AddRow( string Text, bool bDisable, optional string AltToolTip )
+final function AddRow( string Text, bool bDisable, optional string AltToolTip)
 {
 	local int i;
 
 	i = ItemRows.Length;
 	ItemRows.Length = i+1;
-	if( Text=="-" )
+	if (Text == "-")
 		ItemRows[i].bSplitter = true;
 	else
 	{
@@ -92,9 +92,9 @@ function DrawMenu()
 {   
 	Owner.CurrentStyle.RenderRightClickMenu(Self);
 
-	if( bDrawToolTip )
+	if (bDrawToolTip)
 	{
-		if( OldRow != CurrentRow )
+		if (OldRow != CurrentRow)
 			bDrawToolTip = false;
 		DrawToolTip();
 	}
@@ -117,7 +117,7 @@ function DrawToolTip()
 	BoxW = XL * 1.05f;
 	BoxH = YL * 1.25f;
 
-	while( (X + BoxW) > Canvas.ClipX )
+	while( (X + BoxW) > Canvas.ClipX)
 	{
 		X -= 0.01;
 	}
@@ -131,9 +131,9 @@ function DrawToolTip()
 	Canvas.SetPos(TextX, TextY);
 	Canvas.DrawText(S,,Scalar,Scalar);
 }
-function HandleMouseClick( bool bRight )
+function HandleMouseClick( bool bRight)
 {
-	if( CurrentRow>=0 && (ItemRows[CurrentRow].bSplitter || ItemRows[CurrentRow].bDisabled) )
+	if (CurrentRow >= 0 && (ItemRows[CurrentRow].bSplitter || ItemRows[CurrentRow].bDisabled))
 		return;
 	OnSelectedItem(CurrentRow);
 	PlayMenuSound(MN_ClickButton);
@@ -147,7 +147,7 @@ function LostInputFocus()
 }
 function NotifyMousePaused()
 {
-	if(CurrentRow != -1 && ItemRows[CurrentRow].ToolTip != "")
+	if (CurrentRow != -1 && ItemRows[CurrentRow].ToolTip != "")
 		bDrawToolTip = true;
 }
 

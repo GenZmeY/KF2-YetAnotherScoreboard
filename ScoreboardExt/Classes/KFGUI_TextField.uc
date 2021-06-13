@@ -24,7 +24,7 @@ struct FTextPart
 };
 struct FTextLineInfo
 {
-	var array<FTextPart> Text;
+	var array < FTextPart> Text;
 	var float Y;
 };
 var KFGUI_ScrollBarV ScrollBar;
@@ -36,14 +36,14 @@ var() Canvas.FontRenderInfo TextFontInfo;
 var() float FontScale,MessageDisplayTime,MessageFadeInTime,MessageFadeOutTime;
 var() bool bNoReset,bFadeInOut,bUseOutlineText;
 var() int MaxHistory, OutlineSize;
-var protected transient array<FTextLineInfo> Lines,OrgLines;
+var protected transient array < FTextLineInfo> Lines,OrgLines;
 var transient float MaxHeight,ScrollWidth,OldSize[2],InitFontScale,TextHeight,FadeStartTime;
 var transient Font InitFont;
 var transient bool bShowScrollbar,bTextParsed;
 
-function SetText( string S )
+function SetText( string S)
 {
-	if( Text==S )
+	if (Text == S)
 		return;
 	Text = S;
 	OldSize[0] = -1; // Force to refresh.
@@ -51,7 +51,7 @@ function SetText( string S )
 	OrgLines.Length = 0;
 	bTextParsed = false;
 }
-function AddText( string S, optional bool bIgnoreSpam )
+function AddText( string S, optional bool bIgnoreSpam)
 {
 	Text $= S;
 	OldSize[0] = -1;
@@ -66,7 +66,7 @@ final function string GetText()
 
 final function ParseTextLines()
 {
-	local array<string> SA;
+	local array < string> SA;
 	local int i,j,z;
 	local string S;
 	local color C;
@@ -76,19 +76,19 @@ final function ParseTextLines()
 	Lines.Length = SA.Length;
 	C.A = 0;
 	TextType = TEXT_FIELD_NONE;
-	for( i=0; i<SA.Length; ++i )
+	for (i=0; i < SA.Length; ++i)
 	{
 		Lines[i].Text.Length = 0;
 
 		S = SA[i];
-		if( S=="" )
+		if (S == "")
 			continue;
 
 		z = 0;
-		while( true )
+		while( true)
 		{
 			j = InStr(S,"#{");
-			if( j>0 )
+			if (j > 0)
 			{
 				Lines[i].Text.Length = z+1;
 				Lines[i].Text[z].S = Left(S,j);
@@ -96,29 +96,29 @@ final function ParseTextLines()
 				Lines[i].Text[z].TextType = TextType;
 				++z;
 			}
-			else if( j==-1 )
+			else if (j == -1)
 				break;
 
 			S = Mid(S,j+2);
-			if( Left(S,4)=="DEF}" )
+			if (Left(S,4) == "DEF}")
 			{
 				C.A = 0;
 				S = Mid(S,4);
 				TextType = TEXT_FIELD_NONE;
 			}
-			else if( Left(S,4)=="HSV}" )
+			else if (Left(S,4) == "HSV}")
 			{
 				C.A = 0;
 				S = Mid(S,4);
 				TextType = TEXT_FIELD_HSV;
 			}
-			else if( Left(S,6)=="FLASH}" )
+			else if (Left(S,6) == "FLASH}")
 			{
 				C.A = 0;
 				S = Mid(S,6);
 				TextType = TEXT_FIELD_FLASH;
 			}
-			else if( Left(S,7)=="CFLASH=" )
+			else if (Left(S,7) == "CFLASH=")
 			{
 				C.A = 0;
 				S = Mid(S,7);
@@ -147,21 +147,21 @@ final function ParseTextLines()
 	}
 	OrgLines = Lines; // Create a backup.
 }
-final function byte GrabHexValue( string S )
+final function byte GrabHexValue( string S)
 {
 	local byte n;
 
-	n = (HexToInt(Asc(Left(S,1)))<<4) | HexToInt(Asc(Right(S,1)));
+	n = (HexToInt(Asc(Left(S,1))) << 4) | HexToInt(Asc(Right(S,1)));
 	S = Mid(S,2);
 	return n;
 }
-final function byte HexToInt( byte n )
+final function byte HexToInt( byte n)
 {
-	if( n>=48 && n<=57 ) // '0' - '9'
+	if (n >= 48 && n <= 57 ) // '0' - '9'
 		return n-48;
-	if( n>=65 && n<=70 ) // 'A' - 'F'
+	if (n >= 65 && n <= 70 ) // 'A' - 'F'
 		return n-55; // 'A' - 10
-	if( n>=97 && n<=102 ) // 'a' - 'f'
+	if (n >= 97 && n <= 102 ) // 'a' - 'f'
 		return n-87; // 'a' - 10
 	return 0;
 }
@@ -172,12 +172,12 @@ function InitSize()
 	local float XS;
 	local int MaxScrollRange;
 
-	if( Canvas == None )
+	if (Canvas == None)
 		return;
 
 	OldSize[0] = CompPos[2];
 	OldSize[1] = CompPos[3];
-	if( !bTextParsed )
+	if (!bTextParsed)
 	{
 		ParseTextLines();
 		bTextParsed = true;
@@ -193,13 +193,13 @@ function InitSize()
 
 	ParseLines(CompPos[2] / InitFontScale);
 	MaxHeight = (Lines.Length * TextHeight);
-	bShowScrollbar = (MaxHeight>=CompPos[3]);
+	bShowScrollbar = (MaxHeight >= CompPos[3]);
 	bClickable = bShowScrollbar;
 	bCanFocus = bShowScrollbar;
 
-	if( bShowScrollbar )
+	if (bShowScrollbar)
 	{
-		if( ScrollBar==None )
+		if (ScrollBar == None)
 		{
 			ScrollBar = new(Self) class'KFGUI_ScrollBarV';
 			ScrollBar.SetPosition(0.9,0.0,0.1,1.0);
@@ -210,7 +210,7 @@ function InitSize()
 		}
 
 		// Compute scrollbar size and X-position.
-		for( i=0; i<4; ++i )
+		for (i=0; i < 4; ++i)
 			ScrollBar.InputPos[i] = CompPos[i];
 		ScrollWidth = ScrollBar.GetWidth();
 		ScrollBar.XPosition = 1.f - ScrollWidth;
@@ -222,32 +222,32 @@ function InitSize()
 		Lines = OrgLines;
 		ParseLines((CompPos[2]-ScrollWidth) / InitFontScale);
 
-		if( Components.Find(ScrollBar)==-1 )
+		if (Components.Find(ScrollBar) == -1)
 			Components.AddItem(ScrollBar);
 		MaxHeight = (Lines.Length * TextHeight);
 		MaxScrollRange = Max(((MaxHeight-CompPos[3])/TextHeight),1);
 		ScrollBar.UpdateScrollSize(bNoReset ? MaxScrollRange : 0,MaxScrollRange,1,1);
 	}
-	else if( ScrollBar!=None )
+	else if (ScrollBar != None)
 		Components.RemoveItem(ScrollBar);
 }
 
 // Parse textlines to see if they're too long.
-final function ParseLines( float ClipX )
+final function ParseLines( float ClipX)
 {
 	local float X,XS,YS;
 	local int i,j,z,n;
 
-	for( i=0; i<Lines.Length; ++i )
+	for (i=0; i < Lines.Length; ++i)
 	{
 		Lines[i].Y = i*TextHeight;
 		X = 0.f;
-		for( j=0; j<Lines[i].Text.Length; ++j )
+		for (j=0; j < Lines[i].Text.Length; ++j)
 		{
 			Lines[i].Text[j].X = (X*InitFontScale);
 			Canvas.TextSize(Lines[i].Text[j].S,XS,YS);
 
-			if( (X+XS)>ClipX )
+			if ((X+XS) > ClipX)
 			{
 				z = FindSplitPoint(Lines[i].Text[j].S,X,ClipX);
 
@@ -255,7 +255,7 @@ final function ParseLines( float ClipX )
 				Lines.Insert(i+1,1);
 
 				// Append the remaining lines there.
-				for( n=j; n<Lines[i].Text.Length; ++n )
+				for (n=j; n < Lines[i].Text.Length; ++n)
 					Lines[i+1].Text.AddItem(Lines[i].Text[n]);
 
 				// Split the string at wrapping point.
@@ -265,7 +265,7 @@ final function ParseLines( float ClipX )
 				Lines[i+1].Text[0].S = StripWhiteSpaces(Lines[i+1].Text[0].S);
 
 				// If empty, clean it up.
-				if( Lines[i+1].Text[0].S=="" )
+				if (Lines[i+1].Text[0].S == "")
 					Lines[i+1].Text.Remove(0,1);
 
 				// End the current line at wrapping point.
@@ -279,24 +279,24 @@ final function ParseLines( float ClipX )
 }
 
 // Slow, find wrapped splitting point in text.
-final function int FindSplitPoint( string S, float X, float ClipX )
+final function int FindSplitPoint( string S, float X, float ClipX)
 {
 	local int i,l,PrevWord;
 	local float XL,YL;
 	local bool bWasWhite,bStartedZero;
 
-	bStartedZero = (X==0.f);
+	bStartedZero = (X == 0.f);
 	Canvas.TextSize(Mid(S,0,1),XL,YL);
 	X += XL;
 	i = 1;
 	l = Len(S);
 	PrevWord = 0;
 	bWasWhite = true;
-	while( i<l )
+	while( i < l)
 	{
-		if( Mid(S,i,1)==" " )
+		if (Mid(S,i,1) == " ")
 		{
-			if( !bWasWhite )
+			if (!bWasWhite)
 			{
 				PrevWord = i;
 				bWasWhite = true;
@@ -308,9 +308,9 @@ final function int FindSplitPoint( string S, float X, float ClipX )
 		}
 		Canvas.TextSize(Mid(S,i,1),XL,YL);
 		X+=XL;
-		if( X>ClipX ) // Split here if possible.
+		if (X > ClipX ) // Split here if possible.
 		{
-			if( PrevWord==0 )
+			if (PrevWord == 0)
 				return (bStartedZero ? i : 0); // No wrap.
 			return PrevWord;
 		}
@@ -318,9 +318,9 @@ final function int FindSplitPoint( string S, float X, float ClipX )
 	}
 	return l;
 }
-final function string StripWhiteSpaces( string S )
+final function string StripWhiteSpaces( string S)
 {
-	if( Left(S,1)==" " )
+	if (Left(S,1) == " ")
 		S = Mid(S,1);
 	return S;
 }
@@ -335,19 +335,19 @@ function DrawMenu()
 	local int i,j,Index;
 	local float Y;
 
-	if( Text=="" || !bVisible )
+	if (Text == "" || !bVisible)
 		return;
 
 	// Need to figure out best fitting font.
-	if( OldSize[0]!=CompPos[2] || OldSize[1]!=CompPos[3] )
+	if (OldSize[0] != CompPos[2] || OldSize[1] != CompPos[3])
 		InitSize();
 
-	if( MaxHistory != 0 )
+	if (MaxHistory != 0)
 	{
-		if( Lines.Length >= MaxHistory )
+		if (Lines.Length >= MaxHistory)
 		{
 			Index = InStr(Text, LineSplitter);
-			if( Index == INDEX_NONE )
+			if (Index == INDEX_NONE)
 				Lines.Remove(0, 1);
 			else SetText(Mid(Text, Index+Len(LineSplitter)));
 		}
@@ -355,24 +355,24 @@ function DrawMenu()
 
 	Canvas.Font = InitFont;
 
-	if( bShowScrollbar )
+	if (bShowScrollbar)
 	{
 		Canvas.SetClip(CompPos[0]+(CompPos[2]-ScrollWidth),CompPos[1]+CompPos[3]);
 		i = ScrollBar.GetValue();
 	}
 	else i = 0;
 
-	if( i<Lines.Length )
+	if (i < Lines.Length)
 	{
 		Y = Lines[i].Y;
-		for( i=i; i<Lines.Length; ++i )
+		for (i=i; i < Lines.Length; ++i)
 		{
-			if( Lines[i].Text.Length!=0 )
+			if (Lines[i].Text.Length != 0)
 			{
-				if( (Lines[i].Y-Y+TextHeight)>=CompPos[3] )
+				if ((Lines[i].Y-Y+TextHeight) >= CompPos[3])
 					break;
 
-				for( j=0; j<Lines[i].Text.Length; ++j )
+				for (j=0; j < Lines[i].Text.Length; ++j)
 				{
 					DrawTextField(Lines[i].Text[j].S, i, Lines[i].Text[j].X, Lines[i].Y-Y, Lines[i].Text[j].C, Lines[i].Text[j].TextType);
 				}
@@ -388,24 +388,24 @@ function DrawTextField(string S, int Index, float X, float Y, optional Color C, 
 	local Color MainColor;
 
 	MainColor = C;
-	if( MainColor.A==0 )
+	if (MainColor.A == 0)
 		MainColor = TextColor;
 
 	Canvas.DrawColor = GetColorFromStyle(MainColor, TextStyle);
 
-	if( bFadeInOut )
+	if (bFadeInOut)
 	{
 		TempSize = `TimeSinceEx(GetPlayer(), FadeStartTime);
-		if ( TempSize > MessageDisplayTime )
+		if (TempSize > MessageDisplayTime)
 		{
 			return;
 		}
 
-		if ( TempSize < MessageFadeInTime )
+		if (TempSize < MessageFadeInTime)
 		{
 			FadeAlpha = int((TempSize / MessageFadeInTime) * 255.0);
 		}
-		else if ( TempSize > MessageDisplayTime - MessageFadeOutTime )
+		else if (TempSize > MessageDisplayTime - MessageFadeOutTime)
 		{
 			FadeAlpha = int((1.0 - ((TempSize - (MessageDisplayTime - MessageFadeOutTime)) / MessageFadeOutTime)) * 255.0);
 		}
@@ -417,7 +417,7 @@ function DrawTextField(string S, int Index, float X, float Y, optional Color C, 
 		Canvas.DrawColor.A = FadeAlpha;
 	}
 
-	if( bUseOutlineText )
+	if (bUseOutlineText)
 	{
 		Owner.CurrentStyle.DrawTextShadow(S,X,Y,OutlineSize,InitFontScale);
 	}
@@ -433,7 +433,7 @@ function Color GetColorFromStyle(Color MainColor, ETextFieldStyles TextStyle)
 	local float ColorHUE,Value;
 	local HSVColour HSV;
 
-	if( TextStyle == TEXT_FIELD_HSV )
+	if (TextStyle == TEXT_FIELD_HSV)
 	{
 		ColorHUE = Abs(Sin(GetPlayer().WorldInfo.TimeSeconds * 0.9) * 335);
 
@@ -444,7 +444,7 @@ function Color GetColorFromStyle(Color MainColor, ETextFieldStyles TextStyle)
 
 		return class'KFColorHelper'.static.LinearColorToColor(class'KFColorHelper'.static.HSVToRGB(HSV));
 	}
-	else if( TextStyle == TEXT_FIELD_FLASH )
+	else if (TextStyle == TEXT_FIELD_FLASH)
 	{
 		Value = Abs(Sin(GetPlayer().WorldInfo.TimeSeconds * 0.9) * 1);
 		HSV = class'KFColorHelper'.static.RGBToHSV(ColorToLinearColor(MainColor));
@@ -461,9 +461,9 @@ function bool CaptureMouse()
 	return (bShowScrollbar ? Super.CaptureMouse() : false); // Nope.
 }
 
-function ScrollMouseWheel( bool bUp )
+function ScrollMouseWheel( bool bUp)
 {
-	if( bShowScrollbar )
+	if (bShowScrollbar)
 		ScrollBar.ScrollMouseWheel(bUp);
 }
 
@@ -471,7 +471,7 @@ function SetVisibility(bool Visible)
 {
 	Super.SetVisibility(Visible);
 
-	if( ScrollBar != None )
+	if (ScrollBar != None)
 	{
 		ScrollBar.SetVisibility(Visible);
 	}

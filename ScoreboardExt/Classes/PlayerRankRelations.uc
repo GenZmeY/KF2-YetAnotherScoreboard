@@ -5,4 +5,4 @@ class PlayerRankRelations extends Object
 `include(Build.uci)
 `include(Logger.uci)
 
-var config array<RankRelation> Relation;
+var config array < RankRelation> Relation;
