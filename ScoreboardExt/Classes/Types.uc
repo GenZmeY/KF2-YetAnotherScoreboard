@@ -55,12 +55,22 @@ struct RankRelation
 {
 	var string ObjectID;
 	var int    RankID;
+	
+	StructDefaultProperties
+	{
+		RankID=-999
+	}
 };
 
 struct UIDRankRelation
 {
 	var UniqueNetId UID;
 	var int RankID;
+	
+	StructDefaultProperties
+	{
+		RankID=-999
+	}
 };
 
 struct SCESettingsAdmin

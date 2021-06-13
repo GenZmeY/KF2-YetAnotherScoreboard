@@ -227,6 +227,8 @@ private reliable client function ClientUpdateRankRelation(UIDRankRelation Rel)
 	
 	if (Index != INDEX_NONE)
 		RankRelations[Index] = Rel;
+	else
+		RankRelations.AddItem(Rel);
 
 	ClientApplyRankRelations();
 }
@@ -234,11 +236,10 @@ private reliable client function ClientUpdateRankRelation(UIDRankRelation Rel)
 defaultproperties
 {
 	bAlwaysRelevant = false;
-    bOnlyRelevantToOwner = true;
-    Role = ROLE_Authority;
-    RemoteRole = ROLE_SimulatedProxy;
-    // This is needed, otherwise the client-to-server RPC fails
-    bSkipActorPropertyReplication = false;
+	bOnlyRelevantToOwner = true;
+	Role = ROLE_Authority;
+	RemoteRole = ROLE_SimulatedProxy;
+	bSkipActorPropertyReplication = false; // This is needed, otherwise the client-to-server RPC fails
 
 	CustomRanksRepProgress = 0;
 	SteamGroupsRepProgress = 0;

@@ -202,23 +202,27 @@ private function AddPlayer(Controller C)
 	RepClientNew.RepInfo.Settings = Settings;
 	RepClientNew.RepInfo.RankRelation.UID = KFPC.PlayerReplicationInfo.UniqueId;
 	RepClientNew.RepInfo.RankRelation.RankID = UIDRankRelationsPlayers.Find('UID', RepClientNew.RepInfo.RankRelation.UID);
-	UIDRankRelationsActive.AddItem(RepClientNew.RepInfo.RankRelation);
 	
 	RepClients.AddItem(RepClientNew);
 	
-	foreach UIDRankRelationsActive(Relation) // For this player
+	foreach UIDRankRelationsActive(Relation)
 		RepClientNew.RepInfo.AddRankRelation(Relation);
 	
 	RepClientNew.RepInfo.StartFirstTimeReplication();
 	
-	foreach RepClients(RepClient) // For other players
-		RepClient.RepInfo.AddRankRelation(Relation);
+	if (RepClientNew.RepInfo.RankRelation.RankID != INDEX_NONE)
+	{
+		UIDRankRelationsActive.AddItem(RepClientNew.RepInfo.RankRelation);
+		foreach RepClients(RepClient)
+			RepClient.RepInfo.AddRankRelation(RepClientNew.RepInfo.RankRelation);
+	}
 }
 
 private function RemovePlayer(Controller C)
 {
 	local KFPlayerController KFPC;
-	local int Index;
+	local int Index, i;
+	local UniqueNetId UID;
 
 	`callstack();
 
@@ -226,9 +230,13 @@ private function RemovePlayer(Controller C)
 	if (KFPC == None)
 		return;
 
-	// UID = KFPC.PlayerReplicationInfo.UniqueId;
-	// Remove Rank Relation here
-	
+	UID = KFPC.PlayerReplicationInfo.UniqueId;
+	Index = UIDRankRelationsActive.Find('UID', UID);
+	if (Index != INDEX_NONE)
+		for (i = 0; i < UIDRankRelationsActive.Length; ++i)
+			if (Index != i)
+				RepClients[i].RepInfo.RemoveRankRelation(UIDRankRelationsActive[Index]);
+
 	Index = RepClients.Find('KFPC', KFPC);
 	if (Index == INDEX_NONE)
 		return;
@@ -239,20 +247,6 @@ private function RemovePlayer(Controller C)
 	RepClients.Remove(Index, 1);
 }
 
-/*
-private function RemoveRankRelationByUID(UniqueNetId UID)
-{
-	local int Index;
-	Index = UIDRankRelationsActive.Find('UID', UID);
-	if (Index != INDEX_NONE)
-	{
-		Relation = UIDRankRelationsActive[Index];
-		for (i = 0; i < UIDRankRelationsActive.Length; ++i)
-			RepClients[Index].RepInfo.RemoveRankRelation(Relation);
-	}
-}
-*/
-
 public function UpdatePlayerRank(UIDRankRelation Rel)
 {
 	local SClient RepClient;
@@ -261,9 +255,10 @@ public function UpdatePlayerRank(UIDRankRelation Rel)
 	`callstack();
 	
 	Index = UIDRankRelationsActive.Find('UID', Rel.UID);
-	
 	if (Index != INDEX_NONE)
 		UIDRankRelationsActive[Index] = Rel;
+	else
+		UIDRankRelationsActive.AddItem(Rel);
 	
 	foreach RepClients(RepClient)
 		RepClient.RepInfo.UpdateRankRelation(Rel);

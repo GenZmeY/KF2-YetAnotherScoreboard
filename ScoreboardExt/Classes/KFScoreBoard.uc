@@ -334,8 +334,9 @@ function DrawPlayerEntry( Canvas C, int Index, float YOffset, float Height, floa
 	KFPRI = KFPRIArray[Index];
 	
 	HasRank = false;
+
 	PlayerInfoIndex = RankRelations.Find('UID', KFPRI.UniqueId);
-	if (PlayerInfoIndex != INDEX_NONE )
+	if (PlayerInfoIndex != INDEX_NONE && RankRelations[PlayerInfoIndex].RankID != INDEX_NONE)
 	{
 		PlayerRankIndex = CustomRanks.Find('ID', RankRelations[PlayerInfoIndex].RankID);
 		if (PlayerRankIndex != INDEX_NONE)
