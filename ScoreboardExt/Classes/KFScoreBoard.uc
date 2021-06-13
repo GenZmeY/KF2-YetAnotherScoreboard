@@ -26,6 +26,17 @@ var array<UIDRankRelation> RankRelations;
 
 var SCESettings Settings;
 
+// Localization
+var localized string Players;
+var localized string Spectators;
+var localized string Rank;
+var localized string State;
+var localized string NoPerk;
+var localized string Ready;
+var localized string NotReady;
+var localized string Unknown;
+var localized string Dead;
+
 function InitMenu()
 {
 	Super.InitMenu();
@@ -219,7 +230,7 @@ function DrawMenu()
 	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, 4);
 	
 	SetDrawColor(Canvas, Settings.Style.PlayerCountTextColor);
-	S = "Players: " $ NumPlayer $ " / " $ KFGRI.MaxHumanCount $ "    " $ "Spectators: " $ NumSpec; 
+	S = Players$": " $ NumPlayer $ " / " $ KFGRI.MaxHumanCount $ "    " $ Spectators $ ": " $ NumSpec; 
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
 	DrawTextShadowHLeftVCenter(S, BoxX + Edge, YPos, FontScalar);
 	
@@ -269,13 +280,13 @@ function DrawMenu()
 
 	// Header texts
 	SetDrawColor(Canvas, Settings.Style.ListHeaderTextColor);
-	DrawTextShadowHLeftVCenter("RANK", XPos + RankXPos, YPos, FontScalar);
+	DrawTextShadowHLeftVCenter(Rank, XPos + RankXPos, YPos, FontScalar);
 	DrawTextShadowHLeftVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PlayerString, XPos + PlayerXPos, YPos, FontScalar);
 	DrawTextShadowHLeftVCenter(class'KFGFxMenu_Inventory'.default.PerkFilterString, XPos + PerkXPos, YPos, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.KillsString, XPos + KillsXPos, YPos, KillsWBox, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.AssistsString, XPos + AssistXPos, YPos, AssistWBox, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.DoshString, XPos + CashXPos, YPos, CashWBox, FontScalar);
-	DrawTextShadowHVCenter("STATE", XPos + HealthXPos, YPos, HealthWBox, FontScalar);
+	DrawTextShadowHVCenter(State, XPos + HealthXPos, YPos, HealthWBox, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PingString, XPos + PingXPos, YPos, PingWBox, FontScalar);
 
 	PlayersList.XPosition = ((Canvas.ClipX - Width) * 0.5) / InputPos[2];
@@ -453,7 +464,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		C.SetPos (PerkXPos, YOffset - ((Height-5) * 0.5f));
 		C.DrawRect (Height-5, Height-5, Texture2D'UI_Widgets.MenuBarWidget_SWF_IF');
 
-		S = "ZED";
+		S = class'KFCommon_LocalizedStrings'.default.ZedString;
 		DrawTextShadowHLeftVCenter(S, PerkXPos + Height, TextYOffset, FontScalar);
 	}
 	else
@@ -516,7 +527,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 				SetDrawColor(C, CurrentRank.TextColor);
 			else
 				SetDrawColor(C, Settings.Style.PerkTextColor);
-			S = "No Perk";
+			S = NoPerk;
 			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
 		}
 	}
@@ -561,7 +572,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	if (bIsZED)
 	{
 		SetDrawColor(C, Settings.Style.ZedTextColor);
-		StrValue = "Brains!";
+		StrValue = "-";
 	}
 	else
 	{
@@ -577,37 +588,37 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	if (!KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun)
 	{
 		SetDrawColor(C, Settings.Style.StateTextColorLobby);
-		S = "LOBBY";
+		S = class'KFGFxMenu_ServerBrowser'.default.InLobbyString;;
 	}
 	else if (!KFGRI.bMatchHasBegun)
 	{
 		if (KFPRI.bReadyToPlay)
 		{
 			SetDrawColor(C, Settings.Style.StateTextColorReady);
-			S = "Ready";
+			S = Ready;
 		}
 		else
 		{
 			SetDrawColor(C, Settings.Style.StateTextColorNotReady);
-			S = "Not Ready";	
+			S = NotReady;
 		}
 	}
 	else if (bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None)
 	{
 		SetDrawColor(C, Settings.Style.StateTextColor);
-		S = "Unknown";
+		S = Unknown;
 	}
 	else if (KFPRI.PlayerHealth <= 0 || KFPRI.PlayerHealthPercent <= 0)
 	{
 		if (KFPRI.bOnlySpectator)
 		{
 			SetDrawColor(C, Settings.Style.StateTextColorSpectator);
-			S = "Spectator";
+			S = class'KFCommon_LocalizedStrings'.default.SpectatorString;
 		}
 		else
 		{
 			SetDrawColor(C, Settings.Style.StateTextColorDead);
-			S = "DEAD";
+			S = Dead;
 		}
 	}
 	else

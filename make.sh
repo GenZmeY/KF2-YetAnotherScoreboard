@@ -92,7 +92,10 @@ function compile ()
 	rm -rf "$MutUnpublish"
 	mkdir -p \
 		"$MutUnpublish" \
-		"$MutStructScript"
+		"$MutStructScript" \
+		"$MutStructLocalization"
+		
+	cp -rf "$MutSource/Localization"/* "$MutStructLocalization"
 
 	CMD //C "$(unixpath2win "$KFEditor")" make -useunpublished &
 	local PID="$!"
