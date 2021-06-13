@@ -64,9 +64,17 @@ public function StartFirstTimeReplication()
 {
 	`callstack();
 	
-	ClientApplySettings();
+	ClientAddSettings(Settings);
 	SetTimer(0.01f, true, nameof(ReplicateCustomRanks));
 	SetTimer(0.01f, true, nameof(ReplicateSteamGroupRelations));
+}
+
+private reliable client function ClientAddSettings(SCESettings Set)
+{
+	`callstack();
+	
+	Settings = Set;
+	ClientApplySettings();
 }
 
 private reliable client function ClientApplySettings()
