@@ -6,7 +6,7 @@ Class KFGUI_ComboBox extends KFGUI_EditControl;
 var KFGUI_ComboSelector Selection;
 
 var float BorderSize;
-var() array < string> Values;
+var() array<string> Values;
 var() int SelectedIndex;
 var() color SelectedTextColor, TextColor;
 var() bool bButtonStretched;

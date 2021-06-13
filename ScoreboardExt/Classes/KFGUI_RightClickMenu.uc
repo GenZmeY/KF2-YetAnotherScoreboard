@@ -8,7 +8,7 @@ struct FRowItem
 	var string Text, ToolTip;
 	var bool bSplitter, bDisabled;
 };
-var array < FRowItem> ItemRows;
+var array<FRowItem> ItemRows;
 var int CurrentRow, OldRow;
 var int EdgeSize;
 var int OldSizeX;

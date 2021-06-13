@@ -7,9 +7,9 @@ class ScoreboardExtHUD extends KFGFxHudWrapper
 const HUDBorderSize = 3;
 
 var float ScaledBorderSize;
-var array < KFGUI_Base> HUDWidgets;
+var array<KFGUI_Base> HUDWidgets;
 
-var class < KFScoreBoard> ScoreboardClass;
+var class<KFScoreBoard> ScoreboardClass;
 var KFScoreBoard Scoreboard;
 
 var transient KF2GUIController GUIController;

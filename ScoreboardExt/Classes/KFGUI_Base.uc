@@ -34,7 +34,7 @@ var() bool bDisabled, bClickable, bCanFocus;
 var bool bFocusedPostDrawItem; // If this component has been given input focus, should it receive draw menu call after everything else been drawn?
 var transient bool bFocused, bTextureInit, bVisible;
 var bool bIsHUDWidget, bEnableInputs, bNoLookInputs;
-var array < name> TimerNames;
+var array<name> TimerNames;
 
 function InitMenu(); // Menu was initialized for the first time.
 function ShowMenu(); // Menu was opened.

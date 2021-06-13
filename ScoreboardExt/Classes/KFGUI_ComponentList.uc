@@ -6,7 +6,7 @@ Class KFGUI_ComponentList extends KFGUI_List;
 
 var int VisRange[2];
 var() int NumColumns;
-var array < KFGUI_Base> ItemComponents;
+var array<KFGUI_Base> ItemComponents;
 
 // REMEMBER to call InitMenu() on the newly created component after values are init!!!
 final function KFGUI_Base AddListComponent(class < KFGUI_Base> CompClass, optional float XS=1.f, optional float YS=1.f)

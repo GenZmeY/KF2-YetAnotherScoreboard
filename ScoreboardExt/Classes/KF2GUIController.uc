@@ -4,7 +4,7 @@ Class KF2GUIController extends Info
 `include(Build.uci)
 `include(Logger.uci)
 
-var() class < GUIStyleBase> DefaultStyle;
+var() class<GUIStyleBase> DefaultStyle;
 
 var PlayerController PlayerOwner;
 var ScoreboardExtHUD HUDOwner;
@@ -12,13 +12,13 @@ var transient KF2GUIInput CustomInput;
 var transient PlayerInput BackupInput;
 var transient GameViewportClient ClientViewport;
 
-var delegate < Interaction.OnReceivedNativeInputKey> OldOnReceivedNativeInputKey;
-var delegate < Interaction.OnReceivedNativeInputAxis> OldOnReceivedNativeInputAxis;
-var delegate < Interaction.OnReceivedNativeInputChar> OldOnReceivedNativeInputChar;
+var delegate<Interaction.OnReceivedNativeInputKey> OldOnReceivedNativeInputKey;
+var delegate<Interaction.OnReceivedNativeInputAxis> OldOnReceivedNativeInputAxis;
+var delegate<Interaction.OnReceivedNativeInputChar> OldOnReceivedNativeInputChar;
 
-var delegate < GameViewportClient.HandleInputAxis> OldHandleInputAxis;
+var delegate<GameViewportClient.HandleInputAxis> OldHandleInputAxis;
 
-var array < KFGUI_Page> ActiveMenus, PersistentMenus;
+var array<KFGUI_Page> ActiveMenus, PersistentMenus;
 var transient KFGUI_Base MouseFocus, InputFocus, KeyboardFocus;
 var IntPoint MousePosition, ScreenSize, OldMousePos, LastMousePos, LastClickPos[2];
 var transient float MousePauseTime, MenuTime, LastClickTimes[2];
@@ -27,7 +27,7 @@ var transient GUIStyleBase CurrentStyle;
 var transient Console OrgConsole;
 var transient KFGUIConsoleHack HackConsole;
 
-var array < Texture2D> CursorTextures;
+var array<Texture2D> CursorTextures;
 var Color CursorColor;
 var int CurrentCursorIndex, CursorSize;
 

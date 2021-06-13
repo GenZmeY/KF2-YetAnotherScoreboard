@@ -3,7 +3,7 @@ Class KFGUI_MultiComponent extends KFGUI_Base;
 `include(Build.uci)
 `include(Logger.uci)
 
-var() export editinline array < KFGUI_Base> Components;
+var() export editinline array<KFGUI_Base> Components;
 
 function InitMenu()
 {

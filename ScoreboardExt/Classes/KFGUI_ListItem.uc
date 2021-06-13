@@ -5,7 +5,7 @@ Class KFGUI_ListItem extends Object
 `include(Logger.uci)
 
 var KFGUI_ListItem Next;
-var array < string> Columns, SortColumns;
+var array<string> Columns, SortColumns;
 var int Index, Value;
 
 var transient string Temp; // Cache sorting key.

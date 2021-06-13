@@ -4,13 +4,13 @@ Class KFGUI_SwitchMenuBar extends KFGUI_MultiComponent;
 `include(Build.uci)
 `include(Logger.uci)
 
-var array < KFGUI_Base> SubPages;
+var array<KFGUI_Base> SubPages;
 var() byte ButtonPosition; // 0 = top, 1 = bottom, 2 = left, 3 = right
 var() float BorderWidth, ButtonAxisSize; // Width for buttons.
 var() float PagePadding; // Padding for pages
 
 var int NumButtons, CurrentPageNum, PageComponentIndex;
-var array < KFGUI_Button> PageButtons;
+var array<KFGUI_Button> PageButtons;
 
 function ShowMenu()
 {

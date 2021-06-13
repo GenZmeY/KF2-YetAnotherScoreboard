@@ -13,7 +13,7 @@ var KFGUI_List PlayersList;
 var Texture2D DefaultAvatar;
 
 var KFGameReplicationInfo KFGRI;
-var array < KFPlayerReplicationInfo> KFPRIArray;
+var array<KFPlayerReplicationInfo> KFPRIArray;
 
 var KFPlayerController OwnerPC;
 
@@ -21,8 +21,8 @@ var Color PingColor;
 var float PingBars;
 
 // Ranks
-var array < RankInfo> CustomRanks;
-var array < UIDRankRelation> RankRelations;
+var array<RankInfo> CustomRanks;
+var array<UIDRankRelation> RankRelations;
 
 var SCESettings Settings;
 

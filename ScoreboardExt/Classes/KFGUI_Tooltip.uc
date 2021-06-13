@@ -3,7 +3,7 @@ Class KFGUI_Tooltip extends KFGUI_Base;
 `include(Build.uci)
 `include(Logger.uci)
 
-var() array < string> Lines;
+var() array<string> Lines;
 var() Canvas.FontRenderInfo TextFontInfo;
 var byte CurrentAlpha;
 

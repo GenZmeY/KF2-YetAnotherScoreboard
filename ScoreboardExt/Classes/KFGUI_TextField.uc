@@ -24,7 +24,7 @@ struct FTextPart
 };
 struct FTextLineInfo
 {
-	var array < FTextPart> Text;
+	var array<FTextPart> Text;
 	var float Y;
 };
 var KFGUI_ScrollBarV ScrollBar;
@@ -36,7 +36,7 @@ var() Canvas.FontRenderInfo TextFontInfo;
 var() float FontScale, MessageDisplayTime, MessageFadeInTime, MessageFadeOutTime;
 var() bool bNoReset, bFadeInOut, bUseOutlineText;
 var() int MaxHistory, OutlineSize;
-var protected transient array < FTextLineInfo> Lines, OrgLines;
+var protected transient array<FTextLineInfo> Lines, OrgLines;
 var transient float MaxHeight, ScrollWidth, OldSize[2], InitFontScale, TextHeight, FadeStartTime;
 var transient Font InitFont;
 var transient bool bShowScrollbar, bTextParsed;

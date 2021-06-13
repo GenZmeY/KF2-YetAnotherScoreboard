@@ -10,7 +10,7 @@ struct FCategoryItems
 	var name ID;
 	var KFGUI_Base Item;
 };
-var array < FCategoryItems> CategoryItems;
+var array<FCategoryItems> CategoryItems;
 
 function AddCategory(name CatID, string CatName, optional Texture2D IconMat, optional Color IconClr, optional float XS=1.f, optional float YS=1.f)
 {

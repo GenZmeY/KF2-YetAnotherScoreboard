@@ -7,7 +7,7 @@ var float ScrollSpeed;
 
 var transient float CharStartTime;
 var transient bool bScrollCompleted, bTextDirty;
-var transient array < bool> RowsCompleted;
+var transient array<bool> RowsCompleted;
 var transient int MaxIndex, RowsDropped;
 
 function SetText(string S)

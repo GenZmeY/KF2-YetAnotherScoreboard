@@ -13,8 +13,8 @@ struct FColumnItem
 	var transient bool bHidden;
 	var transient int X, XSize;
 };
-var() array < FColumnItem> Columns;
-var() class < KFGUI_ListItem> ListItemClass;
+var() array<FColumnItem> Columns;
+var() class<KFGUI_ListItem> ListItemClass;
 var() float FontSize;
 var() color FocusedLineColor, SelectedLineColor;
 var() float EdgeSize;

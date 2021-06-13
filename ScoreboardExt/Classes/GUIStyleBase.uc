@@ -5,7 +5,7 @@ Class GUIStyleBase extends Object
 `include(Logger.uci)
 
 var Texture2D ItemTex;
-var array < Texture2D> BorderTextures, ArrowTextures, ButtonTextures, TabTextures, ItemBoxTextures, PerkBox, CheckBoxTextures, ProgressBarTextures, SliderTextures;
+var array<Texture2D> BorderTextures, ArrowTextures, ButtonTextures, TabTextures, ItemBoxTextures, PerkBox, CheckBoxTextures, ProgressBarTextures, SliderTextures;
 var Texture2D ScrollTexture, FavoriteIcon, BankNoteIcon; 
 
 var SoundCue MenuDown, MenuDrag, MenuEdit, MenuFade, MenuClick, MenuHover, MenuUp;
@@ -24,14 +24,14 @@ struct FColorInfo
 	var name Code;
 	var Color Color;
 };
-var array < FColorInfo> ColorCodes;
+var array<FColorInfo> ColorCodes;
 
 struct FTexturePreCache
 {
 	var string Path;
 	var Texture2D Tex;
 };
-var array < FTexturePreCache> PrecachedTextures;
+var array<FTexturePreCache> PrecachedTextures;
 
 function InitStyle()
 {

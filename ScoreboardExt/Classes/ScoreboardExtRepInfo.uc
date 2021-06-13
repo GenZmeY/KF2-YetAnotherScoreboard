@@ -11,9 +11,9 @@ var private KFScoreBoard SC;
 var private OnlineSubsystemSteamworks SW;
 
 // Fitst time replication
-var public array < UIDRankRelation> SteamGroupRelations;
-var private array < UIDRankRelation> RankRelations;
-var public array < RankInfo> CustomRanks;
+var public array<UIDRankRelation> SteamGroupRelations;
+var private array<UIDRankRelation> RankRelations;
+var public array<RankInfo> CustomRanks;
 var public SCESettings Settings;
 var public UIDRankRelation RankRelation; // Current player rank relation
 
