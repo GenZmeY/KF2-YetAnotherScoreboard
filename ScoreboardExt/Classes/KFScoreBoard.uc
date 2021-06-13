@@ -188,7 +188,7 @@ function DrawMenu()
 	
 	// Top Rect (Server name)
 	SetDrawColor(Canvas, Settings.Style.ServerNameBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, 2);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, Settings.Style.ShapeServerNameBox);
 	
 	SetDrawColor(Canvas, Settings.Style.ServerNameTextColor);
 	S = KFGRI.ServerName;
@@ -200,7 +200,7 @@ function DrawMenu()
 	BoxW = Width * 0.7;
 	BoxH = YL * 2 + BorderSize * 2;
 	SetDrawColor(Canvas, Settings.Style.GameInfoBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, 1);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, Settings.Style.ShapeGameInfoBox);
 	
 	SetDrawColor(Canvas, Settings.Style.GameInfoTextColor);
 	S = class'KFCommon_LocalizedStrings'.static.GetFriendlyMapName(PC.WorldInfo.GetMapName(true));
@@ -213,7 +213,7 @@ function DrawMenu()
 	BoxX = BoxX + BoxW;
 	BoxW = Width - BoxW;
 	SetDrawColor(Canvas, Settings.Style.WaveBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, 0);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, Settings.Style.ShapeWaveInfoBox);
 	
 	SetDrawColor(Canvas, Settings.Style.WaveTextColor);
 	S = class'KFGFxHUD_ScoreboardMapInfoContainer'.default.WaveString; 
@@ -227,7 +227,7 @@ function DrawMenu()
 	BoxW = Width;
 	BoxH = YL + BorderSize;
 	SetDrawColor(Canvas, Settings.Style.PlayerCountBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, 4);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Edge, Settings.Style.ShapePlayersCountBox);
 	
 	SetDrawColor(Canvas, Settings.Style.PlayerCountTextColor);
 	S = Players$": " $ NumPlayer $ " / " $ KFGRI.MaxHumanCount $ "    " $ Spectators $ ": " $ NumSpec; 
@@ -257,7 +257,7 @@ function DrawMenu()
 		Width + BorderSize * 4,
 		BoxH,
 		Edge,
-		2);
+		Settings.Style.ShapeHeaderBox);
 
 	// Calc X offsets
 	MinBoxW    = Width * 0.07; // minimum width for column 
@@ -351,6 +351,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local RankInfo CurrentRank;
 	local bool HasRank;
 	local int PlayerInfoIndex, PlayerRankIndex;
+	local int Shape;
 
 	YOffset *= 1.05;
 	KFPRI = KFPRIArray[Index];
@@ -429,12 +430,19 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	if (!Settings.State.Dynamic)
 		SetDrawColor(C, Settings.Style.LeftStateBoxColor);
 	
+	if (Index == 0)
+		Shape = Settings.Style.ShapeLeftStateBoxTopPlayer;
+	else if (Index == KFPRIArray.Length - 1)
+		Shape = Settings.Style.ShapeLeftStateBoxBottomPlayer;
+	else
+		Shape = Settings.Style.ShapeLeftStateBoxMidPlayer;
+	
 	BoxWidth = Owner.HUDOwner.ScaledBorderSize * 8;
 	Owner.CurrentStyle.DrawRectBox(	XPos,
 		YOffset,
 		BoxWidth,
 		Height,
-		8, 1);
+		8, Shape);
 		
 	XPos += BoxWidth;
 	
@@ -444,19 +452,33 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	else
 		SetDrawColor(C, Settings.Style.PlayerBoxColor);
 
+	if (Index == 0)
+		Shape = Settings.Style.ShapePlayerBoxTopPlayer;
+	else if (Index == KFPRIArray.Length - 1)
+		Shape = Settings.Style.ShapePlayerBoxBottomPlayer;
+	else
+		Shape = Settings.Style.ShapePlayerBoxMidPlayer;
+
 	BoxWidth = CashXPos + Owner.HUDOwner.ScaledBorderSize - BoxWidth;
-	Owner.CurrentStyle.DrawRectBox(XPos, YOffset, BoxWidth, Height, 8);
+	Owner.CurrentStyle.DrawRectBox(XPos, YOffset, BoxWidth, Height, 8, Shape);
 	
 	XPos += BoxWidth;
 	
 	// Right stats box
+	if (Index == 0)
+		Shape = Settings.Style.ShapeStatsBoxTopPlayer;
+	else if (Index == KFPRIArray.Length - 1)
+		Shape = Settings.Style.ShapeStatsBoxBottomPlayer;
+	else
+		Shape = Settings.Style.ShapeStatsBoxMidPlayer;
+	
 	BoxWidth = Width - XPos;
 	SetDrawColor(C, Settings.Style.StatsBoxColor);
 	Owner.CurrentStyle.DrawRectBox(	XPos,
 		YOffset,
 		BoxWidth,
 		Height,
-		8, 3);
+		8, Shape);
 
 	// Rank
 	if (CurrentRank.ApplyColorToFields.Rank)

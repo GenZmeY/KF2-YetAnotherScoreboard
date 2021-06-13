@@ -5,6 +5,20 @@ class ScoreboardStyle extends Object
 `include(Build.uci)
 `include(Logger.uci)
 
+var config int       ShapeServerNameBox;
+var config int       ShapeGameInfoBox;
+var config int       ShapeWaveInfoBox;
+var config int       ShapePlayersCountBox;
+var config int       ShapeHeaderBox;
+var config int       ShapeLeftStateBoxTopPlayer;
+var config int       ShapeLeftStateBoxMidPlayer;
+var config int       ShapeLeftStateBoxBottomPlayer;
+var config int       ShapePlayerBoxTopPlayer;
+var config int       ShapePlayerBoxMidPlayer;
+var config int       ShapePlayerBoxBottomPlayer;
+var config int       ShapeStatsBoxTopPlayer;
+var config int       ShapeStatsBoxMidPlayer;
+var config int       ShapeStatsBoxBottomPlayer;
 var config ColorRGBA ServerNameBoxColor;
 var config ColorRGBA ServerNameTextColor;
 var config ColorRGBA GameInfoBoxColor;
@@ -60,6 +74,20 @@ public static function SCEStyle Settings()
 	
 	`callstack_static("Settings");
 	
+	Settings.ShapeServerNameBox = default.ShapeServerNameBox;
+	Settings.ShapeGameInfoBox = default.ShapeGameInfoBox;
+	Settings.ShapeWaveInfoBox = default.ShapeWaveInfoBox;
+	Settings.ShapePlayersCountBox = default.ShapePlayersCountBox;
+	Settings.ShapeHeaderBox = default.ShapeHeaderBox;
+	Settings.ShapeLeftStateBoxTopPlayer = default.ShapeLeftStateBoxTopPlayer;
+	Settings.ShapeLeftStateBoxMidPlayer = default.ShapeLeftStateBoxMidPlayer;
+	Settings.ShapeLeftStateBoxBottomPlayer = default.ShapeLeftStateBoxBottomPlayer;
+	Settings.ShapePlayerBoxTopPlayer = default.ShapePlayerBoxTopPlayer;
+	Settings.ShapePlayerBoxMidPlayer = default.ShapePlayerBoxMidPlayer;
+	Settings.ShapePlayerBoxBottomPlayer = default.ShapePlayerBoxBottomPlayer;
+	Settings.ShapeStatsBoxTopPlayer = default.ShapeStatsBoxTopPlayer;
+	Settings.ShapeStatsBoxMidPlayer = default.ShapeStatsBoxMidPlayer;
+	Settings.ShapeStatsBoxBottomPlayer = default.ShapeStatsBoxBottomPlayer;
 	Settings.ServerNameBoxColor = default.ServerNameBoxColor;
 	Settings.ServerNameTextColor = default.ServerNameTextColor;
 	Settings.GameInfoBoxColor = default.GameInfoBoxColor;
@@ -107,6 +135,20 @@ public static function WriteSettings(SCEStyle Settings)
 {
 	`callstack_static("WriteSettings");
 	
+	default.ShapeServerNameBox = Settings.ShapeServerNameBox;
+	default.ShapeGameInfoBox = Settings.ShapeGameInfoBox;
+	default.ShapeWaveInfoBox = Settings.ShapeWaveInfoBox;
+	default.ShapePlayersCountBox = Settings.ShapePlayersCountBox;
+	default.ShapeHeaderBox = Settings.ShapeHeaderBox;
+	default.ShapeLeftStateBoxTopPlayer = Settings.ShapeLeftStateBoxTopPlayer;
+	default.ShapeLeftStateBoxMidPlayer = Settings.ShapeLeftStateBoxMidPlayer;
+	default.ShapeLeftStateBoxBottomPlayer = Settings.ShapeLeftStateBoxBottomPlayer;
+	default.ShapePlayerBoxTopPlayer = Settings.ShapePlayerBoxTopPlayer;
+	default.ShapePlayerBoxMidPlayer = Settings.ShapePlayerBoxMidPlayer;
+	default.ShapePlayerBoxBottomPlayer = Settings.ShapePlayerBoxBottomPlayer;
+	default.ShapeStatsBoxTopPlayer = Settings.ShapeStatsBoxTopPlayer;
+	default.ShapeStatsBoxMidPlayer = Settings.ShapeStatsBoxMidPlayer;
+	default.ShapeStatsBoxBottomPlayer = Settings.ShapeStatsBoxBottomPlayer;
 	default.ServerNameBoxColor = Settings.ServerNameBoxColor;
 	default.ServerNameTextColor = Settings.ServerNameTextColor;
 	default.GameInfoBoxColor = Settings.GameInfoBoxColor;

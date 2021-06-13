@@ -153,6 +153,21 @@ struct SCESettingsLevel
 
 struct SCEStyle
 {
+	var int       ShapeServerNameBox;
+	var int       ShapeGameInfoBox;
+	var int       ShapeWaveInfoBox;
+	var int       ShapePlayersCountBox;
+	var int       ShapeHeaderBox;
+	var int       ShapeLeftStateBoxTopPlayer;
+	var int       ShapeLeftStateBoxMidPlayer;
+	var int       ShapeLeftStateBoxBottomPlayer;
+	var int       ShapePlayerBoxTopPlayer;
+	var int       ShapePlayerBoxMidPlayer;
+	var int       ShapePlayerBoxBottomPlayer;
+	var int       ShapeStatsBoxTopPlayer;
+	var int       ShapeStatsBoxMidPlayer;
+	var int       ShapeStatsBoxBottomPlayer;
+	
 	var ColorRGBA ServerNameBoxColor;
 	var ColorRGBA ServerNameTextColor;
 	
@@ -208,6 +223,21 @@ struct SCEStyle
 	
 	StructDefaultProperties
 	{
+		ShapeServerNameBox            = 2
+		ShapeGameInfoBox              = 1
+		ShapeWaveInfoBox              = 0
+		ShapePlayersCountBox          = 4
+		ShapeHeaderBox                = 2
+		ShapeLeftStateBoxTopPlayer    = 1
+		ShapeLeftStateBoxMidPlayer    = 0
+		ShapeLeftStateBoxBottomPlayer = 3
+		ShapePlayerBoxTopPlayer       = 1
+		ShapePlayerBoxMidPlayer       = 0
+		ShapePlayerBoxBottomPlayer    = 3
+		ShapeStatsBoxTopPlayer        = 1
+		ShapeStatsBoxMidPlayer        = 0
+		ShapeStatsBoxBottomPlayer     = 3
+		
 		ServerNameBoxColor      = (R=75,  G=0,   B=0,   A=200)
 		ServerNameTextColor     = (R=250, G=250, B=250, A=255)
 		
