@@ -5,6 +5,8 @@ class ScoreboardExtMut extends KFMutator
 `include(Build.uci)
 `include(Logger.uci)
 
+const CurrentVersion = 1;
+
 var config int ConfigVersion;
 
 var private OnlineSubsystem Steamworks;
@@ -119,23 +121,23 @@ private function InitConfig()
 			class'SteamGroupRankRelations'.static.StaticSaveConfig();
 			
 		case 2147483647:
-			`info("Config updated to version"@`CurrentVersion);
+			`info("Config updated to version"@CurrentVersion);
 			break;
 			
-		case `CurrentVersion:
+		case CurrentVersion:
 			`info("Config is up-to-date");
 			break;
 			
 		default:
 			`warning("The config version is higher than the current version (are you using an old mutator?)");
-			`warning("Config version is"@ConfigVersion@"but current version is"@`CurrentVersion);
-			`warning("The config version will be changed to "@`CurrentVersion);
+			`warning("Config version is"@ConfigVersion@"but current version is"@CurrentVersion);
+			`warning("The config version will be changed to "@CurrentVersion);
 			break;
 	}
 
-	if (ConfigVersion != `CurrentVersion)
+	if (ConfigVersion != CurrentVersion)
 	{
-		ConfigVersion = `CurrentVersion;
+		ConfigVersion = CurrentVersion;
 		SaveConfig();
 	}
 }
@@ -200,7 +202,6 @@ private function AddPlayer(Controller C)
 	RepClientNew.RepInfo.Settings = Settings;
 	RepClientNew.RepInfo.RankRelation.UID = KFPC.PlayerReplicationInfo.UniqueId;
 	RepClientNew.RepInfo.RankRelation.RankID = UIDRankRelationsPlayers.Find('UID', RepClientNew.RepInfo.RankRelation.UID);
-	
 	UIDRankRelationsActive.AddItem(RepClientNew.RepInfo.RankRelation);
 	
 	RepClients.AddItem(RepClientNew);

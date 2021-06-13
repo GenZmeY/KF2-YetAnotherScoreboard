@@ -12,6 +12,7 @@ var private OnlineSubsystemSteamworks SW;
 
 // Fitst time replication
 var public array<UIDRankRelation> SteamGroupRelations;
+var private array<UIDRankRelation> RankRelations;
 var public array<RankInfo> CustomRanks;
 var public SCESettings Settings;
 var public UIDRankRelation RankRelation; // Current player rank relation
@@ -26,48 +27,95 @@ simulated event PostBeginPlay()
 
     if (bDeleteMe) return;
 	
-	if (Role < ROLE_Authority)
+	if (Role < ROLE_Authority || WorldInfo.NetMode == NM_StandAlone)
 	{
-		ClientInit();
+		GetScoreboard();
+		GetOnlineSubsystem();
 	}
 }
 
-private reliable client function ClientInit()
+private reliable client function GetScoreboard()
 {
 	`callstack();
 	
 	if (SC == None)
 		SC = ScoreboardExtHUD(GetALocalPlayerController().myHUD).Scoreboard;
 	
+	if (SC == None)
+		SetTimer(0.1f, false, nameof(GetScoreboard));
+	else
+		ClearTimer(nameof(GetScoreboard));
+}
+
+private reliable client function GetOnlineSubsystem()
+{
+	`callstack();
+	
 	if (SW == None)
 		SW = OnlineSubsystemSteamworks(class'GameEngine'.static.GetOnlineSubsystem());
 	
-	if (SC == None || SW == None)
-		SetTimer(0.1f, false, nameof(ClientInit));
+	if (SW == None)
+		SetTimer(0.1f, false, nameof(GetOnlineSubsystem));
 	else
-		ClearTimer(nameof(ClientInit));
+		ClearTimer(nameof(GetOnlineSubsystem));
 }
 
 public function StartFirstTimeReplication()
 {
 	`callstack();
 	
+	ClientApplySettings();
 	SetTimer(0.01f, true, nameof(ReplicateCustomRanks));
 	SetTimer(0.01f, true, nameof(ReplicateSteamGroupRelations));
 }
 
-private reliable client function ClientSetSettings(SCESettings Set)
+private reliable client function ClientApplySettings()
 {
 	`callstack();
 	
-	SC.Settings = Set;
+	if (SC == None)
+	{
+		SetTimer(0.1f, false, nameof(ClientApplySettings));
+		return;
+	}
+	
+	ClearTimer(nameof(ClientApplySettings));
+	SC.Settings = Settings;
+}
+
+private reliable client function ClientApplyCustomRanks()
+{
+	`callstack();
+	
+	if (SC == None)
+	{
+		SetTimer(0.1f, false, nameof(ClientApplyCustomRanks));
+		return;
+	}
+	
+	ClearTimer(nameof(ClientApplyCustomRanks));
+	SC.CustomRanks = CustomRanks;
+}
+
+private reliable client function ClientApplyRankRelations()
+{
+	`callstack();
+	
+	if (SC == None)
+	{
+		SetTimer(0.1f, false, nameof(ClientApplyRankRelations));
+		return;
+	}
+	
+	ClearTimer(nameof(ClientApplyRankRelations));
+	SC.RankRelations = RankRelations;
 }
 
 private function ReplicateCustomRanks()
 {
 	`callstack();
 	
-	if (CustomRanksRepProgress < CustomRanks.Length)
+	if (WorldInfo.NetMode != NM_StandAlone && CustomRanksRepProgress < CustomRanks.Length)
 	{
 		ClientAddCustomRank(CustomRanks[CustomRanksRepProgress]);
 		++CustomRanksRepProgress;
@@ -75,6 +123,7 @@ private function ReplicateCustomRanks()
 	else
 	{
 		ClearTimer(nameof(ReplicateCustomRanks));
+		ClientApplyCustomRanks();
 	}
 }
 
@@ -89,7 +138,7 @@ private function ReplicateSteamGroupRelations()
 {
 	`callstack();
 	
-	if (SteamGroupsRepProgress < SteamGroupRelations.Length)
+	if (WorldInfo.NetMode != NM_StandAlone && SteamGroupsRepProgress < SteamGroupRelations.Length)
 	{
 		ClientAddSteamGroupRelation(SteamGroupRelations[SteamGroupsRepProgress]);
 		++SteamGroupsRepProgress;
@@ -114,11 +163,11 @@ private reliable client function FindMyRankInSteamGroups()
 	local UIDRankRelation SteamGroupRel;
 	
 	`callstack();
-	
+
 	foreach SteamGroupRelations(SteamGroupRel)
 		if (SW.CheckPlayerGroup(SteamGroupRel.UID))
 			RankRelation.RankID = SteamGroupRel.RankID;
-		
+
 	if (RankRelation.RankID != INDEX_NONE)
 		ServerApplyRank(RankRelation.RankID);
 }
@@ -142,7 +191,8 @@ private reliable client function ClientAddRankRelation(UIDRankRelation Rel)
 {
 	`callstack();
 	
-	SC.RankRelations.AddItem(Rel);
+	RankRelations.AddItem(Rel);
+	ClientApplyRankRelations();
 }
 
 public function RemoveRankRelation(UIDRankRelation Rel)
@@ -152,11 +202,12 @@ public function RemoveRankRelation(UIDRankRelation Rel)
 	ClientRemoveRankRelation(Rel);
 }
 
-private unreliable client function ClientRemoveRankRelation(UIDRankRelation Rel)
+private reliable client function ClientRemoveRankRelation(UIDRankRelation Rel)
 {
 	`callstack();
 	
-	SC.RankRelations.RemoveItem(Rel);
+	RankRelations.RemoveItem(Rel);
+	ClientApplyRankRelations();
 }
 
 public function UpdateRankRelation(UIDRankRelation Rel)
@@ -172,14 +223,23 @@ private reliable client function ClientUpdateRankRelation(UIDRankRelation Rel)
 	
 	`callstack();
 	
-	Index = SC.RankRelations.Find('UID', Rel.UID);
+	Index = RankRelations.Find('UID', Rel.UID);
 	
 	if (Index != INDEX_NONE)
-		SC.RankRelations[Index] = Rel;
+		RankRelations[Index] = Rel;
+
+	ClientApplyRankRelations();
 }
 
 defaultproperties
-{	
+{
+	bAlwaysRelevant = false;
+    bOnlyRelevantToOwner = true;
+    Role = ROLE_Authority;
+    RemoteRole = ROLE_SimulatedProxy;
+    // This is needed, otherwise the client-to-server RPC fails
+    bSkipActorPropertyReplication = false;
+
 	CustomRanksRepProgress = 0;
 	SteamGroupsRepProgress = 0;
 }

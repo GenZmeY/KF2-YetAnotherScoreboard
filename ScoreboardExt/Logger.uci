@@ -4,6 +4,6 @@
 `define warning(text) `scelog("[WARNING]"@`text, true)
 `define error(text) `scelog("[ERROR]"@`text, true)
 
-`define debug(text, cond) `scelog("[DEBUG]"@`text, true)
+`define debug(text) `scelog("[DEBUG]"@`text, `bEnableDebug)
 `define callstack() `scelog("[CALLSTACK]"@`Location@"ROLE="$ROLE, `bEnableCallstack)
 `define callstack_static(text) `scelog("[CALLSTACK]"@`text, `bEnableCallstack)

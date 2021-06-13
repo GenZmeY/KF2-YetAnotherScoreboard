@@ -13,7 +13,7 @@ public static function SCESettingsPlayer DefaultSettings()
 {
 	local SCESettingsPlayer Settings;
 	
-	`callstack_static("abc");
+	`callstack_static("DefaultSettings");
 	
 	return Settings;
 }
@@ -22,7 +22,7 @@ public static function SCESettingsPlayer Settings()
 {
 	local SCESettingsPlayer Settings;
 	
-	`callstack_static("abc");
+	`callstack_static("Settings");
 	
 	Settings.Rank = default.Rank;
 	Settings.TextColor = default.TextColor;
@@ -33,7 +33,7 @@ public static function SCESettingsPlayer Settings()
 
 public static function WriteSettings(SCESettingsPlayer Settings)
 {
-	`callstack_static("abc");
+	`callstack_static("WriteSettings");
 	
 	default.Rank = Settings.Rank;
 	default.TextColor = Settings.TextColor;
