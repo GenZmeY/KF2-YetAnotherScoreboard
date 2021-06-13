@@ -267,24 +267,19 @@ function DrawMenu()
 	PerkXPos   = Width * 0.40;
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.PingString$" ", XL, YL, FontScalar, FontScalar);
-	XL = XL < MinBoxW ? MinBoxW : XL;
-	PingXPos = Width - XL;
+	PingXPos = Width - (XL < MinBoxW ? MinBoxW : XL);
 	
 	Canvas.TextSize(State$" ", XL, YL, FontScalar, FontScalar);
-	XL = XL < MinBoxW ? MinBoxW : XL;
-	HealthXPos = PingXPos - XL;
+	HealthXPos = PingXPos - (XL < MinBoxW ? MinBoxW : XL);
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.AssistsString$" ", XL, YL, FontScalar, FontScalar);
-	XL = XL < MinBoxW ? MinBoxW : XL;
-	AssistXPos = HealthXPos - XL;
+	AssistXPos = HealthXPos - (XL < MinBoxW ? MinBoxW : XL);
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.KillsString$" ", XL, YL, FontScalar, FontScalar);
-	XL = XL < MinBoxW ? MinBoxW : XL;
-	KillsXPos = AssistXPos - XL;
+	KillsXPos = AssistXPos - (XL < MinBoxW ? MinBoxW : XL);
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.DoshString$" ", XL, YL, FontScalar, FontScalar);
-	XL = XL < MinBoxW ? MinBoxW : XL;
-	CashXPos = KillsXPos - XL;
+	CashXPos = KillsXPos - (XL < MinBoxW ? MinBoxW : XL);
 	
 	StatusWBox = PlayerXPos - RankXPos;
 	PlayerWBox = PerkXPos   - PlayerXPos;
