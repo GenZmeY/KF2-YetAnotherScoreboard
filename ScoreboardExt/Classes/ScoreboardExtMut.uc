@@ -104,7 +104,7 @@ private function InitConfig()
 			
 			// Example rank for steam group members
 			ExampleRank.ID                              = 1;
-			ExampleRank.Rank                            = "[MSK-GS]";
+			ExampleRank.Rank                            = "MSK-GS";
 			ExampleRank.TextColor.R                     = 130;
 			ExampleRank.TextColor.G                     = 250;
 			ExampleRank.TextColor.B                     = 130;

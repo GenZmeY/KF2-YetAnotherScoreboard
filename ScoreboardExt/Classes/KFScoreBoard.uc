@@ -581,10 +581,10 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			S = String(Level);
 			DrawTextShadowHLeftVCenter(S, LevelXPos, TextYOffset, FontScalar);
 
-			if (CurrentRank.ApplyColorToFields.Perk)
+			if (CurrentRank.ApplyColorToFields.Level)
 				SetDrawColor(C, CurrentRank.TextColor);
 			else
-				SetDrawColor(C, Settings.Style.PerkTextColor);
+				SetDrawColor(C, Settings.Style.LevelTextColor);
 			S = KFPRI.CurrentPerkClass.default.PerkName;
 			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
 		}
