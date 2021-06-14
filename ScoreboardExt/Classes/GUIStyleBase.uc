@@ -509,7 +509,7 @@ final function DrawWhiteBox(float XS, float YS, optional bool bClip)
 	Canvas.DrawTile(ItemTex, XS, YS, 19, 45, 1,1, ,bClip);
 }
 
-final function DrawCornerSmart(out float X, float Y, int Edge, int CornerPosition, int CornerShape)
+final function DrawCornerSmart(float X, float Y, int Edge, int CornerPosition, int CornerShape)
 {
 	switch (CornerPosition)
 	{
@@ -521,12 +521,10 @@ final function DrawCornerSmart(out float X, float Y, int Edge, int CornerPositio
 		case ECS_BeveledCorner:
 		Canvas.SetPos(X, Y);
 		DrawCornerTex(Edge, 0);
-		X += Edge;
 		return;
 		case ECS_VerticalCorner:
 		Canvas.SetPos(X, Y - Edge);
 		DrawCornerTex(Edge, 1);
-		X += Edge;
 		return;
 		case ECS_HorisontalCorner:
 		Canvas.SetPos(X - Edge, Y);
@@ -539,19 +537,16 @@ final function DrawCornerSmart(out float X, float Y, int Edge, int CornerPositio
 		case ECS_Corner:
 		return;
 		case ECS_BeveledCorner:
-		Canvas.SetPos(X, Y);
+		Canvas.SetPos(X - Edge, Y);
 		DrawCornerTex(Edge, 1);
-		X += Edge;
 		return;
 		case ECS_VerticalCorner:
-		Canvas.SetPos(X, Y - Edge);
+		Canvas.SetPos(X - Edge, Y - Edge);
 		DrawCornerTex(Edge, 0);
-		X += Edge;
 		return;
 		case ECS_HorisontalCorner:
 		Canvas.SetPos(X, Y);
 		DrawCornerTex(Edge, 3);
-		X += Edge;
 		return;
 		}
 	case ECP_BottomLeft:
@@ -560,17 +555,15 @@ final function DrawCornerSmart(out float X, float Y, int Edge, int CornerPositio
 		case ECS_Corner:
 		return;
 		case ECS_BeveledCorner:
-		Canvas.SetPos(X, Y);
+		Canvas.SetPos(X, Y - Edge);
 		DrawCornerTex(Edge, 2);
-		X += Edge;
 		return;
 		case ECS_VerticalCorner:
 		Canvas.SetPos(X, Y);
 		DrawCornerTex(Edge, 3);
-		X += Edge;
 		return;
 		case ECS_HorisontalCorner:
-		Canvas.SetPos(X - Edge, Y);
+		Canvas.SetPos(X - Edge, Y - Edge);
 		DrawCornerTex(Edge, 0);
 		return;
 		}
@@ -580,76 +573,64 @@ final function DrawCornerSmart(out float X, float Y, int Edge, int CornerPositio
 		case ECS_Corner:
 		return;
 		case ECS_BeveledCorner:
-		Canvas.SetPos(X, Y);
+		Canvas.SetPos(X - Edge, Y - Edge);
 		DrawCornerTex(Edge, 3);
-		X += Edge;
 		return;
 		case ECS_VerticalCorner:
-		Canvas.SetPos(X, Y);
+		Canvas.SetPos(X - Edge, Y);
 		DrawCornerTex(Edge, 2);
-		X += Edge;
 		return;
 		case ECS_HorisontalCorner:
-		Canvas.SetPos(X, Y);
+		Canvas.SetPos(X, Y - Edge);
 		DrawCornerTex(Edge, 1);
-		X +=  Edge;
 		return;
 		}
 	}
 }
 
-final function FillSmart(out float X, float Y, float W, float H, int Edge, int LeftShape, int RightShape)
-{
-	if (LeftShape != ECS_HorisontalCorner && LeftShape != ECS_Corner)
-	{
-		W -= Edge;
-	}
-	
-	if (RightShape != ECS_HorisontalCorner && RightShape != ECS_Corner)
-	{
-		W -= Edge;
-	}
-	
-	if (LeftShape != ECS_VerticalCorner)
-	{
-		Canvas.SetPos(X, Y);
-		DrawWhiteBox(W, H);
-	}
-	
-	X += W;
-}
-
 final function DrawRectBoxSmart(float X, float Y, float W, float H, int Edge, int TopLeftShape, int TopRightShape, int BottomLeftShape, int BottomRightShape)
 {
-	local float TopY, MidY, BottomY, XPos;
-	local int FillCount;
-	local float MidRectHeight;
+	local float BoxX, BoxY, BoxW, BoxH;
 	
-	FillCount = 0;
-	
-	if (TopLeftShape != ECS_VerticalCorner)
-		FillCount++;
-	if (BottomLeftShape != ECS_VerticalCorner)
-		FillCount++;
-	MidRectHeight = H - Edge * FillCount;
-
-	TopY = Y; MidY = TopY + (TopLeftShape == ECS_VerticalCorner ? 0 : Edge); BottomY = MidY + MidRectHeight;
-
 	// Top Line
-	XPos = X;
-	DrawCornerSmart(XPos, TopY, Edge, ECP_TopLeft, TopLeftShape);
-	FillSmart(XPos, TopY, W, Edge, Edge, TopLeftShape, TopRightShape);
-	DrawCornerSmart(XPos, TopY, Edge, ECP_TopRight, TopRightShape);
+	DrawCornerSmart(X, Y, Edge, ECP_TopLeft, TopLeftShape);
+	
+	BoxX = X; BoxY = Y; BoxW = W; BoxH = Edge;
+	if (TopLeftShape == ECS_BeveledCorner)
+	{
+		BoxX += Edge;
+		BoxW -= Edge;
+	}
+	if (TopRightShape == ECS_BeveledCorner)
+	{
+		BoxW -= Edge;
+	}
+	Canvas.SetPos(BoxX, Y);
+	DrawWhiteBox(BoxW, Edge);
+	
+	DrawCornerSmart(X + W, Y, Edge, ECP_TopRight, TopRightShape);
 	
 	// Mid Line
-	XPos = X;
-	FillSmart(XPos, MidY, W, MidRectHeight, Edge, ECS_Corner, ECS_Corner);
+	Canvas.SetPos(X, Y + Edge);
+	DrawWhiteBox(W, H - Edge * 2);
 	
 	// Bottom Line
-	XPos = X;
-	DrawCornerSmart(XPos, BottomY, Edge, ECP_BottomLeft, BottomLeftShape);
-	FillSmart(XPos, BottomY, W, Edge, Edge, BottomLeftShape, BottomRightShape);
-	DrawCornerSmart(XPos, BottomY, Edge, ECP_BottomRight, BottomRightShape);
+	DrawCornerSmart(X, Y + H, Edge, ECP_BottomLeft, BottomLeftShape);
+	
+	BoxX = X; BoxY = Y + H - Edge; BoxW = W; BoxH = Edge;
+	if (BottomLeftShape == ECS_BeveledCorner)
+	{
+		BoxX += Edge;
+		BoxW -= Edge;
+	}
+	if (BottomRightShape == ECS_BeveledCorner)
+	{
+		BoxW -= Edge;
+	}
+	Canvas.SetPos(BoxX, Y + H - Edge);
+	DrawWhiteBox(BoxW, Edge);
+	
+	DrawCornerSmart(X + W, Y + H, Edge, ECP_BottomRight, BottomRightShape);
 }
 
 final function DrawRectBox(float X, float Y, float Width, float Height, int Edge, optional byte Extrav)

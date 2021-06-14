@@ -108,7 +108,7 @@ function DrawRectPreviewWithText(float X, float Y, float WH, int Shape, float Fo
 	local float TextWidth;
 	local float TextHeight;
 	
-	Canvas.SetDrawColor(150, 150, 150, 200);
+	Canvas.SetDrawColor(50, 50, 50, 200);
 	Owner.CurrentStyle.DrawRectBox(X, Y, WH, WH, 16, Shape);
 	
 	Canvas.SetDrawColor(250, 250, 250, 255);
@@ -132,7 +132,7 @@ function DrawRectPreview(float FontScalar)
 	Height = Canvas.ClipY * 0.4;
 	
 	BoxWH  = Width / 13;
-	BoxWHD = BoxWH * 0.3;
+	BoxWHD = BoxWH * 0.5;
 	
 	X = XPosCenter - Width * 0.5;
 	Y = YPosCenter - Height * 0.5;
