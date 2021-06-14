@@ -20,6 +20,9 @@ var KFPlayerController OwnerPC;
 var Color PingColor;
 var float PingBars;
 
+// Cache
+var array<String> PerkNames;
+
 // Ranks
 var array<RankInfo> CustomRanks;
 var array<UIDRankRelation> RankRelations;
@@ -39,9 +42,26 @@ var localized string Dead;
 
 function InitMenu()
 {
+	`callstack();
+	
 	Super.InitMenu();
 	PlayersList = KFGUI_List(FindComponentID('PlayerList'));
 	OwnerPC = KFPlayerController(GetPlayer());
+	
+	if (PerkNames.Length == 0)
+	{
+		PerkNames.AddItem(class'KFGFxMenu_Inventory'.default.PerkFilterString);
+		PerkNames.AddItem(class'KFPerk_Berserker'.default.PerkName);
+		PerkNames.AddItem(class'KFPerk_Commando'.default.PerkName);
+		PerkNames.AddItem(class'KFPerk_Support'.default.PerkName);
+		PerkNames.AddItem(class'KFPerk_FieldMedic'.default.PerkName);
+		PerkNames.AddItem(class'KFPerk_Demolitionist'.default.PerkName);
+		PerkNames.AddItem(class'KFPerk_Firebug'.default.PerkName);
+		PerkNames.AddItem(class'KFPerk_Gunslinger'.default.PerkName);
+		PerkNames.AddItem(class'KFPerk_Sharpshooter'.default.PerkName);
+		PerkNames.AddItem(class'KFPerk_SWAT'.default.PerkName);
+		PerkNames.AddItem(class'KFPerk_Survivalist'.default.PerkName);
+	}
 }
 
 static function CheckAvatar(KFPlayerReplicationInfo KFPRI, KFPlayerController PC)
@@ -109,7 +129,7 @@ function DrawMenu()
 	local PlayerController PC;
 	local KFPlayerReplicationInfo KFPRI;
 	local PlayerReplicationInfo PRI;
-	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH, MinBoxW;
+	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH, MinBoxW, DoshSize;
 	local int i, j, NumSpec, NumPlayer, NumAlivePlayer, Width;
 	local float BorderSize;
 
@@ -263,7 +283,6 @@ function DrawMenu()
 	
 	RankXPos   = Owner.HUDOwner.ScaledBorderSize * 8 + Settings.Style.EdgeSize;
 	PlayerXPos = Width * 0.20;
-	PerkXPos   = Width * 0.40;
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.PingString$" ", XL, YL, FontScalar, FontScalar);
 	PingXPos = Width - (XL < MinBoxW ? MinBoxW : XL);
@@ -278,7 +297,17 @@ function DrawMenu()
 	KillsXPos = AssistXPos - (XL < MinBoxW ? MinBoxW : XL);
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.DoshString$" ", XL, YL, FontScalar, FontScalar);
-	CashXPos = KillsXPos - (XL < MinBoxW ? MinBoxW : XL);
+	Canvas.TextSize("99999", DoshSize, YL, FontScalar, FontScalar);
+	CashXPos = KillsXPos - (XL < DoshSize ? DoshSize : XL);
+	
+	BoxW = 0;
+	foreach PerkNames(S)
+	{
+		// PerkName + 2 Space + 2 Symbols for level
+		Canvas.TextSize(S$"  99", XL, YL, FontScalar, FontScalar);
+		if (XL > BoxW) BoxW = XL;
+	}
+	PerkXPos = CashXPos - (BoxW < MinBoxW ? MinBoxW : BoxW);
 	
 	StatusWBox = PlayerXPos - RankXPos;
 	PlayerWBox = PerkXPos   - PlayerXPos;
@@ -587,6 +616,12 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	else
 		SetDrawColor(C, Settings.Style.PlayerNameTextColor);
 	S = KFPRI.PlayerName;
+	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
+	while (XL > PlayerWBox)
+	{
+		S = Left(S, Len(S)-1);
+		Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
+	}
 	DrawTextShadowHLeftVCenter(S, PlayerXPos, TextYOffset, FontScalar);
 
 	// Kill
@@ -615,7 +650,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			SetDrawColor(C, CurrentRank.TextColor);
 		else
 			SetDrawColor(C, Settings.Style.DoshTextColor);
-		StrValue = GetNiceSize(int(KFPRI.Score));
+		StrValue = String(int(KFPRI.Score)); //StrValue = GetNiceSize(int(KFPRI.Score));
 	}
 	DrawTextShadowHVCenter(StrValue, CashXPos, TextYOffset, CashWBox, FontScalar);
 

@@ -5,5 +5,5 @@
 `define error(text)            `scelog("[ERROR]"@`text, true)
 
 `define debug(text)            if (`bEnableDebug)     { `scelog("[DEBUG]"@`text, `bEnableDebug); }
-`define callstack()            if (`bEnableCallstack) { `scelog("[CALLSTACK]"@`Location@"ROLE="$ROLE, `bEnableCallstack); }
+`define callstack()            if (`bEnableCallstack) { `scelog("[CALLSTACK]"@`Location, `bEnableCallstack); }
 `define callstack_static(text) if (`bEnableCallstack) { `scelog("[CALLSTACK]"@`text, `bEnableCallstack); }

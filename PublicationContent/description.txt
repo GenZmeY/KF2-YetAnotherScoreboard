@@ -1,0 +1,6 @@
+[h1]there should be a description, but there isn't one :( [/h1]
+
+I will definitely write in more detail (but a little later)
+
+[h1]Sources:[/h1]
+[u]https://github.com/GenZmeY/KF2-ScoreboardExt[/u] [b](GNU GPLv3)[/b]
