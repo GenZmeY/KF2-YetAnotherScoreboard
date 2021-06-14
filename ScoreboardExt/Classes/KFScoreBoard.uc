@@ -108,7 +108,6 @@ function DrawRectPreviewWithText(float X, float Y, float WH, int Shape, float Fo
 	local float TextWidth;
 	local float TextHeight;
 	
-	Canvas.SetDrawColor(50, 50, 50, 200);
 	Owner.CurrentStyle.DrawRectBox(X, Y, WH, WH, 16, Shape);
 	
 	Canvas.SetDrawColor(250, 250, 250, 255);
@@ -124,6 +123,7 @@ function DrawRectPreview(float FontScalar)
 	local float XPosCenter, YPosCenter;
 	local int Shape;
 	local int i, j;
+	local int R, G, B;
 	
 	XPosCenter = Canvas.ClipX * 0.5;
 	YPosCenter = Canvas.ClipY * 0.5;
@@ -134,48 +134,195 @@ function DrawRectPreview(float FontScalar)
 	BoxWH  = Width / 13;
 	BoxWHD = BoxWH * 0.5;
 	
-	X = XPosCenter - Width * 0.5;
-	Y = YPosCenter - Height * 0.5;
+	X = XPosCenter - Width * 0.8;
+	Y = YPosCenter - Height * 0.9;
 	
 	XPos = X;
 	YPos = Y;
 	
+	R += 15; G += 15; B += 15;
+	Canvas.SetDrawColor(R, G, B, 200);
 	Shape = 0;
 	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
 	XPos += BoxWH + BoxWHD;
 	
+	R += 15; G += 15; B += 15;
+	Canvas.SetDrawColor(R, G, B, 200);
 	Shape = 100;
 	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
 	XPos += BoxWH + BoxWHD;
 	
+	R += 15; G += 15; B += 15;
+	Canvas.SetDrawColor(R, G, B, 200);
 	Shape = 110;
 	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
 	XPos += BoxWH + BoxWHD;
 	
+	R += 15; G += 15; B += 15;
+	Canvas.SetDrawColor(R, G, B, 200);
 	Shape = 111;
 	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
 	XPos += BoxWH + BoxWHD;
 	
+	R += 15; G += 15; B += 15;
+	Canvas.SetDrawColor(R, G, B, 200);
 	Shape = 120;
 	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
 	XPos += BoxWH + BoxWHD;
 	
+	R += 15; G += 15; B += 15;
+	Canvas.SetDrawColor(R, G, B, 200);
 	Shape = 121;
 	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
 	XPos += BoxWH + BoxWHD;
 	
+	
 	YPos += BoxWH + BoxWHD;
 	XPos = X;
-	for (i = 130; i <= 240; i += 10)
+	
+	i = 130;
+	R = 200; G = 15; B = 15;
+	for (j = 0; j < 4; ++j)
 	{
-		for (j = 0; j < 4; ++j)
-		{
-			DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
-			YPos += BoxWH + BoxWHD;
-		}
-		YPos = Y + BoxWH + BoxWHD;
-		XPos += BoxWH + BoxWHD;
+		R -= 30;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
 	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
+	
+	i = 140;
+	R = 15; G = 200; B = 15;
+	for (j = 0; j < 4; ++j)
+	{
+		G -= 30;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
+	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
+	
+	i = 150;
+	R = 15; G = 15; B = 200;
+	for (j = 0; j < 4; ++j)
+	{
+		B -= 30;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
+	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
+	
+	i = 160;
+	R = 200; G = 200; B = 15;
+	for (j = 0; j < 4; ++j)
+	{
+		R -= 30; G -= 30;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
+	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
+	
+	i = 170;
+	R = 15; G = 200; B = 200;
+	for (j = 0; j < 4; ++j)
+	{
+		G -= 30; B -= 30;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
+	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
+	
+	i = 180;
+	R = 200; G = 15; B = 200;
+	for (j = 0; j < 4; ++j)
+	{
+		R -= 30; B -= 30;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
+	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
+	
+	i = 190;
+	R = 200; G = 100; B = 15;
+	for (j = 0; j < 4; ++j)
+	{
+		R -= 30; G -= 15;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
+	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
+	
+	i = 200;
+	R = 100; G = 200; B = 15;
+	for (j = 0; j < 4; ++j)
+	{
+		R -= 15; G -= 30;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
+	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
+	
+	i = 210;
+	R = 15; G = 100; B = 200;
+	for (j = 0; j < 4; ++j)
+	{
+		G -= 15; B -= 30;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
+	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
+	
+	i = 220;
+	R = 100; G = 15; B = 200;
+	for (j = 0; j < 4; ++j)
+	{
+		R -= 15; B -= 30;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
+	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
+	
+	i = 230;
+	R = 15; G = 200; B = 100;
+	for (j = 0; j < 4; ++j)
+	{
+		G -= 30; B -= 15;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
+	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
+	
+	i = 240;
+	R = 200; G = 15; B = 100;
+	for (j = 0; j < 4; ++j)
+	{
+		R -= 30; B -= 15;
+		Canvas.SetDrawColor(R, G, B, 200);
+		DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+		YPos += BoxWH + BoxWHD;
+	}
+	YPos = Y + BoxWH + BoxWHD;
+	XPos += BoxWH + BoxWHD;
 }
 
 function DrawMenu()
