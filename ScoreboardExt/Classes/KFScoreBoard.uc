@@ -103,6 +103,81 @@ function string WaveText()
     }
 }
 
+function DrawRectPreviewWithText(float X, float Y, float WH, int Shape, float FontScalar)
+{
+	local float TextWidth;
+	local float TextHeight;
+	
+	Canvas.SetDrawColor(150, 150, 150, 200);
+	Owner.CurrentStyle.DrawRectBox(X, Y, WH, WH, 16, Shape);
+	
+	Canvas.SetDrawColor(250, 250, 250, 255);
+	Canvas.TextSize(String(Shape), TextWidth, TextHeight, FontScalar, FontScalar);
+	Owner.CurrentStyle.DrawTextShadow(String(Shape), X + (WH - TextWidth)/2, Y + (WH - TextHeight)/2, 1, FontScalar);
+}
+
+function DrawRectPreview(float FontScalar)
+{
+	local float BoxWH, BoxWHD;
+	local float XPos, YPos, X, Y;
+	local float Width, Height;
+	local float XPosCenter, YPosCenter;
+	local int Shape;
+	local int i, j;
+	
+	XPosCenter = Canvas.ClipX * 0.5;
+	YPosCenter = Canvas.ClipY * 0.5;
+	
+	Width  = Canvas.ClipX * 0.4;
+	Height = Canvas.ClipY * 0.4;
+	
+	BoxWH  = Width / 13;
+	BoxWHD = BoxWH * 0.3;
+	
+	X = XPosCenter - Width * 0.5;
+	Y = YPosCenter - Height * 0.5;
+	
+	XPos = X;
+	YPos = Y;
+	
+	Shape = 0;
+	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
+	XPos += BoxWH + BoxWHD;
+	
+	Shape = 100;
+	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
+	XPos += BoxWH + BoxWHD;
+	
+	Shape = 110;
+	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
+	XPos += BoxWH + BoxWHD;
+	
+	Shape = 111;
+	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
+	XPos += BoxWH + BoxWHD;
+	
+	Shape = 120;
+	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
+	XPos += BoxWH + BoxWHD;
+	
+	Shape = 121;
+	DrawRectPreviewWithText(XPos, YPos, BoxWH, Shape, FontScalar);
+	XPos += BoxWH + BoxWHD;
+	
+	YPos += BoxWH + BoxWHD;
+	XPos = X;
+	for (i = 130; i <= 240; i += 10)
+	{
+		for (j = 0; j < 4; ++j)
+		{
+			DrawRectPreviewWithText(XPos, YPos, BoxWH, i + j, FontScalar);
+			YPos += BoxWH + BoxWHD;
+		}
+		YPos = Y + BoxWH + BoxWHD;
+		XPos += BoxWH + BoxWHD;
+	}
+}
+
 function DrawMenu()
 {
 	local string S;
@@ -174,6 +249,12 @@ function DrawMenu()
 	Canvas.Font = Owner.CurrentStyle.PickFont(FontScalar);
 	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
 	BorderSize = Owner.HUDOwner.ScaledBorderSize;
+	
+	if (true)
+	{
+		DrawRectPreview(FontScalar);
+		return;
+	}
 	
 	// Server Info
 	XPosCenter = Canvas.ClipX * 0.5;

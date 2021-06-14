@@ -585,7 +585,7 @@ final function DrawCornerSmart(out float X, float Y, int Edge, int CornerPositio
 		X += Edge;
 		return;
 		case ECS_VerticalCorner:
-		Canvas.SetPos(X, Y); // X - Edge ?
+		Canvas.SetPos(X, Y);
 		DrawCornerTex(Edge, 2);
 		X += Edge;
 		return;
@@ -663,21 +663,129 @@ final function DrawRectBox(float X, float Y, float Width, float Height, int Edge
 	
 	switch (Extrav)
 	{
-		case 1:
-		//   _______
-		//  /      /
-		//  |     |
-		//  \______\
+		case 100:
+		//   ______
+		//  |      |
+		//  |      |
+		//  |______|
 		
 		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 110:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
 			ECS_BeveledCorner, // TopLeft
-			ECS_HorisontalCorner, // TopRight
+			ECS_Corner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 111:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_BeveledCorner, // TopRight
 			ECS_BeveledCorner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 120:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_VerticalCorner, // TopLeft
+			ECS_VerticalCorner, // TopRight
+			ECS_VerticalCorner, // BottomLeft
+			ECS_VerticalCorner // BottomRight
+		);
+		break;
+		
+		case 121:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_HorisontalCorner, // TopLeft
+			ECS_HorisontalCorner, // TopRight
+			ECS_HorisontalCorner, // BottomLeft
 			ECS_HorisontalCorner // BottomRight
 		);
 		break;
 		
-		case 2:
+		case 130:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 131:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 132:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 133:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 140:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 141:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 142: 
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 143:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 150:
 		//   ______
 		//  /      \
 		//  | ____ |
@@ -691,21 +799,21 @@ final function DrawRectBox(float X, float Y, float Width, float Height, int Edge
 		);
 		break;
 		
-		case 3:
+		case 151:
 		//   _______
-		//   \      \
-		//   |      |
-		//   /______/
+		//  /      /
+		//  |     |
+		//  \______\
 		
 		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
-			ECS_HorisontalCorner, // TopLeft
-			ECS_BeveledCorner, // TopRight
-			ECS_HorisontalCorner, // BottomLeft
-			ECS_BeveledCorner // BottomRight
+			ECS_BeveledCorner, // TopLeft
+			ECS_HorisontalCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_HorisontalCorner // BottomRight
 		);
 		break;
 		
-		case 4:
+		case 152:
 		// 
 		//  |\____/|
 		//  |      |
@@ -719,18 +827,344 @@ final function DrawRectBox(float X, float Y, float Width, float Height, int Edge
 		);
 		break;
 		
-		case 5:
-		//   ______
-		//  |      |
-		//  |      |
-		//  |______|
+		case 153:
+		//   _______
+		//   \      \
+		//   |      |
+		//   /______/
 		
 		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_HorisontalCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_HorisontalCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 160:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_HorisontalCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 161:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_VerticalCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 162:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_HorisontalCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 163:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_VerticalCorner // BottomRight
+		);
+		break;
+		
+		case 170:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_HorisontalCorner // BottomRight
+		);
+		break;
+		
+		case 171:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_VerticalCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 172:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_HorisontalCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 173:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_VerticalCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 180:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
 			ECS_Corner, // TopLeft
+			ECS_HorisontalCorner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 181:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_VerticalCorner, // TopLeft
 			ECS_Corner, // TopRight
 			ECS_Corner, // BottomLeft
 			ECS_Corner // BottomRight
 		);
+		break;
+		
+		case 182:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_HorisontalCorner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 183:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_VerticalCorner // BottomRight
+		);
+		break;
+		
+		case 190:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_HorisontalCorner // BottomRight
+		);
+		break;
+		
+		case 191:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_VerticalCorner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 192:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_HorisontalCorner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 193:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_VerticalCorner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 200:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_VerticalCorner, // BottomLeft
+			ECS_VerticalCorner // BottomRight
+		);
+		break;
+		
+		case 201:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_HorisontalCorner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_HorisontalCorner // BottomRight
+		);
+		break;
+		
+		case 202:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_VerticalCorner, // TopLeft
+			ECS_VerticalCorner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 203:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_HorisontalCorner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_HorisontalCorner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 210:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_HorisontalCorner, // TopLeft
+			ECS_HorisontalCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 211:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_VerticalCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_VerticalCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 212:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_HorisontalCorner, // BottomLeft
+			ECS_HorisontalCorner // BottomRight
+		);
+		break;
+		
+		case 213:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_VerticalCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_VerticalCorner // BottomRight
+		);
+		break;
+		
+		case 220:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_HorisontalCorner, // TopLeft
+			ECS_HorisontalCorner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 221:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_VerticalCorner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_VerticalCorner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 222:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_HorisontalCorner, // BottomLeft
+			ECS_HorisontalCorner // BottomRight
+		);
+		break;
+		
+		case 223:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_VerticalCorner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_VerticalCorner // BottomRight
+		);
+		break;
+		
+		case 230:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_HorisontalCorner, // TopRight
+			ECS_HorisontalCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 231:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_VerticalCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_VerticalCorner // BottomRight
+		);
+		break;
+		
+		case 232:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_HorisontalCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_HorisontalCorner // BottomRight
+		);
+		break;
+		
+		case 233:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_VerticalCorner, // TopRight
+			ECS_VerticalCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 240:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_HorisontalCorner, // TopRight
+			ECS_HorisontalCorner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 241:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_VerticalCorner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_VerticalCorner // BottomRight
+		);
+		break;
+		
+		case 242:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_HorisontalCorner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_HorisontalCorner // BottomRight
+		);
+		break;
+		
+		case 243:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_VerticalCorner, // TopRight
+			ECS_VerticalCorner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
 		default: // 0
 		//   ______
 		//  /      \

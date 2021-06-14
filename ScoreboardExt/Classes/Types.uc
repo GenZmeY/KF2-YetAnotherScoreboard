@@ -226,20 +226,20 @@ struct SCEStyle
 	{
 		EdgeSize                      = 8
 		
-		ShapeServerNameBox            = 2
-		ShapeGameInfoBox              = 1
+		ShapeServerNameBox            = 150
+		ShapeGameInfoBox              = 151
 		ShapeWaveInfoBox              = 0
-		ShapePlayersCountBox          = 4
-		ShapeHeaderBox                = 2
-		ShapeLeftStateBoxTopPlayer    = 1
-		ShapeLeftStateBoxMidPlayer    = 1
-		ShapeLeftStateBoxBottomPlayer = 1
+		ShapePlayersCountBox          = 152
+		ShapeHeaderBox                = 150
+		ShapeLeftStateBoxTopPlayer    = 151
+		ShapeLeftStateBoxMidPlayer    = 151
+		ShapeLeftStateBoxBottomPlayer = 151
 		ShapePlayerBoxTopPlayer       = 0
 		ShapePlayerBoxMidPlayer       = 0
 		ShapePlayerBoxBottomPlayer    = 0
-		ShapeStatsBoxTopPlayer        = 3
-		ShapeStatsBoxMidPlayer        = 3
-		ShapeStatsBoxBottomPlayer     = 3
+		ShapeStatsBoxTopPlayer        = 153
+		ShapeStatsBoxMidPlayer        = 153
+		ShapeStatsBoxBottomPlayer     = 153
 		
 		ServerNameBoxColor      = (R=75,  G=0,   B=0,   A=200)
 		ServerNameTextColor     = (R=250, G=250, B=250, A=255)
