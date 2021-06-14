@@ -4,8 +4,8 @@ class KFScoreBoard extends KFGUI_Page
 `include(Build.uci)
 `include(Logger.uci)
 
-var transient float RankXPos, PerkXPos, PlayerXPos, HealthXPos, TimeXPos, KillsXPos, AssistXPos, CashXPos, DeathXPos, PingXPos;
-var transient float StatusWBox, PlayerWBox, PerkWBox, CashWBox, KillsWBox, AssistWBox, HealthWBox, PingWBox;
+var transient float RankXPos, LevelXPos, PerkXPos, PlayerXPos, HealthXPos, TimeXPos, KillsXPos, AssistXPos, CashXPos, DeathXPos, PingXPos;
+var transient float StatusWBox, PlayerWBox, LevelWBox, PerkWBox, CashWBox, KillsWBox, AssistWBox, HealthWBox, PingWBox;
 var transient float NextScoreboardRefresh;
 
 var int PlayerIndex;
@@ -297,20 +297,23 @@ function DrawMenu()
 	KillsXPos = AssistXPos - (XL < MinBoxW ? MinBoxW : XL);
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.DoshString$" ", XL, YL, FontScalar, FontScalar);
-	Canvas.TextSize("99999", DoshSize, YL, FontScalar, FontScalar);
+	Canvas.TextSize("999999", DoshSize, YL, FontScalar, FontScalar);
 	CashXPos = KillsXPos - (XL < DoshSize ? DoshSize : XL);
 	
 	BoxW = 0;
 	foreach PerkNames(S)
 	{
-		// PerkName + 2 Space + 2 Symbols for level
-		Canvas.TextSize(S$"  99", XL, YL, FontScalar, FontScalar);
+		Canvas.TextSize(S$"A", XL, YL, FontScalar, FontScalar);
 		if (XL > BoxW) BoxW = XL;
 	}
 	PerkXPos = CashXPos - (BoxW < MinBoxW ? MinBoxW : BoxW);
 	
+	Canvas.TextSize("000", XL, YL, FontScalar, FontScalar);
+	LevelXPos = PerkXPos - XL;
+	
 	StatusWBox = PlayerXPos - RankXPos;
-	PlayerWBox = PerkXPos   - PlayerXPos;
+	PlayerWBox = LevelXPos  - PlayerXPos;
+	LevelWBox  = PerkXPos   - LevelXPos;
 	PerkWBox   = CashXPos   - PerkXPos;
 	CashWBox   = KillsXPos  - CashXPos;
 	KillsWBox  = AssistXPos - KillsXPos;
@@ -370,7 +373,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 {
 	local string S, StrValue;
 	local float FontScalar, TextYOffset, XL, YL, PerkIconPosX, PerkIconPosY, PerkIconSize, PrestigeIconScale;
-	local float XPos, BoxWidth;
+	local float XPos, BoxWidth, RealPlayerWBox;
 	local KFPlayerReplicationInfo KFPRI;
 	local byte Level, PrestigeLevel;
 	local bool bIsZED;
@@ -519,6 +522,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	DrawTextShadowHLeftVCenter(S, RankXPos, TextYOffset, FontScalar);
 
 	// Perk
+	RealPlayerWBox = PlayerWBox;
 	if (bIsZED)
 	{
 		if (CurrentRank.ApplyColorToFields.Perk)
@@ -530,6 +534,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 
 		S = class'KFCommon_LocalizedStrings'.default.ZedString;
 		DrawTextShadowHLeftVCenter(S, PerkXPos + Height, TextYOffset, FontScalar);
+		RealPlayerWBox = PerkXPos + Height - PlayerXPos;
 	}
 	else
 	{
@@ -540,8 +545,10 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 
 			PerkIconPosY = YOffset + (Owner.HUDOwner.ScaledBorderSize * 2);
 			PerkIconSize = Height-(Owner.HUDOwner.ScaledBorderSize * 4);
-			PerkIconPosX = PerkXPos - PerkIconSize - (Owner.HUDOwner.ScaledBorderSize*2);
+			PerkIconPosX = LevelXPos - PerkIconSize - (Owner.HUDOwner.ScaledBorderSize*2);
 			PrestigeIconScale = 0.6625f;
+
+			RealPlayerWBox = PerkIconPosX - PlayerXPos;
 
 			C.DrawColor = HUDOwner.WhiteColor;
 			if (PrestigeLevel > 0)
@@ -572,18 +579,14 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 					SetDrawColor(C, Settings.Style.LevelTextColorHigh);
 			}
 			S = String(Level);
-			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
-			if (Len(S) == 1)
-				Canvas.TextSize(S@" ", XL, YL, FontScalar, FontScalar);
-			else
-				Canvas.TextSize(S$" ", XL, YL, FontScalar, FontScalar);
+			DrawTextShadowHLeftVCenter(S, LevelXPos, TextYOffset, FontScalar);
 
 			if (CurrentRank.ApplyColorToFields.Perk)
 				SetDrawColor(C, CurrentRank.TextColor);
 			else
 				SetDrawColor(C, Settings.Style.PerkTextColor);
 			S = KFPRI.CurrentPerkClass.default.PerkName;
-			DrawTextShadowHLeftVCenter(S, PerkXPos+XL, TextYOffset, FontScalar);
+			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
 		}
 		else
 		{
@@ -593,6 +596,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 				SetDrawColor(C, Settings.Style.PerkTextColor);
 			S = NoPerk;
 			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
+			RealPlayerWBox = PerkXPos - PlayerXPos;
 		}
 	}
 
@@ -617,7 +621,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		SetDrawColor(C, Settings.Style.PlayerNameTextColor);
 	S = KFPRI.PlayerName;
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
-	while (XL > PlayerWBox)
+	while (XL > RealPlayerWBox)
 	{
 		S = Left(S, Len(S)-1);
 		Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
