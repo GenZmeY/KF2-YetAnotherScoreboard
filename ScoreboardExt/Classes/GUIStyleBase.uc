@@ -590,12 +590,12 @@ final function DrawCornerSmart(float X, float Y, int Edge, int CornerPosition, i
 
 final function DrawRectBoxSmart(float X, float Y, float W, float H, int Edge, int TopLeftShape, int TopRightShape, int BottomLeftShape, int BottomRightShape)
 {
-	local float BoxX, BoxY, BoxW, BoxH;
+	local float BoxX, BoxW;
 	
 	// Top Line
 	DrawCornerSmart(X, Y, Edge, ECP_TopLeft, TopLeftShape);
 	
-	BoxX = X; BoxY = Y; BoxW = W; BoxH = Edge;
+	BoxX = X; BoxW = W;
 	if (TopLeftShape == ECS_BeveledCorner)
 	{
 		BoxX += Edge;
@@ -617,7 +617,7 @@ final function DrawRectBoxSmart(float X, float Y, float W, float H, int Edge, in
 	// Bottom Line
 	DrawCornerSmart(X, Y + H, Edge, ECP_BottomLeft, BottomLeftShape);
 	
-	BoxX = X; BoxY = Y + H - Edge; BoxW = W; BoxH = Edge;
+	BoxX = X; BoxW = W;
 	if (BottomLeftShape == ECS_BeveledCorner)
 	{
 		BoxX += Edge;
