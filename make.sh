@@ -72,13 +72,13 @@ function restore_kfeditorconf ()
 
 function setup_modpackages ()
 {
-	multini --set "$KFEditorConf" 'ModPackages' 'ModPackages' 'KFClassicHUD'
+	multini --set "$KFEditorConf" 'ModPackages' 'ModPackages' 'ScoreboardExt'
 	multini --set "$KFEditorConf" 'ModPackages' 'ModPackagesInPath' "$(unixpath2win "$MutSource")"
 }
 
 function compiled ()
 {
-	test -f "$MutStructScript/KFClassicHUD.u"
+	test -f "$MutStructScript/ScoreboardExt.u"
 }
 
 function compile ()
@@ -93,10 +93,10 @@ function compile ()
 	mkdir -p \
 		"$MutUnpublish" \
 		"$MutStructScript" \
-		"$MutStructPackages"
-	
-	cp -rf "$MutSource/KFClassicHUD/Assets"/*.upk "$MutStructPackages"
-	
+		"$MutStructLocalization"
+		
+	cp -rf "$MutSource/Localization"/* "$MutStructLocalization"
+
 	CMD //C "$(unixpath2win "$KFEditor")" make -useunpublished &
 	local PID="$!"
 	while ps -p "$PID" &> /dev/null
@@ -162,7 +162,7 @@ echo "Map=\"KF-Outpost\"
 Game=\"KFGameContent.KFGameInfo_Survival\"
 Difficulty=\"0\"
 GameLength=\"0\"
-Mutators=\"KFClassicHUD.ClassicHUD\"
+Mutators=\"ScoreboardExt.ScoreboardExtMut\"
 Args=\"\"" > "$MutTestingIni"
 }
 
