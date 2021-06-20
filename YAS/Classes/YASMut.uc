@@ -90,7 +90,7 @@ private function InitConfig()
 			
 			// Example rank for player(s)
 			ExampleRank.ID                              = 0;
-			ExampleRank.Rank                            = "SCE Creator";
+			ExampleRank.Rank                            = "YAS Creator";
 			ExampleRank.TextColor.R                     = 130;
 			ExampleRank.TextColor.G                     = 250;
 			ExampleRank.TextColor.B                     = 235;
