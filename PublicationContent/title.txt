@@ -1,1 +1,1 @@
-ScoreboardExt
+YetAnotherScoreboard

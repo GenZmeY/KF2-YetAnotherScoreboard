@@ -72,13 +72,13 @@ function restore_kfeditorconf ()
 
 function setup_modpackages ()
 {
-	multini --set "$KFEditorConf" 'ModPackages' 'ModPackages' 'ScoreboardExt'
+	multini --set "$KFEditorConf" 'ModPackages' 'ModPackages' 'YAS'
 	multini --set "$KFEditorConf" 'ModPackages' 'ModPackagesInPath' "$(unixpath2win "$MutSource")"
 }
 
 function compiled ()
 {
-	test -f "$MutStructScript/ScoreboardExt.u"
+	test -f "$MutStructScript/YAS.u"
 }
 
 function compile ()
@@ -162,7 +162,7 @@ echo "Map=\"KF-Outpost\"
 Game=\"KFGameContent.KFGameInfo_Survival\"
 Difficulty=\"0\"
 GameLength=\"0\"
-Mutators=\"ScoreboardExt.ScoreboardExtMut\"
+Mutators=\"YAS.YASMut\"
 Args=\"\"" > "$MutTestingIni"
 }
 

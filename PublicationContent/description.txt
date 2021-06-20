@@ -1,6 +1,50 @@
-[h1]there should be a description, but there isn't one :( [/h1]
+[h1]Description[/h1]
+Yet another scoreboard...
+Based on the scoreboard from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1963099942]ClassicHUD[/url] and heavily modified. 
 
-I will definitely write in more detail (but a little later)
+[h1]Features[/h1]
+- Doesn't block the view with the mouse when active;
+- Correctly displayed in all available resolutions;
+- Displays a large number of players;
+- Customizing the appearance and elements of the scoreboard;
+- Player ranks.
+
+[h1]Whitelisted?[/h1]
+No. This mod is not whitelisted and will unrank your server. Any XP gained will not be saved.
+
+(But I plan to submit a whitelist request when I stop adding changes to this scoreboard)
+
+[h1]Usage (single player):[/h1]
+1. Subscribe to this mutator;
+2. Start KF2; 
+3. Open console (`) and input:
+[code]open KF-BioticsLab?Mutator=YAS.YASMut?[/code]
+4. <Enter>.
+
+[h1]Usage (server):[/h1]
+[b]Note:[/b] If you don't understand what is written here, read the article [url=https://wiki.killingfloor2.com/index.php?title=Dedicated_Server_(Killing_Floor_2)][u]Dedicated Server (KF2 wiki)[/u][/url] before following these instructions.
+
+1. Open your PCServer-KFEngine.ini / LinuxServer-KFEngine.ini;
+2. Add the following string to the [b][OnlineSubsystemSteamworks.KFWorkshopSteamworks][/b] section:
+[code]ServerSubscribedWorkshopItems=<WORKSHOP_ID>[/code]
+3. Start the server and wait while the mutator is downloading;
+4. Stop the server;
+5. Add mutator to server start line: [b]?Mutator=YAS.YASMut[/b]
+7. Start the server.
+
+[h1]Setup[/h1]
+All settings are here: 
+[code]
+/KFGame/Config/KFYAS.ini
+[/code]
+I will add detailed instructions for setting up the scoreboard later.
+But these images will help you a little anyway:
+<ELEMENTS>
+<RECT_SHAPES>
+
+[h1]Bug reports[/h1]
+If you find a bug, describe what it looks like and how to repeat it - I will try to fix it. 
+You can do it right here, but I'll be much happier if you do it [url=https://github.com/GenZmeY/KF2-YetAnotherScoreboard/issues]in issues on github[/url].
 
 [h1]Sources:[/h1]
-[u]https://github.com/GenZmeY/KF2-ScoreboardExt[/u] [b](GNU GPLv3)[/b]
+[u]https://github.com/GenZmeY/KF2-YetAnotherScoreboard[/u] [b](GNU GPLv3)[/b]
