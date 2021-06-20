@@ -5,8 +5,11 @@ Based on the scoreboard from [url=https://steamcommunity.com/sharedfiles/filedet
 [h1]Features[/h1]
 - Doesn't block the view with the mouse when active;
 - Correctly displayed in all available resolutions;
+- Close to KF2 interface style;
 - Displays a large number of players;
+- The scoreboard adjusts to the size of the content;
 - Customizing the appearance and elements of the scoreboard;
+- Dynamically changing colors for some elements (depending on their value);
 - Player ranks.
 
 [h1]Whitelisted?[/h1]
