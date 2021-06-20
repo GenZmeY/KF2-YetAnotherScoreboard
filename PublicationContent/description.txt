@@ -29,11 +29,11 @@ No. This mod is not whitelisted and will unrank your server. Any XP gained will 
 
 1. Open your PCServer-KFEngine.ini / LinuxServer-KFEngine.ini;
 2. Add the following string to the [b][OnlineSubsystemSteamworks.KFWorkshopSteamworks][/b] section:
-[code]ServerSubscribedWorkshopItems=<WORKSHOP_ID>[/code]
+[code]ServerSubscribedWorkshopItems=2521826524[/code]
 3. Start the server and wait while the mutator is downloading;
 4. Stop the server;
 5. Add mutator to server start line: [b]?Mutator=YAS.YASMut[/b]
-7. Start the server.
+6. Start the server.
 
 [h1]Setup[/h1]
 All settings are here: 
