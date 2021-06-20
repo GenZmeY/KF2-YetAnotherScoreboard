@@ -9,18 +9,18 @@ var config string    Rank;
 var config ColorRGBA TextColor;
 var config Fields    ApplyColorToFields;
 
-public static function SCESettingsAdmin DefaultSettings()
+public static function YASSettingsAdmin DefaultSettings()
 {
-	local SCESettingsAdmin Settings;
+	local YASSettingsAdmin Settings;
 	
 	`callstack_static("DefaultSettings");
 	
 	return Settings;
 }
 
-public static function SCESettingsAdmin Settings()
+public static function YASSettingsAdmin Settings()
 {
-	local SCESettingsAdmin Settings;
+	local YASSettingsAdmin Settings;
 	
 	`callstack_static("Settings");
 	
@@ -31,7 +31,7 @@ public static function SCESettingsAdmin Settings()
 	return Settings;
 }
 
-public static function WriteSettings(SCESettingsAdmin Settings)
+public static function WriteSettings(YASSettingsAdmin Settings)
 {
 	`callstack_static("WriteSettings");
 	

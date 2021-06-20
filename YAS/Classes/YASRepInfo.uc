@@ -14,7 +14,7 @@ var private OnlineSubsystemSteamworks SW;
 var public array<UIDRankRelation> SteamGroupRelations;
 var private array<UIDRankRelation> RankRelations;
 var public array<RankInfo> CustomRanks;
-var public SCESettings Settings;
+var public YASSettings Settings;
 var public UIDRankRelation RankRelation; // Current player rank relation
 
 var private int CustomRanksRepProgress, SteamGroupsRepProgress;
@@ -69,7 +69,7 @@ public function StartFirstTimeReplication()
 	SetTimer(0.01f, true, nameof(ReplicateSteamGroupRelations));
 }
 
-private reliable client function ClientAddSettings(SCESettings Set)
+private reliable client function ClientAddSettings(YASSettings Set)
 {
 	`callstack();
 	

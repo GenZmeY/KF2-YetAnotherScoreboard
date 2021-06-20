@@ -60,18 +60,18 @@ var config ColorRGBA PingTextColorLow;
 var config ColorRGBA PingTextColorMid;
 var config ColorRGBA PingTextColorHigh;
 
-public static function SCEStyle DefaultSettings()
+public static function YASStyle DefaultSettings()
 {
-	local SCEStyle Settings;
+	local YASStyle Settings;
 	
 	`callstack_static("DefaultSettings");
 	
 	return Settings;
 }
 
-public static function SCEStyle Settings()
+public static function YASStyle Settings()
 {
-	local SCEStyle Settings;
+	local YASStyle Settings;
 	
 	`callstack_static("Settings");
 	
@@ -133,7 +133,7 @@ public static function SCEStyle Settings()
 	return Settings;
 }
 
-public static function WriteSettings(SCEStyle Settings)
+public static function WriteSettings(YASStyle Settings)
 {
 	`callstack_static("WriteSettings");
 	

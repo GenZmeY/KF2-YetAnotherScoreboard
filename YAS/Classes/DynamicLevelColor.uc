@@ -15,18 +15,18 @@ var config int Suicide_High;
 var config int HellOnEarth_Low;
 var config int HellOnEarth_High;
 
-public static function SCESettingsLevel DefaultSettings()
+public static function YASSettingsLevel DefaultSettings()
 {
-	local SCESettingsLevel Settings;
+	local YASSettingsLevel Settings;
 	
 	`callstack_static("DefaultSettings");
 	
 	return Settings;
 }
 
-public static function SCESettingsLevel Settings()
+public static function YASSettingsLevel Settings()
 {
-	local SCESettingsLevel Settings;
+	local YASSettingsLevel Settings;
 	
 	`callstack_static("Settings");
 	
@@ -43,7 +43,7 @@ public static function SCESettingsLevel Settings()
 	return Settings;
 }
 
-public static function WriteSettings(SCESettingsLevel Settings)
+public static function WriteSettings(YASSettingsLevel Settings)
 {
 	`callstack_static("WriteSettings");
 	

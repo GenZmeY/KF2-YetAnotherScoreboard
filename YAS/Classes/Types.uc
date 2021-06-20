@@ -73,7 +73,7 @@ struct UIDRankRelation
 	}
 };
 
-struct SCESettingsAdmin
+struct YASSettingsAdmin
 {
 	var string    Rank;
 	var ColorRGBA TextColor;
@@ -87,7 +87,7 @@ struct SCESettingsAdmin
 	}
 };
 
-struct SCESettingsPlayer
+struct YASSettingsPlayer
 {
 	var string    Rank;
 	var ColorRGBA TextColor;
@@ -101,7 +101,7 @@ struct SCESettingsPlayer
 	}
 };
 
-struct SCESettingsState
+struct YASSettingsState
 {	
 	var bool Dynamic;
 	var int Low;
@@ -115,7 +115,7 @@ struct SCESettingsState
 	}
 };
 
-struct SCESettingsPing
+struct YASSettingsPing
 {
 	var bool Dynamic;
 	var int Low;
@@ -131,7 +131,7 @@ struct SCESettingsPing
 	}
 };
 
-struct SCESettingsLevel
+struct YASSettingsLevel
 {
 	var bool Dynamic;
 	var int Low[4];
@@ -151,7 +151,7 @@ struct SCESettingsLevel
 	}
 };
 
-struct SCEStyle
+struct YASStyle
 {
 	var int       EdgeSize;
 	var int       ShapeServerNameBox;
@@ -296,13 +296,13 @@ struct SCEStyle
 	}
 };
 
-struct SCESettings
+struct YASSettings
 {
-	var SCEStyle Style;
-	var SCESettingsAdmin Admin;
-	var SCESettingsPlayer Player;
-	var SCESettingsState State;
-	var SCESettingsPing Ping;
-	var SCESettingsLevel Level;
+	var YASStyle Style;
+	var YASSettingsAdmin Admin;
+	var YASSettingsPlayer Player;
+	var YASSettingsState State;
+	var YASSettingsPing Ping;
+	var YASSettingsLevel Level;
 };
 

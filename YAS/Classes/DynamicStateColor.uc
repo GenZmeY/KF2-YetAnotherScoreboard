@@ -9,18 +9,18 @@ var config bool bEnabled;
 var config int Low;
 var config int High;
 
-public static function SCESettingsState DefaultSettings()
+public static function YASSettingsState DefaultSettings()
 {
-	local SCESettingsState Settings;
+	local YASSettingsState Settings;
 	
 	`callstack_static("DefaultSettings");
 	
 	return Settings;
 }
 
-public static function SCESettingsState Settings()
+public static function YASSettingsState Settings()
 {
-	local SCESettingsState Settings;
+	local YASSettingsState Settings;
 	
 	`callstack_static("Settings");
 	
@@ -31,7 +31,7 @@ public static function SCESettingsState Settings()
 	return Settings;
 }
 
-public static function WriteSettings(SCESettingsState Settings)
+public static function WriteSettings(YASSettingsState Settings)
 {
 	`callstack_static("WriteSettings");
 	

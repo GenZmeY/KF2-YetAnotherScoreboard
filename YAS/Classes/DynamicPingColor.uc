@@ -10,18 +10,18 @@ var config int Low;
 var config int High;
 var config bool bShowPingBars;
 
-public static function SCESettingsPing DefaultSettings()
+public static function YASSettingsPing DefaultSettings()
 {
-	local SCESettingsPing Settings;
+	local YASSettingsPing Settings;
 	
 	`callstack_static("DefaultSettings");
 	
 	return Settings;
 }
 
-public static function SCESettingsPing Settings()
+public static function YASSettingsPing Settings()
 {
-	local SCESettingsPing Settings;
+	local YASSettingsPing Settings;
 	
 	`callstack_static("Settings");
 	
@@ -33,7 +33,7 @@ public static function SCESettingsPing Settings()
 	return Settings;
 }
 
-public static function WriteSettings(SCESettingsPing Settings)
+public static function WriteSettings(YASSettingsPing Settings)
 {
 	`callstack_static("WriteSettings");
 	

@@ -21,7 +21,7 @@ var private array<SClient> RepClients;
 var private array<UIDRankRelation> UIDRankRelationsPlayers;
 var private array<UIDRankRelation> UIDRankRelationsSteamGroups;
 var private array<UIDRankRelation> UIDRankRelationsActive;
-var private SCESettings Settings;
+var private YASSettings Settings;
 
 function PostBeginPlay()
 {

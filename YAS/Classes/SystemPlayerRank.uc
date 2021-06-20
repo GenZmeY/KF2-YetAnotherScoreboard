@@ -9,18 +9,18 @@ var config string    Rank;
 var config ColorRGBA TextColor;
 var config Fields    ApplyColorToFields;
 
-public static function SCESettingsPlayer DefaultSettings()
+public static function YASSettingsPlayer DefaultSettings()
 {
-	local SCESettingsPlayer Settings;
+	local YASSettingsPlayer Settings;
 	
 	`callstack_static("DefaultSettings");
 	
 	return Settings;
 }
 
-public static function SCESettingsPlayer Settings()
+public static function YASSettingsPlayer Settings()
 {
-	local SCESettingsPlayer Settings;
+	local YASSettingsPlayer Settings;
 	
 	`callstack_static("Settings");
 	
@@ -31,7 +31,7 @@ public static function SCESettingsPlayer Settings()
 	return Settings;
 }
 
-public static function WriteSettings(SCESettingsPlayer Settings)
+public static function WriteSettings(YASSettingsPlayer Settings)
 {
 	`callstack_static("WriteSettings");
 	

@@ -27,7 +27,7 @@ var array<String> PerkNames;
 var array<RankInfo> CustomRanks;
 var array<UIDRankRelation> RankRelations;
 
-var SCESettings Settings;
+var YASSettings Settings;
 
 // Localization
 var localized string Players;
@@ -129,7 +129,7 @@ function DrawMenu()
 	local PlayerController PC;
 	local KFPlayerReplicationInfo KFPRI;
 	local PlayerReplicationInfo PRI;
-	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH, MinBoxW, DoshSize;
+	local float XPos, YPos, YL, XL, FontScalar, XPoYASnter, BoxW, BoxX, BoxH, MinBoxW, DoshSize;
 	local int i, j, NumSpec, NumPlayer, NumAlivePlayer, Width;
 	local float BorderSize;
 
@@ -196,9 +196,9 @@ function DrawMenu()
 	BorderSize = Owner.HUDOwner.ScaledBorderSize;
 	
 	// Server Info
-	XPosCenter = Canvas.ClipX * 0.5;
+	XPoYASnter = Canvas.ClipX * 0.5;
 	Width = Canvas.ClipX * 0.4; // Full Box Width
-	XPos = XPosCenter - Width * 0.5;
+	XPos = XPoYASnter - Width * 0.5;
 	YPos = YL;
 	
 	BoxW = Width;
