@@ -39,8 +39,8 @@ All settings are here:
 [/code]
 I will add detailed instructions for setting up the scoreboard later.
 But these images will help you a little anyway:
-<ELEMENTS>
-<RECT_SHAPES>
+[url=https://raw.githubusercontent.com/GenZmeY/KF2-YetAnotherScoreboard/master/PublicationContent/elements.png]Elements[/url]
+[url=https://raw.githubusercontent.com/GenZmeY/KF2-YetAnotherScoreboard/master/PublicationContent/rect_shapes.png]Rectangle shape codes[/url]
 
 [h1]Bug reports[/h1]
 If you find a bug, describe what it looks like and how to repeat it - I will try to fix it. 
