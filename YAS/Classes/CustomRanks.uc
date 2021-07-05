@@ -33,7 +33,9 @@ public static function InitConfig(int ConfigVersion)
 			ExampleRank.TextColor.B                     = 130;
 			ExampleRank.OverrideAdminRank               = false;
 			default.Rank.AddItem(ExampleRank);
-				
+		
+		case 1:
+			
 		case 2147483647:
 			StaticSaveConfig();
 	}

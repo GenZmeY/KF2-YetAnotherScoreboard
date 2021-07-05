@@ -16,9 +16,10 @@ public static function InitConfig(int ConfigVersion)
 	switch (ConfigVersion)
 	{
 		case 0:
-		case 1:
 			WriteSettings(DefaultSettings());
 			
+		case 1:	
+				
 		case 2147483647:
 			StaticSaveConfig();
 	}
