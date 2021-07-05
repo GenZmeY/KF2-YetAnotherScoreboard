@@ -4,9 +4,10 @@ class KFScoreBoard extends KFGUI_Page
 `include(Build.uci)
 `include(Logger.uci)
 
-var transient float RankXPos, LevelXPos, PerkXPos, PlayerXPos, HealthXPos, TimeXPos, KillsXPos, AssistXPos, CashXPos, DeathXPos, PingXPos;
-var transient float StatusWBox, PlayerWBox, LevelWBox, PerkWBox, CashWBox, KillsWBox, AssistWBox, HealthWBox, PingWBox;
+var transient float HealthXPos, ArmorXPos, RankXPos, PlayerXPos, LevelXPos, PerkXPos, DoshXPos, KillsXPos, AssistXPos, PingXPos;
+var transient float HealthWBox, ArmorWBox, RankWBox, PlayerWBox, LevelWBox, PerkWBox, DoshWBox, KillsWBox, AssistWBox, PingWBox;
 var transient float NextScoreboardRefresh;
+var transient int   NumPlayer;
 
 var int PlayerIndex;
 var KFGUI_List PlayersList;
@@ -22,6 +23,7 @@ var float PingBars;
 
 // Cache
 var array<String> PerkNames;
+var array<String> StateVariants;
 
 // Ranks
 var array<RankInfo> CustomRanks;
@@ -48,6 +50,7 @@ function InitMenu()
 	PlayersList = KFGUI_List(FindComponentID('PlayerList'));
 	OwnerPC = KFPlayerController(GetPlayer());
 	
+	// TODO: Remove this crunch
 	if (PerkNames.Length == 0)
 	{
 		PerkNames.AddItem(class'KFGFxMenu_Inventory'.default.PerkFilterString);
@@ -61,6 +64,16 @@ function InitMenu()
 		PerkNames.AddItem(class'KFPerk_Sharpshooter'.default.PerkName);
 		PerkNames.AddItem(class'KFPerk_SWAT'.default.PerkName);
 		PerkNames.AddItem(class'KFPerk_Survivalist'.default.PerkName);
+	}
+	
+	if (StateVariants.Length == 0)
+	{
+		StateVariants.AddItem(State);
+		StateVariants.AddItem(Ready);
+		StateVariants.AddItem(NotReady);
+		StateVariants.AddItem(Unknown);
+		StateVariants.AddItem(Dead);
+		StateVariants.AddItem("ABCDABCD");
 	}
 }
 
@@ -129,9 +142,10 @@ function DrawMenu()
 	local PlayerController PC;
 	local KFPlayerReplicationInfo KFPRI;
 	local PlayerReplicationInfo PRI;
-	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH, MinBoxW, DoshSize;
-	local int i, j, NumSpec, NumPlayer, NumAlivePlayer, Width;
+	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH, MinBoxW, DoshSize, ScrollBarWidth;
+	local int i, j, NumSpec, NumAlivePlayer, Width;
 	local float BorderSize;
+	local ColorRGBA ColorTmp;
 
 	PC = GetPlayer();
 	if (KFGRI == None)
@@ -271,7 +285,7 @@ function DrawMenu()
 	YPos += YL;
 	BoxH = YL + BorderSize;
 	SetDrawColor(Canvas, Settings.Style.ListHeaderBoxColor);
-		Owner.CurrentStyle.DrawRectBox(	XPos - BorderSize * 2,
+	Owner.CurrentStyle.DrawRectBox(	XPos - BorderSize * 2,
 		YPos,
 		Width + BorderSize * 4,
 		BoxH,
@@ -281,24 +295,44 @@ function DrawMenu()
 	// Calc X offsets
 	MinBoxW    = Width * 0.07; // minimum width for column 
 	
-	RankXPos   = Owner.HUDOwner.ScaledBorderSize * 8 + Settings.Style.EdgeSize;
-	PlayerXPos = Width * 0.20;
+	// Health
+	HealthXPos = 0;
+	BoxW = 0;
+	foreach StateVariants(S)
+	{
+		Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
+		if (XL > BoxW) BoxW = XL;
+	}
+	HealthWBox = (BoxW < MinBoxW ? MinBoxW : BoxW) * 0.5 + BorderSize * 2;
+	
+	// Armor
+	ArmorXPos = HealthXPos + HealthWBox;  
+	ArmorWBox = HealthWBox;
+	
+	RankXPos   = ArmorXPos + ArmorWBox + Settings.Style.EdgeSize;
+	
+	PlayerXPos = Width * 0.30; // TODO
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.PingString$" ", XL, YL, FontScalar, FontScalar);
-	PingXPos = Width - (XL < MinBoxW ? MinBoxW : XL);
-	
-	Canvas.TextSize(State$" ", XL, YL, FontScalar, FontScalar);
-	HealthXPos = PingXPos - (XL < MinBoxW ? MinBoxW : XL);
+	PingWBox = XL < MinBoxW ? MinBoxW : XL;
+	if (NumPlayer <= 16) // TODO: Replace hardcoded 16
+		ScrollBarWidth = 0;
+	else
+		ScrollBarWidth = BorderSize * 8;
+	PingXPos = Width - PingWBox - ScrollBarWidth;
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.AssistsString$" ", XL, YL, FontScalar, FontScalar);
-	AssistXPos = HealthXPos - (XL < MinBoxW ? MinBoxW : XL);
+	AssistWBox = XL < MinBoxW ? MinBoxW : XL;
+	AssistXPos = PingXPos - AssistWBox;
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.KillsString$" ", XL, YL, FontScalar, FontScalar);
-	KillsXPos = AssistXPos - (XL < MinBoxW ? MinBoxW : XL);
+	KillsWBox = XL < MinBoxW ? MinBoxW : XL;
+	KillsXPos = AssistXPos - KillsWBox;
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.DoshString$" ", XL, YL, FontScalar, FontScalar);
 	Canvas.TextSize("999999", DoshSize, YL, FontScalar, FontScalar);
-	CashXPos = KillsXPos - (XL < DoshSize ? DoshSize : XL);
+	DoshWBox = XL < DoshSize ? DoshSize : XL;
+	DoshXPos = KillsXPos - DoshWBox;
 	
 	BoxW = 0;
 	foreach PerkNames(S)
@@ -306,21 +340,13 @@ function DrawMenu()
 		Canvas.TextSize(S$"A", XL, YL, FontScalar, FontScalar);
 		if (XL > BoxW) BoxW = XL;
 	}
-	PerkXPos = CashXPos - (BoxW < MinBoxW ? MinBoxW : BoxW);
+	PerkWBox = BoxW < MinBoxW ? MinBoxW : BoxW;
+	PerkXPos = DoshXPos - PerkWBox;
 	
 	Canvas.TextSize("000", XL, YL, FontScalar, FontScalar);
-	LevelXPos = PerkXPos - XL;
+	LevelWBox = XL;
+	LevelXPos = PerkXPos - LevelWBox;
 	
-	StatusWBox = PlayerXPos - RankXPos;
-	PlayerWBox = LevelXPos  - PlayerXPos;
-	LevelWBox  = PerkXPos   - LevelXPos;
-	PerkWBox   = CashXPos   - PerkXPos;
-	CashWBox   = KillsXPos  - CashXPos;
-	KillsWBox  = AssistXPos - KillsXPos;
-	AssistWBox = HealthXPos - AssistXPos;
-	HealthWBox = PingXPos   - HealthXPos;
-	PingWBox   = Width	    - PingXPos;
-
 	// Header texts
 	SetDrawColor(Canvas, Settings.Style.ListHeaderTextColor);
 	DrawTextShadowHLeftVCenter(Rank, XPos + RankXPos, YPos, FontScalar);
@@ -328,15 +354,54 @@ function DrawMenu()
 	DrawTextShadowHLeftVCenter(class'KFGFxMenu_Inventory'.default.PerkFilterString, XPos + PerkXPos, YPos, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.KillsString, XPos + KillsXPos, YPos, KillsWBox, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.AssistsString, XPos + AssistXPos, YPos, AssistWBox, FontScalar);
-	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.DoshString, XPos + CashXPos, YPos, CashWBox, FontScalar);
-	DrawTextShadowHVCenter(State, XPos + HealthXPos, YPos, HealthWBox, FontScalar);
+	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.DoshString, XPos + DoshXPos, YPos, DoshWBox, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PingString, XPos + PingXPos, YPos, PingWBox, FontScalar);
+	
+	ColorTmp = Settings.Style.ListHeaderTextColor;
+	ColorTmp.A = 150;
+	SetDrawColor(Canvas, ColorTmp);
+	
+	DrawHealthIcon(XPos + HealthXPos, YPos, HealthWBox, BoxH);
+	DrawArmorIcon(XPos + ArmorXPos, YPos, ArmorWBox, BoxH);
 
 	PlayersList.XPosition = ((Canvas.ClipX - Width) * 0.5) / InputPos[2];
 	PlayersList.YPosition = (YPos + YL + BorderSize * 4) / InputPos[3];
 	PlayersList.YSize = (1.f - PlayersList.YPosition) - 0.15;
 
 	PlayersList.ChangeListSize(KFPRIArray.Length);
+}
+
+function DrawHealthIcon(float X, float Y, float W, float H)
+{
+	local float XPos, YPos, Size, Part;
+	
+	Size = H * 0.65;
+	Part = Size / 3;
+	
+	XPos = X + (W * 0.5 - Part * 0.5);
+	YPos = Y + (H * 0.5 - Size * 0.5);
+	Owner.CurrentStyle.DrawRectBox(XPos, YPos, Part, Part, 4, 100);
+	
+	XPos = X + (W * 0.5 - Size * 0.5);
+	YPos = Y + (H * 0.5 - Part * 0.5);
+	Owner.CurrentStyle.DrawRectBox(XPos, YPos, Size, Part, 4, 100);
+	
+	XPos = X + (W * 0.5 - Part * 0.5);
+	YPos = Y + (H * 0.5 + Part * 0.5);
+	Owner.CurrentStyle.DrawRectBox(XPos, YPos, Part, Part, 4, 100);
+}
+
+function DrawArmorIcon(float X, float Y, float W, float H)
+{
+	local float XPos, YPos, Size;
+	local int Edge;
+	
+	Edge = 6;
+	Size = H * 0.65;
+	
+	XPos = X + (W * 0.5 - Size * 0.5);
+	YPos = Y + (H * 0.5 - Size * 0.5);
+	Owner.CurrentStyle.DrawRectBox(XPos, YPos, Size, Size, Edge, 252);
 }
 
 function DrawTextShadowHVCenter(string Str, float XPos, float YPos, float BoxWidth, float FontScalar)
@@ -375,6 +440,8 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local float FontScalar, TextYOffset, XL, YL, PerkIconPosX, PerkIconPosY, PerkIconSize, PrestigeIconScale;
 	local float XPos, BoxWidth, RealPlayerWBox;
 	local KFPlayerReplicationInfo KFPRI;
+	local KFPlayerController KFPC;
+	local KFPawn_Human KFPH;
 	local byte Level, PrestigeLevel;
 	local bool bIsZED;
 	local int Ping;
@@ -383,6 +450,10 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local bool HasRank;
 	local int PlayerInfoIndex, PlayerRankIndex;
 	local int Shape;
+	local float BorderSize;
+	local int Armor, MaxArmor;
+	
+	BorderSize = Owner.HUDOwner.ScaledBorderSize;
 
 	YOffset *= 1.05;
 	KFPRI = KFPRIArray[Index];
@@ -420,7 +491,6 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			HasRank = true;
 		}
 	}
-	// Now all players belongs to 'Rank'
 
 	if (KFGRI.bVersusGame)
 		bIsZED = KFTeamInfo_Zeds(KFPRI.Team) != None;
@@ -430,6 +500,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	C.Font = Owner.CurrentStyle.PickFont(FontScalar);
 
 	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
+	TextYOffset = YOffset + (Height * 0.5f) - (YL * 0.5f);
 	
 	// change rect color by HP
 	if (!KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun)
@@ -458,9 +529,6 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			SetDrawColor(C, Settings.Style.LeftStateBoxColorLow);
 	}
 	
-	if (!Settings.State.Dynamic)
-		SetDrawColor(C, Settings.Style.LeftStateBoxColor);
-
 	if (KFPRIArray.Length > 1 && Index == 0)
 		Shape = Settings.Style.ShapeLeftStateBoxTopPlayer;
 	else if (KFPRIArray.Length > 1 && Index == KFPRIArray.Length - 1)
@@ -468,17 +536,92 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	else
 		Shape = Settings.Style.ShapeLeftStateBoxMidPlayer;
 	
-	BoxWidth = Owner.HUDOwner.ScaledBorderSize * 8;
-	Owner.CurrentStyle.DrawRectBox(	XPos,
+	// Health
+	Owner.CurrentStyle.DrawRectBox(XPos,
 		YOffset,
-		BoxWidth,
+		HealthWBox,
+		Height,
+		Settings.Style.EdgeSize,
+		Shape);
+	
+	if (!KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun)
+	{
+		SetDrawColor(C, Settings.Style.StateTextColorLobby);
+		S = class'KFGFxMenu_ServerBrowser'.default.InLobbyString;;
+	}
+	else if (!KFGRI.bMatchHasBegun)
+	{
+		if (KFPRI.bReadyToPlay)
+		{
+			SetDrawColor(C, Settings.Style.StateTextColorReady);
+			S = Ready;
+		}
+		else
+		{
+			SetDrawColor(C, Settings.Style.StateTextColorNotReady);
+			S = NotReady;
+		}
+	}
+	else if (bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None)
+	{
+		SetDrawColor(C, Settings.Style.StateTextColor);
+		S = Unknown;
+	}
+	else if (KFPRI.PlayerHealth <= 0 || KFPRI.PlayerHealthPercent <= 0)
+	{
+		if (KFPRI.bOnlySpectator)
+		{
+			SetDrawColor(C, Settings.Style.StateTextColorSpectator);
+			S = class'KFCommon_LocalizedStrings'.default.SpectatorString;
+		}
+		else
+		{
+			SetDrawColor(C, Settings.Style.StateTextColorDead);
+			S = Dead;
+		}
+	}
+	else
+	{
+		if (ByteToFloat(KFPRI.PlayerHealthPercent) >= float(Settings.State.High) / 100.0)
+			SetDrawColor(C, Settings.Style.StateTextColorHighHP);
+		else if (ByteToFloat(KFPRI.PlayerHealthPercent) >= float(Settings.State.Low) / 100.0)
+			SetDrawColor(C, Settings.Style.StateTextColorMidHP);
+		else
+			SetDrawColor(C, Settings.Style.StateTextColorLowHP);
+		S = String(KFPRI.PlayerHealth);
+	}
+	
+	if (CurrentRank.ApplyColorToFields.Health)
+		SetDrawColor(C, CurrentRank.TextColor);
+	DrawTextShadowHVCenter(S, HealthXPos, TextYOffset, HealthWBox, FontScalar);
+	
+	XPos += HealthWBox;
+	
+	// Armor
+	C.SetDrawColor(0, 0, 200, 200);
+	Owner.CurrentStyle.DrawRectBox(XPos,
+		YOffset,
+		ArmorWBox,
 		Height,
 		Settings.Style.EdgeSize,
 		Shape);
 		
-	XPos += BoxWidth;
+	KFPC = KFPlayerController(KFPRI.Owner);
+	if (KFPC != None)
+	{
+		KFPH = KFPawn_Human(KFPC.Pawn);
+		if (KFPH != None)
+		{
+			Armor = int(KFPH.Armor);
+			MaxArmor = int(KFPH.MaxArmor);
+		}
+	}
+	C.SetDrawColor(250, 250, 250, 250);
+	S = String(Armor);
+	DrawTextShadowHVCenter(S, ArmorXPos, TextYOffset, HealthWBox, FontScalar);
+	XPos += ArmorWBox;
 	
-	TextYOffset = YOffset + (Height * 0.5f) - (YL * 0.5f);
+	// PlayerBox
 	if (PlayerIndex == Index)
 		SetDrawColor(C, Settings.Style.PlayerOwnerBoxColor);
 	else
@@ -491,7 +634,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	else
 		Shape = Settings.Style.ShapePlayerBoxMidPlayer;
 
-	BoxWidth = CashXPos - BoxWidth - Owner.HUDOwner.ScaledBorderSize * 2;
+	BoxWidth = DoshXPos - (HealthWBox + ArmorWBox) - BorderSize * 2;
 	Owner.CurrentStyle.DrawRectBox(XPos, YOffset, BoxWidth, Height, Settings.Style.EdgeSize, Shape);
 	
 	XPos += BoxWidth;
@@ -543,9 +686,9 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			PrestigeLevel = KFPRI.GetActivePerkPrestigeLevel();
 			Level = KFPRI.GetActivePerkLevel();
 
-			PerkIconPosY = YOffset + (Owner.HUDOwner.ScaledBorderSize * 2);
-			PerkIconSize = Height-(Owner.HUDOwner.ScaledBorderSize * 4);
-			PerkIconPosX = LevelXPos - PerkIconSize - (Owner.HUDOwner.ScaledBorderSize*2);
+			PerkIconPosY = YOffset + (BorderSize * 2);
+			PerkIconSize = Height-(BorderSize * 4);
+			PerkIconPosX = LevelXPos - PerkIconSize - (BorderSize*2);
 			PrestigeIconScale = 0.6625f;
 
 			RealPlayerWBox = PerkIconPosX - PlayerXPos;
@@ -567,8 +710,6 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			
 			if (CurrentRank.ApplyColorToFields.Level)
 				SetDrawColor(C, CurrentRank.TextColor);
-			else if (!Settings.Level.Dynamic)
-				SetDrawColor(C, Settings.Style.LevelTextColor);
 			else
 			{
 				if (Level < Settings.Level.Low[KFGRI.GameDifficulty])
@@ -642,7 +783,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		SetDrawColor(C, Settings.Style.AssistsTextColor);
 	DrawTextShadowHVCenter(string (KFPRI.Assists), AssistXPos, TextYOffset, AssistWBox, FontScalar);
 	
-	// Cash
+	// Dosh
 	if (bIsZED)
 	{
 		SetDrawColor(C, Settings.Style.ZedTextColor);
@@ -656,61 +797,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			SetDrawColor(C, Settings.Style.DoshTextColor);
 		StrValue = String(int(KFPRI.Score)); //StrValue = GetNiceSize(int(KFPRI.Score));
 	}
-	DrawTextShadowHVCenter(StrValue, CashXPos, TextYOffset, CashWBox, FontScalar);
-
-	// State
-	if (!KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun)
-	{
-		SetDrawColor(C, Settings.Style.StateTextColorLobby);
-		S = class'KFGFxMenu_ServerBrowser'.default.InLobbyString;;
-	}
-	else if (!KFGRI.bMatchHasBegun)
-	{
-		if (KFPRI.bReadyToPlay)
-		{
-			SetDrawColor(C, Settings.Style.StateTextColorReady);
-			S = Ready;
-		}
-		else
-		{
-			SetDrawColor(C, Settings.Style.StateTextColorNotReady);
-			S = NotReady;
-		}
-	}
-	else if (bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None)
-	{
-		SetDrawColor(C, Settings.Style.StateTextColor);
-		S = Unknown;
-	}
-	else if (KFPRI.PlayerHealth <= 0 || KFPRI.PlayerHealthPercent <= 0)
-	{
-		if (KFPRI.bOnlySpectator)
-		{
-			SetDrawColor(C, Settings.Style.StateTextColorSpectator);
-			S = class'KFCommon_LocalizedStrings'.default.SpectatorString;
-		}
-		else
-		{
-			SetDrawColor(C, Settings.Style.StateTextColorDead);
-			S = Dead;
-		}
-	}
-	else
-	{
-		if (ByteToFloat(KFPRI.PlayerHealthPercent) >= float(Settings.State.High) / 100.0)
-			SetDrawColor(C, Settings.Style.StateTextColorHighHP);
-		else if (ByteToFloat(KFPRI.PlayerHealthPercent) >= float(Settings.State.Low) / 100.0)
-			SetDrawColor(C, Settings.Style.StateTextColorMidHP);
-		else
-			SetDrawColor(C, Settings.Style.StateTextColorLowHP);
-		S = string(KFPRI.PlayerHealth)@"HP";
-	}
-	
-	if (CurrentRank.ApplyColorToFields.Health)
-		SetDrawColor(C, CurrentRank.TextColor);
-	else if (!Settings.State.Dynamic)
-		SetDrawColor(C, Settings.Style.StateTextColor);
-	DrawTextShadowHVCenter(S, HealthXPos, TextYOffset, HealthWBox, FontScalar);
+	DrawTextShadowHVCenter(StrValue, DoshXPos, TextYOffset, DoshWBox, FontScalar);
 
 	// Ping
 	if (KFPRI.bBot)
@@ -738,7 +825,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	DrawTextShadowHVCenter(S, PingXPos, TextYOffset, Settings.Ping.ShowPingBars ? PingWBox/2 : PingWBox, FontScalar);
 	C.SetDrawColor(250, 250, 250, 255);
 	if (Settings.Ping.ShowPingBars)
-		DrawPingBars(C, YOffset + (Height/2) - ((Height*0.5)/2), Width - (Height*0.5) - (Owner.HUDOwner.ScaledBorderSize*2), Height*0.5, Height*0.5, float(Ping));
+		DrawPingBars(C, YOffset + (Height/2) - ((Height*0.5)/2), Width - (Height*0.5) - (BorderSize*2), Height*0.5, Height*0.5, float(Ping));
 }
 
 final function DrawPingBars(Canvas C, float YOffset, float XOffset, float W, float H, float Ping)

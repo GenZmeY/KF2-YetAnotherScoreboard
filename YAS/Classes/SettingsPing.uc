@@ -1,14 +1,27 @@
-class DynamicPingColor extends Object
+class SettingsPing extends Object
 	dependson(Types)
 	config(YAS);
 
 `include(Build.uci)
 `include(Logger.uci)
 
-var config bool bEnabled;
 var config int Low;
 var config int High;
-var config bool bShowPingBars;
+
+public static function InitConfig(int ConfigVersion)
+{
+	`callstack_static("InitConfig");
+	
+	switch (ConfigVersion)
+	{
+		case 0:
+		case 1:
+			WriteSettings(DefaultSettings());
+			
+		case 2147483647:
+			StaticSaveConfig();
+	}
+}
 
 public static function YASSettingsPing DefaultSettings()
 {
@@ -25,10 +38,8 @@ public static function YASSettingsPing Settings()
 	
 	`callstack_static("Settings");
 	
-	Settings.Dynamic = default.bEnabled;
-	Settings.Low = default.Low;
+	Settings.Low  = default.Low;
 	Settings.High = default.High;
-	Settings.ShowPingBars = default.bShowPingBars;
 	
 	return Settings;
 }
@@ -37,12 +48,8 @@ public static function WriteSettings(YASSettingsPing Settings)
 {
 	`callstack_static("WriteSettings");
 	
-	default.bEnabled = Settings.Dynamic;
-	default.Low = Settings.Low;
+	default.Low  = Settings.Low;
 	default.High = Settings.High;
-	default.bShowPingBars = Settings.ShowPingBars;
-	
-	StaticSaveConfig();
 }
 
 DefaultProperties

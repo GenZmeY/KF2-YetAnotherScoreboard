@@ -5,7 +5,7 @@ class YASMut extends KFMutator
 `include(Build.uci)
 `include(Logger.uci)
 
-const CurrentVersion = 1;
+const CurrentVersion = 2;
 
 var config int ConfigVersion;
 
@@ -39,9 +39,10 @@ function PostBeginPlay()
 	Settings.Style  = class'ScoreboardStyle'.static.Settings();
 	Settings.Admin  = class'SystemAdminRank'.static.Settings();
 	Settings.Player = class'SystemPlayerRank'.static.Settings();
-	Settings.State  = class'DynamicStateColor'.static.Settings();
-	Settings.Ping   = class'DynamicPingColor'.static.Settings();
-	Settings.Level  = class'DynamicLevelColor'.static.Settings();
+	Settings.Health = class'SettingsHealth'.static.Settings();
+	Settings.Armor  = class'SettingsArmor'.static.Settings();
+	Settings.Ping   = class'SettingsPing'.static.Settings();
+	Settings.Level  = class'SettingsLevel'.static.Settings();
 }
 
 function NotifyLogin(Controller C)
@@ -69,57 +70,25 @@ private function bool IsUID(String ID)
 
 private function InitConfig()
 {
-	local RankInfo ExampleRank;
-	local RankRelation ExamplePlayer;
-	local RankRelation ExampleSteamGroup;
-	
 	`callstack();
 	
-	// Update from config version to current version if needed
+	if (ConfigVersion == 0) SaveConfig(); // because I want the main settings to be at the beginning of the config :)
+	
+	class'ScoreboardStyle'.static.InitConfig(ConfigVersion);
+	class'SystemAdminRank'.static.InitConfig(ConfigVersion);
+	class'SystemPlayerRank'.static.InitConfig(ConfigVersion);
+	class'SettingsHealth'.static.InitConfig(ConfigVersion);
+	class'SettingsArmor'.static.InitConfig(ConfigVersion);
+	class'SettingsPing'.static.InitConfig(ConfigVersion);
+	class'SettingsLevel'.static.InitConfig(ConfigVersion);
+	class'CustomRanks'.static.InitConfig(ConfigVersion);
+	class'PlayerRankRelations'.static.InitConfig(ConfigVersion);
+	class'SteamGroupRankRelations'.static.InitConfig(ConfigVersion);
+
 	switch (ConfigVersion)
 	{
-		case 0: // which means there is no config right now
-			SaveConfig(); // because I want the main settings to be at the beginning of the config :)
-			
-			class'SystemAdminRank'.static.WriteSettings(class'SystemAdminRank'.static.DefaultSettings());
-			class'SystemPlayerRank'.static.WriteSettings(class'SystemPlayerRank'.static.DefaultSettings());
-			class'ScoreboardStyle'.static.WriteSettings(class'ScoreboardStyle'.static.DefaultSettings());
-			class'DynamicStateColor'.static.WriteSettings(class'DynamicStateColor'.static.DefaultSettings());
-			class'DynamicPingColor'.static.WriteSettings(class'DynamicPingColor'.static.DefaultSettings());
-			class'DynamicLevelColor'.static.WriteSettings(class'DynamicLevelColor'.static.DefaultSettings());
-			
-			// Example rank for player(s)
-			ExampleRank.ID                              = 0;
-			ExampleRank.Rank                            = "YAS Creator";
-			ExampleRank.TextColor.R                     = 130;
-			ExampleRank.TextColor.G                     = 250;
-			ExampleRank.TextColor.B                     = 235;
-			ExampleRank.OverrideAdminRank               = true;
-			class'CustomRanks'.default.Rank.AddItem(ExampleRank);
-
-			// Example player
-			ExamplePlayer.ObjectID                      = "76561198001617867"; // GenZmeY SteamID64
-			ExamplePlayer.RankID                        = ExampleRank.ID;
-			class'PlayerRankRelations'.default.Relation.AddItem(ExamplePlayer);
-			
-			// Example rank for steam group members
-			ExampleRank.ID                              = 1;
-			ExampleRank.Rank                            = "MSK-GS";
-			ExampleRank.TextColor.R                     = 130;
-			ExampleRank.TextColor.G                     = 250;
-			ExampleRank.TextColor.B                     = 130;
-			ExampleRank.OverrideAdminRank               = false;
-			class'CustomRanks'.default.Rank.AddItem(ExampleRank);
-			
-			// Example steam group
-			ExampleSteamGroup.ObjectID                  = "103582791465384046"; // MSK-GS SteamID64
-			ExampleSteamGroup.RankID                    = ExampleRank.ID;
-			class'SteamGroupRankRelations'.default.Relation.AddItem(ExampleSteamGroup);
-
-			class'CustomRanks'.static.StaticSaveConfig();
-			class'PlayerRankRelations'.static.StaticSaveConfig();
-			class'SteamGroupRankRelations'.static.StaticSaveConfig();
-			
+		case 0:
+		case 1:
 		case 2147483647:
 			`info("Config updated to version"@CurrentVersion);
 			break;

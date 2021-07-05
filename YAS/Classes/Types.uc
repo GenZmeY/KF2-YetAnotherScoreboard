@@ -101,40 +101,45 @@ struct YASSettingsPlayer
 	}
 };
 
-struct YASSettingsState
+struct YASSettingsHealth
 {	
-	var bool Dynamic;
 	var int Low;
 	var int High;
 	
 	StructDefaultProperties
 	{
-		Dynamic = True
-		Low     = 40
-		High    = 80
+		Low  = 40
+		High = 80
+	}
+};
+
+struct YASSettingsArmor
+{	
+	var int Low;
+	var int High;
+	
+	StructDefaultProperties
+	{
+		Low  = 40
+		High = 80
 	}
 };
 
 struct YASSettingsPing
 {
-	var bool Dynamic;
 	var int Low;
 	var int High;
-	var bool ShowPingBars;
 	
 	StructDefaultProperties
 	{
-		Dynamic      = True
-		Low          = 60
-		High         = 120
-		ShowPingBars = True
+		Low  = 60
+		High = 120
 	}
 };
 
 struct YASSettingsLevel
 {
-	var bool Dynamic;
-	var int Low[4];
+	var int Low [4];
 	var int High[4];
 	
 	StructDefaultProperties
@@ -153,6 +158,7 @@ struct YASSettingsLevel
 
 struct YASStyle
 {
+	// Box shapes
 	var int       EdgeSize;
 	var int       ShapeServerNameBox;
 	var int       ShapeGameInfoBox;
@@ -168,64 +174,123 @@ struct YASStyle
 	var int       ShapeStatsBoxTopPlayer;
 	var int       ShapeStatsBoxMidPlayer;
 	var int       ShapeStatsBoxBottomPlayer;
-	
+
+	// Server box
 	var ColorRGBA ServerNameBoxColor;
 	var ColorRGBA ServerNameTextColor;
-	
+
+	// Game info box
 	var ColorRGBA GameInfoBoxColor;
 	var ColorRGBA GameInfoTextColor;
-	
+
+	// Wave info box
 	var ColorRGBA WaveBoxColor;
 	var ColorRGBA WaveTextColor;
-	
+
+	// Player count box
 	var ColorRGBA PlayerCountBoxColor;
 	var ColorRGBA PlayerCountTextColor;
-	
+
+	// Header box
 	var ColorRGBA ListHeaderBoxColor;
 	var ColorRGBA ListHeaderTextColor;
-	
-	var ColorRGBA LeftStateBoxColor;
-	var ColorRGBA LeftStateBoxColorDead;
-	var ColorRGBA LeftStateBoxColorLow;
-	var ColorRGBA LeftStateBoxColorMid;
-	var ColorRGBA LeftStateBoxColorHigh;
-	
+
+	// State box
+	var ColorRGBA StateBoxColorLobby;
+	var ColorRGBA StateBoxColorReady;
+	var ColorRGBA StateBoxColorNotReady;
+	var ColorRGBA StateBoxColorSpectator;
+	var ColorRGBA StateBoxColorDead;
+	var ColorRGBA StateBoxColorHPLow;
+	var ColorRGBA StateBoxColorHPMid;
+	var ColorRGBA StateBoxColorHPHigh;
+	var ColorRGBA StateBoxColorArmorLow;
+	var ColorRGBA StateBoxColorArmorMid;
+	var ColorRGBA StateBoxColorArmorHigh;
+
+	// Player box
 	var ColorRGBA PlayerOwnerBoxColor;
 	var ColorRGBA PlayerBoxColor;
-	var ColorRGBA StatsBoxColor;
-	
-	var ColorRGBA RankTextColor;
-	var ColorRGBA ZedTextColor;
-	var ColorRGBA PerkTextColor;
-	var ColorRGBA LevelTextColor;
-	var ColorRGBA PlayerNameTextColor;
-	var ColorRGBA KillsTextColor;
-	var ColorRGBA AssistsTextColor;
-	var ColorRGBA DoshTextColor;
-	var ColorRGBA StateTextColor;
-	var ColorRGBA PingTextColor;
-	
-	var ColorRGBA LevelTextColorLow;
-	var ColorRGBA LevelTextColorMid;
-	var ColorRGBA LevelTextColorHigh;
 
+	// Stats box
+	var ColorRGBA StatsOwnerBoxColor;
+	var ColorRGBA StatsBoxColor;
+
+	// State text
 	var ColorRGBA StateTextColorLobby;
 	var ColorRGBA StateTextColorReady;
 	var ColorRGBA StateTextColorNotReady;
 	var ColorRGBA StateTextColorSpectator;
 	var ColorRGBA StateTextColorDead;
-	var ColorRGBA StateTextColorLowHP;
-	var ColorRGBA StateTextColorMidHP;
-	var ColorRGBA StateTextColorHighHP;
-	
+	var ColorRGBA StateTextColorHPLow;
+	var ColorRGBA StateTextColorHPMid;
+	var ColorRGBA StateTextColorHPHigh;
+	var ColorRGBA StateTextColorArmorLow;
+	var ColorRGBA StateTextColorArmorMid;
+	var ColorRGBA StateTextColorArmorHigh;
+
+	// Rank text
+	var ColorRGBA RankTextColor;
+
+	// Player text
+	var ColorRGBA PlayerNameTextColor;
+
+	// Level text
+	var ColorRGBA LevelTextColorLow;
+	var ColorRGBA LevelTextColorMid;
+	var ColorRGBA LevelTextColorHigh;
+
+	// Perk text
+	var ColorRGBA ZedTextColor;
+	var ColorRGBA PerkNoneTextColor;
+	var ColorRGBA PerkBerserkerTextColor;
+	var ColorRGBA PerkCommandoTextColor;
+	var ColorRGBA PerkSupportTextColor;
+	var ColorRGBA PerkFieldMedicTextColor;
+	var ColorRGBA PerkDemolitionistTextColor;
+	var ColorRGBA PerkFirebugTextColor;
+	var ColorRGBA PerkGunslingerTextColor;
+	var ColorRGBA PerkSharpshooterTextColor;
+	var ColorRGBA PerkSwatTextColor;
+	var ColorRGBA PerkSurvivalistTextColor;
+
+	// Dosh text
+	var ColorRGBA DoshTextColorLow;
+	var ColorRGBA DoshTextColorMid;
+	var ColorRGBA DoshTextColorHigh;
+
+	// Kills text
+	var ColorRGBA KillsTextColorLow;
+	var ColorRGBA KillsTextColorMid;
+	var ColorRGBA KillsTextColorHigh;
+
+	// Assists text
+	var ColorRGBA AssistsTextColorLow;
+	var ColorRGBA AssistsTextColorMid;
+	var ColorRGBA AssistsTextColorHigh;
+
+	// Ping text
 	var ColorRGBA PingTextColorLow;
 	var ColorRGBA PingTextColorMid;
 	var ColorRGBA PingTextColorHigh;
+
+	// Other settings
+	var bool      bShowPingBars;
+	var bool      bHealthBoxSmoothColorChange;
+	var bool      bArmorBoxSmoothColorChange;
+	var bool      bHealthTextSmoothColorChange;
+	var bool      bArmorTextSmoothColorChange;
+	var bool      bLevelTextSmoothColorChange;
+	var bool      bDoshTextSmoothColorChange;
+	var bool      bKillsTextSmoothColorChange;
+	var bool      bAssistsTextSmoothColorChange;
+	var bool      bPingTextSmoothColorChange;
 	
 	StructDefaultProperties
 	{
 		EdgeSize                      = 8
 		
+		// Box shapes
 		ShapeServerNameBox            = 150
 		ShapeGameInfoBox              = 151
 		ShapeWaveInfoBox              = 0
@@ -241,68 +306,128 @@ struct YASStyle
 		ShapeStatsBoxMidPlayer        = 153
 		ShapeStatsBoxBottomPlayer     = 153
 		
-		ServerNameBoxColor      = (R=75,  G=0,   B=0,   A=200)
-		ServerNameTextColor     = (R=250, G=250, B=250, A=255)
+		// Server box
+		ServerNameBoxColor            = (R=75,  G=0,   B=0,   A=200)
+		ServerNameTextColor           = (R=250, G=250, B=250, A=255)
 		
-		GameInfoBoxColor        = (R=30,  G=30,  B=30,  A=200)
-		GameInfoTextColor       = (R=250, G=250, B=250, A=255)
+		// Game info box
+		GameInfoBoxColor              = (R=30,  G=30,  B=30,  A=200)
+		GameInfoTextColor             = (R=250, G=250, B=250, A=255)
 		
-		WaveBoxColor            = (R=10,  G=10,  B=10,  A=200)
-		WaveTextColor           = (R=250, G=250, B=250, A=255)
+		// Wave info box
+		WaveBoxColor                  = (R=10,  G=10,  B=10,  A=200)
+		WaveTextColor                 = (R=250, G=250, B=250, A=255)
 		
-		PlayerCountBoxColor     = (R=75,  G=0,   B=0,   A=200)
-		PlayerCountTextColor    = (R=250, G=250, B=250, A=255)
+		// Player count box
+		PlayerCountBoxColor           = (R=75,  G=0,   B=0,   A=200)
+		PlayerCountTextColor          = (R=250, G=250, B=250, A=255)
 		
-		ListHeaderBoxColor      = (R=10,  G=10,  B=10,  A=200)
-		ListHeaderTextColor     = (R=250, G=250, B=250, A=255)
+		// Header box
+		ListHeaderBoxColor            = (R=10,  G=10,  B=10,  A=200)
+		ListHeaderTextColor           = (R=250, G=250, B=250, A=255)
 		
-		LeftStateBoxColor       = (R=150, G=150, B=150, A=150)
-		LeftStateBoxColorDead   = (R=200, G=0,   B=0,   A=150)
-		LeftStateBoxColorLow    = (R=200, G=50,  B=50,  A=150)
-		LeftStateBoxColorMid    = (R=200, G=200, B=0,   A=150)
-		LeftStateBoxColorHigh   = (R=0,   G=200, B=0,   A=150)
+		// State box
+		StateBoxColorLobby            = (R=150, G=150, B=150, A=150)
+		StateBoxColorReady            = (R=150, G=150, B=150, A=150)
+		StateBoxColorNotReady         = (R=150, G=150, B=150, A=150)
+		StateBoxColorSpectator        = (R=150, G=150, B=150, A=150)
+		StateBoxColorDead             = (R=200, G=0,   B=0,   A=150)
+		StateBoxColorHPLow            = (R=200, G=50,  B=50,  A=150)
+		StateBoxColorHPMid            = (R=200, G=200, B=0,   A=150)
+		StateBoxColorHPHigh           = (R=0,   G=200, B=0,   A=150)
+		StateBoxColorArmorLow         = (R=0,   G=0,   B=150, A=150)
+		StateBoxColorArmorMid         = (R=0,   G=0,   B=150, A=150)
+		StateBoxColorArmorHigh        = (R=0,   G=0,   B=150, A=150)
 		
-		PlayerOwnerBoxColor     = (R=100, G=10,  B=10,  A=150)
-		PlayerBoxColor          = (R=30,  G=30,  B=30,  A=150)
-		StatsBoxColor           = (R=10,  G=10,  B=10,  A=150)
+		// Player box
+		PlayerOwnerBoxColor           = (R=100, G=10,  B=10,  A=150)
+		PlayerBoxColor                = (R=30,  G=30,  B=30,  A=150)
 		
-		RankTextColor           = (R=250, G=250, B=250, A=255)
-		ZedTextColor            = (R=255, G=0,   B=0,   A=255)
-		PerkTextColor           = (R=250, G=250, B=250, A=255)
-		LevelTextColor          = (R=250, G=250, B=250, A=255)
-		PlayerNameTextColor     = (R=250, G=250, B=250, A=255)
-		KillsTextColor          = (R=250, G=250, B=250, A=255)
-		AssistsTextColor        = (R=250, G=250, B=250, A=255)
-		DoshTextColor           = (R=250, G=250, B=100, A=255)
-		StateTextColor          = (R=150, G=150, B=150, A=150)
-		PingTextColor           = (R=250, G=250, B=250, A=255)
+		// Stats box
+		StatsOwnerBoxColor            = (R=10,  G=10,  B=10,  A=150)
+		StatsBoxColor                 = (R=10,  G=10,  B=10,  A=150)
 		
-		LevelTextColorLow       = (R=250, G=100, B=100, A=255)
-		LevelTextColorMid       = (R=250, G=250, B=0,   A=255)
-		LevelTextColorHigh      = (R=0,   G=250, B=0,   A=255)
+		// State text
+		StateTextColorLobby           = (R=150, G=150, B=150, A=150)
+		StateTextColorReady           = (R=150, G=150, B=150, A=150)
+		StateTextColorNotReady        = (R=150, G=150, B=150, A=150)
+		StateTextColorSpectator       = (R=150, G=150, B=150, A=150)
+		StateTextColorDead            = (R=250, G=0,   B=0,   A=255)
+		StateTextColorLowHP           = (R=250, G=250, B=250, A=255)
+		StateTextColorMidHP           = (R=250, G=250, B=250, A=255)
+		StateTextColorHighHP          = (R=250, G=250, B=250, A=255)
+		StateTextColorArmorLow        = (R=250, G=250, B=250, A=255)
+		StateTextColorArmorMid        = (R=250, G=250, B=250, A=255)
+		StateTextColorArmorHigh       = (R=250, G=250, B=250, A=255)
 		
-		StateTextColorLobby     = (R=150, G=150, B=150, A=150)
-		StateTextColorReady     = (R=150, G=150, B=150, A=150)
-		StateTextColorNotReady  = (R=150, G=150, B=150, A=150)
-		StateTextColorSpectator = (R=150, G=150, B=150, A=150)
-		StateTextColorDead      = (R=250, G=0,   B=0,   A=255)
-		StateTextColorLowHP     = (R=250, G=100, B=100, A=255)
-		StateTextColorMidHP     = (R=250, G=250, B=0,   A=255)
-		StateTextColorHighHP    = (R=0,   G=250, B=0,   A=255)
+		// Rank text
+		RankTextColor                 = (R=250, G=250, B=250, A=255)
 		
-		PingTextColorLow        = (R=0,   G=250, B=0,   A=255)
-		PingTextColorMid        = (R=250, G=250, B=0,   A=255)
-		PingTextColorHigh       = (R=250, G=0,   B=0,   A=255)
+		// Player text
+		PlayerNameTextColor           = (R=250, G=250, B=250, A=255)
+		
+		// Level text
+		LevelTextColorLow             = (R=250, G=100, B=100, A=255)
+		LevelTextColorMid             = (R=250, G=250, B=0,   A=255)
+		LevelTextColorHigh            = (R=0,   G=250, B=0,   A=255)
+		
+		// Perk text
+		ZedTextColor                  = (R=255, G=0,   B=0,   A=255)
+		PerkNoneTextColor             = (R=250, G=250, B=250, A=255)
+		PerkBerserkerTextColor        = (R=250, G=250, B=250, A=255)
+		PerkCommandoTextColor         = (R=250, G=250, B=250, A=255)
+		PerkSupportTextColor          = (R=250, G=250, B=250, A=255)
+		PerkFieldMedicTextColor       = (R=250, G=250, B=250, A=255)
+		PerkDemolitionistTextColor    = (R=250, G=250, B=250, A=255)
+		PerkFirebugTextColor          = (R=250, G=250, B=250, A=255)
+		PerkGunslingerTextColor       = (R=250, G=250, B=250, A=255)
+		PerkSharpshooterTextColor     = (R=250, G=250, B=250, A=255)
+		PerkSwatTextColor             = (R=250, G=250, B=250, A=255)
+		PerkSurvivalistTextColor      = (R=250, G=250, B=250, A=255)
+	
+		// Dosh text
+		DoshTextColorLow              = (R=250, G=250, B=100, A=255)
+		DoshTextColorMid              = (R=250, G=250, B=100, A=255)
+		DoshTextColorHigh             = (R=250, G=250, B=100, A=255)
+	
+		// Kills text
+		KillsTextColorLow             = (R=250, G=250, B=250, A=255)
+		KillsTextColorMid             = (R=250, G=250, B=250, A=255)
+		KillsTextColorHigh            = (R=250, G=250, B=250, A=255)
+	
+		// Assists text
+		AssistsTextColorLow           = (R=250, G=250, B=250, A=255)
+		AssistsTextColorMid           = (R=250, G=250, B=250, A=255)
+		AssistsTextColorHigh          = (R=250, G=250, B=250, A=255)
+		
+		// Ping text
+		PingTextColorNone             = (R=250, G=250, B=250, A=255)
+		PingTextColorLow              = (R=0,   G=250, B=0,   A=255)
+		PingTextColorMid              = (R=250, G=250, B=0,   A=255)
+		PingTextColorHigh             = (R=250, G=0,   B=0,   A=255)
+		
+		// Other settings
+		bShowPingBars                 = true
+		bHealthBoxSmoothColorChange   = true
+		bArmorBoxSmoothColorChange    = true
+		bHealthTextSmoothColorChange  = false
+		bArmorTextSmoothColorChange   = false
+		bLevelTextSmoothColorChange   = false
+		bDoshTextSmoothColorChange    = false
+		bKillsTextSmoothColorChange   = false
+		bAssistsTextSmoothColorChange = false
+		bPingTextSmoothColorChange    = false
 	}
 };
 
 struct YASSettings
 {
-	var YASStyle Style;
-	var YASSettingsAdmin Admin;
+	var YASStyle          Style;
+	var YASSettingsAdmin  Admin;
 	var YASSettingsPlayer Player;
-	var YASSettingsState State;
-	var YASSettingsPing Ping;
-	var YASSettingsLevel Level;
+	var YASSettingsPing   Ping;
+	var YASSettingsLevel  Level;
+	var YASSettingsHealth Health;
+	var YASSettingsArmor  Armor;
 };
 

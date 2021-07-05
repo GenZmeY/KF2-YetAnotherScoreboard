@@ -9,6 +9,21 @@ var config string    Rank;
 var config ColorRGBA TextColor;
 var config Fields    ApplyColorToFields;
 
+public static function InitConfig(int ConfigVersion)
+{
+	`callstack_static("InitConfig");
+	
+	switch (ConfigVersion)
+	{
+		case 0:
+		case 1:
+			WriteSettings(DefaultSettings());
+			
+		case 2147483647:
+			StaticSaveConfig();
+	}
+}
+
 public static function YASSettingsPlayer DefaultSettings()
 {
 	local YASSettingsPlayer Settings;
@@ -38,8 +53,6 @@ public static function WriteSettings(YASSettingsPlayer Settings)
 	default.Rank = Settings.Rank;
 	default.TextColor = Settings.TextColor;
 	default.ApplyColorToFields = Settings.ApplyColorToFields;
-	
-	StaticSaveConfig();
 }
 
 DefaultProperties

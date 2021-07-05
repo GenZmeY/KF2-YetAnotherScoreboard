@@ -1146,6 +1146,42 @@ final function DrawRectBox(float X, float Y, float Width, float Height, int Edge
 		);
 		break;
 		
+		case 250:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 251:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_BeveledCorner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_Corner // BottomRight
+		);
+		break;
+		
+		case 252:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_Corner, // TopRight
+			ECS_BeveledCorner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
+		case 253:
+		DrawRectBoxSmart(X, Y, Width, Height, Edge, 
+			ECS_Corner, // TopLeft
+			ECS_BeveledCorner, // TopRight
+			ECS_Corner, // BottomLeft
+			ECS_BeveledCorner // BottomRight
+		);
+		break;
+		
 		default: // 0
 		//   ______
 		//  /      \
