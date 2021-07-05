@@ -51,6 +51,7 @@ var config ColorRGBA StateBoxColorReady;
 var config ColorRGBA StateBoxColorNotReady;
 var config ColorRGBA StateBoxColorSpectator;
 var config ColorRGBA StateBoxColorDead;
+var config ColorRGBA StateBoxColorNone;
 var config ColorRGBA StateBoxColorHealthLow;
 var config ColorRGBA StateBoxColorHealthMid;
 var config ColorRGBA StateBoxColorHealthHigh;
@@ -72,7 +73,7 @@ var config ColorRGBA StateTextColorReady;
 var config ColorRGBA StateTextColorNotReady;
 var config ColorRGBA StateTextColorSpectator;
 var config ColorRGBA StateTextColorDead;
-var config ColorRGBA StateTextColorHealthUnknown;
+var config ColorRGBA StateTextColorNone;
 var config ColorRGBA StateTextColorHealthLow;
 var config ColorRGBA StateTextColorHealthMid;
 var config ColorRGBA StateTextColorHealthHigh;
@@ -187,6 +188,7 @@ public static function InitConfig(int ConfigVersion)
 			default.StateBoxColorArmorLow           = DefaultStyle.StateBoxColorArmorLow;
 			default.StateBoxColorArmorMid           = DefaultStyle.StateBoxColorArmorMid;
 			default.StateBoxColorDead               = DefaultStyle.StateBoxColorDead;
+			default.StateBoxColorNone               = DefaultStyle.StateBoxColorNone;
 			default.StateBoxColorHealthHigh         = DefaultStyle.StateBoxColorHealthHigh;
 			default.StateBoxColorHealthLow          = DefaultStyle.StateBoxColorHealthLow;
 			default.StateBoxColorHealthMid          = DefaultStyle.StateBoxColorHealthMid;
@@ -197,7 +199,7 @@ public static function InitConfig(int ConfigVersion)
 			default.StateTextColorArmorHigh         = DefaultStyle.StateTextColorArmorHigh;
 			default.StateTextColorArmorLow          = DefaultStyle.StateTextColorArmorLow;
 			default.StateTextColorArmorMid          = DefaultStyle.StateTextColorArmorMid;
-			default.StateTextColorHealthUnknown     = DefaultStyle.StateTextColorHealthUnknown;
+			default.StateTextColorNone              = DefaultStyle.StateTextColorNone;
 			default.StateTextColorHealthHigh        = DefaultStyle.StateTextColorHealthHigh;
 			default.StateTextColorHealthLow         = DefaultStyle.StateTextColorHealthLow;
 			default.StateTextColorHealthMid         = DefaultStyle.StateTextColorHealthMid;
@@ -278,6 +280,7 @@ public static function YASStyle Settings()
 	Settings.StateBoxColorNotReady           = default.StateBoxColorNotReady;
 	Settings.StateBoxColorSpectator          = default.StateBoxColorSpectator;
 	Settings.StateBoxColorDead               = default.StateBoxColorDead;
+	Settings.StateBoxColorNone               = default.StateBoxColorNone;
 	Settings.StateBoxColorHealthLow          = default.StateBoxColorHealthLow;
 	Settings.StateBoxColorHealthMid          = default.StateBoxColorHealthMid;
 	Settings.StateBoxColorHealthHigh         = default.StateBoxColorHealthHigh;
@@ -299,7 +302,7 @@ public static function YASStyle Settings()
 	Settings.StateTextColorNotReady          = default.StateTextColorNotReady;
 	Settings.StateTextColorSpectator         = default.StateTextColorSpectator;
 	Settings.StateTextColorDead              = default.StateTextColorDead;
-	Settings.StateTextColorHealthUnknown     = default.StateTextColorHealthUnknown;
+	Settings.StateTextColorNone              = default.StateTextColorNone;
 	Settings.StateTextColorHealthLow         = default.StateTextColorHealthLow;
 	Settings.StateTextColorHealthMid         = default.StateTextColorHealthMid;
 	Settings.StateTextColorHealthHigh        = default.StateTextColorHealthHigh;
@@ -354,16 +357,16 @@ public static function YASStyle Settings()
 	Settings.PingTextColorHigh               = default.PingTextColorHigh;
 	
 	// Other settings
-	Settings.ShowPingBars                   = default.bShowPingBars;
-	Settings.HealthBoxSmoothColorChange     = default.bHealthBoxSmoothColorChange;
-	Settings.ArmorBoxSmoothColorChange      = default.bArmorBoxSmoothColorChange;
-	Settings.HealthTextSmoothColorChange    = default.bHealthTextSmoothColorChange;
-	Settings.ArmorTextSmoothColorChange     = default.bArmorTextSmoothColorChange;
-	Settings.LevelTextSmoothColorChange     = default.bLevelTextSmoothColorChange;
-	Settings.DoshTextSmoothColorChange      = default.bDoshTextSmoothColorChange;
-	Settings.KillsTextSmoothColorChange     = default.bKillsTextSmoothColorChange;
-	Settings.AssistsTextSmoothColorChange   = default.bAssistsTextSmoothColorChange;
-	Settings.PingTextSmoothColorChange      = default.bPingTextSmoothColorChange;
+	Settings.ShowPingBars                    = default.bShowPingBars;
+	Settings.HealthBoxSmoothColorChange      = default.bHealthBoxSmoothColorChange;
+	Settings.ArmorBoxSmoothColorChange       = default.bArmorBoxSmoothColorChange;
+	Settings.HealthTextSmoothColorChange     = default.bHealthTextSmoothColorChange;
+	Settings.ArmorTextSmoothColorChange      = default.bArmorTextSmoothColorChange;
+	Settings.LevelTextSmoothColorChange      = default.bLevelTextSmoothColorChange;
+	Settings.DoshTextSmoothColorChange       = default.bDoshTextSmoothColorChange;
+	Settings.KillsTextSmoothColorChange      = default.bKillsTextSmoothColorChange;
+	Settings.AssistsTextSmoothColorChange    = default.bAssistsTextSmoothColorChange;
+	Settings.PingTextSmoothColorChange       = default.bPingTextSmoothColorChange;
 
 	return Settings;
 }
@@ -418,6 +421,7 @@ public static function WriteSettings(YASStyle Settings)
 	default.StateBoxColorNotReady           = Settings.StateBoxColorNotReady;
 	default.StateBoxColorSpectator          = Settings.StateBoxColorSpectator;
 	default.StateBoxColorDead               = Settings.StateBoxColorDead;
+	default.StateBoxColorNone               = Settings.StateBoxColorNone;
 	default.StateBoxColorHealthLow          = Settings.StateBoxColorHealthLow;
 	default.StateBoxColorHealthMid          = Settings.StateBoxColorHealthMid;
 	default.StateBoxColorHealthHigh         = Settings.StateBoxColorHealthHigh;
@@ -439,7 +443,7 @@ public static function WriteSettings(YASStyle Settings)
 	default.StateTextColorNotReady          = Settings.StateTextColorNotReady;
 	default.StateTextColorSpectator         = Settings.StateTextColorSpectator;
 	default.StateTextColorDead              = Settings.StateTextColorDead;
-	default.StateTextColorHealthUnknown     = Settings.StateTextColorHealthUnknown;
+	default.StateTextColorNone              = Settings.StateTextColorNone;
 	default.StateTextColorHealthLow         = Settings.StateTextColorHealthLow;
 	default.StateTextColorHealthMid         = Settings.StateTextColorHealthMid;
 	default.StateTextColorHealthHigh        = Settings.StateTextColorHealthHigh;

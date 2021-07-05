@@ -453,6 +453,8 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local float BorderSize;
 	local int Armor, MaxArmor;
 	
+	local ColorRGBA HealthBoxColor, ArmorBoxColor, HealthTextColor, ArmorTextColor;
+	
 	BorderSize = Owner.HUDOwner.ScaledBorderSize;
 
 	YOffset *= 1.05;
@@ -509,49 +511,67 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	else
 		Shape = Settings.Style.ShapeStateHealthBoxMidPlayer;
 	
-	// Health
-	Owner.CurrentStyle.DrawRectBox(XPos,
-		YOffset,
-		HealthWBox,
-		Height,
-		Settings.Style.EdgeSize,
-		Shape);
-	
 	if (!KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun)
 	{
-		SetDrawColor(C, Settings.Style.StateTextColorLobby);
+		HealthBoxColor = Settings.Style.StateBoxColorLobby;
+		ArmorBoxColor = Settings.Style.StateBoxColorLobby;
+		HealthTextColor = Settings.Style.StateTextColorLobby;
+		ArmorTextColor = Settings.Style.StateTextColorLobby;
 		S = class'KFGFxMenu_ServerBrowser'.default.InLobbyString;;
 	}
 	else if (!KFGRI.bMatchHasBegun)
 	{
 		if (KFPRI.bReadyToPlay)
 		{
-			SetDrawColor(C, Settings.Style.StateTextColorReady);
+			HealthBoxColor = Settings.Style.StateBoxColorReady;
+			ArmorBoxColor = Settings.Style.StateBoxColorReady;
+			HealthTextColor = Settings.Style.StateBoxColorReady;
+			ArmorTextColor = Settings.Style.StateBoxColorReady;
 			S = Ready;
 		}
 		else
 		{
-			SetDrawColor(C, Settings.Style.StateTextColorNotReady);
+			HealthBoxColor = Settings.Style.StateBoxColorNotReady;
+			ArmorBoxColor = Settings.Style.StateBoxColorNotReady;
+			HealthTextColor = Settings.Style.StateBoxColorNotReady;
+			ArmorTextColor = Settings.Style.StateBoxColorNotReady;
 			S = NotReady;
 		}
 	}
 	else if (bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None)
 	{
-		SetDrawColor(C, Settings.Style.StateTextColorHealthUnknown);
+		HealthBoxColor = Settings.Style.StateTextColorNone;
+		ArmorBoxColor = Settings.Style.StateTextColorNone;
+		HealthTextColor = Settings.Style.StateTextColorNone;
+		ArmorTextColor = Settings.Style.StateTextColorNone;
 		S = Unknown;
 	}
 	else if (KFPRI.PlayerHealth <= 0 || KFPRI.PlayerHealthPercent <= 0)
 	{
 		if (KFPRI.bOnlySpectator)
 		{
-			SetDrawColor(C, Settings.Style.StateTextColorSpectator);
+			HealthBoxColor = Settings.Style.StateTextColorSpectator;
+			ArmorBoxColor = Settings.Style.StateTextColorSpectator;
+			HealthTextColor = Settings.Style.StateTextColorSpectator;
+			ArmorTextColor = Settings.Style.StateTextColorSpectator;
 			S = class'KFCommon_LocalizedStrings'.default.SpectatorString;
 		}
 		else
 		{
-			SetDrawColor(C, Settings.Style.StateTextColorDead);
+			HealthBoxColor = Settings.Style.StateTextColorDead;
+			ArmorBoxColor = Settings.Style.StateTextColorDead;
+			HealthTextColor = Settings.Style.StateTextColorDead;
+			ArmorTextColor = Settings.Style.StateTextColorDead;
 			S = Dead;
 		}
+		
+		// Health
+		Owner.CurrentStyle.DrawRectBox(XPos,
+			YOffset,
+			HealthWBox,
+			Height,
+			Settings.Style.EdgeSize,
+			Shape);
 	}
 	else
 	{

@@ -205,6 +205,7 @@ struct YASStyle
 	var ColorRGBA StateBoxColorNotReady;
 	var ColorRGBA StateBoxColorSpectator;
 	var ColorRGBA StateBoxColorDead;
+	var ColorRGBA StateBoxColorNone;
 	var ColorRGBA StateBoxColorHealthLow;
 	var ColorRGBA StateBoxColorHealthMid;
 	var ColorRGBA StateBoxColorHealthHigh;
@@ -226,7 +227,7 @@ struct YASStyle
 	var ColorRGBA StateTextColorNotReady;
 	var ColorRGBA StateTextColorSpectator;
 	var ColorRGBA StateTextColorDead;
-	var ColorRGBA StateTextColorHealthUnknown;
+	var ColorRGBA StateTextColorNone;
 	var ColorRGBA StateTextColorHealthLow;
 	var ColorRGBA StateTextColorHealthMid;
 	var ColorRGBA StateTextColorHealthHigh;
@@ -341,7 +342,7 @@ struct YASStyle
 		StateBoxColorNotReady           = (R=150, G=150, B=150, A=150)
 		StateBoxColorSpectator          = (R=150, G=150, B=150, A=150)
 		StateBoxColorDead               = (R=200, G=0,   B=0,   A=150)
-		StateTextColorHealthUnknown     = (R=150, G=150, B=150, A=150)
+		StateBoxColorNone            = (R=150, G=150, B=150, A=150)
 		StateBoxColorHealthLow          = (R=200, G=50,  B=50,  A=150)
 		StateBoxColorHealthMid          = (R=200, G=200, B=0,   A=150)
 		StateBoxColorHealthHigh         = (R=0,   G=200, B=0,   A=150)
@@ -363,6 +364,7 @@ struct YASStyle
 		StateTextColorNotReady          = (R=150, G=150, B=150, A=150)
 		StateTextColorSpectator         = (R=150, G=150, B=150, A=150)
 		StateTextColorDead              = (R=250, G=0,   B=0,   A=255)
+		StateTextColorNone              = (R=250, G=250, B=250, A=255)
 		StateTextColorHealthLow         = (R=250, G=250, B=250, A=255)
 		StateTextColorHealthMid         = (R=250, G=250, B=250, A=255)
 		StateTextColorHealthHigh        = (R=250, G=250, B=250, A=255)
