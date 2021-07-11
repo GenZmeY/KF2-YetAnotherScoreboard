@@ -4,8 +4,8 @@ class KFScoreBoard extends KFGUI_Page
 `include(Build.uci)
 `include(Logger.uci)
 
-var transient float HealthXPos, ArmorXPos, RankXPos, PlayerXPos, LevelXPos, PerkXPos, DoshXPos, KillsXPos, AssistXPos, PingXPos;
-var transient float HealthWBox, ArmorWBox, RankWBox, PlayerWBox, LevelWBox, PerkWBox, DoshWBox, KillsWBox, AssistWBox, PingWBox;
+var transient float HealthXPos, ArmorXPos, RankXPos, PlayerXPos, LevelXPos, PerkXPos, DoshXPos, KillsXPos, AssistXPos, PingXPos, ScrollXPos;
+var transient float HealthWBox, ArmorWBox, RankWBox, PlayerWBox, LevelWBox, PerkWBox, DoshWBox, KillsWBox, AssistWBox, PingWBox, ScrollWBox;
 var transient float NextScoreboardRefresh;
 var transient int   NumPlayer;
 
@@ -315,7 +315,7 @@ function DrawMenu()
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.PingString$" ", XL, YL, FontScalar, FontScalar);
 	PingWBox = XL < MinBoxW ? MinBoxW : XL;
-	if (NumPlayer <= 16) // TODO: Replace hardcoded 16
+	if (NumPlayer <= PlayersList.ListItemsPerPage)
 		ScrollBarWidth = 0;
 	else
 		ScrollBarWidth = BorderSize * 8;
