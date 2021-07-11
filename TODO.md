@@ -8,5 +8,5 @@
 + dynamic colors for assists
 - abbreviated dosh display (10K, 15K, etc.)
 - images for HP (cross, skull with bones if dead) 
-- show armor
-- use rank id as priority
++ show armor
++ use rank id as priority
