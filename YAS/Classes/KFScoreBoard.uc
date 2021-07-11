@@ -449,9 +449,12 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local RankInfo CurrentRank;
 	local bool HasRank;
 	local int PlayerInfoIndex, PlayerRankIndex;
-	local int Shape;
 	local float BorderSize;
+	
+	local int Shape, ShapeHealth, ShapeArmor;
+	local int Health, MaxHealth;
 	local int Armor, MaxArmor;
+	local string TextHealth, TextArmor, TextState;
 	
 	local ColorRGBA HealthBoxColor, ArmorBoxColor, HealthTextColor, ArmorTextColor;
 	
@@ -505,11 +508,20 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	TextYOffset = YOffset + (Height * 0.5f) - (YL * 0.5f);
 	
 	if (KFPRIArray.Length > 1 && Index == 0)
-		Shape = Settings.Style.ShapeStateHealthBoxTopPlayer;
+	{
+		ShapeHealth = Settings.Style.ShapeStateHealthBoxTopPlayer;
+		ShapeArmor = Settings.Style.ShapeStateArmorBoxTopPlayer;
+	}
 	else if (KFPRIArray.Length > 1 && Index == KFPRIArray.Length - 1)
-		Shape = Settings.Style.ShapeStateHealthBoxBottomPlayer;
+	{
+		ShapeHealth = Settings.Style.ShapeStateHealthBoxBottomPlayer;
+		ShapeArmor = Settings.Style.ShapeStateArmorBoxBottomPlayer;
+	}
 	else
-		Shape = Settings.Style.ShapeStateHealthBoxMidPlayer;
+	{
+		ShapeHealth = Settings.Style.ShapeStateHealthBoxMidPlayer;
+		ShapeArmor = Settings.Style.ShapeStateArmorBoxMidPlayer;
+	}
 	
 	if (!KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun)
 	{
@@ -517,7 +529,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		ArmorBoxColor = Settings.Style.StateBoxColorLobby;
 		HealthTextColor = Settings.Style.StateTextColorLobby;
 		ArmorTextColor = Settings.Style.StateTextColorLobby;
-		S = class'KFGFxMenu_ServerBrowser'.default.InLobbyString;;
+		TextState = class'KFGFxMenu_ServerBrowser'.default.InLobbyString;;
 	}
 	else if (!KFGRI.bMatchHasBegun)
 	{
@@ -527,7 +539,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			ArmorBoxColor = Settings.Style.StateBoxColorReady;
 			HealthTextColor = Settings.Style.StateBoxColorReady;
 			ArmorTextColor = Settings.Style.StateBoxColorReady;
-			S = Ready;
+			TextState = Ready;
 		}
 		else
 		{
@@ -535,7 +547,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			ArmorBoxColor = Settings.Style.StateBoxColorNotReady;
 			HealthTextColor = Settings.Style.StateBoxColorNotReady;
 			ArmorTextColor = Settings.Style.StateBoxColorNotReady;
-			S = NotReady;
+			TextState = NotReady;
 		}
 	}
 	else if (bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None)
@@ -544,7 +556,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		ArmorBoxColor = Settings.Style.StateTextColorNone;
 		HealthTextColor = Settings.Style.StateTextColorNone;
 		ArmorTextColor = Settings.Style.StateTextColorNone;
-		S = Unknown;
+		TextState = Unknown;
 	}
 	else if (KFPRI.PlayerHealth <= 0 || KFPRI.PlayerHealthPercent <= 0)
 	{
@@ -554,7 +566,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			ArmorBoxColor = Settings.Style.StateTextColorSpectator;
 			HealthTextColor = Settings.Style.StateTextColorSpectator;
 			ArmorTextColor = Settings.Style.StateTextColorSpectator;
-			S = class'KFCommon_LocalizedStrings'.default.SpectatorString;
+			TextState = class'KFCommon_LocalizedStrings'.default.SpectatorString;
 		}
 		else
 		{
@@ -562,57 +574,103 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			ArmorBoxColor = Settings.Style.StateTextColorDead;
 			HealthTextColor = Settings.Style.StateTextColorDead;
 			ArmorTextColor = Settings.Style.StateTextColorDead;
-			S = Dead;
+			TextState = Dead;
 		}
-		
-		// Health
-		Owner.CurrentStyle.DrawRectBox(XPos,
-			YOffset,
-			HealthWBox,
-			Height,
-			Settings.Style.EdgeSize,
-			Shape);
 	}
 	else
 	{
 		if (ByteToFloat(KFPRI.PlayerHealthPercent) >= float(Settings.Health.High) / 100.0)
-			SetDrawColor(C, Settings.Style.StateTextColorHealthHigh);
+		{
+			HealthBoxColor = Settings.Style.StateBoxColorHealthHigh;
+			HealthTextColor = Settings.Style.StateTextColorHealthHigh;
+		}
 		else if (ByteToFloat(KFPRI.PlayerHealthPercent) >= float(Settings.Health.Low) / 100.0)
-			SetDrawColor(C, Settings.Style.StateTextColorHealthMid);
+		{
+			HealthBoxColor = Settings.Style.StateBoxColorHealthMid;
+			HealthTextColor = Settings.Style.StateTextColorHealthMid;
+		}
 		else
-			SetDrawColor(C, Settings.Style.StateTextColorHealthLow);
-		S = String(KFPRI.PlayerHealth);
+		{
+			HealthBoxColor = Settings.Style.StateBoxColorHealthLow;
+			HealthTextColor = Settings.Style.StateTextColorHealthLow;
+		}
+		TextHealth = String(KFPRI.PlayerHealth);
+
+		KFPC = KFPlayerController(KFPRI.Owner);
+		if (KFPC != None)
+		{
+			KFPH = KFPawn_Human(KFPC.Pawn);
+			if (KFPH != None)
+			{
+				TextArmor = String(KFPH.Armor);
+				if (ByteToFloat(KFPH.Armor / KFPH.MaxArmor) >= float(Settings.Armor.High) / 100.0)
+				{
+					ArmorBoxColor = Settings.Style.StateBoxColorArmorHigh;
+					ArmorTextColor = Settings.Style.StateTextColorArmorHigh;
+				}
+				else if (ByteToFloat(KFPH.Armor / KFPH.MaxArmor) >= float(Settings.Armor.Low) / 100.0)
+				{
+					ArmorBoxColor = Settings.Style.StateBoxColorArmorMid;
+					ArmorTextColor = Settings.Style.StateTextColorArmorMid;
+				}
+				else if (KFPH.Armor > 0)
+				{
+					ArmorBoxColor = Settings.Style.StateBoxColorArmorLow;
+					ArmorTextColor = Settings.Style.StateTextColorArmorLow;
+				}
+				else
+				{
+					ArmorBoxColor = Settings.Style.StateBoxColorArmorNone;
+					ArmorTextColor = Settings.Style.StateTextColorArmorNone;
+				}
+			}
+		}
 	}
 	
-	if (CurrentRank.ApplyColorToFields.Health)
-		SetDrawColor(C, CurrentRank.TextColor);
-	DrawTextShadowHVCenter(S, HealthXPos, TextYOffset, HealthWBox, FontScalar);
-	
-	XPos += HealthWBox;
-	
-	// Armor
-	C.SetDrawColor(0, 0, 200, 200);
+	// Health box
+	SetDrawColor(C, HealthBoxColor);
 	Owner.CurrentStyle.DrawRectBox(XPos,
+		YOffset,
+		HealthWBox,
+		Height,
+		Settings.Style.EdgeSize,
+		ShapeHealth);
+		
+	// Armor box
+	SetDrawColor(C, ArmorBoxColor);
+	Owner.CurrentStyle.DrawRectBox(XPos + ArmorWBox,
 		YOffset,
 		ArmorWBox,
 		Height,
 		Settings.Style.EdgeSize,
-		Shape);
-		
-	KFPC = KFPlayerController(KFPRI.Owner);
-	if (KFPC != None)
+		ShapeArmor);
+	
+	if (TextState != "")
 	{
-		KFPH = KFPawn_Human(KFPC.Pawn);
-		if (KFPH != None)
-		{
-			Armor = int(KFPH.Armor);
-			MaxArmor = int(KFPH.MaxArmor);
-		}
+		SetDrawColor(C, HealthTextColor);
+		if (CurrentRank.ApplyColorToFields.Health)
+			SetDrawColor(C, CurrentRank.TextColor);
+		
+		DrawTextShadowHVCenter(TextState, HealthXPos, TextYOffset, HealthWBox + ArmorWBox, FontScalar);
+		
+		XPos += (HealthWBox + ArmorWBox);
 	}
-	C.SetDrawColor(250, 250, 250, 250);
-	S = String(Armor);
-	DrawTextShadowHVCenter(S, ArmorXPos, TextYOffset, HealthWBox, FontScalar);
-	XPos += ArmorWBox;
+	else
+	{
+		if (CurrentRank.ApplyColorToFields.Health)
+			SetDrawColor(C, CurrentRank.TextColor);
+		else
+			SetDrawColor(C, HealthTextColor);
+		DrawTextShadowHVCenter(TextHealth, HealthXPos, TextYOffset, HealthWBox, FontScalar);
+		XPos += HealthWBox;
+		
+		if (CurrentRank.ApplyColorToFields.Armor)
+			SetDrawColor(C, CurrentRank.TextColor);
+		else
+			SetDrawColor(C, ArmorTextColor);
+		DrawTextShadowHVCenter(TextArmor, ArmorXPos, TextYOffset, HealthWBox, FontScalar);
+		XPos += ArmorWBox;
+	}
 	
 	// PlayerBox
 	if (PlayerIndex == Index)
@@ -761,11 +819,15 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	// Kill
 	if (CurrentRank.ApplyColorToFields.Kills)
 		SetDrawColor(C, CurrentRank.TextColor);
+	else
+		SetDrawColor(C, Settings.Style.KillsTextColorMid); // TODO
 	DrawTextShadowHVCenter(string (KFPRI.Kills), KillsXPos, TextYOffset, KillsWBox, FontScalar);
 
 	// Assist
 	if (CurrentRank.ApplyColorToFields.Assists)
 		SetDrawColor(C, CurrentRank.TextColor);
+	else
+		SetDrawColor(C, Settings.Style.AssistsTextColorMid); // TODO
 	DrawTextShadowHVCenter(string (KFPRI.Assists), AssistXPos, TextYOffset, AssistWBox, FontScalar);
 	
 	// Dosh
@@ -778,6 +840,8 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	{
 		if (CurrentRank.ApplyColorToFields.Dosh)
 			SetDrawColor(C, CurrentRank.TextColor);
+		else
+			SetDrawColor(C, Settings.Style.DoshTextColorMid); // TODO
 		StrValue = String(int(KFPRI.Score)); //StrValue = GetNiceSize(int(KFPRI.Score));
 	}
 	DrawTextShadowHVCenter(StrValue, DoshXPos, TextYOffset, DoshWBox, FontScalar);

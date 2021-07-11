@@ -58,6 +58,7 @@ var config ColorRGBA StateBoxColorHealthHigh;
 var config ColorRGBA StateBoxColorArmorLow;
 var config ColorRGBA StateBoxColorArmorMid;
 var config ColorRGBA StateBoxColorArmorHigh;
+var config ColorRGBA StateBoxColorArmorNone;
 
 // Player box
 var config ColorRGBA PlayerOwnerBoxColor;
@@ -80,6 +81,7 @@ var config ColorRGBA StateTextColorHealthHigh;
 var config ColorRGBA StateTextColorArmorLow;
 var config ColorRGBA StateTextColorArmorMid;
 var config ColorRGBA StateTextColorArmorHigh;
+var config ColorRGBA StateTextColorArmorNone;
 
 // Rank text
 var config ColorRGBA RankTextColor;
@@ -187,6 +189,7 @@ public static function InitConfig(int ConfigVersion)
 			default.StateBoxColorArmorHigh          = DefaultStyle.StateBoxColorArmorHigh;
 			default.StateBoxColorArmorLow           = DefaultStyle.StateBoxColorArmorLow;
 			default.StateBoxColorArmorMid           = DefaultStyle.StateBoxColorArmorMid;
+			default.StateBoxColorArmorNone          = DefaultStyle.StateBoxColorArmorNone;
 			default.StateBoxColorDead               = DefaultStyle.StateBoxColorDead;
 			default.StateBoxColorNone               = DefaultStyle.StateBoxColorNone;
 			default.StateBoxColorHealthHigh         = DefaultStyle.StateBoxColorHealthHigh;
@@ -199,6 +202,7 @@ public static function InitConfig(int ConfigVersion)
 			default.StateTextColorArmorHigh         = DefaultStyle.StateTextColorArmorHigh;
 			default.StateTextColorArmorLow          = DefaultStyle.StateTextColorArmorLow;
 			default.StateTextColorArmorMid          = DefaultStyle.StateTextColorArmorMid;
+			default.StateTextColorArmorNone         = DefaultStyle.StateTextColorArmorNone;
 			default.StateTextColorNone              = DefaultStyle.StateTextColorNone;
 			default.StateTextColorHealthHigh        = DefaultStyle.StateTextColorHealthHigh;
 			default.StateTextColorHealthLow         = DefaultStyle.StateTextColorHealthLow;
@@ -287,6 +291,7 @@ public static function YASStyle Settings()
 	Settings.StateBoxColorArmorLow           = default.StateBoxColorArmorLow;
 	Settings.StateBoxColorArmorMid           = default.StateBoxColorArmorMid;
 	Settings.StateBoxColorArmorHigh          = default.StateBoxColorArmorHigh;
+	Settings.StateBoxColorArmorNone          = default.StateBoxColorArmorNone;
 
 	// Player box
 	Settings.PlayerOwnerBoxColor             = default.PlayerOwnerBoxColor;
@@ -309,6 +314,7 @@ public static function YASStyle Settings()
 	Settings.StateTextColorArmorLow          = default.StateTextColorArmorLow;
 	Settings.StateTextColorArmorMid          = default.StateTextColorArmorMid;
 	Settings.StateTextColorArmorHigh         = default.StateTextColorArmorHigh;
+	Settings.StateTextColorArmorNone         = default.StateTextColorArmorNone;
 
 	// Rank text
 	Settings.RankTextColor                   = default.RankTextColor;
@@ -428,6 +434,7 @@ public static function WriteSettings(YASStyle Settings)
 	default.StateBoxColorArmorLow           = Settings.StateBoxColorArmorLow;
 	default.StateBoxColorArmorMid           = Settings.StateBoxColorArmorMid;
 	default.StateBoxColorArmorHigh          = Settings.StateBoxColorArmorHigh;
+	default.StateBoxColorArmorNone          = Settings.StateBoxColorArmorNone;
 
 	// Player box
 	default.PlayerOwnerBoxColor             = Settings.PlayerOwnerBoxColor;
@@ -450,6 +457,7 @@ public static function WriteSettings(YASStyle Settings)
 	default.StateTextColorArmorLow          = Settings.StateTextColorArmorLow;
 	default.StateTextColorArmorMid          = Settings.StateTextColorArmorMid;
 	default.StateTextColorArmorHigh         = Settings.StateTextColorArmorHigh;
+	default.StateTextColorArmorNone         = Settings.StateTextColorArmorNone;
 
 	// Rank text
 	default.RankTextColor                   = Settings.RankTextColor;

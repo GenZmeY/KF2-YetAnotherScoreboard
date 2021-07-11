@@ -212,6 +212,7 @@ struct YASStyle
 	var ColorRGBA StateBoxColorArmorLow;
 	var ColorRGBA StateBoxColorArmorMid;
 	var ColorRGBA StateBoxColorArmorHigh;
+	var ColorRGBA StateBoxColorArmorNone;
 
 	// Player box
 	var ColorRGBA PlayerOwnerBoxColor;
@@ -234,6 +235,7 @@ struct YASStyle
 	var ColorRGBA StateTextColorArmorLow;
 	var ColorRGBA StateTextColorArmorMid;
 	var ColorRGBA StateTextColorArmorHigh;
+	var ColorRGBA StateTextColorArmorNone;
 
 	// Rank text
 	var ColorRGBA RankTextColor;
@@ -342,13 +344,14 @@ struct YASStyle
 		StateBoxColorNotReady           = (R=150, G=150, B=150, A=150)
 		StateBoxColorSpectator          = (R=150, G=150, B=150, A=150)
 		StateBoxColorDead               = (R=200, G=0,   B=0,   A=150)
-		StateBoxColorNone            = (R=150, G=150, B=150, A=150)
+		StateBoxColorNone               = (R=150, G=150, B=150, A=150)
 		StateBoxColorHealthLow          = (R=200, G=50,  B=50,  A=150)
 		StateBoxColorHealthMid          = (R=200, G=200, B=0,   A=150)
 		StateBoxColorHealthHigh         = (R=0,   G=200, B=0,   A=150)
 		StateBoxColorArmorLow           = (R=0,   G=0,   B=150, A=150)
 		StateBoxColorArmorMid           = (R=0,   G=0,   B=150, A=150)
 		StateBoxColorArmorHigh          = (R=0,   G=0,   B=150, A=150)
+		StateBoxColorArmorNone          = (R=30,  G=30,  B=30,  A=150)
 		
 		// Player box
 		PlayerOwnerBoxColor             = (R=100, G=10,  B=10,  A=150)
@@ -371,6 +374,7 @@ struct YASStyle
 		StateTextColorArmorLow          = (R=250, G=250, B=250, A=255)
 		StateTextColorArmorMid          = (R=250, G=250, B=250, A=255)
 		StateTextColorArmorHigh         = (R=250, G=250, B=250, A=255)
+		StateTextColorArmorNone         = (R=0,   G=0,   B=0  , A=0  )
 		
 		// Rank text
 		RankTextColor                   = (R=250, G=250, B=250, A=255)
