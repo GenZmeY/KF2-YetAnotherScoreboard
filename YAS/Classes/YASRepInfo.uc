@@ -177,7 +177,7 @@ private reliable client function FindMyRankInSteamGroups()
 	`callstack();
 
 	foreach SteamGroupRelations(SteamGroupRel)
-		if (SW.CheckPlayerGroup(SteamGroupRel.UID))
+		if (SW.CheckPlayerGroup(SteamGroupRel.UID) && SteamGroupRel.RankID > RankRelation.RankID)
 			RankRelation.RankID = SteamGroupRel.RankID;
 
 	if (RankRelation.RankID != INDEX_NONE)
