@@ -30,19 +30,23 @@ Based on the scoreboard from [ClassicHUD](https://steamcommunity.com/sharedfiles
 
 # Build
 1. Install [Killing Floor 2](https://store.steampowered.com/app/232090/Killing_Floor_2/), Killing Floor 2 - SDK and [git for windows](https://git-scm.com/download/win);
-2. Open git-bash in the folder: `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame`
+2. open git-bash and go to any folder where you want to store sources:  
+`cd <ANY_FOLDER_YOU_WANT>`  
 3. Clone this repository and go to the source folder:  
 `git clone https://github.com/GenZmeY/KF2-YetAnotherScoreboard && cd KF2-YetAnotherScoreboard`
-4. Run make.sh script:
-`./make.sh --compile`
+4. Download dependencies:  
+`git submodule init && git submodule update`  
+5. Compile:  
+`./tools/builder -c`  
 5. The compiled files will be here:  
 `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame\Unpublished\BrewedPC\Script\`
 
 # Testing
-You can check your build using the `make.sh` script.  
-Open git-bash in the source folder and run the script:  
-`./make.sh --test`  
-On first launch, the script will create `testing.ini` file and launch the game with the settings from it. Edit this file if you need to test the mutator with different parameters.
+Open git-bash in the source folder and run command:  
+`./tools/builder -t`  
+(or `./tools/builder -ct` if you haven't compiled the mutator yet)  
+
+A local single-user test will be launched with parameters from `test.cfg` (edit this file if you want to test mutator with different parameters).
 
 # Bug reports
 If you find a bug, go to the [issue page](https://github.com/GenZmeY/KF2-YetAnotherScoreboard/issues) and check if there is a description of your bug. If not, create a new issue.  
