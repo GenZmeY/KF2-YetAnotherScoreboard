@@ -1,3 +1,5 @@
+[img]https://img.shields.io/static/v1?logo=GitHub&labelColor=gray&color=blue&logoColor=white&label=&message=Open Source[/img] [img]https://img.shields.io/github/license/GenZmeY/KF2-YetAnotherScoreboard[/img] [img]https://img.shields.io/steam/subscriptions/2521826524[/img] [img]https://img.shields.io/steam/favorites/2521826524[/img] [img]https://img.shields.io/steam/update-date/2521826524[/img] [url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2521826524][img]https://img.shields.io/github/v/tag/GenZmeY/KF2-YetAnotherScoreboard[/img][/url]
+
 [h1]Description[/h1]
 Yet another scoreboard...
 Based on the scoreboard from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1963099942]ClassicHUD[/url] and heavily modified. 
@@ -13,27 +15,30 @@ Based on the scoreboard from [url=https://steamcommunity.com/sharedfiles/filedet
 - Player ranks.
 
 [h1]Whitelisted?[/h1]
-No. This mod is not whitelisted and will unrank your server. Any XP gained will not be saved.
+No. This mod is not whitelisted and will de-rank your server. Any XP gained will not be saved.
 
-(But I plan to submit a whitelist request when I stop adding changes to this scoreboard)
+[h1]Usage (single player)[/h1]
+[olist]
+[*]Subscribe to this mutator;
+[*]Start KF2; 
+[*]Open console (`) and input:
+[b]open KF-BioticsLab?Mutator=YAS.YASMut?[/b]
+(replace the map and add the parameters you need)
+[*]<Enter>.
+[/olist]
 
-[h1]Usage (single player):[/h1]
-1. Subscribe to this mutator;
-2. Start KF2; 
-3. Open console (`) and input:
-[code]open KF-BioticsLab?Mutator=YAS.YASMut?[/code]
-4. <Enter>.
-
-[h1]Usage (server):[/h1]
-[b]Note:[/b] If you don't understand what is written here, read the article [url=https://wiki.killingfloor2.com/index.php?title=Dedicated_Server_(Killing_Floor_2)][u]Dedicated Server (KF2 wiki)[/u][/url] before following these instructions.
-
-1. Open your PCServer-KFEngine.ini / LinuxServer-KFEngine.ini;
-2. Add the following string to the [b][OnlineSubsystemSteamworks.KFWorkshopSteamworks][/b] section:
-[code]ServerSubscribedWorkshopItems=2521826524[/code]
-3. Start the server and wait while the mutator is downloading;
-4. Stop the server;
-5. Add mutator to server start line: [b]?Mutator=YAS.YASMut[/b]
-6. Start the server.
+[h1]Usage (server)[/h1]
+[b]Note:[/b] [i]If you don't understand what is written here, read the article [url=https://wiki.killingfloor2.com/index.php?title=Dedicated_Server_(Killing_Floor_2)][u]Dedicated Server (KF2 wiki)[/u][/url] before following these instructions.[/i]
+[olist]
+[*]Open your [b]PCServer-KFEngine.ini[/b] / [b]LinuxServer-KFEngine.ini[/b];
+[*]Find the [b][IpDrv.TcpNetDriver][/b] section and make sure that there is a line (add if not):
+[b]DownloadManagers=OnlineSubsystemSteamworks.SteamWorkshopDownload[/b]
+❗️ If there are several [b]DownloadManagers=[/b] then the line above should be the first ❗️
+[*]Add the following string to the [b][OnlineSubsystemSteamworks.KFWorkshopSteamworks][/b] section (create one if it doesn't exist):
+[b]ServerSubscribedWorkshopItems=2521826524[/b]
+[*]Start the server and wait while the mutator is downloading;
+[*]Add mutator to server start parameters: [b]?Mutator=YAS.YASMut[/b] and restart the server.
+[/olist]
 
 [h1]Setup[/h1]
 All settings are here: 
@@ -49,5 +54,5 @@ But these images will help you a little anyway:
 If you find a bug, describe what it looks like and how to repeat it - I will try to fix it. 
 You can do it right here, but I'll be much happier if you do it [url=https://github.com/GenZmeY/KF2-YetAnotherScoreboard/issues]in issues on github[/url].
 
-[h1]Sources:[/h1]
-[u]https://github.com/GenZmeY/KF2-YetAnotherScoreboard[/u] [b](GNU GPLv3)[/b]
+[h1]Sources[/h1]
+[url=https://github.com/GenZmeY/KF2-YetAnotherScoreboard]https://github.com/GenZmeY/KF2-YetAnotherScoreboard[/url] [b](GNU GPLv3)[/b]
