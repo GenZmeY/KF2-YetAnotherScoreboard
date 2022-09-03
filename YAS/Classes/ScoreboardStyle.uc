@@ -15,9 +15,6 @@ var config int       ShapeHeaderBox;
 var config int       ShapeStateHealthBoxTopPlayer;
 var config int       ShapeStateHealthBoxMidPlayer;
 var config int       ShapeStateHealthBoxBottomPlayer;
-var config int       ShapeStateArmorBoxTopPlayer;
-var config int       ShapeStateArmorBoxMidPlayer;
-var config int       ShapeStateArmorBoxBottomPlayer;
 var config int       ShapePlayerBoxTopPlayer;
 var config int       ShapePlayerBoxMidPlayer;
 var config int       ShapePlayerBoxBottomPlayer;
@@ -55,10 +52,6 @@ var config ColorRGBA StateBoxColorNone;
 var config ColorRGBA StateBoxColorHealthLow;
 var config ColorRGBA StateBoxColorHealthMid;
 var config ColorRGBA StateBoxColorHealthHigh;
-var config ColorRGBA StateBoxColorArmorLow;
-var config ColorRGBA StateBoxColorArmorMid;
-var config ColorRGBA StateBoxColorArmorHigh;
-var config ColorRGBA StateBoxColorArmorNone;
 
 // Player box
 var config ColorRGBA PlayerOwnerBoxColor;
@@ -78,10 +71,6 @@ var config ColorRGBA StateTextColorNone;
 var config ColorRGBA StateTextColorHealthLow;
 var config ColorRGBA StateTextColorHealthMid;
 var config ColorRGBA StateTextColorHealthHigh;
-var config ColorRGBA StateTextColorArmorLow;
-var config ColorRGBA StateTextColorArmorMid;
-var config ColorRGBA StateTextColorArmorHigh;
-var config ColorRGBA StateTextColorArmorNone;
 
 // Rank text
 var config ColorRGBA RankTextColor;
@@ -132,9 +121,7 @@ var config ColorRGBA PingTextColorHigh;
 // Other settings
 var config bool      bShowPingBars;
 var config bool      bHealthBoxSmoothColorChange;
-var config bool      bArmorBoxSmoothColorChange;
 var config bool      bHealthTextSmoothColorChange;
-var config bool      bArmorTextSmoothColorChange;
 var config bool      bLevelTextSmoothColorChange;
 var config bool      bDoshTextSmoothColorChange;
 var config bool      bKillsTextSmoothColorChange;
@@ -156,8 +143,6 @@ public static function InitConfig(int ConfigVersion)
 			default.AssistsTextColorHigh            = DefaultStyle.AssistsTextColorHigh;
 			default.AssistsTextColorLow             = DefaultStyle.AssistsTextColorLow;
 			default.AssistsTextColorMid             = DefaultStyle.AssistsTextColorMid;
-			default.bArmorBoxSmoothColorChange      = DefaultStyle.ArmorBoxSmoothColorChange;
-			default.bArmorTextSmoothColorChange     = DefaultStyle.ArmorTextSmoothColorChange;
 			default.bAssistsTextSmoothColorChange   = DefaultStyle.AssistsTextSmoothColorChange;
 			default.bDoshTextSmoothColorChange      = DefaultStyle.DoshTextSmoothColorChange;
 			default.bHealthBoxSmoothColorChange     = DefaultStyle.HealthBoxSmoothColorChange;
@@ -186,10 +171,6 @@ public static function InitConfig(int ConfigVersion)
 			default.PerkSupportTextColor            = DefaultStyle.PerkSupportTextColor;
 			default.PerkSurvivalistTextColor        = DefaultStyle.PerkSurvivalistTextColor;
 			default.PerkSwatTextColor               = DefaultStyle.PerkSwatTextColor;
-			default.StateBoxColorArmorHigh          = DefaultStyle.StateBoxColorArmorHigh;
-			default.StateBoxColorArmorLow           = DefaultStyle.StateBoxColorArmorLow;
-			default.StateBoxColorArmorMid           = DefaultStyle.StateBoxColorArmorMid;
-			default.StateBoxColorArmorNone          = DefaultStyle.StateBoxColorArmorNone;
 			default.StateBoxColorDead               = DefaultStyle.StateBoxColorDead;
 			default.StateBoxColorNone               = DefaultStyle.StateBoxColorNone;
 			default.StateBoxColorHealthHigh         = DefaultStyle.StateBoxColorHealthHigh;
@@ -199,10 +180,6 @@ public static function InitConfig(int ConfigVersion)
 			default.StateBoxColorNotReady           = DefaultStyle.StateBoxColorNotReady;
 			default.StateBoxColorReady              = DefaultStyle.StateBoxColorReady;
 			default.StateBoxColorSpectator          = DefaultStyle.StateBoxColorSpectator;
-			default.StateTextColorArmorHigh         = DefaultStyle.StateTextColorArmorHigh;
-			default.StateTextColorArmorLow          = DefaultStyle.StateTextColorArmorLow;
-			default.StateTextColorArmorMid          = DefaultStyle.StateTextColorArmorMid;
-			default.StateTextColorArmorNone         = DefaultStyle.StateTextColorArmorNone;
 			default.StateTextColorNone              = DefaultStyle.StateTextColorNone;
 			default.StateTextColorHealthHigh        = DefaultStyle.StateTextColorHealthHigh;
 			default.StateTextColorHealthLow         = DefaultStyle.StateTextColorHealthLow;
@@ -211,9 +188,6 @@ public static function InitConfig(int ConfigVersion)
 			default.ShapeStateHealthBoxTopPlayer    = DefaultStyle.ShapeStateHealthBoxTopPlayer;
 			default.ShapeStateHealthBoxMidPlayer    = DefaultStyle.ShapeStateHealthBoxMidPlayer;
 			default.ShapeStateHealthBoxBottomPlayer = DefaultStyle.ShapeStateHealthBoxBottomPlayer;
-			default.ShapeStateArmorBoxTopPlayer     = DefaultStyle.ShapeStateArmorBoxTopPlayer;
-			default.ShapeStateArmorBoxMidPlayer     = DefaultStyle.ShapeStateArmorBoxMidPlayer;
-			default.ShapeStateArmorBoxBottomPlayer  = DefaultStyle.ShapeStateArmorBoxBottomPlayer;
 			default.PingTextColorNone               = DefaultStyle.PingTextColorNone;
 			
 			WriteSettings(Settings());
@@ -248,9 +222,6 @@ public static function YASStyle Settings()
 	Settings.ShapeStateHealthBoxTopPlayer    = default.ShapeStateHealthBoxTopPlayer;
 	Settings.ShapeStateHealthBoxMidPlayer    = default.ShapeStateHealthBoxMidPlayer;
 	Settings.ShapeStateHealthBoxBottomPlayer = default.ShapeStateHealthBoxBottomPlayer;
-	Settings.ShapeStateArmorBoxTopPlayer     = default.ShapeStateArmorBoxTopPlayer;
-	Settings.ShapeStateArmorBoxMidPlayer     = default.ShapeStateArmorBoxMidPlayer;
-	Settings.ShapeStateArmorBoxBottomPlayer  = default.ShapeStateArmorBoxBottomPlayer;
 	Settings.ShapePlayerBoxTopPlayer         = default.ShapePlayerBoxTopPlayer;
 	Settings.ShapePlayerBoxMidPlayer         = default.ShapePlayerBoxMidPlayer;
 	Settings.ShapePlayerBoxBottomPlayer      = default.ShapePlayerBoxBottomPlayer;
@@ -288,10 +259,6 @@ public static function YASStyle Settings()
 	Settings.StateBoxColorHealthLow          = default.StateBoxColorHealthLow;
 	Settings.StateBoxColorHealthMid          = default.StateBoxColorHealthMid;
 	Settings.StateBoxColorHealthHigh         = default.StateBoxColorHealthHigh;
-	Settings.StateBoxColorArmorLow           = default.StateBoxColorArmorLow;
-	Settings.StateBoxColorArmorMid           = default.StateBoxColorArmorMid;
-	Settings.StateBoxColorArmorHigh          = default.StateBoxColorArmorHigh;
-	Settings.StateBoxColorArmorNone          = default.StateBoxColorArmorNone;
 
 	// Player box
 	Settings.PlayerOwnerBoxColor             = default.PlayerOwnerBoxColor;
@@ -311,10 +278,6 @@ public static function YASStyle Settings()
 	Settings.StateTextColorHealthLow         = default.StateTextColorHealthLow;
 	Settings.StateTextColorHealthMid         = default.StateTextColorHealthMid;
 	Settings.StateTextColorHealthHigh        = default.StateTextColorHealthHigh;
-	Settings.StateTextColorArmorLow          = default.StateTextColorArmorLow;
-	Settings.StateTextColorArmorMid          = default.StateTextColorArmorMid;
-	Settings.StateTextColorArmorHigh         = default.StateTextColorArmorHigh;
-	Settings.StateTextColorArmorNone         = default.StateTextColorArmorNone;
 
 	// Rank text
 	Settings.RankTextColor                   = default.RankTextColor;
@@ -365,9 +328,7 @@ public static function YASStyle Settings()
 	// Other settings
 	Settings.ShowPingBars                    = default.bShowPingBars;
 	Settings.HealthBoxSmoothColorChange      = default.bHealthBoxSmoothColorChange;
-	Settings.ArmorBoxSmoothColorChange       = default.bArmorBoxSmoothColorChange;
 	Settings.HealthTextSmoothColorChange     = default.bHealthTextSmoothColorChange;
-	Settings.ArmorTextSmoothColorChange      = default.bArmorTextSmoothColorChange;
 	Settings.LevelTextSmoothColorChange      = default.bLevelTextSmoothColorChange;
 	Settings.DoshTextSmoothColorChange       = default.bDoshTextSmoothColorChange;
 	Settings.KillsTextSmoothColorChange      = default.bKillsTextSmoothColorChange;
@@ -391,9 +352,6 @@ public static function WriteSettings(YASStyle Settings)
 	default.ShapeStateHealthBoxTopPlayer    = Settings.ShapeStateHealthBoxTopPlayer;
 	default.ShapeStateHealthBoxMidPlayer    = Settings.ShapeStateHealthBoxMidPlayer;
 	default.ShapeStateHealthBoxBottomPlayer = Settings.ShapeStateHealthBoxBottomPlayer;
-	default.ShapeStateArmorBoxTopPlayer     = Settings.ShapeStateArmorBoxTopPlayer;
-	default.ShapeStateArmorBoxMidPlayer     = Settings.ShapeStateArmorBoxMidPlayer;
-	default.ShapeStateArmorBoxBottomPlayer  = Settings.ShapeStateArmorBoxBottomPlayer;
 	default.ShapePlayerBoxTopPlayer         = Settings.ShapePlayerBoxTopPlayer;
 	default.ShapePlayerBoxMidPlayer         = Settings.ShapePlayerBoxMidPlayer;
 	default.ShapePlayerBoxBottomPlayer      = Settings.ShapePlayerBoxBottomPlayer;
@@ -431,10 +389,6 @@ public static function WriteSettings(YASStyle Settings)
 	default.StateBoxColorHealthLow          = Settings.StateBoxColorHealthLow;
 	default.StateBoxColorHealthMid          = Settings.StateBoxColorHealthMid;
 	default.StateBoxColorHealthHigh         = Settings.StateBoxColorHealthHigh;
-	default.StateBoxColorArmorLow           = Settings.StateBoxColorArmorLow;
-	default.StateBoxColorArmorMid           = Settings.StateBoxColorArmorMid;
-	default.StateBoxColorArmorHigh          = Settings.StateBoxColorArmorHigh;
-	default.StateBoxColorArmorNone          = Settings.StateBoxColorArmorNone;
 
 	// Player box
 	default.PlayerOwnerBoxColor             = Settings.PlayerOwnerBoxColor;
@@ -454,10 +408,6 @@ public static function WriteSettings(YASStyle Settings)
 	default.StateTextColorHealthLow         = Settings.StateTextColorHealthLow;
 	default.StateTextColorHealthMid         = Settings.StateTextColorHealthMid;
 	default.StateTextColorHealthHigh        = Settings.StateTextColorHealthHigh;
-	default.StateTextColorArmorLow          = Settings.StateTextColorArmorLow;
-	default.StateTextColorArmorMid          = Settings.StateTextColorArmorMid;
-	default.StateTextColorArmorHigh         = Settings.StateTextColorArmorHigh;
-	default.StateTextColorArmorNone         = Settings.StateTextColorArmorNone;
 
 	// Rank text
 	default.RankTextColor                   = Settings.RankTextColor;
@@ -508,9 +458,7 @@ public static function WriteSettings(YASStyle Settings)
 	// Other settings
 	default.bShowPingBars                   = Settings.ShowPingBars;
 	default.bHealthBoxSmoothColorChange     = Settings.HealthBoxSmoothColorChange;
-	default.bArmorBoxSmoothColorChange      = Settings.ArmorBoxSmoothColorChange;
 	default.bHealthTextSmoothColorChange    = Settings.HealthTextSmoothColorChange;
-	default.bArmorTextSmoothColorChange     = Settings.ArmorTextSmoothColorChange;
 	default.bLevelTextSmoothColorChange     = Settings.LevelTextSmoothColorChange;
 	default.bDoshTextSmoothColorChange      = Settings.DoshTextSmoothColorChange;
 	default.bKillsTextSmoothColorChange     = Settings.KillsTextSmoothColorChange;

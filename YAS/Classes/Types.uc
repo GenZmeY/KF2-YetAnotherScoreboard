@@ -26,7 +26,6 @@ struct Fields
 	var bool Kills;
 	var bool Assists;
 	var bool Health;
-	var bool Armor;
 	var bool Ping;
 	
 	Structdefaultproperties
@@ -39,7 +38,6 @@ struct Fields
 		Kills   = false;
 		Assists = false;
 		Health  = false;
-		Armor   = false;
 		Ping    = false;
 	}
 };
@@ -85,7 +83,7 @@ struct YASSettingsAdmin
 	{
 		Rank               = "Admin"
 		TextColor          = (R=250, G=0, B=0, A=255)
-		ApplyColorToFields = (Rank=True, Player=True, Level=False, Perk=False, Dosh=False, Kills=False, Assists=False, Health=False, Armor=False, Ping=False)
+		ApplyColorToFields = (Rank=True, Player=True, Level=False, Perk=False, Dosh=False, Kills=False, Assists=False, Health=False, Ping=False)
 	}
 };
 
@@ -99,23 +97,11 @@ struct YASSettingsPlayer
 	{
 		Rank               = "Player"
 		TextColor          = (R=250, G=250, B=250, A=255)
-		ApplyColorToFields = (Rank=True, Player=True, Level=False, Perk=False, Dosh=False, Kills=False, Assists=False, Health=False, Armor=False, Ping=False)
+		ApplyColorToFields = (Rank=True, Player=True, Level=False, Perk=False, Dosh=False, Kills=False, Assists=False, Health=False, Ping=False)
 	}
 };
 
 struct YASSettingsHealth
-{	
-	var int Low;
-	var int High;
-	
-	Structdefaultproperties
-	{
-		Low  = 40
-		High = 80
-	}
-};
-
-struct YASSettingsArmor
 {	
 	var int Low;
 	var int High;
@@ -169,9 +155,6 @@ struct YASStyle
 	var int       ShapeStateHealthBoxTopPlayer;
 	var int       ShapeStateHealthBoxMidPlayer;
 	var int       ShapeStateHealthBoxBottomPlayer;
-	var int       ShapeStateArmorBoxTopPlayer;
-	var int       ShapeStateArmorBoxMidPlayer;
-	var int       ShapeStateArmorBoxBottomPlayer;
 	var int       ShapePlayerBoxTopPlayer;
 	var int       ShapePlayerBoxMidPlayer;
 	var int       ShapePlayerBoxBottomPlayer;
@@ -209,10 +192,6 @@ struct YASStyle
 	var ColorRGBA StateBoxColorHealthLow;
 	var ColorRGBA StateBoxColorHealthMid;
 	var ColorRGBA StateBoxColorHealthHigh;
-	var ColorRGBA StateBoxColorArmorLow;
-	var ColorRGBA StateBoxColorArmorMid;
-	var ColorRGBA StateBoxColorArmorHigh;
-	var ColorRGBA StateBoxColorArmorNone;
 
 	// Player box
 	var ColorRGBA PlayerOwnerBoxColor;
@@ -232,10 +211,6 @@ struct YASStyle
 	var ColorRGBA StateTextColorHealthLow;
 	var ColorRGBA StateTextColorHealthMid;
 	var ColorRGBA StateTextColorHealthHigh;
-	var ColorRGBA StateTextColorArmorLow;
-	var ColorRGBA StateTextColorArmorMid;
-	var ColorRGBA StateTextColorArmorHigh;
-	var ColorRGBA StateTextColorArmorNone;
 
 	// Rank text
 	var ColorRGBA RankTextColor;
@@ -286,9 +261,7 @@ struct YASStyle
 	// Other settings
 	var bool      ShowPingBars;
 	var bool      HealthBoxSmoothColorChange;
-	var bool      ArmorBoxSmoothColorChange;
 	var bool      HealthTextSmoothColorChange;
-	var bool      ArmorTextSmoothColorChange;
 	var bool      LevelTextSmoothColorChange;
 	var bool      DoshTextSmoothColorChange;
 	var bool      KillsTextSmoothColorChange;
@@ -305,18 +278,15 @@ struct YASStyle
 		ShapeWaveInfoBox                = 0
 		ShapePlayersCountBox            = 152
 		ShapeHeaderBox                  = 150
-		ShapeStateHealthBoxTopPlayer    = 151
-		ShapeStateHealthBoxMidPlayer    = 151
-		ShapeStateHealthBoxBottomPlayer = 151
-		ShapeStateArmorBoxTopPlayer     = 151
-		ShapeStateArmorBoxMidPlayer     = 151
-		ShapeStateArmorBoxBottomPlayer  = 151
-		ShapePlayerBoxTopPlayer         = 0
-		ShapePlayerBoxMidPlayer         = 0
-		ShapePlayerBoxBottomPlayer      = 0
-		ShapeStatsBoxTopPlayer          = 153
-		ShapeStatsBoxMidPlayer          = 153
-		ShapeStatsBoxBottomPlayer       = 153
+		ShapeStateHealthBoxTopPlayer    = 0
+		ShapeStateHealthBoxMidPlayer    = 0
+		ShapeStateHealthBoxBottomPlayer = 0
+		ShapePlayerBoxTopPlayer         = 121
+		ShapePlayerBoxMidPlayer         = 121
+		ShapePlayerBoxBottomPlayer      = 121
+		ShapeStatsBoxTopPlayer          = 0
+		ShapeStatsBoxMidPlayer          = 0
+		ShapeStatsBoxBottomPlayer       = 0
 		
 		// Server box
 		ServerNameBoxColor              = (R=75,  G=0,   B=0,   A=200)
@@ -348,10 +318,6 @@ struct YASStyle
 		StateBoxColorHealthLow          = (R=200, G=50,  B=50,  A=150)
 		StateBoxColorHealthMid          = (R=200, G=200, B=0,   A=150)
 		StateBoxColorHealthHigh         = (R=0,   G=200, B=0,   A=150)
-		StateBoxColorArmorLow           = (R=0,   G=0,   B=150, A=150)
-		StateBoxColorArmorMid           = (R=0,   G=0,   B=150, A=150)
-		StateBoxColorArmorHigh          = (R=0,   G=0,   B=150, A=150)
-		StateBoxColorArmorNone          = (R=30,  G=30,  B=30,  A=150)
 		
 		// Player box
 		PlayerOwnerBoxColor             = (R=100, G=10,  B=10,  A=150)
@@ -371,10 +337,6 @@ struct YASStyle
 		StateTextColorHealthLow         = (R=250, G=250, B=250, A=255)
 		StateTextColorHealthMid         = (R=250, G=250, B=250, A=255)
 		StateTextColorHealthHigh        = (R=250, G=250, B=250, A=255)
-		StateTextColorArmorLow          = (R=250, G=250, B=250, A=255)
-		StateTextColorArmorMid          = (R=250, G=250, B=250, A=255)
-		StateTextColorArmorHigh         = (R=250, G=250, B=250, A=255)
-		StateTextColorArmorNone         = (R=0,   G=0,   B=0  , A=0  )
 		
 		// Rank text
 		RankTextColor                   = (R=250, G=250, B=250, A=255)
@@ -425,9 +387,7 @@ struct YASStyle
 		// Other settings
 		ShowPingBars                    = true
 		HealthBoxSmoothColorChange      = true
-		ArmorBoxSmoothColorChange       = true
 		HealthTextSmoothColorChange     = false
-		ArmorTextSmoothColorChange      = false
 		LevelTextSmoothColorChange      = false
 		DoshTextSmoothColorChange       = false
 		KillsTextSmoothColorChange      = false
@@ -444,6 +404,5 @@ struct YASSettings
 	var YASSettingsPing   Ping;
 	var YASSettingsLevel  Level;
 	var YASSettingsHealth Health;
-	var YASSettingsArmor  Armor;
 };
 

@@ -34,7 +34,6 @@ function PostBeginPlay()
 	Settings.Admin  = class'SystemAdminRank'.static.Settings();
 	Settings.Player = class'SystemPlayerRank'.static.Settings();
 	Settings.Health = class'SettingsHealth'.static.Settings();
-	Settings.Armor  = class'SettingsArmor'.static.Settings();
 	Settings.Ping   = class'SettingsPing'.static.Settings();
 	Settings.Level  = class'SettingsLevel'.static.Settings();
 }
@@ -74,7 +73,6 @@ private function InitConfig()
 	class'SystemAdminRank'.static.InitConfig(ConfigVersion);
 	class'SystemPlayerRank'.static.InitConfig(ConfigVersion);
 	class'SettingsHealth'.static.InitConfig(ConfigVersion);
-	class'SettingsArmor'.static.InitConfig(ConfigVersion);
 	class'SettingsPing'.static.InitConfig(ConfigVersion);
 	class'SettingsLevel'.static.InitConfig(ConfigVersion);
 	class'CustomRanks'.static.InitConfig(ConfigVersion);

@@ -50,7 +50,7 @@ function DrawMenu()
 		MouseYHit = Owner.MousePosition.Y - CompPos[1];
 
 	n = ScrollBar.CurrentScroll;
-	ItemHeight = CompPos[3] / ListItemsPerPage;
+	ItemHeight = GetItemHeight();
 	Y = 0.f;
 	for (i=0; i < ListItemsPerPage; ++i)
 	{
@@ -74,6 +74,11 @@ function DrawMenu()
 			PlayMenuSound(MN_FocusHover);
 		}
 	}
+}
+
+function float GetItemHeight()
+{
+	return CompPos[3] / ListItemsPerPage;
 }
 
 function PreDraw()
