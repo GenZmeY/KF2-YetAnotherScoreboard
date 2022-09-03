@@ -1,7 +1,4 @@
-Class KFGUI_TextLable extends KFGUI_Base;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_TextLable extends KFGUI_Base;
 
 var() protected string Text;
 var() color TextColor;

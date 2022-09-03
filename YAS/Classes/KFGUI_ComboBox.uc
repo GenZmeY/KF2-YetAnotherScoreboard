@@ -1,7 +1,4 @@
-Class KFGUI_ComboBox extends KFGUI_EditControl;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_ComboBox extends KFGUI_EditControl;
 
 var KFGUI_ComboSelector Selection;
 

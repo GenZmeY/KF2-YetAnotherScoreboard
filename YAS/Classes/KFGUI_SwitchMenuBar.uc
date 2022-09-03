@@ -1,8 +1,5 @@
 // Same as SwitchComponent, but with buttons.
-Class KFGUI_SwitchMenuBar extends KFGUI_MultiComponent;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_SwitchMenuBar extends KFGUI_MultiComponent;
 
 var array<KFGUI_Base> SubPages;
 var() byte ButtonPosition; // 0 = top, 1 = bottom, 2 = left, 3 = right

@@ -1,8 +1,5 @@
 // Ugly hack to draw ontop of flash UI!
-Class KFGUIConsoleHack extends Console;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUIConsoleHack extends Console;
 
 var KF2GUIController OutputObject;
 

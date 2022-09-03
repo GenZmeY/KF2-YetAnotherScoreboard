@@ -1,7 +1,4 @@
-Class ClassicStyle extends KF2Style;
-
-`include(Build.uci)
-`include(Logger.uci)
+class ClassicStyle extends KF2Style;
 
 function RenderFramedWindow(KFGUI_FloatingWindow P)
 {

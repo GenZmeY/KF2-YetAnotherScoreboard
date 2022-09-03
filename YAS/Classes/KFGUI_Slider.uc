@@ -1,8 +1,5 @@
 class KFGUI_Slider extends KFGUI_MultiComponent;
 
-`include(Build.uci)
-`include(Logger.uci)
-
 var KFGUI_ScrollBarH ScrollBar;
 
 var int MinValue, MaxValue;

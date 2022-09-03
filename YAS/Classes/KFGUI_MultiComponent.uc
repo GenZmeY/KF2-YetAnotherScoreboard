@@ -1,7 +1,4 @@
-Class KFGUI_MultiComponent extends KFGUI_Base;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_MultiComponent extends KFGUI_Base;
 
 var() export editinline array<KFGUI_Base> Components;
 

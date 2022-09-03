@@ -1,16 +1,12 @@
-class YASHUD extends KFGFxHudWrapper
-	config(YASMut);
-
-`include(Build.uci)
-`include(Logger.uci)
+class YAS_HUD extends KFGFxHudWrapper;
 
 const HUDBorderSize = 3;
 
 var float ScaledBorderSize;
 var array<KFGUI_Base> HUDWidgets;
 
-var class<KFScoreBoard> ScoreboardClass;
-var KFScoreBoard Scoreboard;
+var class<YAS_ScoreBoard> ScoreboardClass;
+var YAS_ScoreBoard Scoreboard;
 
 var transient KF2GUIController GUIController;
 var transient GUIStyleBase GUIStyle;
@@ -58,7 +54,7 @@ function PostRender()
 
 function LaunchHUDMenus()
 {
-	Scoreboard = KFScoreBoard(GUIController.InitializeHUDWidget(ScoreboardClass));
+	Scoreboard = YAS_ScoreBoard(GUIController.InitializeHUDWidget(ScoreboardClass));
 	Scoreboard.SetVisibility(false);
 }
 
@@ -110,5 +106,5 @@ exec function SetShowScores(bool bNewValue)
 
 defaultproperties
 {
-	ScoreboardClass=class'KFScoreBoard'
+	ScoreboardClass=class'YAS_ScoreBoard'
 }

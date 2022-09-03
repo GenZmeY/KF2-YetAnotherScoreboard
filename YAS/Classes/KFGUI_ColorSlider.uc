@@ -1,8 +1,5 @@
 class KFGUI_ColorSlider extends KFGUI_MultiComponent;
 
-`include(Build.uci)
-`include(Logger.uci)
-
 var KFGUI_Slider RSlider, GSlider, BSlider, ASlider;
 var KFGUI_TextLable TextLable, RedLabel, GreenLabel, BlueLabel, AlphaLabel, RedValue, GreenValue, BlueValue, AlphaValue;
 var KFGUI_ComponentList SettingsBox;

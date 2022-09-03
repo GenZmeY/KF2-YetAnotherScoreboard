@@ -1,7 +1,4 @@
-Class KFGUI_RightClickMenu extends KFGUI_Clickable;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_RightClickMenu extends KFGUI_Clickable;
 
 struct FRowItem
 {

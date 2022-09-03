@@ -1,20 +1,4 @@
-class Types extends Object;
-
-`include(Build.uci)
-`include(Logger.uci)
-
-struct ColorRGBA
-{
-	var byte R, G, B, A;
-	
-	Structdefaultproperties
-	{
-		R = 250
-		G = 250
-		B = 250
-		A = 255
-	}
-};
+class YAS_Types extends Object;
 
 struct Fields
 {
@@ -42,66 +26,7 @@ struct Fields
 	}
 };
 
-struct RankInfo
-{
-	var int       ID;
-	var string    Rank;
-	var ColorRGBA TextColor;
-	var bool      OverrideAdminRank;
-	var Fields    ApplyColorToFields;
-};
-
-struct RankRelation
-{
-	var string ObjectID;
-	var int    RankID;
-	
-	Structdefaultproperties
-	{
-		RankID = -999
-	}
-};
-
-struct UIDRankRelation
-{
-	var UniqueNetId UID;
-	var int RankID;
-	
-	Structdefaultproperties
-	{
-		RankID = -999
-	}
-};
-
-struct YASSettingsAdmin
-{
-	var string    Rank;
-	var ColorRGBA TextColor;
-	var Fields    ApplyColorToFields;
-	
-	Structdefaultproperties
-	{
-		Rank               = "Admin"
-		TextColor          = (R=250, G=0, B=0, A=255)
-		ApplyColorToFields = (Rank=True, Player=True, Level=False, Perk=False, Dosh=False, Kills=False, Assists=False, Health=False, Ping=False)
-	}
-};
-
-struct YASSettingsPlayer
-{
-	var string    Rank;
-	var ColorRGBA TextColor;
-	var Fields    ApplyColorToFields;
-	
-	Structdefaultproperties
-	{
-		Rank               = "Player"
-		TextColor          = (R=250, G=250, B=250, A=255)
-		ApplyColorToFields = (Rank=True, Player=True, Level=False, Perk=False, Dosh=False, Kills=False, Assists=False, Health=False, Ping=False)
-	}
-};
-
-struct YASSettingsHealth
+struct YAS_SettingsHealth
 {	
 	var int Low;
 	var int High;
@@ -113,7 +38,7 @@ struct YASSettingsHealth
 	}
 };
 
-struct YASSettingsPing
+struct YAS_SettingsPing
 {
 	var int Low;
 	var int High;
@@ -125,7 +50,7 @@ struct YASSettingsPing
 	}
 };
 
-struct YASSettingsLevel
+struct YAS_SettingsLevel
 {
 	var int Low [4];
 	var int High[4];
@@ -143,7 +68,7 @@ struct YASSettingsLevel
 	}
 };
 
-struct YASStyle
+struct YAS_Style
 {
 	// Box shapes
 	var int       EdgeSize;
@@ -163,100 +88,100 @@ struct YASStyle
 	var int       ShapeStatsBoxBottomPlayer;
 
 	// Server box
-	var ColorRGBA ServerNameBoxColor;
-	var ColorRGBA ServerNameTextColor;
+	var Color ServerNameBoxColor;
+	var Color ServerNameTextColor;
 
 	// Game info box
-	var ColorRGBA GameInfoBoxColor;
-	var ColorRGBA GameInfoTextColor;
+	var Color GameInfoBoxColor;
+	var Color GameInfoTextColor;
 
 	// Wave info box
-	var ColorRGBA WaveBoxColor;
-	var ColorRGBA WaveTextColor;
+	var Color WaveBoxColor;
+	var Color WaveTextColor;
 
 	// Player count box
-	var ColorRGBA PlayerCountBoxColor;
-	var ColorRGBA PlayerCountTextColor;
+	var Color PlayerCountBoxColor;
+	var Color PlayerCountTextColor;
 
 	// Header box
-	var ColorRGBA ListHeaderBoxColor;
-	var ColorRGBA ListHeaderTextColor;
+	var Color ListHeaderBoxColor;
+	var Color ListHeaderTextColor;
 
 	// State box
-	var ColorRGBA StateBoxColorLobby;
-	var ColorRGBA StateBoxColorReady;
-	var ColorRGBA StateBoxColorNotReady;
-	var ColorRGBA StateBoxColorSpectator;
-	var ColorRGBA StateBoxColorDead;
-	var ColorRGBA StateBoxColorNone;
-	var ColorRGBA StateBoxColorHealthLow;
-	var ColorRGBA StateBoxColorHealthMid;
-	var ColorRGBA StateBoxColorHealthHigh;
+	var Color StateBoxColorLobby;
+	var Color StateBoxColorReady;
+	var Color StateBoxColorNotReady;
+	var Color StateBoxColorSpectator;
+	var Color StateBoxColorDead;
+	var Color StateBoxColorNone;
+	var Color StateBoxColorHealthLow;
+	var Color StateBoxColorHealthMid;
+	var Color StateBoxColorHealthHigh;
 
 	// Player box
-	var ColorRGBA PlayerOwnerBoxColor;
-	var ColorRGBA PlayerBoxColor;
+	var Color PlayerOwnerBoxColor;
+	var Color PlayerBoxColor;
 
 	// Stats box
-	var ColorRGBA StatsOwnerBoxColor;
-	var ColorRGBA StatsBoxColor;
+	var Color StatsOwnerBoxColor;
+	var Color StatsBoxColor;
 
 	// State text
-	var ColorRGBA StateTextColorLobby;
-	var ColorRGBA StateTextColorReady;
-	var ColorRGBA StateTextColorNotReady;
-	var ColorRGBA StateTextColorSpectator;
-	var ColorRGBA StateTextColorDead;
-	var ColorRGBA StateTextColorNone;
-	var ColorRGBA StateTextColorHealthLow;
-	var ColorRGBA StateTextColorHealthMid;
-	var ColorRGBA StateTextColorHealthHigh;
+	var Color StateTextColorLobby;
+	var Color StateTextColorReady;
+	var Color StateTextColorNotReady;
+	var Color StateTextColorSpectator;
+	var Color StateTextColorDead;
+	var Color StateTextColorNone;
+	var Color StateTextColorHealthLow;
+	var Color StateTextColorHealthMid;
+	var Color StateTextColorHealthHigh;
 
 	// Rank text
-	var ColorRGBA RankTextColor;
+	var Color RankTextColor;
 
 	// Player text
-	var ColorRGBA PlayerNameTextColor;
+	var Color PlayerNameTextColor;
 
 	// Level text
-	var ColorRGBA LevelTextColorLow;
-	var ColorRGBA LevelTextColorMid;
-	var ColorRGBA LevelTextColorHigh;
+	var Color LevelTextColorLow;
+	var Color LevelTextColorMid;
+	var Color LevelTextColorHigh;
 
 	// Perk text
-	var ColorRGBA ZedTextColor;
-	var ColorRGBA PerkNoneTextColor;
-	var ColorRGBA PerkBerserkerTextColor;
-	var ColorRGBA PerkCommandoTextColor;
-	var ColorRGBA PerkSupportTextColor;
-	var ColorRGBA PerkFieldMedicTextColor;
-	var ColorRGBA PerkDemolitionistTextColor;
-	var ColorRGBA PerkFirebugTextColor;
-	var ColorRGBA PerkGunslingerTextColor;
-	var ColorRGBA PerkSharpshooterTextColor;
-	var ColorRGBA PerkSwatTextColor;
-	var ColorRGBA PerkSurvivalistTextColor;
+	var Color ZedTextColor;
+	var Color PerkNoneTextColor;
+	var Color PerkBerserkerTextColor;
+	var Color PerkCommandoTextColor;
+	var Color PerkSupportTextColor;
+	var Color PerkFieldMedicTextColor;
+	var Color PerkDemolitionistTextColor;
+	var Color PerkFirebugTextColor;
+	var Color PerkGunslingerTextColor;
+	var Color PerkSharpshooterTextColor;
+	var Color PerkSwatTextColor;
+	var Color PerkSurvivalistTextColor;
 
 	// Dosh text
-	var ColorRGBA DoshTextColorLow;
-	var ColorRGBA DoshTextColorMid;
-	var ColorRGBA DoshTextColorHigh;
+	var Color DoshTextColorLow;
+	var Color DoshTextColorMid;
+	var Color DoshTextColorHigh;
 
 	// Kills text
-	var ColorRGBA KillsTextColorLow;
-	var ColorRGBA KillsTextColorMid;
-	var ColorRGBA KillsTextColorHigh;
+	var Color KillsTextColorLow;
+	var Color KillsTextColorMid;
+	var Color KillsTextColorHigh;
 
 	// Assists text
-	var ColorRGBA AssistsTextColorLow;
-	var ColorRGBA AssistsTextColorMid;
-	var ColorRGBA AssistsTextColorHigh;
+	var Color AssistsTextColorLow;
+	var Color AssistsTextColorMid;
+	var Color AssistsTextColorHigh;
 
 	// Ping text
-	var ColorRGBA PingTextColorNone;
-	var ColorRGBA PingTextColorLow;
-	var ColorRGBA PingTextColorMid;
-	var ColorRGBA PingTextColorHigh;
+	var Color PingTextColorNone;
+	var Color PingTextColorLow;
+	var Color PingTextColorMid;
+	var Color PingTextColorHigh;
 
 	// Other settings
 	var bool      ShowPingBars;
@@ -386,23 +311,14 @@ struct YASStyle
 		
 		// Other settings
 		ShowPingBars                    = true
-		HealthBoxSmoothColorChange      = true
-		HealthTextSmoothColorChange     = false
-		LevelTextSmoothColorChange      = false
-		DoshTextSmoothColorChange       = false
-		KillsTextSmoothColorChange      = false
-		AssistsTextSmoothColorChange    = false
-		PingTextSmoothColorChange       = false
 	}
 };
 
-struct YASSettings
+struct YAS_Settings
 {
-	var YASStyle          Style;
-	var YASSettingsAdmin  Admin;
-	var YASSettingsPlayer Player;
-	var YASSettingsPing   Ping;
-	var YASSettingsLevel  Level;
-	var YASSettingsHealth Health;
+	var YAS_Style          Style;
+	var YAS_SettingsPing   Ping;
+	var YAS_SettingsLevel  Level;
+	var YAS_SettingsHealth Health;
 };
 

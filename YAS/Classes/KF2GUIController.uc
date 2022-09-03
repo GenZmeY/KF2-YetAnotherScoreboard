@@ -1,13 +1,10 @@
-Class KF2GUIController extends Info
+class KF2GUIController extends Info
 	transient;
-
-`include(Build.uci)
-`include(Logger.uci)
 
 var() class<GUIStyleBase> DefaultStyle;
 
 var PlayerController PlayerOwner;
-var YASHUD HUDOwner;
+var YAS_HUD HUDOwner;
 var transient KF2GUIInput CustomInput;
 var transient PlayerInput BackupInput;
 var transient GameViewportClient ClientViewport;
@@ -67,7 +64,7 @@ simulated function PostBeginPlay()
 {
 	PlayerOwner = PlayerController(Owner);
 	ClientViewport = LocalPlayer(PlayerOwner.Player).ViewportClient;
-	HUDOwner = YASHUD(PlayerOwner.myHUD);
+	HUDOwner = YAS_HUD(PlayerOwner.myHUD);
 
 	CurrentStyle = new (None) DefaultStyle;
 	CurrentStyle.InitStyle();
@@ -448,7 +445,7 @@ simulated function KFGUI_Base InitializeHUDWidget(class<KFGUI_Base> GUIClass)
 {
 	local KFGUI_Base Widget;
 
-	if (GUIClass == None)
+	if (GUIclass == None)
 		return None;
 
 	Widget = New(None) GUIClass;
@@ -471,7 +468,7 @@ simulated function KFGUI_Page OpenMenu(class<KFGUI_Page> MenuClass)
 	local int i;
 	local KFGUI_Page M;
 
-	if (MenuClass == None)
+	if (Menuclass == None)
 		return None;
 
 	if (KeyboardFocus != None)
@@ -489,7 +486,7 @@ simulated function KFGUI_Page OpenMenu(class<KFGUI_Page> MenuClass)
 	if (MenuClass.Default.bUnique)
 	{
 		for (i=0; i < ActiveMenus.Length; ++i)
-			if (ActiveMenus[i].Class == MenuClass)
+			if (ActiveMenus[i].class == MenuClass)
 			{
 				if (i > 0 && ActiveMenus[i].BringPageToFront() ) // Sort it upfront.
 				{
@@ -504,7 +501,7 @@ simulated function KFGUI_Page OpenMenu(class<KFGUI_Page> MenuClass)
 		if (MenuClass.Default.bPersistant)
 		{
 			for (i=0; i < PersistentMenus.Length; ++i)
-				if (PersistentMenus[i].Class == MenuClass)
+				if (PersistentMenus[i].class == MenuClass)
 				{
 					M = PersistentMenus[i];
 					PersistentMenus.Remove(i, 1);
@@ -532,7 +529,7 @@ simulated function CloseMenu(class<KFGUI_Page> MenuClass, optional bool bCloseAl
 	local int i, j;
 	local KFGUI_Page M;
 
-	if (!bCloseAll && MenuClass == None)
+	if (!bCloseAll && Menuclass == None)
 		return;
 
 	if (KeyboardFocus != None)
@@ -544,7 +541,7 @@ simulated function CloseMenu(class<KFGUI_Page> MenuClass, optional bool bCloseAl
 	}
 	for (i=(ActiveMenus.Length-1); i >= 0; --i)
 	{
-		if (bCloseAll || ActiveMenus[i].Class == MenuClass)
+		if (bCloseAll || ActiveMenus[i].class == MenuClass)
 		{
 			M = ActiveMenus[i];
 			ActiveMenus.Remove(i, 1);
@@ -628,7 +625,7 @@ simulated final function bool MenuIsOpen(optional class<KFGUI_Page> MenuClass)
 	local int i;
 
 	for (i=(ActiveMenus.Length-1); i >= 0; --i)
-		if (MenuClass == None || ActiveMenus[i].Class == MenuClass)
+		if (Menuclass == None || ActiveMenus[i].class == MenuClass)
 			return true;
 	return false;
 }

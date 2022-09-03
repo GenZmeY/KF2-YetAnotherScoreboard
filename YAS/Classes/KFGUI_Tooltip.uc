@@ -1,7 +1,4 @@
-Class KFGUI_Tooltip extends KFGUI_Base;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_Tooltip extends KFGUI_Base;
 
 var() array<string> Lines;
 var() Canvas.FontRenderInfo TextFontInfo;

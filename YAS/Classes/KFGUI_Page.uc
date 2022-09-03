@@ -1,8 +1,5 @@
-Class KFGUI_Page extends KFGUI_MultiComponent
+class KFGUI_Page extends KFGUI_MultiComponent
 	abstract;
-
-`include(Build.uci)
-`include(Logger.uci)
 
 var() byte FrameOpacity; // Transperancy of the frame.
 var() bool bPersistant, // Reuse the same menu object throughout the level.

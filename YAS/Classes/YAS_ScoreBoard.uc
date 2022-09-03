@@ -1,10 +1,7 @@
-class KFScoreBoard extends KFGUI_Page
-	dependson(Types);
+class YAS_ScoreBoard extends KFGUI_Page
+	dependson(YAS_Types);
 
-`include(Build.uci)
-`include(Logger.uci)
-
-const HeaderWidthRatio = 0.35f;
+const HeaderWidthRatio     = 0.35f;
 const PlayerListWidthRatio = 0.6f;
 
 var transient float HealthXPos, RankXPos, PlayerXPos, LevelXPos, PerkXPos, DoshXPos, KillsXPos, AssistXPos, PingXPos, ScrollXPos;
@@ -27,27 +24,10 @@ var float PingBars;
 // Cache
 var array<String> PerkNames;
 
-// Ranks
-var array<RankInfo> CustomRanks;
-var array<UIDRankRelation> RankRelations;
-
-var YASSettings Settings;
-
-// Localization
-var localized string Players;
-var localized string Spectators;
-var localized string Rank;
-var localized string State;
-var localized string NoPerk;
-var localized string Ready;
-var localized string NotReady;
-var localized string Unknown;
-var localized string Dead;
+var YAS_Settings Settings;
 
 function InitMenu()
 {
-	`callstack();
-	
 	Super.InitMenu();
 	PlayersList = KFGUI_List(FindComponentID('PlayerList'));
 	OwnerPC = KFPlayerController(GetPlayer());
@@ -153,8 +133,8 @@ function DrawMenu()
 	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH, MinBoxW, DoshSize, ScrollBarWidth;
 	local int i, j, NumSpec, NumAlivePlayer, Width;
 	local float BorderSize;
-	local ColorRGBA ColorTmp;
-
+	local Color ColorTMP;
+	
 	PC = GetPlayer();
 	if (KFGRI == None)
 	{
@@ -228,10 +208,10 @@ function DrawMenu()
 	BoxH = YL + BorderSize;
 	
 	// Top Rect (Server name)
-	SetDrawColor(Canvas, Settings.Style.ServerNameBoxColor);
+	Canvas.SetDrawColorStruct(Settings.Style.ServerNameBoxColor);
 	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapeServerNameBox);
 	
-	SetDrawColor(Canvas, Settings.Style.ServerNameTextColor);
+	Canvas.SetDrawColorStruct(Settings.Style.ServerNameTextColor);
 	S = ServerName();
 	DrawTextShadowHVCenter(S, BoxX, YPos, BoxW, FontScalar);
 	
@@ -240,10 +220,10 @@ function DrawMenu()
 	// Mid Left Rect (Info)
 	BoxW = Width * 0.7; // TODO ?
 	BoxH = YL * 2 + BorderSize * 2;
-	SetDrawColor(Canvas, Settings.Style.GameInfoBoxColor);
+	Canvas.SetDrawColorStruct(Settings.Style.GameInfoBoxColor);
 	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapeGameInfoBox);
 	
-	SetDrawColor(Canvas, Settings.Style.GameInfoTextColor);
+	Canvas.SetDrawColorStruct(Settings.Style.GameInfoTextColor);
 	S = class'KFCommon_LocalizedStrings'.static.GetFriendlyMapName(PC.WorldInfo.GetMapName(true));
 	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos, FontScalar);
 	
@@ -253,10 +233,10 @@ function DrawMenu()
 	// Mid Right Rect (Wave)
 	BoxX = BoxX + BoxW;
 	BoxW = Width - BoxW;
-	SetDrawColor(Canvas, Settings.Style.WaveBoxColor);
+	Canvas.SetDrawColorStruct(Settings.Style.WaveBoxColor);
 	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapeWaveInfoBox);
 	
-	SetDrawColor(Canvas, Settings.Style.WaveTextColor);
+	Canvas.SetDrawColorStruct(Settings.Style.WaveTextColor);
 	S = class'KFGFxHUD_ScoreboardMapInfoContainer'.default.WaveString; 
 	DrawTextShadowHVCenter(S, BoxX, YPos, BoxW, FontScalar);
 	DrawTextShadowHVCenter(WaveText(), BoxX, YPos + YL, BoxW, FontScalar);
@@ -267,11 +247,11 @@ function DrawMenu()
 	BoxX = XPos;
 	BoxW = Width;
 	BoxH = YL + BorderSize;
-	SetDrawColor(Canvas, Settings.Style.PlayerCountBoxColor);
+	Canvas.SetDrawColorStruct(Settings.Style.PlayerCountBoxColor);
 	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapePlayersCountBox);
 	
-	SetDrawColor(Canvas, Settings.Style.PlayerCountTextColor);
-	S = Players$": " $ NumPlayer $ " / " $ KFGRI.MaxHumanCount $ "    " $ Spectators $ ": " $ NumSpec; 
+	Canvas.SetDrawColorStruct(Settings.Style.PlayerCountTextColor);
+	S = NumPlayer $ " / " $ KFGRI.MaxHumanCount; // $ "    " $ Spectators $ ": " $ NumSpec; 
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
 	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos, FontScalar);
 	
@@ -285,7 +265,7 @@ function DrawMenu()
 	XPos = (Canvas.ClipX - Width) * 0.5;
 	YPos += YL;
 	BoxH = YL + BorderSize;
-	SetDrawColor(Canvas, Settings.Style.ListHeaderBoxColor);
+	Canvas.SetDrawColorStruct(Settings.Style.ListHeaderBoxColor);
 	Owner.CurrentStyle.DrawRectBox(	XPos - BorderSize * 2,
 		YPos,
 		Width + BorderSize * 4,
@@ -339,7 +319,7 @@ function DrawMenu()
 	LevelXPos = PerkXPos - LevelWBox;
 	
 	// Header texts
-	SetDrawColor(Canvas, Settings.Style.ListHeaderTextColor);
+	Canvas.SetDrawColorStruct(Settings.Style.ListHeaderTextColor);
 	DrawTextShadowHLeftVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PlayerString, XPos + PlayerXPos, YPos, FontScalar);
 	DrawTextShadowHLeftVCenter(class'KFGFxMenu_Inventory'.default.PerkFilterString, XPos + PerkXPos, YPos, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.KillsString, XPos + KillsXPos, YPos, KillsWBox, FontScalar);
@@ -347,9 +327,9 @@ function DrawMenu()
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.DoshString, XPos + DoshXPos, YPos, DoshWBox, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PingString, XPos + PingXPos, YPos, PingWBox, FontScalar);
 	
-	ColorTmp = Settings.Style.ListHeaderTextColor;
-	ColorTmp.A = 150;
-	SetDrawColor(Canvas, ColorTmp);
+	ColorTMP = Settings.Style.ListHeaderTextColor;
+	ColorTMP.A = 150;
+	Canvas.SetDrawColorStruct(ColorTmp);
 	
 	DrawHealthIcon(XPos + HealthXPos, YPos, HealthWBox, BoxH);
 	
@@ -405,11 +385,6 @@ function DrawTextShadowHRightVCenter(string Str, float XPos, float YPos, float B
 	Owner.CurrentStyle.DrawTextShadow(Str, XPos + BoxWidth - TextWidth, YPos, 1, FontScalar);
 }
 
-function SetDrawColor(Canvas C, ColorRGBA RGBA)
-{
-	C.SetDrawColor(RGBA.R, RGBA.G, RGBA.B, RGBA.A);
-}
-
 function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus)
 {
 	local string S, StrValue;
@@ -420,56 +395,21 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local bool bIsZED;
 	local int Ping;
 	
-	local RankInfo CurrentRank;
-	local bool HasRank;
-	local int PlayerInfoIndex, PlayerRankIndex;
 	local float BorderSize;
 	
 	local int Shape, ShapeHealth;
 	
-	local ColorRGBA HealthBoxColor, HealthTextColor;
+	local Color HealthBoxColor, HealthTextColor;
 	
 	BorderSize = Owner.HUDOwner.ScaledBorderSize;
 
 	YOffset *= 1.05;
 	KFPRI = KFPRIArray[Index];
-	
-	HasRank = false;
-
-	PlayerInfoIndex = RankRelations.Find('UID', KFPRI.UniqueId);
-	if (PlayerInfoIndex != INDEX_NONE && RankRelations[PlayerInfoIndex].RankID != INDEX_NONE)
-	{
-		PlayerRankIndex = CustomRanks.Find('ID', RankRelations[PlayerInfoIndex].RankID);
-		if (PlayerRankIndex != INDEX_NONE)
-		{
-			HasRank = true;
-			CurrentRank = CustomRanks[PlayerRankIndex];
-		}
-	}
-	
-	if (KFPRI.bAdmin)
-	{
-		if (!HasRank || (HasRank && !CurrentRank.OverrideAdminRank))
-		{
-			CurrentRank.Rank = Settings.Admin.Rank;
-			CurrentRank.TextColor = Settings.Admin.TextColor;
-			CurrentRank.ApplyColorToFields = Settings.Admin.ApplyColorToFields;
-			HasRank = true;
-		}
-	}
-	else // Player
-	{
-		if (!HasRank)
-		{
-			CurrentRank.Rank = Settings.Player.Rank;
-			CurrentRank.TextColor = Settings.Player.TextColor;
-			CurrentRank.ApplyColorToFields = Settings.Player.ApplyColorToFields;
-			HasRank = true;
-		}
-	}
 
 	if (KFGRI.bVersusGame)
+	{
 		bIsZED = KFTeamInfo_Zeds(KFPRI.Team) != None;
+	}
 
 	XPos = 0.f;
 
@@ -547,7 +487,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	}
 	
 	// Health box
-	SetDrawColor(C, HealthBoxColor);
+	C.SetDrawColorStruct(HealthBoxColor);
 	Owner.CurrentStyle.DrawRectBox(XPos,
 		YOffset,
 		HealthWBox,
@@ -555,19 +495,20 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		Settings.Style.EdgeSize,
 		ShapeHealth);
 	
-	if (CurrentRank.ApplyColorToFields.Health)
-		SetDrawColor(C, CurrentRank.TextColor);
-	else
-		SetDrawColor(C, HealthTextColor);
+	C.SetDrawColorStruct(HealthTextColor);
+	
 	if (KFPRI.PlayerHealth > 0)
+	{
 		DrawTextShadowHVCenter(String(KFPRI.PlayerHealth), HealthXPos, TextYOffset, HealthWBox, FontScalar);
+	}
+	
 	XPos += HealthWBox;
 	
 	// PlayerBox
 	if (PlayerIndex == Index)
-		SetDrawColor(C, Settings.Style.PlayerOwnerBoxColor);
+		C.SetDrawColorStruct(Settings.Style.PlayerOwnerBoxColor);
 	else
-		SetDrawColor(C, Settings.Style.PlayerBoxColor);
+		C.SetDrawColorStruct(Settings.Style.PlayerBoxColor);
 
 	if (KFPRIArray.Length > 1 && Index == 0)
 		Shape = Settings.Style.ShapePlayerBoxTopPlayer;
@@ -590,7 +531,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		Shape = Settings.Style.ShapeStatsBoxMidPlayer;
 	
 	BoxWidth = Width - XPos;
-	SetDrawColor(C, Settings.Style.StatsBoxColor);
+	C.SetDrawColorStruct(Settings.Style.StatsBoxColor);
 	Owner.CurrentStyle.DrawRectBox(	XPos,
 		YOffset,
 		BoxWidth,
@@ -602,10 +543,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	RealPlayerWBox = PlayerWBox;
 	if (bIsZED)
 	{
-		if (CurrentRank.ApplyColorToFields.Perk)
-			SetDrawColor(C, CurrentRank.TextColor);
-		else
-			SetDrawColor(C, Settings.Style.ZedTextColor);
+		C.SetDrawColorStruct(Settings.Style.ZedTextColor);
 		C.SetPos (PerkXPos, YOffset - ((Height-5) * 0.5f));
 		C.DrawRect (Height-5, Height-5, Texture2D'UI_Widgets.MenuBarWidget_SWF_IF');
 
@@ -615,7 +553,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	}
 	else
 	{
-		if (KFPRI.CurrentPerkClass != None)
+		if (KFPRI.CurrentPerkclass != None)
 		{
 			PrestigeLevel = KFPRI.GetActivePerkPrestigeLevel();
 			Level = KFPRI.GetActivePerkLevel();
@@ -642,49 +580,32 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 				C.DrawTile(KFPRI.CurrentPerkClass.default.PerkIcon, PerkIconSize, PerkIconSize, 0, 0, 256, 256);
 			}
 			
-			if (CurrentRank.ApplyColorToFields.Level)
-				SetDrawColor(C, CurrentRank.TextColor);
+			
+			if (Level < Settings.Level.Low[KFGRI.GameDifficulty])
+				C.SetDrawColorStruct(Settings.Style.LevelTextColorLow);
+			else if (Level < Settings.Level.High[KFGRI.GameDifficulty])
+				C.SetDrawColorStruct(Settings.Style.LevelTextColorMid);
 			else
-			{
-				if (Level < Settings.Level.Low[KFGRI.GameDifficulty])
-					SetDrawColor(C, Settings.Style.LevelTextColorLow);
-				else if (Level < Settings.Level.High[KFGRI.GameDifficulty])
-					SetDrawColor(C, Settings.Style.LevelTextColorMid);
-				else
-					SetDrawColor(C, Settings.Style.LevelTextColorHigh);
-			}
+				C.SetDrawColorStruct(Settings.Style.LevelTextColorHigh);
+			
 			S = String(Level);
 			DrawTextShadowHLeftVCenter(S, LevelXPos, TextYOffset, FontScalar);
 
-			if (CurrentRank.ApplyColorToFields.Level)
-				SetDrawColor(C, CurrentRank.TextColor);
-			
-			if (CurrentRank.ApplyColorToFields.Perk)
-				SetDrawColor(C, CurrentRank.TextColor);
-			else
-				SetDrawColor(C, Settings.Style.PerkNoneTextColor);
+			C.SetDrawColorStruct(Settings.Style.PerkNoneTextColor);
 			S = KFPRI.CurrentPerkClass.default.PerkName;
 			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
 		}
 		else
 		{
-			if (CurrentRank.ApplyColorToFields.Perk)
-				SetDrawColor(C, CurrentRank.TextColor);
-			else
-				SetDrawColor(C, Settings.Style.PerkNoneTextColor);
-			S = NoPerk;
+			C.SetDrawColorStruct(Settings.Style.PerkNoneTextColor);
+			S = "";
 			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
 			RealPlayerWBox = PerkXPos - PlayerXPos;
 		}
 	}
 	
 	// Rank
-	if (CurrentRank.ApplyColorToFields.Rank)
-		SetDrawColor(C, CurrentRank.TextColor);
-	else
-		SetDrawColor(C, Settings.Style.PerkNoneTextColor);
-	S = CurrentRank.Rank;
-	DrawTextShadowHRightVCenter(S, PlayerXPos, TextYOffset, PerkIconPosX - PlayerXPos - (BorderSize * 2), FontScalar);
+	DrawTextShadowHRightVCenter("<Player>", PlayerXPos, TextYOffset, PerkIconPosX - PlayerXPos - (BorderSize * 2), FontScalar);
 
 	// Avatar
 	if (KFPRI.Avatar != None)
@@ -701,10 +622,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		CheckAvatar(KFPRI, OwnerPC);
 
 	// Player
-	if (CurrentRank.ApplyColorToFields.Player)
-		SetDrawColor(C, CurrentRank.TextColor);
-	else
-		SetDrawColor(C, Settings.Style.PlayerNameTextColor);
+	C.SetDrawColorStruct(Settings.Style.PlayerNameTextColor);
 	S = KFPRI.PlayerName;
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
 	while (XL > RealPlayerWBox)
@@ -715,31 +633,22 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	DrawTextShadowHLeftVCenter(S, PlayerXPos, TextYOffset, FontScalar);
 
 	// Kill
-	if (CurrentRank.ApplyColorToFields.Kills)
-		SetDrawColor(C, CurrentRank.TextColor);
-	else
-		SetDrawColor(C, Settings.Style.KillsTextColorMid); // TODO
+	C.SetDrawColorStruct(Settings.Style.KillsTextColorMid); // TODO
 	DrawTextShadowHVCenter(string (KFPRI.Kills), KillsXPos, TextYOffset, KillsWBox, FontScalar);
 
 	// Assist
-	if (CurrentRank.ApplyColorToFields.Assists)
-		SetDrawColor(C, CurrentRank.TextColor);
-	else
-		SetDrawColor(C, Settings.Style.AssistsTextColorMid); // TODO
+	C.SetDrawColorStruct(Settings.Style.AssistsTextColorMid); // TODO
 	DrawTextShadowHVCenter(string (KFPRI.Assists), AssistXPos, TextYOffset, AssistWBox, FontScalar);
 	
 	// Dosh
 	if (bIsZED)
 	{
-		SetDrawColor(C, Settings.Style.ZedTextColor);
+		C.SetDrawColorStruct(Settings.Style.ZedTextColor);
 		StrValue = "-";
 	}
 	else
 	{
-		if (CurrentRank.ApplyColorToFields.Dosh)
-			SetDrawColor(C, CurrentRank.TextColor);
-		else
-			SetDrawColor(C, Settings.Style.DoshTextColorMid); // TODO
+		C.SetDrawColorStruct(Settings.Style.DoshTextColorMid); // TODO
 		StrValue = GetNiceSize(int(KFPRI.Score));
 	}
 	DrawTextShadowHVCenter(StrValue, DoshXPos, TextYOffset, DoshWBox, FontScalar);
@@ -747,21 +656,19 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	// Ping
 	if (KFPRI.bBot)
 	{
-		SetDrawColor(C, Settings.Style.PingTextColorNone);
+		C.SetDrawColorStruct(Settings.Style.PingTextColorNone);
 		S = "-";
 	}
 	else
 	{
 		Ping = int(KFPRI.Ping * `PING_SCALE);
 
-		if (CurrentRank.ApplyColorToFields.Ping)
-			SetDrawColor(C, CurrentRank.TextColor);
-		else if (Ping <= Settings.Ping.Low)
-			SetDrawColor(C, Settings.Style.PingTextColorLow);
+		if (Ping <= Settings.Ping.Low)
+			C.SetDrawColorStruct(Settings.Style.PingTextColorLow);
 		else if (Ping <= Settings.Ping.High)
-			SetDrawColor(C, Settings.Style.PingTextColorMid);
+			C.SetDrawColorStruct(Settings.Style.PingTextColorMid);
 		else
-			SetDrawColor(C, Settings.Style.PingTextColorHigh);
+			C.SetDrawColorStruct(Settings.Style.PingTextColorHigh);
 
 		S = string(Ping);
 	}

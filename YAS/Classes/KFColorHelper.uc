@@ -2,10 +2,6 @@
 class KFColorHelper extends Object
 	transient;
 
-`include(Build.uci)
-`include(Logger.uci)
-
-
 struct HSVColour
 {
 	var() float H, S, V, A;

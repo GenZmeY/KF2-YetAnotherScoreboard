@@ -1,13 +1,9 @@
 // Menu system written by Marco.
-Class KFGUI_Base extends Object
+class KFGUI_Base extends Object
 	abstract;
 
-`include(Build.uci)
-`include(Logger.uci)
-
-
 var KF2GUIController Owner;
-var YASHUD HUDOwner;
+var YAS_HUD HUDOwner;
 var KFGUI_Base ParentComponent; // Parent component if any.
 var transient Canvas Canvas;
 

@@ -1,8 +1,5 @@
 // Do not use this on your own, it is used by ColumnList
-Class KFGUI_ColumnTop extends KFGUI_Base;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_ColumnTop extends KFGUI_Base;
 
 var() float ColumnMinSize; // Minimum pixels width allowed.
 var KFGUI_ColumnList ListOwner;

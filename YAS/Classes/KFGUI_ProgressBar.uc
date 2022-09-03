@@ -1,8 +1,5 @@
 class KFGUI_ProgressBar extends KFGUI_Base;
 
-`include(Build.uci)
-`include(Logger.uci)
-
 var Texture BarBack;
 var Texture BarTop;
 var Color BarColor;

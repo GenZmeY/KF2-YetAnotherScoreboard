@@ -1,8 +1,5 @@
-Class GUIStyleBase extends Object
+class GUIStyleBase extends Object
 	abstract;
-
-`include(Build.uci)
-`include(Logger.uci)
 
 var Texture2D ItemTex;
 var array<Texture2D> BorderTextures, ArrowTextures, ButtonTextures, TabTextures, ItemBoxTextures, PerkBox, CheckBoxTextures, ProgressBarTextures, SliderTextures;
@@ -14,7 +11,7 @@ var() byte MaxFontScale;
 var float DefaultHeight; // Default font text size.
 var transient Canvas Canvas;
 var transient KF2GUIController Owner;
-var transient YASHUD HUDOwner;
+var transient YAS_HUD HUDOwner;
 
 var Font MainFont, NumberFont, InfiniteFont;
 var Color BlurColor, BlurColor2;

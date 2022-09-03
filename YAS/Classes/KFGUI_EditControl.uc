@@ -1,7 +1,4 @@
-Class KFGUI_EditControl extends KFGUI_Clickable;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_EditControl extends KFGUI_Clickable;
 
 var export editinline KFGUI_TextLable TextLable;
 var transient float TextHeight, TextScale;

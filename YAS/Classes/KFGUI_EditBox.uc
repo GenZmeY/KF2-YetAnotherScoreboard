@@ -1,7 +1,4 @@
-Class KFGUI_EditBox extends KFGUI_Clickable;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_EditBox extends KFGUI_Clickable;
 
 var enum eTextCase
 {

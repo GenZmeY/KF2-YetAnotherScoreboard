@@ -1,8 +1,5 @@
-Class KFGUI_FloatingWindow extends KFGUI_Page
+class KFGUI_FloatingWindow extends KFGUI_Page
 	abstract;
-
-`include(Build.uci)
-`include(Logger.uci)
 
 var() string WindowTitle; // Title of this window.
 var float DragOffset[2], OpenAnimSpeed;

@@ -1,9 +1,5 @@
 class KFGUI_CategoryList extends KFGUI_ComponentList;
 
-`include(Build.uci)
-`include(Logger.uci)
-
-
 // Broken, does not work correctly when closing a menu and re-opening it if a category is open
 struct FCategoryItems
 {

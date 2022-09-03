@@ -1,7 +1,4 @@
-Class KFGUI_ScrollBarV extends KFGUI_ScrollBarBase;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_ScrollBarV extends KFGUI_ScrollBarBase;
 
 defaultproperties
 {

@@ -1,7 +1,4 @@
-Class KFGUI_FloatingWindowHeader extends KFGUI_Base;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_FloatingWindowHeader extends KFGUI_Base;
 
 var bool bDragWindow;
 

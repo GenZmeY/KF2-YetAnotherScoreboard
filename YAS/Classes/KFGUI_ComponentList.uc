@@ -1,8 +1,5 @@
 // List box with components as items.
-Class KFGUI_ComponentList extends KFGUI_List;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_ComponentList extends KFGUI_List;
 
 var int VisRange[2];
 var() int NumColumns;

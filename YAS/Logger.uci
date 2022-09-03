@@ -1,9 +1,15 @@
-`define scelog(text, cond)     `log(`text, `cond, 'YetAnotherScoreboard')
+// Logger
+`define Log_Tag 'YAS'
 
-`define info(text)             `scelog("[INFO]"@`text, true)
-`define warning(text)          `scelog("[WARNING]"@`text, true)
-`define error(text)            `scelog("[ERROR]"@`text, true)
+`define LocationStatic        "`{ClassName}::" $ GetFuncName()
 
-`define debug(text)            if (`bEnableDebug)     { `scelog("[DEBUG]"@`text, `bEnableDebug); }
-`define callstack()            if (`bEnableCallstack) { `scelog("[CALLSTACK]"@`Location, `bEnableCallstack); }
-`define callstack_static(text) if (`bEnableCallstack) { `scelog("[CALLSTACK]"@`text, `bEnableCallstack); }
+`define Log_Base(msg, cond)  `log(`msg `if(`cond), `cond`{endif},            `Log_Tag)
+
+`define Log_Fatal(msg)       `log("FATAL:" @ `msg, (LogLevel >= LL_Fatal),   `Log_Tag)
+`define Log_Error(msg)       `log("ERROR:" @ `msg, (LogLevel >= LL_Error),   `Log_Tag)
+`define Log_Warn(msg)        `log("WARN:"  @ `msg, (LogLevel >= LL_Warning), `Log_Tag)
+`define Log_Info(msg)        `log("INFO:"  @ `msg, (LogLevel >= LL_Info),    `Log_Tag)
+`define Log_Debug(msg)       `log("DEBUG:" @ `msg, (LogLevel >= LL_Debug),   `Log_Tag)
+
+`define Log_Trace(msg)       `log("TRACE:" @ `Location       `if(`msg) @ `msg`{endif}, (LogLevel >= LL_Trace), `Log_Tag)
+`define Log_TraceStatic(msg) `log("TRACE:" @ `LocationStatic `if(`msg) @ `msg`{endif}, (LogLevel >= LL_Trace), `Log_Tag)

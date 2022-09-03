@@ -1,7 +1,4 @@
-Class KFGUI_TextScroll extends KFGUI_TextField;
-
-`include(Build.uci)
-`include(Logger.uci)
+class KFGUI_TextScroll extends KFGUI_TextField;
 
 var float ScrollSpeed;
 

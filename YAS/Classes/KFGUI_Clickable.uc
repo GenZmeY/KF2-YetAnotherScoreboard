@@ -1,9 +1,5 @@
-Class KFGUI_Clickable extends KFGUI_Base
+class KFGUI_Clickable extends KFGUI_Base
 	abstract;
-
-`include(Build.uci)
-`include(Logger.uci)
-
 
 var() int IntIndex; // More user variables.
 var() string ToolTip;
