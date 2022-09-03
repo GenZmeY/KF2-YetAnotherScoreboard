@@ -56,7 +56,7 @@ public static function WriteSettings(YASSettingsPlayer Settings)
 	default.ApplyColorToFields = Settings.ApplyColorToFields;
 }
 
-DefaultProperties
+defaultproperties
 {
 
 }

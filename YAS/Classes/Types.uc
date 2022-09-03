@@ -7,7 +7,7 @@ struct ColorRGBA
 {
 	var byte R, G, B, A;
 	
-	StructDefaultProperties
+	Structdefaultproperties
 	{
 		R = 250
 		G = 250
@@ -29,7 +29,7 @@ struct Fields
 	var bool Armor;
 	var bool Ping;
 	
-	StructDefaultProperties
+	Structdefaultproperties
 	{
 		Rank    = true;
 		Player  = true;
@@ -58,7 +58,7 @@ struct RankRelation
 	var string ObjectID;
 	var int    RankID;
 	
-	StructDefaultProperties
+	Structdefaultproperties
 	{
 		RankID = -999
 	}
@@ -69,7 +69,7 @@ struct UIDRankRelation
 	var UniqueNetId UID;
 	var int RankID;
 	
-	StructDefaultProperties
+	Structdefaultproperties
 	{
 		RankID = -999
 	}
@@ -81,7 +81,7 @@ struct YASSettingsAdmin
 	var ColorRGBA TextColor;
 	var Fields    ApplyColorToFields;
 	
-	StructDefaultProperties
+	Structdefaultproperties
 	{
 		Rank               = "Admin"
 		TextColor          = (R=250, G=0, B=0, A=255)
@@ -95,7 +95,7 @@ struct YASSettingsPlayer
 	var ColorRGBA TextColor;
 	var Fields    ApplyColorToFields;
 	
-	StructDefaultProperties
+	Structdefaultproperties
 	{
 		Rank               = "Player"
 		TextColor          = (R=250, G=250, B=250, A=255)
@@ -108,7 +108,7 @@ struct YASSettingsHealth
 	var int Low;
 	var int High;
 	
-	StructDefaultProperties
+	Structdefaultproperties
 	{
 		Low  = 40
 		High = 80
@@ -120,7 +120,7 @@ struct YASSettingsArmor
 	var int Low;
 	var int High;
 	
-	StructDefaultProperties
+	Structdefaultproperties
 	{
 		Low  = 40
 		High = 80
@@ -132,7 +132,7 @@ struct YASSettingsPing
 	var int Low;
 	var int High;
 	
-	StructDefaultProperties
+	Structdefaultproperties
 	{
 		Low  = 60
 		High = 120
@@ -144,7 +144,7 @@ struct YASSettingsLevel
 	var int Low [4];
 	var int High[4];
 	
-	StructDefaultProperties
+	Structdefaultproperties
 	{
 		Low [0] = 0
 		High[0] = 0
@@ -295,7 +295,7 @@ struct YASStyle
 	var bool      AssistsTextSmoothColorChange;
 	var bool      PingTextSmoothColorChange;
 	
-	StructDefaultProperties
+	Structdefaultproperties
 	{
 		EdgeSize                        = 8
 		

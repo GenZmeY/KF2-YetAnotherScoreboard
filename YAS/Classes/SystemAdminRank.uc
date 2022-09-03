@@ -56,7 +56,7 @@ public static function WriteSettings(YASSettingsAdmin Settings)
 	default.ApplyColorToFields = Settings.ApplyColorToFields;
 }
 
-DefaultProperties
+defaultproperties
 {
 
 }

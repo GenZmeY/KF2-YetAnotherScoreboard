@@ -52,7 +52,7 @@ public static function WriteSettings(YASSettingsArmor Settings)
 	default.High = Settings.High;
 }
 
-DefaultProperties
+defaultproperties
 {
 
 }

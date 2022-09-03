@@ -41,7 +41,7 @@ public static function InitConfig(int ConfigVersion)
 	}
 }
 
-DefaultProperties
+defaultproperties
 {
 
 }

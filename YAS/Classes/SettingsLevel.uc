@@ -70,7 +70,7 @@ public static function WriteSettings(YASSettingsLevel Settings)
 	default.HellOnEarth_High = Settings.High[3];
 }
 
-DefaultProperties
+defaultproperties
 {
 
 }

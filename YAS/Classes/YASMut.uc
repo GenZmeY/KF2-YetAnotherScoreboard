@@ -11,13 +11,7 @@ var config int ConfigVersion;
 
 var private OnlineSubsystem Steamworks;
 
-struct SClient
-{
-	var YASRepInfo RepInfo;
-	var KFPlayerController KFPC;
-};
-
-var private array<SClient> RepClients;
+var private array<YASRepInfo> RepInfos;
 var private array<UIDRankRelation> UIDRankRelationsPlayers;
 var private array<UIDRankRelation> UIDRankRelationsSteamGroups;
 var private array<UIDRankRelation> UIDRankRelationsActive;
@@ -49,7 +43,8 @@ function NotifyLogin(Controller C)
 {
 	`callstack();
 	
-	AddPlayer(C);
+	CreateRepInfo(C);
+	
 	Super.NotifyLogin(C);
 }
 
@@ -57,7 +52,8 @@ function NotifyLogout(Controller C)
 {
 	`callstack();
 	
-	RemovePlayer(C);
+	DestroyRepInfo(C);
+	
 	Super.NotifyLogout(C);
 }
 
@@ -151,75 +147,43 @@ private function LoadRelations()
 	}
 }
 
-private function AddPlayer(Controller C)
+private function CreateRepInfo(Controller C)
 {
-	local KFPlayerController KFPC;
-	local UIDRankRelation Relation;
-	local SClient RepClient, RepClientNew;
+	local YASRepInfo RepInfo;
 	
 	`callstack();
 	
-	KFPC = KFPlayerController(C);
-	if (KFPC == None)
-		return;
+	if (C == None) return;
+	
+	RepInfo = Spawn(class'YASRepInfo', C);
+	
+	RepInfo.Mut = Self;
+	RepInfo.Settings = Settings;
 
-	RepClientNew.KFPC = KFPC;
-	RepClientNew.RepInfo = Spawn(class'YASRepInfo', KFPC);
-	
-	RepClientNew.RepInfo.Mut = Self;
-	RepClientNew.RepInfo.CustomRanks = class'CustomRanks'.default.Rank;
-	RepClientNew.RepInfo.SteamGroupRelations = UIDRankRelationsSteamGroups;
-	RepClientNew.RepInfo.Settings = Settings;
-	RepClientNew.RepInfo.RankRelation.UID = KFPC.PlayerReplicationInfo.UniqueId;
-	RepClientNew.RepInfo.RankRelation.RankID = UIDRankRelationsPlayers.Find('UID', RepClientNew.RepInfo.RankRelation.UID);
-	
-	RepClients.AddItem(RepClientNew);
-	
-	foreach UIDRankRelationsActive(Relation)
-		RepClientNew.RepInfo.AddRankRelation(Relation);
-	
-	RepClientNew.RepInfo.StartFirstTimeReplication();
-	
-	if (RepClientNew.RepInfo.RankRelation.RankID != INDEX_NONE)
-	{
-		UIDRankRelationsActive.AddItem(RepClientNew.RepInfo.RankRelation);
-		foreach RepClients(RepClient)
-			RepClient.RepInfo.AddRankRelation(RepClientNew.RepInfo.RankRelation);
-	}
+	RepInfos.AddItem(RepInfo);
 }
 
-private function RemovePlayer(Controller C)
+private function DestroyRepInfo(Controller C)
 {
-	local KFPlayerController KFPC;
-	local int Index, i;
-	local UniqueNetId UID;
+	local YASRepInfo RepInfo;
 
 	`callstack();
 
-	KFPC = KFPlayerController(C);
-	if (KFPC == None)
-		return;
+	if (C == None) return;
 
-	UID = KFPC.PlayerReplicationInfo.UniqueId;
-	Index = UIDRankRelationsActive.Find('UID', UID);
-	if (Index != INDEX_NONE)
-		for (i = 0; i < UIDRankRelationsActive.Length; ++i)
-			if (Index != i)
-				RepClients[i].RepInfo.RemoveRankRelation(UIDRankRelationsActive[Index]);
-
-	Index = RepClients.Find('KFPC', KFPC);
-	if (Index == INDEX_NONE)
-		return;
-
-	if (RepClients[Index].RepInfo != None)
-		RepClients[Index].RepInfo.Destroy();
-	
-	RepClients.Remove(Index, 1);
+	foreach RepInfos(RepInfo)
+	{
+		if (RepInfo.Owner == C)
+		{
+			RepInfos.RemoveItem(RepInfo);
+			RepInfo.Destroy();
+		}
+	}
 }
 
 public function UpdatePlayerRank(UIDRankRelation Rel)
 {
-	local SClient RepClient;
+	local YASRepInfo RepInfo;
 	local int Index;
 	
 	`callstack();
@@ -230,21 +194,21 @@ public function UpdatePlayerRank(UIDRankRelation Rel)
 	else
 		UIDRankRelationsActive.AddItem(Rel);
 	
-	foreach RepClients(RepClient)
-		RepClient.RepInfo.UpdateRankRelation(Rel);
+	foreach RepInfos(RepInfo)
+		RepInfo.UpdateRankRelation(Rel);
 }
 
 public function AddPlayerRank(UIDRankRelation Rel)
 {
-	local SClient RepClient;
+	local YASRepInfo RepInfo;
 	
 	`callstack();
 	
-	foreach RepClients(RepClient)
-		RepClient.RepInfo.AddRankRelation(Rel);
+	foreach RepInfos(RepInfo)
+		RepInfo.AddRankRelation(Rel);
 }
 
-DefaultProperties
+defaultproperties
 {
 
 }
