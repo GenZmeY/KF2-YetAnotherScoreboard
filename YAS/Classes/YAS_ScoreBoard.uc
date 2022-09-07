@@ -1,8 +1,10 @@
 class YAS_ScoreBoard extends KFGUI_Page
 	dependson(YAS_Types);
 
-const HeaderWidthRatio     = 0.35f;
+const HeaderWidthRatio     = 0.30f;
 const PlayerListWidthRatio = 0.6f;
+
+var public E_LogLevel LogLevel;
 
 var transient float HealthXPos, RankXPos, PlayerXPos, LevelXPos, PerkXPos, DoshXPos, KillsXPos, AssistXPos, PingXPos, ScrollXPos;
 var transient float HealthWBox, RankWBox, PlayerWBox, LevelWBox, PerkWBox, DoshWBox, KillsWBox, AssistWBox, PingWBox, ScrollWBox;
@@ -21,32 +23,88 @@ var KFPlayerController OwnerPC;
 var Color PingColor;
 var float PingBars;
 
-// Cache
-var array<String> PerkNames;
+var localized String Players;
+var localized String Spectators;
 
-var YAS_Settings Settings;
+// Cache
+var public YAS_Settings Settings;
+var public String DynamicServerName;
+var public bool UsesStats, Custom, PasswordRequired;
+
+var public SystemRank RankPlayer;
+var public SystemRank RankAdmin;
+var public Array<CachedRankRelation> RankRelations;
+
+function Rank PlayerRank(KFPlayerReplicationInfo KFPRI)
+{
+	local CachedRankRelation RankRelation;
+	local Rank Rank;
+	
+	`Log_Trace();
+	
+	Rank = FromSystemRank(RankPlayer);
+	foreach RankRelations(RankRelation)
+	{
+		if (RankRelation.UID.Uid == KFPRI.UniqueId.Uid)
+		{
+			Rank = RankRelation.Rank;
+			break;
+		}
+	}
+	
+	if (KFPRI.bAdmin && !Rank.OverrideAdmin)
+	{
+		Rank = FromSystemRank(RankAdmin);
+	}
+	
+	return Rank;
+}
+
+function Rank FromSystemRank(SystemRank SysRank)
+{
+	local Rank Rank;
+	
+	Rank.RankID        = 0;
+	Rank.RankName      = SysRank.RankName;
+	Rank.RankColor     = SysRank.RankColor;
+	Rank.PlayerColor   = SysRank.PlayerColor;
+	Rank.OverrideAdmin = false;
+	
+	return Rank;
+}
+
+function float MinPerkBoxWidth(float FontScalar)
+{
+	local Array<String> PerkNames;
+	local String PerkName;
+	local float XL, YL, MaxWidth;
+
+	PerkNames.AddItem(class'KFGFxMenu_Inventory'.default.PerkFilterString);
+	PerkNames.AddItem(class'KFPerk_Berserker'.default.PerkName);
+	PerkNames.AddItem(class'KFPerk_Commando'.default.PerkName);
+	PerkNames.AddItem(class'KFPerk_Support'.default.PerkName);
+	PerkNames.AddItem(class'KFPerk_FieldMedic'.default.PerkName);
+	PerkNames.AddItem(class'KFPerk_Demolitionist'.default.PerkName);
+	PerkNames.AddItem(class'KFPerk_Firebug'.default.PerkName);
+	PerkNames.AddItem(class'KFPerk_Gunslinger'.default.PerkName);
+	PerkNames.AddItem(class'KFPerk_Sharpshooter'.default.PerkName);
+	PerkNames.AddItem(class'KFPerk_SWAT'.default.PerkName);
+	PerkNames.AddItem(class'KFPerk_Survivalist'.default.PerkName);
+
+	foreach PerkNames(PerkName)
+	{
+		Canvas.TextSize(PerkName $ "A", XL, YL, FontScalar, FontScalar);
+		if (XL > MaxWidth) MaxWidth = XL;
+	}
+	
+	return MaxWidth;
+}
 
 function InitMenu()
 {
 	Super.InitMenu();
 	PlayersList = KFGUI_List(FindComponentID('PlayerList'));
 	OwnerPC = KFPlayerController(GetPlayer());
-	
-	// TODO: Remove this crunch
-	if (PerkNames.Length == 0)
-	{
-		PerkNames.AddItem(class'KFGFxMenu_Inventory'.default.PerkFilterString);
-		PerkNames.AddItem(class'KFPerk_Berserker'.default.PerkName);
-		PerkNames.AddItem(class'KFPerk_Commando'.default.PerkName);
-		PerkNames.AddItem(class'KFPerk_Support'.default.PerkName);
-		PerkNames.AddItem(class'KFPerk_FieldMedic'.default.PerkName);
-		PerkNames.AddItem(class'KFPerk_Demolitionist'.default.PerkName);
-		PerkNames.AddItem(class'KFPerk_Firebug'.default.PerkName);
-		PerkNames.AddItem(class'KFPerk_Gunslinger'.default.PerkName);
-		PerkNames.AddItem(class'KFPerk_Sharpshooter'.default.PerkName);
-		PerkNames.AddItem(class'KFPerk_SWAT'.default.PerkName);
-		PerkNames.AddItem(class'KFPerk_Survivalist'.default.PerkName);
-	}
 }
 
 static function CheckAvatar(KFPlayerReplicationInfo KFPRI, KFPlayerController PC)
@@ -106,22 +164,6 @@ function string WaveText()
 			return CurrentWaveNum $ " / " $ KFGRI.GetFinalWaveNum();
 		}
     }
-}
-
-function String ServerName()
-{
-	local KFOnlineGameSettings KFGS;
-	local KFGameInfo KFGI;
-	
-	KFGI = KFGameInfo(KFGRI.WorldInfo.Game);
-	
-	if (KFGI != None && KFGI.PlayfabInter != None && KFGI.PlayfabInter.GetGameSettings() != None)
-	{
-		KFGS = KFOnlineGameSettings(KFGI.PlayfabInter.GetGameSettings());
-		return KFGS.OwningPlayerName;
-	}
-	
-	return KFGRI.ServerName;
 }
 
 function DrawMenu()
@@ -212,7 +254,7 @@ function DrawMenu()
 	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapeServerNameBox);
 	
 	Canvas.SetDrawColorStruct(Settings.Style.ServerNameTextColor);
-	S = ServerName();
+	S = (DynamicServerName == "" ? KFGRI.ServerName : DynamicServerName);
 	DrawTextShadowHVCenter(S, BoxX, YPos, BoxW, FontScalar);
 	
 	YPos += BoxH;
@@ -251,7 +293,7 @@ function DrawMenu()
 	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapePlayersCountBox);
 	
 	Canvas.SetDrawColorStruct(Settings.Style.PlayerCountTextColor);
-	S = NumPlayer $ " / " $ KFGRI.MaxHumanCount; // $ "    " $ Spectators $ ": " $ NumSpec; 
+	S = Players $ ":" @ NumPlayer @ "/" @ KFGRI.MaxHumanCount $ "    " $ Spectators $ ":" @ NumSpec; 
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
 	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos, FontScalar);
 	
@@ -305,12 +347,7 @@ function DrawMenu()
 	DoshWBox = XL < DoshSize ? DoshSize : XL;
 	DoshXPos = KillsXPos - DoshWBox;
 	
-	BoxW = 0;
-	foreach PerkNames(S)
-	{
-		Canvas.TextSize(S$"A", XL, YL, FontScalar, FontScalar);
-		if (XL > BoxW) BoxW = XL;
-	}
+	BoxW = MinPerkBoxWidth(FontScalar);
 	PerkWBox = BoxW < MinBoxW ? MinBoxW : BoxW;
 	PerkXPos = DoshXPos - PerkWBox;
 	
@@ -394,6 +431,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local byte Level, PrestigeLevel;
 	local bool bIsZED;
 	local int Ping;
+	local Rank Rank;
 	
 	local float BorderSize;
 	
@@ -405,7 +443,9 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 
 	YOffset *= 1.05;
 	KFPRI = KFPRIArray[Index];
-
+	
+	Rank = PlayerRank(KFPRI);
+	
 	if (KFGRI.bVersusGame)
 	{
 		bIsZED = KFTeamInfo_Zeds(KFPRI.Team) != None;
@@ -605,24 +645,28 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	}
 	
 	// Rank
-	DrawTextShadowHRightVCenter("<Player>", PlayerXPos, TextYOffset, PerkIconPosX - PlayerXPos - (BorderSize * 2), FontScalar);
+	if (Rank.RankName != "")
+	{
+		C.SetDrawColorStruct(Rank.RankColor);
+		DrawTextShadowHRightVCenter(Rank.RankName, PlayerXPos, TextYOffset, PerkIconPosX - PlayerXPos - (BorderSize * 4), FontScalar);
+	}
 
 	// Avatar
+	if (KFPRI.Avatar == None || (!KFPRI.bBot && KFPRI.Avatar == default.DefaultAvatar))
+	{
+		CheckAvatar(KFPRI, OwnerPC);
+	}
+	
 	if (KFPRI.Avatar != None)
 	{
-		if (KFPRI.Avatar == default.DefaultAvatar)
-			CheckAvatar(KFPRI, OwnerPC);
-
 		C.SetDrawColor(255, 255, 255, 255);
 		C.SetPos(PlayerXPos - (Height * 1.075), YOffset + (Height * 0.5f) - ((Height - 6) * 0.5f));
 		C.DrawTile(KFPRI.Avatar, Height - 6, Height - 6, 0,0, KFPRI.Avatar.SizeX, KFPRI.Avatar.SizeY);
 		Owner.CurrentStyle.DrawBoxHollow(PlayerXPos - (Height * 1.075), YOffset + (Height * 0.5f) - ((Height - 6) * 0.5f), Height - 6, Height - 6, 1);
 	}
-	else if (!KFPRI.bBot)
-		CheckAvatar(KFPRI, OwnerPC);
 
 	// Player
-	C.SetDrawColorStruct(Settings.Style.PlayerNameTextColor);
+	C.SetDrawColorStruct(Rank.PlayerColor);
 	S = KFPRI.PlayerName;
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
 	while (XL > RealPlayerWBox)

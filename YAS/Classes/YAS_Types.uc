@@ -1,31 +1,5 @@
 class YAS_Types extends Object;
 
-struct Fields
-{
-	var bool Rank;
-	var bool Player;
-	var bool Level;
-	var bool Perk;
-	var bool Dosh;
-	var bool Kills;
-	var bool Assists;
-	var bool Health;
-	var bool Ping;
-	
-	Structdefaultproperties
-	{
-		Rank    = true;
-		Player  = true;
-		Level   = false;
-		Perk    = false;
-		Dosh    = false;
-		Kills   = false;
-		Assists = false;
-		Health  = false;
-		Ping    = false;
-	}
-};
-
 struct YAS_SettingsHealth
 {	
 	var int Low;
@@ -312,6 +286,51 @@ struct YAS_Style
 		// Other settings
 		ShowPingBars                    = true
 	}
+};
+
+struct SystemRank
+{
+	var String RankName;
+	var Color  RankColor;
+	var Color  PlayerColor;
+	
+	structdefaultproperties
+	{
+		RankName      = ""
+		RankColor     = (R=250, G=250, B=250, A=255)
+		PlayerColor   = (R=250, G=250, B=250, A=255)
+	}
+};
+
+struct Rank
+{
+	var int    RankID;
+	var String RankName;
+	var Color  RankColor;
+	var Color  PlayerColor;
+	var bool   OverrideAdmin;
+	
+	structdefaultproperties
+	{
+		RankID        = 0
+		RankName      = ""
+		RankColor     = (R=250, G=250, B=250, A=255)
+		PlayerColor   = (R=250, G=250, B=250, A=255)
+		OverrideAdmin = false
+	}
+};
+
+struct RankRelation
+{
+	var int    RankID;
+	var String ObjectID;
+};
+
+struct CachedRankRelation
+{
+	var String      RawID;
+	var UniqueNetId UID;
+	var Rank        Rank;
 };
 
 struct YAS_Settings
