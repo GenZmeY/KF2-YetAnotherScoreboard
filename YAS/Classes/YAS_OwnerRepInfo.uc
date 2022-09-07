@@ -1,4 +1,4 @@
-class YAS_RepInfo extends ReplicationInfo;
+class YAS_OwnerRepInfo extends ReplicationInfo;
 
 var public YAS YAS;
 
@@ -7,15 +7,13 @@ var public repnotify SystemRank RankPlayer, RankAdmin;
 var public repnotify String DynamicServerName;
 var public repnotify bool UsesStats, Custom, PasswordRequired;
 
-var public CachedRankRelation ActiveRankRelation;
+var public YAS_RankRepInfo RankRepInfo;
 
 var private KFPlayerController        KFPC;
 var private YAS_ScoreBoard            SC;
 var private OnlineSubsystemSteamworks OSS;
 
-var private Array<UniqueNetID>        PendingGroupIDs;
-var private Array<CachedRankRelation> PendingAddRankRelations;
-var private Array<CachedRankRelation> PendingRemoveRankRelations;
+var private Array<UniqueNetID> PendingGroupIDs;
 
 const CheckGroupTimer = 0.2f;
 const MaxRetries      = 3;
@@ -28,6 +26,13 @@ replication
 	
 	if (bNetDirty)
 		DynamicServerName, UsesStats, Custom, PasswordRequired;
+}
+
+public simulated function bool SafeDestroy()
+{
+	`Log_Trace();
+	
+	return (bPendingDelete || bDeleteMe || Destroy());
 }
 
 public simulated event ReplicatedEvent(name VarName)
@@ -70,13 +75,6 @@ public simulated event ReplicatedEvent(name VarName)
 	}
 }
 
-public simulated function bool SafeDestroy()
-{
-	`Log_Trace();
-	
-	return (bPendingDelete || bDeleteMe || Destroy());
-}
-
 public simulated event PreBeginPlay()
 {
 	`Log_Trace();
@@ -98,42 +96,6 @@ public simulated event PostBeginPlay()
 	if (bPendingDelete || bDeleteMe) return;
 	
 	Super.PostBeginPlay();
-}
-
-public reliable client function AddRankRelation(CachedRankRelation RR)
-{
-	local int Index;
-	
-	`Log_Trace();
-	
-	if (SC == None)
-	{
-		PendingAddRankRelations.AddItem(RR);
-		return;
-	}
-	
-	Index = SC.RankRelations.Find('UID', RR.UID);
-	if (Index != INDEX_NONE)
-	{
-		SC.RankRelations[Index] = RR;
-	}
-	else
-	{
-		SC.RankRelations.AddItem(RR);
-	}
-}
-
-public reliable client function RemoveRankRelation(CachedRankRelation RR)
-{
-	`Log_Trace();
-	
-	if (SC == None)
-	{
-		PendingRemoveRankRelations.AddItem(RR);
-		return;
-	}
-	
-	SC.RankRelations.RemoveItem(RR);
 }
 
 public reliable client function CheckGroupRanks(String JoinedGroupIDs)
@@ -191,15 +153,19 @@ private simulated function CheckGroupsCycle()
 
 private reliable server function ServerApplyMembership(UniqueNetId GroupUID)
 {
+	local Rank Rank;
+	
 	`Log_Trace();
 	
-	if (GetKFPC() != None && KFPC.PlayerReplicationInfo != None)
+	Rank = YAS.RankByGroupID(GroupUID);
+	if (Rank.RankID > 0)
 	{
-		YAS.ApplyMembership(GroupUID, KFPC.PlayerReplicationInfo.UniqueID);
+		RankRepInfo.Rank = Rank;
 	}
 	else
 	{
-		`Log_Error("Can't apply membership for:" @ Self @ GetKFPC());
+		`Log_Warn("Cant find related rank for groupUID");
+		RankRepInfo.Rank = class'YAS_Types'.static.FromSystemRank(RankPlayer);
 	}
 }
 
@@ -254,8 +220,6 @@ private reliable client function GetScoreboard()
 
 private simulated function InitScoreboard()
 {
-	local CachedRankRelation RR;
-	
 	`Log_Trace();
 	
 	if (SC == None) return;
@@ -267,18 +231,6 @@ private simulated function InitScoreboard()
 	SC.UsesStats         = UsesStats;
 	SC.Custom            = Custom;
 	SC.PasswordRequired  = PasswordRequired;
-	
-	foreach PendingRemoveRankRelations(RR)
-	{
-		RemoveRankRelation(RR);
-	}
-	PendingRemoveRankRelations.Length = 0;
-	
-	foreach PendingAddRankRelations(RR)
-	{
-		AddRankRelation(RR);
-	}
-	PendingAddRankRelations.Length = 0;
 }
 
 defaultproperties

@@ -341,3 +341,20 @@ struct YAS_Settings
 	var YAS_SettingsHealth Health;
 };
 
+public static function Rank FromSystemRank(SystemRank SysRank)
+{
+	local Rank RV;
+	
+	RV.RankID        = 0;
+	RV.RankName      = SysRank.RankName;
+	RV.RankColor     = SysRank.RankColor;
+	RV.PlayerColor   = SysRank.PlayerColor;
+	RV.OverrideAdmin = false;
+	
+	return RV;
+}
+
+defaultproperties
+{
+	
+}

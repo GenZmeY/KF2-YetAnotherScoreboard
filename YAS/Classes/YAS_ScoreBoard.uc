@@ -27,48 +27,67 @@ var localized String Players;
 var localized String Spectators;
 
 // Cache
+var public Array<YAS_RankRepInfo> RepInfos;
+
 var public YAS_Settings Settings;
 var public String DynamicServerName;
 var public bool UsesStats, Custom, PasswordRequired;
 
 var public SystemRank RankPlayer;
 var public SystemRank RankAdmin;
-var public Array<CachedRankRelation> RankRelations;
 
 function Rank PlayerRank(KFPlayerReplicationInfo KFPRI)
 {
-	local CachedRankRelation RankRelation;
+	local YAS_RankRepInfo RepInfo;
 	local Rank Rank;
+	local bool NeedClean, FoundRepInfo;
 	
 	`Log_Trace();
 	
-	Rank = FromSystemRank(RankPlayer);
-	foreach RankRelations(RankRelation)
+	Rank = class'YAS_Types'.static.FromSystemRank(RankPlayer);
+	
+	NeedClean    = false;
+	FoundRepInfo = false;
+	
+	foreach RepInfos(RepInfo)
 	{
-		if (RankRelation.UID.Uid == KFPRI.UniqueId.Uid)
+		if (RepInfo == None)
 		{
-			Rank = RankRelation.Rank;
+			NeedClean = true;
+			continue;
+		}
+		
+		if (RepInfo.UID.Uid == KFPRI.UniqueId.Uid)
+		{
+			Rank         = RepInfo.Rank;
+			FoundRepInfo = true;
 			break;
 		}
 	}
 	
-	if (KFPRI.bAdmin && !Rank.OverrideAdmin)
+	if (!FoundRepInfo)
 	{
-		Rank = FromSystemRank(RankAdmin);
+		foreach KFPRI.DynamicActors(class'YAS_RankRepInfo', RepInfo)
+		{
+			if (RepInfo.UID.Uid == KFPRI.UniqueId.Uid)
+			{
+				Rank = RepInfo.Rank;
+				FoundRepInfo = true;
+				RepInfos.AddItem(RepInfo);
+				break;
+			}
+		}
 	}
 	
-	return Rank;
-}
-
-function Rank FromSystemRank(SystemRank SysRank)
-{
-	local Rank Rank;
+	if (NeedClean)
+	{
+		RepInfos.RemoveItem(None);
+	}
 	
-	Rank.RankID        = 0;
-	Rank.RankName      = SysRank.RankName;
-	Rank.RankColor     = SysRank.RankColor;
-	Rank.PlayerColor   = SysRank.PlayerColor;
-	Rank.OverrideAdmin = false;
+	if (KFPRI.bAdmin && !Rank.OverrideAdmin)
+	{
+		Rank = class'YAS_Types'.static.FromSystemRank(RankAdmin);
+	}
 	
 	return Rank;
 }

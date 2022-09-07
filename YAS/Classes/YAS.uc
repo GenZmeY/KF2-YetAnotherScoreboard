@@ -22,7 +22,7 @@ var private KFOnlineGameSettings  KFOGS;
 
 var private OnlineSubsystemSteamworks OSS;
 
-var private Array<YAS_RepInfo> RepInfos;
+var private Array<YAS_OwnerRepInfo> RepInfos;
 
 var private Array<CachedRankRelation> PlayerRelations;
 var private Array<CachedRankRelation> GroupRelations;
@@ -282,7 +282,7 @@ private function UpdateTimer()
 
 public function NotifyLogin(Controller C)
 {
-	local YAS_RepInfo RepInfo;
+	local YAS_OwnerRepInfo RepInfo;
 	
 	`Log_Trace();
 
@@ -293,24 +293,16 @@ public function NotifyLogin(Controller C)
 		return;
 	}
 	
-	ApplyCurrentRankRelations(RepInfo);
 	InitRank(RepInfo);
 }
 
 public function NotifyLogout(Controller C)
 {
-	local YAS_RepInfo RepInfo;
+	local YAS_OwnerRepInfo RepInfo;
 	
 	`Log_Trace();
 	
 	RepInfo = FindRepInfo(C);
-	if (RepInfo == None)
-	{
-		`Log_Error("Can't find repinfo for:" @ C);
-		return;
-	}
-	
-	BroadcastRemoveRankRelation(RepInfo.ActiveRankRelation, C);
 	
 	if (!DestroyRepInfo(RepInfo))
 	{
@@ -318,30 +310,33 @@ public function NotifyLogout(Controller C)
 	}
 }
 
-public function YAS_RepInfo CreateRepInfo(Controller C)
+public function YAS_OwnerRepInfo CreateRepInfo(Controller C)
 {
-	local YAS_RepInfo RepInfo;
+	local YAS_OwnerRepInfo OwnerRepInfo;
+	local YAS_RankRepInfo  RankRepInfo;
 	
 	`Log_Trace();
 	
-	RepInfo = Spawn(class'YAS_RepInfo', C);
+	OwnerRepInfo  = Spawn(class'YAS_OwnerRepInfo', C);
+	RankRepInfo = Spawn(class'YAS_RankRepInfo', C);
 	
-	if (RepInfo != None)
+	if (OwnerRepInfo != None && RankRepInfo != None)
 	{
-		RepInfos.AddItem(RepInfo);
+		RepInfos.AddItem(OwnerRepInfo);
 		
-		RepInfo.YAS        = Self;
-		RepInfo.LogLevel   = LogLevel;
-		RepInfo.RankPlayer = CfgRanks.default.Player;
-		RepInfo.RankAdmin  = CfgRanks.default.Admin;
+		OwnerRepInfo.RankRepInfo = RankRepInfo;
+		OwnerRepInfo.YAS           = Self;
+		OwnerRepInfo.LogLevel      = LogLevel;
+		OwnerRepInfo.RankPlayer    = CfgRanks.default.Player;
+		OwnerRepInfo.RankAdmin     = CfgRanks.default.Admin;
 	}
 	
-	return RepInfo;
+	return OwnerRepInfo;
 }
 
-private function YAS_RepInfo FindRepInfo(Controller C)
+private function YAS_OwnerRepInfo FindRepInfo(Controller C)
 {
-	local YAS_RepInfo RepInfo;
+	local YAS_OwnerRepInfo RepInfo;
 	
 	if (C == None) return None;
 	
@@ -356,30 +351,25 @@ private function YAS_RepInfo FindRepInfo(Controller C)
 	return None;
 }
 
-public function bool DestroyRepInfo(YAS_RepInfo RepInfo)
+public function bool DestroyRepInfo(YAS_OwnerRepInfo RepInfo)
 {
 	`Log_Trace();
 	
 	if (RepInfo == None) return false;
 	
 	RepInfos.RemoveItem(RepInfo);
+	RepInfo.RankRepInfo.SafeDestroy();
 	RepInfo.SafeDestroy();
 	
 	return true;
 }
 
-private function ApplyCurrentRankRelations(YAS_RepInfo RepInfo)
-{
-	
-}
-
-private function InitRank(YAS_RepInfo RepInfo)
+private function InitRank(YAS_OwnerRepInfo RepInfo)
 {
 	local CachedRankRelation Rel;
 	local String JoinedGroupIDs;
 	local PlayerReplicationInfo PRI;
 	local KFPlayerController KFPC;
-	local bool HasPlayerRank;
 	local Array<String> StringGroupIDs;
 	
 	`Log_Trace();
@@ -391,22 +381,16 @@ private function InitRank(YAS_RepInfo RepInfo)
 	PRI = KFPC.PlayerReplicationInfo;
 	if (PRI == None) return;
 	
-	HasPlayerRank = false;
 	foreach PlayerRelations(Rel)
 	{
 		if (Rel.UID.Uid == PRI.UniqueID.Uid)
 		{
-			HasPlayerRank = true;
-			RepInfo.ActiveRankRelation = Rel;
+			RepInfo.RankRepInfo.Rank = Rel.Rank;
 			break;
 		}
 	}
 	
-	if (HasPlayerRank)
-	{
-		BroadcastAddRankRelation(RepInfo.ActiveRankRelation);
-	}
-	else if (!KFPC.bIsEosPlayer)
+	if (RepInfo.RankRepInfo.Rank.RankID <= 0 && !KFPC.bIsEosPlayer)
 	{
 		foreach GroupRelations(Rel)
 		{
@@ -417,49 +401,13 @@ private function InitRank(YAS_RepInfo RepInfo)
 	}
 }
 
-public function ApplyMembership(UniqueNetId GroupUID, UniqueNetId PlayerUID)
+public function Rank RankByGroupID(UniqueNetId GroupUID)
 {
-	local CachedRankRelation RR;
-	local int Index;
+	local CachedRankRelation Rel;
 	
-	`Log_Trace();
-	
-	Index = GroupRelations.Find('UID', GroupUID);
-	if (Index != INDEX_NONE)
-	{
-		RR.UID = PlayerUID;
-		RR.Rank = GroupRelations[Index].Rank;
-		BroadcastAddRankRelation(RR);
-	}
-	else
-	{
-		`Log_Error("Can't find related GroupID rank");
-	}
-}
+	foreach GroupRelations(Rel) if (Rel.UID == GroupUID) break;
 
-public function BroadcastAddRankRelation(CachedRankRelation RR)
-{
-	local YAS_RepInfo RepInfo;
-	
-	`Log_Trace();
-	
-	foreach RepInfos(RepInfo)
-	{
-		RepInfo.AddRankRelation(RR);
-	}
-}
-
-public function BroadcastRemoveRankRelation(CachedRankRelation RR, optional Controller Except)
-{
-	local YAS_RepInfo RepInfo;
-	
-	foreach RepInfos(RepInfo)
-	{
-		if (RepInfo.Owner != Except)
-		{
-			RepInfo.RemoveRankRelation(RR);
-		}
-	}
+	return Rel.Rank;
 }
 
 DefaultProperties
