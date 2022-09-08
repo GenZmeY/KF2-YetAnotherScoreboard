@@ -22,10 +22,10 @@ var private int Retries;
 replication
 {
 	if (bNetInitial)
-		LogLevel, RankPlayer, RankAdmin, MessageOfTheDay;
+		LogLevel, RankPlayer, RankAdmin;
 	
 	if (bNetDirty)
-		DynamicServerName, UsesStats, Custom, PasswordRequired;
+		DynamicServerName, UsesStats, Custom, PasswordRequired, MessageOfTheDay;
 }
 
 public simulated function bool SafeDestroy()

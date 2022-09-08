@@ -3,8 +3,9 @@ class YAS extends Info
 
 const LatestVersion = 1;
 
-const CfgRanks         = class'Ranks';
-const CfgRankRelations = class'RankRelations';
+const CfgRanks           = class'Ranks';
+const CfgRankRelations   = class'RankRelations';
+const CfgMessageOfTheDay = class'MessageOfTheDay';
 
 const UpdateInterval = 1.0f;
 
@@ -14,7 +15,6 @@ const MatchGroupSteamID64  = "10358279";
 
 var private config int        Version;
 var private config E_LogLevel LogLevel;
-var private config String     MessageOfTheDay;
 
 var private KFGameInfo            KFGI;
 var private KFGameInfo_Survival   KFGIS;
@@ -28,6 +28,8 @@ var private Array<YAS_RepInfo> RepInfos;
 
 var private Array<CachedRankRelation> PlayerRelations;
 var private Array<CachedRankRelation> GroupRelations;
+
+var private int LastMessageID;
 
 public simulated function bool SafeDestroy()
 {
@@ -70,12 +72,12 @@ private function PreInit()
 	if (Version == `NO_CONFIG)
 	{
 		LogLevel = LL_Info;
-		MessageOfTheDay = "";
 		SaveConfig();
 	}
 	
 	CfgRanks.static.InitConfig(Version, LatestVersion);
 	CfgRankRelations.static.InitConfig(Version, LatestVersion);
+	CfgMessageOfTheDay.static.InitConfig(Version, LatestVersion);
 	
 	switch (Version)
 	{
@@ -256,6 +258,14 @@ private function PostInit()
 	KFGIE = KFGameInfo_Endless(KFGI);
 	
 	SetTimer(UpdateInterval, true, nameof(UpdateTimer));
+	
+	`Log_Base("MessageOfTheDayTimer Length:" @ CfgMessageOfTheDay.default.Message.Length);
+	if (CfgMessageOfTheDay.default.Message.Length > 0)
+	{
+		`Log_Base("init MessageOfTheDayTimer:");
+		MessageOfTheDayTimer();
+		SetTimer(CfgMessageOfTheDay.default.DisplayTime, true, nameof(MessageOfTheDayTimer));
+	}
 }
 
 private function UpdateTimer()
@@ -269,6 +279,40 @@ private function UpdateTimer()
 		RepInfo.Custom            = KFOGS.bCustom;
 		RepInfo.PasswordRequired  = KFOGS.bRequiresPassword;
 	}
+}
+
+private function MessageOfTheDayTimer()
+{
+	local YAS_RepInfo RepInfo;
+	local int MessageIndex;
+	
+	if (CfgMessageOfTheDay.default.bRandomize)
+	{
+		MessageIndex = Rand(CfgMessageOfTheDay.default.Message.Length);
+	}
+	else
+	{
+		MessageIndex = LastMessageID + 1;
+	}
+	
+	if (MessageIndex == LastMessageID)
+	{
+		++MessageIndex;
+	}
+	
+	if (MessageIndex >= CfgMessageOfTheDay.default.Message.Length)
+	{
+		MessageIndex = 0;
+	}
+	
+	`Log_Base("MessageOfTheDayTimer:" @ MessageIndex);
+	
+	foreach RepInfos(RepInfo)
+	{
+		RepInfo.MessageOfTheDay = CfgMessageOfTheDay.default.Message[MessageIndex];
+	}
+	
+	LastMessageID = MessageIndex;
 }
 
 public function NotifyLogin(Controller C)
@@ -320,7 +364,7 @@ public function YAS_RepInfo CreateRepInfo(Controller C)
 		OwnerRepInfo.LogLevel        = LogLevel;
 		OwnerRepInfo.RankPlayer      = CfgRanks.default.Player;
 		OwnerRepInfo.RankAdmin       = CfgRanks.default.Admin;
-		OwnerRepInfo.MessageOfTheDay = MessageOfTheDay;
+		OwnerRepInfo.MessageOfTheDay = CfgMessageOfTheDay.default.Message[LastMessageID];
 	}
 	
 	return OwnerRepInfo;

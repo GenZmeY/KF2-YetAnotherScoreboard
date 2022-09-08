@@ -1,10 +1,11 @@
 class YAS_ScoreBoard extends KFGUI_Page
 	dependson(YAS_Types);
 
-const HeaderWidthRatio     = 0.30f;
-const PlayerListWidthRatio = 0.6f;
-const PlayerEntryHeightMod = 1.05f;
-const ListItems            = 16;
+const HeaderWidthRatio         = 0.30f;
+const PlayerListWidthRatio     = 0.6f;
+const PlayerEntryHeightMod     = 1.05f;
+const ListItems                = 12;
+const PlayerEntryFontScalarMod = 1.25f;
 
 /*
 const IconRanked   = Texture2D'YAS.IconRanked';
@@ -125,7 +126,7 @@ function float MinPerkBoxWidth(float FontScalar)
 
 	foreach PerkNames(PerkName)
 	{
-		Canvas.TextSize(PerkName $ "A", XL, YL, FontScalar, FontScalar);
+		Canvas.TextSize(PerkName $ "A", XL, YL, FontScalar * PlayerEntryFontScalarMod, FontScalar * PlayerEntryFontScalarMod);
 		if (XL > MaxWidth) MaxWidth = XL;
 	}
 	
@@ -380,6 +381,10 @@ function DrawMenu()
 	BoxW = 0;
 	Canvas.TextSize("0000", BoxW, YL, FontScalar, FontScalar);
 	HealthWBox = BoxW + BorderSize * 2;
+	if (HealthWBox < PlayersList.GetItemHeight())
+	{
+		HealthWBox = PlayersList.GetItemHeight();
+	}
 	
 	PlayerXPos = HealthXPos + HealthWBox + PlayersList.GetItemHeight() + Settings.Style.EdgeSize;
 	
@@ -535,6 +540,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 
 	C.Font = Owner.CurrentStyle.PickFont(FontScalar);
 
+	FontScalar *= PlayerEntryFontScalarMod;
 	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
 	
 	ShapeHealth = Settings.Style.ShapeStateHealthBoxMidPlayer;
