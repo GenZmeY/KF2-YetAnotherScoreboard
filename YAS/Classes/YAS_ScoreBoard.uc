@@ -4,8 +4,14 @@ class YAS_ScoreBoard extends KFGUI_Page
 const HeaderWidthRatio         = 0.30f;
 const PlayerListWidthRatio     = 0.6f;
 const PlayerEntryHeightMod     = 1.05f;
-const ListItems                = 12;
-const PlayerEntryFontScalarMod = 1.25f;
+
+const CompactModePlayers = 12;
+
+const ListItemsCompact = 16;
+const ListItemsDefault = 12;
+
+const FontScalarModCompact = 1.0f;
+const FontScalarModDefault = 1.25f;
 
 /*
 const IconRanked   = Texture2D'YAS.IconRanked';
@@ -49,6 +55,9 @@ var public bool UsesStats, Custom, PasswordRequired;
 
 var public SystemRank RankPlayer;
 var public SystemRank RankAdmin;
+
+var private int   ListItems;
+var private float FontScalarMod;
 
 function Rank PlayerRank(KFPlayerReplicationInfo KFPRI)
 {
@@ -126,7 +135,7 @@ function float MinPerkBoxWidth(float FontScalar)
 
 	foreach PerkNames(PerkName)
 	{
-		Canvas.TextSize(PerkName $ "A", XL, YL, FontScalar * PlayerEntryFontScalarMod, FontScalar * PlayerEntryFontScalarMod);
+		Canvas.TextSize(PerkName $ "A", XL, YL, FontScalar * FontScalarMod, FontScalar * FontScalarMod);
 		if (XL > MaxWidth) MaxWidth = XL;
 	}
 	
@@ -138,6 +147,20 @@ function InitMenu()
 	Super.InitMenu();
 	PlayersList = KFGUI_List(FindComponentID('PlayerList'));
 	OwnerPC = KFPlayerController(GetPlayer());
+	if (GetKFGRI() != None)
+	{
+		if (KFGRI.MaxHumanCount > CompactModePlayers)
+		{
+			ListItems     = ListItemsCompact;
+			FontScalarMod = FontScalarModCompact;
+		}
+		else
+		{
+			ListItems     = ListItemsDefault;
+			FontScalarMod = FontScalarModDefault;
+		}
+		PlayersList.ListItemsPerPage = ListItems;
+	}
 }
 
 static function CheckAvatar(KFPlayerReplicationInfo KFPRI, KFPlayerController PC)
@@ -199,6 +222,16 @@ function string WaveText()
     }
 }
 
+function KFGameReplicationInfo GetKFGRI()
+{
+	if (KFGRI == None)
+	{
+		KFGRI = KFGameReplicationInfo(GetPlayer().WorldInfo.GRI);
+	}
+	
+	return KFGRI;
+}
+
 function DrawMenu()
 {
 	local string S;
@@ -212,11 +245,23 @@ function DrawMenu()
 	local Array<String> MessageOfTheDayLines;
 	
 	PC = GetPlayer();
-	if (KFGRI == None)
+	if (GetKFGRI() == None)
 	{
-		KFGRI = KFGameReplicationInfo(PC.WorldInfo.GRI);
-		if (KFGRI == None)
-			return;
+		return;
+	}
+	else if (PlayersList != None)
+	{
+		if (KFGRI.MaxHumanCount > CompactModePlayers)
+		{
+			ListItems     = ListItemsCompact;
+			FontScalarMod = FontScalarModCompact;
+		}
+		else
+		{
+			ListItems     = ListItemsDefault;
+			FontScalarMod = FontScalarModDefault;
+		}
+		PlayersList.ListItemsPerPage = ListItems;
 	}
 
 	// Sort player list.
@@ -540,7 +585,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 
 	C.Font = Owner.CurrentStyle.PickFont(FontScalar);
 
-	FontScalar *= PlayerEntryFontScalarMod;
+	FontScalar *= FontScalarMod;
 	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
 	
 	ShapeHealth = Settings.Style.ShapeStateHealthBoxMidPlayer;
@@ -895,7 +940,7 @@ defaultproperties
 		OnDrawItem=DrawPlayerEntry
 		ID="PlayerList"
 		bClickable=false
-		ListItemsPerPage=ListItems
+		ListItemsPerPage=ListItemsDefault
 	End Object
 	Components.Add(PlayerList)
 
