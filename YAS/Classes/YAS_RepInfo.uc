@@ -4,7 +4,7 @@ var public YAS YAS;
 
 var public repnotify E_LogLevel LogLevel;
 var public repnotify SystemRank RankPlayer, RankAdmin;
-var public repnotify String DynamicServerName;
+var public repnotify String DynamicServerName, MessageOfTheDay;
 var public repnotify bool UsesStats, Custom, PasswordRequired;
 
 var public YAS_RankRepInfo RankRepInfo;
@@ -22,7 +22,7 @@ var private int Retries;
 replication
 {
 	if (bNetInitial)
-		LogLevel, RankPlayer, RankAdmin;
+		LogLevel, RankPlayer, RankAdmin, MessageOfTheDay;
 	
 	if (bNetDirty)
 		DynamicServerName, UsesStats, Custom, PasswordRequired;
@@ -57,6 +57,10 @@ public simulated event ReplicatedEvent(name VarName)
 			
 		case 'DynamicServerName':
 			if (SC != None) SC.DynamicServerName = DynamicServerName;
+			break;
+			
+		case 'MessageOfTheDay':
+			if (SC != None) SC.MessageOfTheDay = MessageOfTheDay;
 			break;
 			
 		case 'UsesStats':
@@ -233,6 +237,7 @@ private simulated function InitScoreboard()
 	SC.UsesStats         = UsesStats;
 	SC.Custom            = Custom;
 	SC.PasswordRequired  = PasswordRequired;
+	SC.MessageOfTheDay   = MessageOfTheDay;
 }
 
 defaultproperties

@@ -59,7 +59,7 @@ function DrawMenu()
 				FocusMouseItem = n;
 			else MouseYHit -= ItemHeight;
 		}
-		OnDrawItem(Canvas, n,Y, ItemHeight, CompPos[2], (FocusMouseItem == n));
+		OnDrawItem(Canvas, n,Y, ItemHeight, GetWidth(), (FocusMouseItem == n));
 		Y+=ItemHeight;
 		++n;
 	}
@@ -71,6 +71,11 @@ function DrawMenu()
 			PlayMenuSound(MN_FocusHover);
 		}
 	}
+}
+
+function float GetWidth()
+{
+	return CompPos[2];
 }
 
 function float GetItemHeight()

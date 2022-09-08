@@ -14,6 +14,7 @@ const MatchGroupSteamID64  = "10358279";
 
 var private config int        Version;
 var private config E_LogLevel LogLevel;
+var private config String     MessageOfTheDay;
 
 var private KFGameInfo            KFGI;
 var private KFGameInfo_Survival   KFGIS;
@@ -69,6 +70,7 @@ private function PreInit()
 	if (Version == `NO_CONFIG)
 	{
 		LogLevel = LL_Info;
+		MessageOfTheDay = "";
 		SaveConfig();
 	}
 	
@@ -314,10 +316,11 @@ public function YAS_RepInfo CreateRepInfo(Controller C)
 		RepInfos.AddItem(OwnerRepInfo);
 		
 		OwnerRepInfo.RankRepInfo = RankRepInfo;
-		OwnerRepInfo.YAS           = Self;
-		OwnerRepInfo.LogLevel      = LogLevel;
-		OwnerRepInfo.RankPlayer    = CfgRanks.default.Player;
-		OwnerRepInfo.RankAdmin     = CfgRanks.default.Admin;
+		OwnerRepInfo.YAS             = Self;
+		OwnerRepInfo.LogLevel        = LogLevel;
+		OwnerRepInfo.RankPlayer      = CfgRanks.default.Player;
+		OwnerRepInfo.RankAdmin       = CfgRanks.default.Admin;
+		OwnerRepInfo.MessageOfTheDay = MessageOfTheDay;
 	}
 	
 	return OwnerRepInfo;

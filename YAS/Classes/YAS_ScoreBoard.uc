@@ -3,6 +3,8 @@ class YAS_ScoreBoard extends KFGUI_Page
 
 const HeaderWidthRatio     = 0.30f;
 const PlayerListWidthRatio = 0.6f;
+const PlayerEntryHeightMod = 1.05f;
+const ListItems            = 16;
 
 /*
 const IconRanked   = Texture2D'YAS.IconRanked';
@@ -41,7 +43,7 @@ var localized String Players, Spectators;
 var public Array<YAS_RankRepInfo> RepInfos;
 
 var public YAS_Settings Settings;
-var public String DynamicServerName;
+var public String DynamicServerName, MessageOfTheDay;
 var public bool UsesStats, Custom, PasswordRequired;
 
 var public SystemRank RankPlayer;
@@ -204,8 +206,9 @@ function DrawMenu()
 	local PlayerReplicationInfo PRI;
 	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH, MinBoxW, DoshSize, ScrollBarWidth;
 	local int i, j, NumSpec, NumAlivePlayer, Width;
-	local float BorderSize;
+	local float BorderSize, PlayerListSizeY;
 	local Color ColorTMP;
+	local Array<String> MessageOfTheDayLines;
 	
 	PC = GetPlayer();
 	if (KFGRI == None)
@@ -361,7 +364,8 @@ function DrawMenu()
 	YPos += YL;
 	BoxH = YL + BorderSize;
 	Canvas.SetDrawColorStruct(Settings.Style.ListHeaderBoxColor);
-	Owner.CurrentStyle.DrawRectBox(	XPos - BorderSize * 2,
+	Owner.CurrentStyle.DrawRectBox(
+		XPos - BorderSize * 2,
 		YPos,
 		Width + BorderSize * 4,
 		BoxH,
@@ -381,7 +385,7 @@ function DrawMenu()
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.PingString$" ", XL, YL, FontScalar, FontScalar);
 	PingWBox = XL < MinBoxW ? MinBoxW : XL;
-	if (true || NumPlayer <= PlayersList.ListItemsPerPage) // TODO: implement scrollbar later
+	if (NumPlayer <= PlayersList.ListItemsPerPage)
 		ScrollBarWidth = 0;
 	else
 		ScrollBarWidth = BorderSize * 8;
@@ -428,6 +432,53 @@ function DrawMenu()
 	PlayersList.YSize = (1.f - PlayersList.YPosition) - 0.15;
 
 	PlayersList.ChangeListSize(KFPRIArray.Length);
+	
+	PlayerListSizeY = PlayersList.GetItemHeight() * PlayerEntryHeightMod * (NumPlayer <= PlayersList.ListItemsPerPage ? NumPlayer : PlayersList.ListItemsPerPage);
+	
+	PlayerListSizeY -= PlayersList.GetItemHeight() * PlayerEntryHeightMod - PlayersList.GetItemHeight();
+	
+	// Scroll bar (fake)
+	// This is an imitation of a scroll bar
+	// just to let people know that they can scroll the mouse wheel.
+	// This interface already has a scroll bar,
+	// but I haven't figured out how to use it yet.
+	// I hope this can be replaced later
+	if (NumPlayer > PlayersList.ListItemsPerPage)
+	{
+		Canvas.SetDrawColorStruct(Settings.Style.ListHeaderBoxColor);
+		Owner.CurrentStyle.DrawRectBox(
+			XPos + PlayersList.GetWidth() - ScrollBarWidth,
+			YPos + YL + BorderSize * 4,
+			ScrollBarWidth,
+			PlayerListSizeY,
+			Settings.Style.EdgeSize,
+			0);
+	}
+	
+	// MessageOfTheDay
+	MessageOfTheDayLines = SplitString(MessageOfTheDay, "\n");
+	
+	YPos += BoxH + BorderSize * 6 + PlayerListSizeY;
+	Width = Canvas.ClipX * PlayerListWidthRatio;
+	BoxH = YL + BorderSize;
+	Canvas.SetDrawColorStruct(Settings.Style.ListHeaderBoxColor);
+	Owner.CurrentStyle.DrawRectBox(
+		XPos - BorderSize * 2,
+		YPos,
+		Width + BorderSize * 4,
+		BoxH * (MessageOfTheDayLines.Length > 0 ? MessageOfTheDayLines.Length : 1),
+		Settings.Style.EdgeSize,
+		152);
+	
+	if (MessageOfTheDay != "")
+	{
+		Canvas.SetDrawColorStruct(Settings.Style.ListHeaderTextColor);
+		foreach MessageOfTheDayLines(S)
+		{
+			DrawTextShadowHVCenter(S, XPos - BorderSize * 2, YPos, Width + BorderSize * 4, BoxH, FontScalar);
+			YPos += BoxH;
+		}
+	}
 }
 
 function DrawHealthIcon(float X, float Y, float W, float H)
@@ -468,8 +519,9 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local Color HealthBoxColor;
 	
 	BorderSize = Owner.HUDOwner.ScaledBorderSize;
-
-	YOffset *= 1.05;
+	
+	YOffset *= PlayerEntryHeightMod;
+	
 	KFPRI = KFPRIArray[Index];
 	
 	Rank = PlayerRank(KFPRI);
@@ -485,28 +537,9 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 
 	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
 	
-	if (KFPRIArray.Length > 1 && Index == 0)
-	{
-		ShapeHealth = Settings.Style.ShapeStateHealthBoxTopPlayer;
-	}
-	else if (KFPRIArray.Length > 1 && Index == KFPRIArray.Length - 1)
-	{
-		ShapeHealth = Settings.Style.ShapeStateHealthBoxBottomPlayer;
-	}
-	else
-	{
-		ShapeHealth = Settings.Style.ShapeStateHealthBoxMidPlayer;
-	}
+	ShapeHealth = Settings.Style.ShapeStateHealthBoxMidPlayer;
 	
-	if (!KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun)
-	{
-		HealthBoxColor = Settings.Style.StateBoxColorLobby;
-	}
-	else if (!KFGRI.bMatchHasBegun)
-	{
-		HealthBoxColor = Settings.Style.StateBoxColorLobby;
-	}
-	else if (bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None)
+	if (!KFGRI.bMatchHasBegun)
 	{
 		HealthBoxColor = Settings.Style.StateBoxColorLobby;
 	}
@@ -543,12 +576,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	else
 		C.SetDrawColorStruct(Settings.Style.PlayerBoxColor);
 
-	if (KFPRIArray.Length > 1 && Index == 0)
-		Shape = Settings.Style.ShapePlayerBoxTopPlayer;
-	else if (KFPRIArray.Length > 1 && Index == KFPRIArray.Length - 1)
-		Shape = Settings.Style.ShapePlayerBoxBottomPlayer;
-	else
-		Shape = Settings.Style.ShapePlayerBoxMidPlayer;
+	Shape = Settings.Style.ShapePlayerBoxMidPlayer;
 
 	BoxWidth = DoshXPos - HealthWBox - BorderSize * 2;
 	Owner.CurrentStyle.DrawRectBox(XPos, YOffset, BoxWidth, Height, Settings.Style.EdgeSize, Shape);
@@ -556,16 +584,12 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	XPos += BoxWidth;
 	
 	// Right stats box
-	if (KFPRIArray.Length > 1 && Index == 0)
-		Shape = Settings.Style.ShapeStatsBoxTopPlayer;
-	else if (KFPRIArray.Length > 1 && Index == KFPRIArray.Length - 1)
-		Shape = Settings.Style.ShapeStatsBoxBottomPlayer;
-	else
-		Shape = Settings.Style.ShapeStatsBoxMidPlayer;
+	Shape = Settings.Style.ShapeStatsBoxMidPlayer;
 	
 	BoxWidth = Width - XPos;
 	C.SetDrawColorStruct(Settings.Style.StatsBoxColor);
-	Owner.CurrentStyle.DrawRectBox(	XPos,
+	Owner.CurrentStyle.DrawRectBox(
+		XPos,
 		YOffset,
 		BoxWidth,
 		Height,
@@ -865,7 +889,7 @@ defaultproperties
 		OnDrawItem=DrawPlayerEntry
 		ID="PlayerList"
 		bClickable=false
-		ListItemsPerPage=16
+		ListItemsPerPage=ListItems
 	End Object
 	Components.Add(PlayerList)
 
