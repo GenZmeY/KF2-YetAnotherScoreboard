@@ -6,13 +6,14 @@ const LatestVersion = 1;
 const CfgRanks         = class'Ranks';
 const CfgRankRelations = class'RankRelations';
 
+const UpdateInterval = 1.0f;
+
 const MatchUID             = "0x";
 const MatchPlayerSteamID64 = "76561";
 const MatchGroupSteamID64  = "10358279";
 
 var private config int        Version;
 var private config E_LogLevel LogLevel;
-var private config int        UpdateInterval;
 
 var private KFGameInfo            KFGI;
 var private KFGameInfo_Survival   KFGIS;
@@ -22,7 +23,7 @@ var private KFOnlineGameSettings  KFOGS;
 
 var private OnlineSubsystemSteamworks OSS;
 
-var private Array<YAS_OwnerRepInfo> RepInfos;
+var private Array<YAS_RepInfo> RepInfos;
 
 var private Array<CachedRankRelation> PlayerRelations;
 var private Array<CachedRankRelation> GroupRelations;
@@ -68,7 +69,6 @@ private function PreInit()
 	if (Version == `NO_CONFIG)
 	{
 		LogLevel = LL_Info;
-		UpdateInterval = 1;
 		SaveConfig();
 	}
 	
@@ -123,78 +123,59 @@ private function PreInit()
 private function InitRanks() // TODO: Ref
 {
 	local Array<RankRelation> Relations;
-	local Array<Rank> Ranks;
 	local RankRelation Relation;
-	local Rank Rank;
-	local CachedRankRelation CachedRankRelation;
 	
-	Ranks     = CfgRanks.default.Ranks;
 	Relations = CfgRankRelations.default.Relations;
 	
 	foreach Relations(Relation)
 	{
 		if (IsUID(Relation.ObjectID) || IsPlayerSteamID64(Relation.ObjectID))
 		{
-			if (AnyToUID(Relation.ObjectID, CachedRankRelation.UID))
-			{
-				CachedRankRelation.RawID = Relation.ObjectID;
-				
-				foreach Ranks(Rank)
-				{
-					if (Rank.RankID == Relation.RankID)
-					{
-						CachedRankRelation.Rank = Rank;
-						break;
-					}
-				}
-				
-				if (CachedRankRelation.Rank.RankID > 0)
-				{
-					PlayerRelations.AddItem(CachedRankRelation);
-				}
-				else
-				{
-					`Log_Warn("Rank with ID" @ Relation.RankID @ "not found");
-				}
-			}
-			else
-			{
-				`Log_Warn("Can't convert to UniqueNetID:" @ Relation.ObjectID);
-			}
+			AddRelation(Relation, PlayerRelations);
 		}
 		else if (IsGroupSteamID64(Relation.ObjectID))
 		{
-			if (AnyToUID(Relation.ObjectID, CachedRankRelation.UID))
-			{
-				CachedRankRelation.RawID = Relation.ObjectID;
-				
-				foreach Ranks(Rank)
-				{
-					if (Rank.RankID == Relation.RankID)
-					{
-						CachedRankRelation.Rank = Rank;
-						break;
-					}
-				}
-				
-				if (CachedRankRelation.Rank.RankID > 0)
-				{
-					GroupRelations.AddItem(CachedRankRelation);
-				}
-				else
-				{
-					`Log_Warn("Rank with ID" @ Relation.RankID @ "not found");
-				}
-			}
-			else
-			{
-				`Log_Warn("Can't convert to UniqueNetID:" @ Relation.ObjectID);
-			}
+			AddRelation(Relation, GroupRelations);
 		}
 		else
 		{
 			`Log_Warn("Can't parse ID:" @ Relation.ObjectID);
 		}
+	}
+}
+
+private function AddRelation(RankRelation Relation, out Array<CachedRankRelation> OutArray)
+{
+	local CachedRankRelation CachedRankRelation;
+	local Array<Rank> Ranks;
+	local Rank Rank;
+	
+	if (AnyToUID(Relation.ObjectID, CachedRankRelation.UID))
+	{
+		CachedRankRelation.RawID = Relation.ObjectID;
+		
+		Ranks = CfgRanks.default.Ranks;
+		foreach Ranks(Rank)
+		{
+			if (Rank.RankID == Relation.RankID)
+			{
+				CachedRankRelation.Rank = Rank;
+				break;
+			}
+		}
+		
+		if (CachedRankRelation.Rank.RankID > 0)
+		{
+			OutArray.AddItem(CachedRankRelation);
+		}
+		else
+		{
+			`Log_Warn("Rank with ID" @ Relation.RankID @ "not found");
+		}
+	}
+	else
+	{
+		`Log_Warn("Can't convert to UniqueNetID:" @ Relation.ObjectID);
 	}
 }
 
@@ -277,12 +258,20 @@ private function PostInit()
 
 private function UpdateTimer()
 {
-	// TODO: Server params monitor
+	local YAS_RepInfo RepInfo;
+	
+	foreach RepInfos(RepInfo)
+	{
+		RepInfo.DynamicServerName = KFOGS.OwningPlayerName;
+		RepInfo.UsesStats         = KFOGS.bUsesStats;
+		RepInfo.Custom            = KFOGS.bCustom;
+		RepInfo.PasswordRequired  = KFOGS.bRequiresPassword;
+	}
 }
 
 public function NotifyLogin(Controller C)
 {
-	local YAS_OwnerRepInfo RepInfo;
+	local YAS_RepInfo RepInfo;
 	
 	`Log_Trace();
 
@@ -298,7 +287,7 @@ public function NotifyLogin(Controller C)
 
 public function NotifyLogout(Controller C)
 {
-	local YAS_OwnerRepInfo RepInfo;
+	local YAS_RepInfo RepInfo;
 	
 	`Log_Trace();
 	
@@ -310,14 +299,14 @@ public function NotifyLogout(Controller C)
 	}
 }
 
-public function YAS_OwnerRepInfo CreateRepInfo(Controller C)
+public function YAS_RepInfo CreateRepInfo(Controller C)
 {
-	local YAS_OwnerRepInfo OwnerRepInfo;
+	local YAS_RepInfo OwnerRepInfo;
 	local YAS_RankRepInfo  RankRepInfo;
 	
 	`Log_Trace();
 	
-	OwnerRepInfo  = Spawn(class'YAS_OwnerRepInfo', C);
+	OwnerRepInfo  = Spawn(class'YAS_RepInfo', C);
 	RankRepInfo = Spawn(class'YAS_RankRepInfo', C);
 	
 	if (OwnerRepInfo != None && RankRepInfo != None)
@@ -334,9 +323,9 @@ public function YAS_OwnerRepInfo CreateRepInfo(Controller C)
 	return OwnerRepInfo;
 }
 
-private function YAS_OwnerRepInfo FindRepInfo(Controller C)
+private function YAS_RepInfo FindRepInfo(Controller C)
 {
-	local YAS_OwnerRepInfo RepInfo;
+	local YAS_RepInfo RepInfo;
 	
 	if (C == None) return None;
 	
@@ -351,7 +340,7 @@ private function YAS_OwnerRepInfo FindRepInfo(Controller C)
 	return None;
 }
 
-public function bool DestroyRepInfo(YAS_OwnerRepInfo RepInfo)
+public function bool DestroyRepInfo(YAS_RepInfo RepInfo)
 {
 	`Log_Trace();
 	
@@ -364,7 +353,7 @@ public function bool DestroyRepInfo(YAS_OwnerRepInfo RepInfo)
 	return true;
 }
 
-private function InitRank(YAS_OwnerRepInfo RepInfo)
+private function InitRank(YAS_RepInfo RepInfo)
 {
 	local CachedRankRelation Rel;
 	local String JoinedGroupIDs;

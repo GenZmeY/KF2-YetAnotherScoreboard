@@ -4,6 +4,18 @@ class YAS_ScoreBoard extends KFGUI_Page
 const HeaderWidthRatio     = 0.30f;
 const PlayerListWidthRatio = 0.6f;
 
+/*
+const IconRanked   = Texture2D'YAS.IconRanked';
+const IconCustom   = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I26';
+const IconUnranked = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I28';
+const IconPassword = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I20';
+const IconDosh     = Texture2D'UI_HUD.InGameHUD_SWF_I13A';
+const IconPlayer   = Texture2D'UI_HUD.InGameHUD_ZED_SWF_I1F5';
+const IconClock    = Texture2D'UI_HUD.InGameHUD_SWF_I17D';
+const IconSkull    = Texture2D'UI_Shared.AssetLib_I32';
+const IconHealth   = Texture2D'UI_VoiceComms_TEX.UI_VoiceCommand_Icon_Heal';
+*/
+
 var public E_LogLevel LogLevel;
 
 var transient float HealthXPos, RankXPos, PlayerXPos, LevelXPos, PerkXPos, DoshXPos, KillsXPos, AssistXPos, PingXPos, ScrollXPos;
@@ -23,8 +35,7 @@ var KFPlayerController OwnerPC;
 var Color PingColor;
 var float PingBars;
 
-var localized String Players;
-var localized String Spectators;
+var localized String Players, Spectators;
 
 // Cache
 var public Array<YAS_RankRepInfo> RepInfos;
@@ -274,22 +285,36 @@ function DrawMenu()
 	
 	Canvas.SetDrawColorStruct(Settings.Style.ServerNameTextColor);
 	S = (DynamicServerName == "" ? KFGRI.ServerName : DynamicServerName);
-	DrawTextShadowHVCenter(S, BoxX, YPos, BoxW, FontScalar);
+	DrawTextShadowHVCenter(S, BoxX, YPos, BoxW, BoxH, FontScalar);
+	
+	// icons
+	/*
+	IconIndent = BoxH * 0.1;
+	if (PasswordRequired)
+	{
+		Owner.CurrentStyle.DrawTexture(IconPassword,
+			BoxX + IconIndent,
+			YPos + IconIndent,
+			BoxH - IconIndent*2,
+			BoxH - IconIndent*2,
+			MakeColor(250,250,250,250));
+	}
+	*/
 	
 	YPos += BoxH;
 	
 	// Mid Left Rect (Info)
-	BoxW = Width * 0.7; // TODO ?
+	BoxW = Width * 0.7;
 	BoxH = YL * 2 + BorderSize * 2;
 	Canvas.SetDrawColorStruct(Settings.Style.GameInfoBoxColor);
 	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapeGameInfoBox);
 	
 	Canvas.SetDrawColorStruct(Settings.Style.GameInfoTextColor);
 	S = class'KFCommon_LocalizedStrings'.static.GetFriendlyMapName(PC.WorldInfo.GetMapName(true));
-	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos, FontScalar);
+	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos, BoxH/2, FontScalar);
 	
 	S = KFGRI.GameClass.default.GameName $ " - " $ class'KFCommon_LocalizedStrings'.Static.GetDifficultyString(KFGRI.GameDifficulty);
-	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos + YL, FontScalar);
+	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos + BoxH/2, BoxH/2, FontScalar);
 	
 	// Mid Right Rect (Wave)
 	BoxX = BoxX + BoxW;
@@ -299,8 +324,8 @@ function DrawMenu()
 	
 	Canvas.SetDrawColorStruct(Settings.Style.WaveTextColor);
 	S = class'KFGFxHUD_ScoreboardMapInfoContainer'.default.WaveString; 
-	DrawTextShadowHVCenter(S, BoxX, YPos, BoxW, FontScalar);
-	DrawTextShadowHVCenter(WaveText(), BoxX, YPos + YL, BoxW, FontScalar);
+	DrawTextShadowHVCenter(S, BoxX, YPos, BoxW, BoxH / 2, FontScalar);
+	DrawTextShadowHVCenter(WaveText(), BoxX, YPos + BoxH / 2, BoxW, BoxH / 2, FontScalar);
 	
 	YPos += BoxH;
 	
@@ -311,13 +336,22 @@ function DrawMenu()
 	Canvas.SetDrawColorStruct(Settings.Style.PlayerCountBoxColor);
 	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapePlayersCountBox);
 	
+	/*
+	Owner.CurrentStyle.DrawTexture(IconPlayer,
+		BoxX + Settings.Style.EdgeSize + IconIndent,
+		YPos + IconIndent,
+		BoxH - IconIndent*2,
+		BoxH - IconIndent*2,
+		MakeColor(250,250,250,250));
+	*/
+	
 	Canvas.SetDrawColorStruct(Settings.Style.PlayerCountTextColor);
-	S = Players $ ":" @ NumPlayer @ "/" @ KFGRI.MaxHumanCount $ "    " $ Spectators $ ":" @ NumSpec; 
+	S = Players $ ":" @ NumPlayer @ "/" @ KFGRI.MaxHumanCount $ "    " $ Spectators $ ": " $ NumSpec; ; 
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
-	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos, FontScalar);
+	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos, BoxH, FontScalar);
 	
 	S = Owner.CurrentStyle.GetTimeString(KFGRI.ElapsedTime);
-	DrawTextShadowHVCenter(S, XPos + Width * 0.7, YPos, Width * 0.3, FontScalar); // TODO: ?
+	DrawTextShadowHVCenter(S, XPos + Width * 0.7, YPos, Width * 0.3, BoxH, FontScalar); // TODO: ?
 	
 	YPos += BoxH;
 
@@ -376,12 +410,12 @@ function DrawMenu()
 	
 	// Header texts
 	Canvas.SetDrawColorStruct(Settings.Style.ListHeaderTextColor);
-	DrawTextShadowHLeftVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PlayerString, XPos + PlayerXPos, YPos, FontScalar);
-	DrawTextShadowHLeftVCenter(class'KFGFxMenu_Inventory'.default.PerkFilterString, XPos + PerkXPos, YPos, FontScalar);
-	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.KillsString, XPos + KillsXPos, YPos, KillsWBox, FontScalar);
-	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.AssistsString, XPos + AssistXPos, YPos, AssistWBox, FontScalar);
-	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.DoshString, XPos + DoshXPos, YPos, DoshWBox, FontScalar);
-	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PingString, XPos + PingXPos, YPos, PingWBox, FontScalar);
+	DrawTextShadowHLeftVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PlayerString, XPos + PlayerXPos, YPos, BoxH, FontScalar);
+	DrawTextShadowHLeftVCenter(class'KFGFxMenu_Inventory'.default.PerkFilterString, XPos + PerkXPos, YPos, BoxH, FontScalar);
+	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.KillsString, XPos + KillsXPos, YPos, KillsWBox, BoxH, FontScalar);
+	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.AssistsString, XPos + AssistXPos, YPos, AssistWBox, BoxH, FontScalar);
+	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.DoshString, XPos + DoshXPos, YPos, DoshWBox, BoxH, FontScalar);
+	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PingString, XPos + PingXPos, YPos, PingWBox, BoxH, FontScalar);
 	
 	ColorTMP = Settings.Style.ListHeaderTextColor;
 	ColorTMP.A = 150;
@@ -416,35 +450,10 @@ function DrawHealthIcon(float X, float Y, float W, float H)
 	Owner.CurrentStyle.DrawRectBox(XPos, YPos, Part, Part, 4, 100);
 }
 
-function DrawTextShadowHVCenter(string Str, float XPos, float YPos, float BoxWidth, float FontScalar)
-{
-	local float TextWidth;
-	local float TextHeight;
-
-	Canvas.TextSize(Str, TextWidth, TextHeight, FontScalar, FontScalar);
-
-	Owner.CurrentStyle.DrawTextShadow(Str, XPos + (BoxWidth - TextWidth)/2 , YPos, 1, FontScalar);
-}
-
-function DrawTextShadowHLeftVCenter(string Str, float XPos, float YPos, float FontScalar)
-{
-	Owner.CurrentStyle.DrawTextShadow(Str, XPos, YPos, 1, FontScalar);
-}
-
-function DrawTextShadowHRightVCenter(string Str, float XPos, float YPos, float BoxWidth, float FontScalar)
-{
-	local float TextWidth;
-	local float TextHeight;
-
-	Canvas.TextSize(Str, TextWidth, TextHeight, FontScalar, FontScalar);
-	
-	Owner.CurrentStyle.DrawTextShadow(Str, XPos + BoxWidth - TextWidth, YPos, 1, FontScalar);
-}
-
 function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus)
 {
 	local string S, StrValue;
-	local float FontScalar, TextYOffset, XL, YL, PerkIconPosX, PerkIconPosY, PerkIconSize, PrestigeIconScale;
+	local float FontScalar, XL, YL, PerkIconPosX, PerkIconPosY, PerkIconSize, PrestigeIconScale;
 	local float XPos, BoxWidth, RealPlayerWBox;
 	local KFPlayerReplicationInfo KFPRI;
 	local byte Level, PrestigeLevel;
@@ -456,7 +465,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	
 	local int Shape, ShapeHealth;
 	
-	local Color HealthBoxColor, HealthTextColor;
+	local Color HealthBoxColor;
 	
 	BorderSize = Owner.HUDOwner.ScaledBorderSize;
 
@@ -475,7 +484,6 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	C.Font = Owner.CurrentStyle.PickFont(FontScalar);
 
 	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
-	TextYOffset = YOffset + (Height * 0.5f) - (YL * 0.5f);
 	
 	if (KFPRIArray.Length > 1 && Index == 0)
 	{
@@ -493,56 +501,22 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	if (!KFPRI.bReadyToPlay && KFGRI.bMatchHasBegun)
 	{
 		HealthBoxColor = Settings.Style.StateBoxColorLobby;
-		HealthTextColor = Settings.Style.StateTextColorLobby;
 	}
 	else if (!KFGRI.bMatchHasBegun)
 	{
-		if (KFPRI.bReadyToPlay)
-		{
-			HealthBoxColor = Settings.Style.StateBoxColorReady;
-			HealthTextColor = Settings.Style.StateBoxColorReady;
-		}
-		else
-		{
-			HealthBoxColor = Settings.Style.StateBoxColorNotReady;
-			HealthTextColor = Settings.Style.StateBoxColorNotReady;
-		}
+		HealthBoxColor = Settings.Style.StateBoxColorLobby;
 	}
 	else if (bIsZED && KFTeamInfo_Zeds(GetPlayer().PlayerReplicationInfo.Team) == None)
 	{
-		HealthBoxColor = Settings.Style.StateTextColorNone;
-		HealthTextColor = Settings.Style.StateTextColorNone;
+		HealthBoxColor = Settings.Style.StateBoxColorLobby;
 	}
 	else if (KFPRI.PlayerHealth <= 0 || KFPRI.PlayerHealthPercent <= 0)
 	{
-		if (KFPRI.bOnlySpectator)
-		{
-			HealthBoxColor = Settings.Style.StateTextColorSpectator;
-			HealthTextColor = Settings.Style.StateTextColorSpectator;
-		}
-		else
-		{
-			HealthBoxColor = Settings.Style.StateTextColorDead;
-			HealthTextColor = Settings.Style.StateTextColorDead;
-		}
+		HealthBoxColor = Settings.Style.StateBoxColorDead;
 	}
 	else
 	{
-		if (ByteToFloat(KFPRI.PlayerHealthPercent) >= float(Settings.Health.High) / 100.0)
-		{
-			HealthBoxColor = Settings.Style.StateBoxColorHealthHigh;
-			HealthTextColor = Settings.Style.StateTextColorHealthHigh;
-		}
-		else if (ByteToFloat(KFPRI.PlayerHealthPercent) >= float(Settings.Health.Low) / 100.0)
-		{
-			HealthBoxColor = Settings.Style.StateBoxColorHealthMid;
-			HealthTextColor = Settings.Style.StateTextColorHealthMid;
-		}
-		else
-		{
-			HealthBoxColor = Settings.Style.StateBoxColorHealthLow;
-			HealthTextColor = Settings.Style.StateTextColorHealthLow;
-		}
+		HealthBoxColor = HealthColorByPercent(ByteToFloat(KFPRI.PlayerHealthPercent));
 	}
 	
 	// Health box
@@ -554,11 +528,11 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		Settings.Style.EdgeSize,
 		ShapeHealth);
 	
-	C.SetDrawColorStruct(HealthTextColor);
+	C.SetDrawColorStruct(Settings.Style.StateTextColorHealthHigh);
 	
 	if (KFPRI.PlayerHealth > 0)
 	{
-		DrawTextShadowHVCenter(String(KFPRI.PlayerHealth), HealthXPos, TextYOffset, HealthWBox, FontScalar);
+		DrawTextShadowHVCenter(String(KFPRI.PlayerHealth), HealthXPos, YOffset, HealthWBox, Height, FontScalar);
 	}
 	
 	XPos += HealthWBox;
@@ -607,7 +581,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		C.DrawRect (Height-5, Height-5, Texture2D'UI_Widgets.MenuBarWidget_SWF_IF');
 
 		S = class'KFCommon_LocalizedStrings'.default.ZedString;
-		DrawTextShadowHLeftVCenter(S, PerkXPos + Height, TextYOffset, FontScalar);
+		DrawTextShadowHLeftVCenter(S, PerkXPos + Height, YOffset, Height, FontScalar);
 		RealPlayerWBox = PerkXPos + Height - PlayerXPos;
 	}
 	else
@@ -648,17 +622,17 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 				C.SetDrawColorStruct(Settings.Style.LevelTextColorHigh);
 			
 			S = String(Level);
-			DrawTextShadowHLeftVCenter(S, LevelXPos, TextYOffset, FontScalar);
+			DrawTextShadowHLeftVCenter(S, LevelXPos, YOffset, Height, FontScalar);
 
 			C.SetDrawColorStruct(Settings.Style.PerkNoneTextColor);
 			S = KFPRI.CurrentPerkClass.default.PerkName;
-			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
+			DrawTextShadowHLeftVCenter(S, PerkXPos, YOffset, Height, FontScalar);
 		}
 		else
 		{
 			C.SetDrawColorStruct(Settings.Style.PerkNoneTextColor);
 			S = "";
-			DrawTextShadowHLeftVCenter(S, PerkXPos, TextYOffset, FontScalar);
+			DrawTextShadowHLeftVCenter(S, PerkXPos, YOffset, Height, FontScalar);
 			RealPlayerWBox = PerkXPos - PlayerXPos;
 		}
 	}
@@ -667,7 +641,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	if (Rank.RankName != "")
 	{
 		C.SetDrawColorStruct(Rank.RankColor);
-		DrawTextShadowHRightVCenter(Rank.RankName, PlayerXPos, TextYOffset, PerkIconPosX - PlayerXPos - (BorderSize * 4), FontScalar);
+		DrawTextShadowHRightVCenter(Rank.RankName, PlayerXPos, YOffset, PerkIconPosX - PlayerXPos - (BorderSize * 4), Height, FontScalar);
 	}
 
 	// Avatar
@@ -693,15 +667,15 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		S = Left(S, Len(S)-1);
 		Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
 	}
-	DrawTextShadowHLeftVCenter(S, PlayerXPos, TextYOffset, FontScalar);
+	DrawTextShadowHLeftVCenter(S, PlayerXPos, YOffset, Height, FontScalar);
 
 	// Kill
-	C.SetDrawColorStruct(Settings.Style.KillsTextColorMid); // TODO
-	DrawTextShadowHVCenter(string (KFPRI.Kills), KillsXPos, TextYOffset, KillsWBox, FontScalar);
+	C.SetDrawColorStruct(Settings.Style.KillsTextColorMid);
+	DrawTextShadowHVCenter(string (KFPRI.Kills), KillsXPos, YOffset, KillsWBox, Height, FontScalar);
 
 	// Assist
-	C.SetDrawColorStruct(Settings.Style.AssistsTextColorMid); // TODO
-	DrawTextShadowHVCenter(string (KFPRI.Assists), AssistXPos, TextYOffset, AssistWBox, FontScalar);
+	C.SetDrawColorStruct(Settings.Style.AssistsTextColorMid);
+	DrawTextShadowHVCenter(string (KFPRI.Assists), AssistXPos, YOffset, AssistWBox, Height, FontScalar);
 	
 	// Dosh
 	if (bIsZED)
@@ -711,10 +685,10 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	}
 	else
 	{
-		C.SetDrawColorStruct(Settings.Style.DoshTextColorMid); // TODO
+		C.SetDrawColorStruct(Settings.Style.DoshTextColorMid);
 		StrValue = GetNiceSize(int(KFPRI.Score));
 	}
-	DrawTextShadowHVCenter(StrValue, DoshXPos, TextYOffset, DoshWBox, FontScalar);
+	DrawTextShadowHVCenter(StrValue, DoshXPos, YOffset, DoshWBox, Height, FontScalar);
 
 	// Ping
 	if (KFPRI.bBot)
@@ -737,7 +711,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	}
 
 	C.TextSize(S, XL, YL, FontScalar, FontScalar);
-	DrawTextShadowHVCenter(S, PingXPos, TextYOffset, Settings.Style.ShowPingBars ? PingWBox/2 : PingWBox, FontScalar);
+	DrawTextShadowHVCenter(S, PingXPos, YOffset, Settings.Style.ShowPingBars ? PingWBox/2 : PingWBox, Height, FontScalar);
 	C.SetDrawColor(250, 250, 250, 255);
 	if (Settings.Style.ShowPingBars)
 		DrawPingBars(C, YOffset + (Height/2) - ((Height*0.5)/2), Width - (Height*0.5) - (BorderSize*2), Height*0.5, Height*0.5, float(Ping));
@@ -799,6 +773,84 @@ final static function string GetNiceSize(int Num)
 function ScrollMouseWheel(bool bUp)
 {
 	PlayersList.ScrollMouseWheel(bUp);
+}
+
+function Color HealthColorByPercent(float FloatPercent)
+{
+	local Color CRED, CYLW, CGRN, RV;
+	
+	CRED = MakeColor(200, 0, 0, 150);
+	CYLW = MakeColor(200, 200, 0, 150);
+	CGRN = MakeColor(0, 200, 0, 150);
+
+	if (FloatPercent >= 0.9f)
+	{
+		RV = CGRN;
+	}
+	else if (FloatPercent >= 0.5f)
+	{
+		RV = PickDynamicColor(CYLW, CGRN, (FloatPercent - 0.5f) / (0.9f - 0.5f));
+	}
+	else if (FloatPercent >= 0.1f)
+	{
+		RV = PickDynamicColor(CRED, CYLW, (FloatPercent - 0.1f) / (0.5f - 0.1f));
+	}
+	else
+	{
+		RV = CRED;
+	}
+	
+	return RV;
+}
+
+function Color PickDynamicColor(Color LowerColor, Color UpperColor, float FloatPercent)
+{
+	return MakeColor((
+		LowerColor.R < UpperColor.R ?
+		LowerColor.R + ((UpperColor.R - LowerColor.R) * FloatPercent) : 
+		LowerColor.R - ((LowerColor.R - UpperColor.R) * FloatPercent)),
+		(
+		LowerColor.G < UpperColor.G ?
+		LowerColor.G + ((UpperColor.G - LowerColor.G) * FloatPercent) : 
+		LowerColor.G - ((LowerColor.G - UpperColor.G) * FloatPercent)),
+		(
+		LowerColor.B < UpperColor.B ?
+		LowerColor.B + ((UpperColor.B - LowerColor.B) * FloatPercent) : 
+		LowerColor.B - ((LowerColor.B - UpperColor.B) * FloatPercent)),
+		(
+		LowerColor.A < UpperColor.A ?
+		LowerColor.A + ((UpperColor.A - LowerColor.A) * FloatPercent) : 
+		LowerColor.A - ((LowerColor.A - UpperColor.A) * FloatPercent)));
+}
+
+function DrawTextShadowHVCenter(string Str, float XPos, float YPos, float BoxWidth, float BoxHeight, float FontScalar)
+{
+	local float TextWidth;
+	local float TextHeight;
+
+	Canvas.TextSize(Str, TextWidth, TextHeight, FontScalar, FontScalar);
+
+	Owner.CurrentStyle.DrawTextShadow(Str, XPos + (BoxWidth - TextWidth)/2 , YPos + (BoxHeight - TextHeight)/2, 1, FontScalar);
+}
+
+function DrawTextShadowHLeftVCenter(string Str, float XPos, float YPos, float BoxHeight, float FontScalar)
+{
+	local float TextWidth;
+	local float TextHeight;
+
+	Canvas.TextSize(Str, TextWidth, TextHeight, FontScalar, FontScalar);
+	
+	Owner.CurrentStyle.DrawTextShadow(Str, XPos, YPos + (BoxHeight - TextHeight)/2, 1, FontScalar);
+}
+
+function DrawTextShadowHRightVCenter(string Str, float XPos, float YPos, float BoxWidth, float BoxHeight, float FontScalar)
+{
+	local float TextWidth;
+	local float TextHeight;
+
+	Canvas.TextSize(Str, TextWidth, TextHeight, FontScalar, FontScalar);
+	
+	Owner.CurrentStyle.DrawTextShadow(Str, XPos + BoxWidth - TextWidth, YPos + (BoxHeight - TextHeight)/2, 1, FontScalar);
 }
 
 defaultproperties

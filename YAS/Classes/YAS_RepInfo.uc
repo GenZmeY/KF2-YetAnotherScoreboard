@@ -1,4 +1,4 @@
-class YAS_OwnerRepInfo extends ReplicationInfo;
+class YAS_RepInfo extends ReplicationInfo;
 
 var public YAS YAS;
 
@@ -38,6 +38,8 @@ public simulated function bool SafeDestroy()
 public simulated event ReplicatedEvent(name VarName)
 {
 	`Log_Trace();
+	
+	`Log_Base("ReplicatedEvent:" @ VarName);
 	
 	switch (VarName)
 	{
