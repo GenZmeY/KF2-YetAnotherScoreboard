@@ -774,14 +774,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	else
 	{
 		Ping = int(KFPRI.Ping * `PING_SCALE);
-
-		if (Ping <= Settings.Ping.Low)
-			C.SetDrawColorStruct(Settings.Style.PingTextColorLow);
-		else if (Ping <= Settings.Ping.High)
-			C.SetDrawColorStruct(Settings.Style.PingTextColorMid);
-		else
-			C.SetDrawColorStruct(Settings.Style.PingTextColorHigh);
-
+		C.SetDrawColorStruct(PingColorByPing(Ping));
 		S = string(Ping);
 	}
 
@@ -878,8 +871,38 @@ function Color HealthColorByPercent(float FloatPercent)
 	return RV;
 }
 
+function Color PingColorByPing(int Ping)
+{
+	local Color CRED, CYLW, CGRN, RV;
+	
+	CRED = MakeColor(200, 0, 0, 150);
+	CYLW = MakeColor(200, 200, 0, 150);
+	CGRN = MakeColor(0, 200, 0, 150);
+
+	if (Ping < 30)
+	{
+		RV = CGRN;
+	}
+	else if (Ping < 70)
+	{
+		RV = PickDynamicColor(CGRN, CYLW, (Ping - 30) / (70 - 30));
+	}
+	else if (Ping < 110)
+	{
+		RV = PickDynamicColor(CYLW, CRED, (Ping - 70) / (110 - 70));
+	}
+	else
+	{
+		RV = CRED;
+	}
+	
+	return RV;
+}
+
 function Color PickDynamicColor(Color LowerColor, Color UpperColor, float FloatPercent)
 {
+	// Color:     Lower                                Upper
+	// Percent:    0.0f <------- FloatPercent -------> 1.0f
 	return MakeColor((
 		LowerColor.R < UpperColor.R ?
 		LowerColor.R + ((UpperColor.R - LowerColor.R) * FloatPercent) : 
