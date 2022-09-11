@@ -875,9 +875,9 @@ function Color PingColorByPing(int Ping)
 {
 	local Color CRED, CYLW, CGRN, RV;
 	
-	CRED = MakeColor(200, 0, 0, 150);
-	CYLW = MakeColor(200, 200, 0, 150);
-	CGRN = MakeColor(0, 200, 0, 150);
+	CRED = MakeColor(200, 0, 0, 250);
+	CYLW = MakeColor(200, 200, 0, 250);
+	CGRN = MakeColor(0, 200, 0, 250);
 
 	if (Ping < 30)
 	{
