@@ -177,14 +177,38 @@ function PickDefaultFontSize(float YRes)
 
 	DefaultHeight=float(YL)*YRes;
 }
+
 final function float ScreenScale(float Size, optional float MaxRes=1080.f)
 {
-	return Size * ( HUDOwner.SizeY / MaxRes);
+	local float FillSizeX, FillSizeY;
+	
+	GetFillScreenSize(FillSizeX, FillSizeY);
+	
+	return Size * (FillSizeY / MaxRes);
 }
+
 final function float GetFontScaler(optional float Scaler=0.750f, optional float Min=0.175f, optional float Max=1.0f)
 {
-	return FClamp((HUDOwner.SizeY / 1080.f) * Scaler, Min, Max);
+	local float FillSizeX, FillSizeY;
+	
+	GetFillScreenSize(FillSizeX, FillSizeY);
+	
+	return FClamp((FillSizeY / 1080.f) * Scaler, Min, Max);
 }
+
+final function GetFillScreenSize(out float SizeX, out float SizeY)
+{
+	local float Base, BaseX, BaseY;
+	
+	BaseX = HUDOwner.SizeX / 16;
+	BaseY = HUDOwner.SizeY / 9;
+	
+	Base = Min(BaseX, BaseY);
+	
+	SizeX = Base * 16;
+	SizeY = Base * 9;
+}
+
 final function DrawText(coerce string S)
 {
 	local float Scale;
@@ -192,6 +216,7 @@ final function DrawText(coerce string S)
 	Canvas.Font=PickFont(Scale);
 	Canvas.DrawText(S, ,Scale, Scale);
 }
+
 final function DrawCenteredText(coerce string S, float X, float Y, optional float Scale=1.f, optional bool bVertical, optional bool bUseOutline)
 {
 	local float XL, YL;
@@ -205,6 +230,7 @@ final function DrawCenteredText(coerce string S, float X, float Y, optional floa
 		DrawTextShadow(S, Canvas.CurX, Canvas.CurY, 1, Scale);
 	else Canvas.DrawText(S, ,Scale, Scale);
 }
+
 final function string StripColorTags(coerce string S)
 {
 	local int Pos;
@@ -218,6 +244,7 @@ final function string StripColorTags(coerce string S)
 
 	return S;
 }
+
 final function DrawColoredText(coerce string S, float X, float Y, optional float Scale=1.f, optional bool bUseOutline)
 {
 	local float XL, YL;
@@ -284,6 +311,7 @@ final function DrawColoredText(coerce string S, float X, float Y, optional float
 		}
 	}
 }
+
 final function DrawTextBlurry(coerce string S, float X, float Y, optional float Scale=1.f)
 {
 	local Color OldDrawColor;
@@ -304,6 +332,7 @@ final function DrawTextBlurry(coerce string S, float X, float Y, optional float 
 	Canvas.SetPos(X, Y);
 	Canvas.DrawText(S, ,Scale, Scale);
 }
+
 final function DrawTextOutline(coerce string S, float X, float Y, int Size, Color OutlineColor, optional float Scale=1.f, optional FontRenderInfo FRI)
 {
 	local Color OldDrawColor;
@@ -333,6 +362,7 @@ final function DrawTextOutline(coerce string S, float X, float Y, int Size, Colo
 	Canvas.SetPos(X, Y);
 	Canvas.DrawText(S, , Scale, Scale, FRI);
 }
+
 final function DrawTextShadow(coerce string S, float X, float Y, float ShadowSize, optional float Scale=1.f)
 {
 	local Color OldDrawColor;
@@ -347,6 +377,7 @@ final function DrawTextShadow(coerce string S, float X, float Y, float ShadowSiz
 	Canvas.DrawColor = OldDrawColor;
 	Canvas.DrawText(S, , Scale, Scale);
 }
+
 final function DrawTexturedString(coerce string S, float X, float Y, optional float TextScaler=1.f, optional FontRenderInfo FRI, optional bool bUseOutline, optional bool bOnlyTexture)
 {
 	local Texture2D Mat;
@@ -389,6 +420,7 @@ final function DrawTexturedString(coerce string S, float X, float Y, optional fl
 
 	DrawColoredText(S, X,Y, TextScaler, bUseOutline);
 }
+
 final function Texture2D FindNextTexture(out string S)
 {
 	local int i, j;
@@ -425,6 +457,7 @@ final function Texture2D FindNextTexture(out string S)
 
 	return Cache.Tex;
 }
+
 final function string StripTextureFromString(string S, optional bool bNoStringAdd)
 {
 	local int i, j;
@@ -441,6 +474,7 @@ final function string StripTextureFromString(string S, optional bool bNoStringAd
 
 	return StripColorTags(S);
 }
+
 final function string GetTimeString(int Seconds)
 {
 	local int Minutes, Hours;
@@ -484,6 +518,7 @@ final function DrawCornerTexNU(int SizeX, int SizeY, byte Dir ) // Draw non-unif
 		Canvas.DrawTile(ItemTex, SizeX, SizeY, 11, 73, 66, -58);
 	}
 }
+
 final function DrawCornerTex(int Size, byte Dir)
 {
 	switch (Dir)
@@ -501,6 +536,7 @@ final function DrawCornerTex(int Size, byte Dir)
 		Canvas.DrawTile(ItemTex, Size, Size, 11, 73, 66, -58);
 	}
 }
+
 final function DrawWhiteBox(float XS, float YS, optional bool bClip)
 {
 	Canvas.DrawTile(ItemTex, XS, YS, 19, 45, 1,1, ,bClip);
