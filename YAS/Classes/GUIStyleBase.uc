@@ -187,13 +187,18 @@ final function float ScreenScale(float Size, optional float MaxRes=1080.f)
 	return Size * (FillSizeY / MaxRes);
 }
 
-final function float GetFontScaler(optional float Scaler=0.750f, optional float Min=0.175f, optional float Max=1.0f)
+final function float GetFontScaler()
 {
-	local float FillSizeX, FillSizeY;
+	local float FillSizeX, FillSizeY, Scaler;
 	
 	GetFillScreenSize(FillSizeX, FillSizeY);
 	
-	return FClamp((FillSizeY / 1080.f) * Scaler, Min, Max);
+	if      (FillSizeY <= 1080.0f) { scaler = 0.750f; }
+	else if (FillSizeY <= 1440.0f) { scaler = 0.562f; }
+	else if (FillSizeY <= 2160.0f) { scaler = 0.377f; }
+	else                           { scaler = 0.190f; }
+	
+	return FClamp(FillSizeY * scaler / 1080.f, 0.175f, 1.0f);
 }
 
 final function GetFillScreenSize(out float SizeX, out float SizeY)

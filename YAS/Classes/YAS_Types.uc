@@ -45,7 +45,6 @@ struct YAS_SettingsLevel
 struct YAS_Style
 {
 	// Box shapes
-	var float     EdgeSize;
 	var int       ShapeServerNameBox;
 	var int       ShapeGameInfoBox;
 	var int       ShapeWaveInfoBox;
@@ -169,8 +168,6 @@ struct YAS_Style
 	
 	Structdefaultproperties
 	{
-		EdgeSize                        = 8.0f
-		
 		// Box shapes
 		ShapeServerNameBox              = 150
 		ShapeGameInfoBox                = 151
