@@ -240,7 +240,7 @@ function DrawMenu()
 	local PlayerReplicationInfo PRI;
 	local float XPos, YPos, YL, XL, FontScalar, XPosCenter, BoxW, BoxX, BoxH, MinBoxW, DoshSize, ScrollBarWidth;
 	local int i, j, NumSpec, NumAlivePlayer, Width;
-	local float BorderSize, PlayerListSizeY;
+	local float BorderSize, EdgeSize, PlayerListSizeY;
 	local Color ColorTMP;
 	local Array<String> MessageOfTheDayLines;
 	
@@ -317,6 +317,7 @@ function DrawMenu()
 	Canvas.Font = Owner.CurrentStyle.PickFont(FontScalar);
 	Canvas.TextSize("ABC", XL, YL, FontScalar, FontScalar);
 	BorderSize = Owner.HUDOwner.ScaledBorderSize;
+	EdgeSize = Owner.CurrentStyle.PickEdgeSize();
 	
 	// Server Info
 	XPosCenter = Canvas.ClipX * 0.5;
@@ -330,7 +331,7 @@ function DrawMenu()
 	
 	// Top Rect (Server name)
 	Canvas.SetDrawColorStruct(Settings.Style.ServerNameBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapeServerNameBox);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, EdgeSize, Settings.Style.ShapeServerNameBox);
 	
 	Canvas.SetDrawColorStruct(Settings.Style.ServerNameTextColor);
 	S = (DynamicServerName == "" ? KFGRI.ServerName : DynamicServerName);
@@ -356,20 +357,20 @@ function DrawMenu()
 	BoxW = Width * 0.7;
 	BoxH = YL * 2 + BorderSize * 2;
 	Canvas.SetDrawColorStruct(Settings.Style.GameInfoBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapeGameInfoBox);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, EdgeSize, Settings.Style.ShapeGameInfoBox);
 	
 	Canvas.SetDrawColorStruct(Settings.Style.GameInfoTextColor);
 	S = class'KFCommon_LocalizedStrings'.static.GetFriendlyMapName(PC.WorldInfo.GetMapName(true));
-	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos, BoxH/2, FontScalar);
+	DrawTextShadowHLeftVCenter(S, BoxX + EdgeSize, YPos, BoxH/2, FontScalar);
 	
 	S = KFGRI.GameClass.default.GameName $ " - " $ class'KFCommon_LocalizedStrings'.Static.GetDifficultyString(KFGRI.GameDifficulty);
-	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos + BoxH/2, BoxH/2, FontScalar);
+	DrawTextShadowHLeftVCenter(S, BoxX + EdgeSize, YPos + BoxH/2, BoxH/2, FontScalar);
 	
 	// Mid Right Rect (Wave)
 	BoxX = BoxX + BoxW;
 	BoxW = Width - BoxW;
 	Canvas.SetDrawColorStruct(Settings.Style.WaveBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapeWaveInfoBox);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, EdgeSize, Settings.Style.ShapeWaveInfoBox);
 	
 	Canvas.SetDrawColorStruct(Settings.Style.WaveTextColor);
 	S = class'KFGFxHUD_ScoreboardMapInfoContainer'.default.WaveString; 
@@ -383,11 +384,11 @@ function DrawMenu()
 	BoxW = Width;
 	BoxH = YL + BorderSize;
 	Canvas.SetDrawColorStruct(Settings.Style.PlayerCountBoxColor);
-	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, Settings.Style.EdgeSize, Settings.Style.ShapePlayersCountBox);
+	Owner.CurrentStyle.DrawRectBox(BoxX, YPos, BoxW, BoxH, EdgeSize, Settings.Style.ShapePlayersCountBox);
 	
 	/*
 	Owner.CurrentStyle.DrawTexture(IconPlayer,
-		BoxX + Settings.Style.EdgeSize + IconIndent,
+		BoxX + EdgeSize + IconIndent,
 		YPos + IconIndent,
 		BoxH - IconIndent*2,
 		BoxH - IconIndent*2,
@@ -397,7 +398,7 @@ function DrawMenu()
 	Canvas.SetDrawColorStruct(Settings.Style.PlayerCountTextColor);
 	S = Players $ ":" @ NumPlayer @ "/" @ KFGRI.MaxHumanCount $ "    " $ Spectators $ ": " $ NumSpec; ; 
 	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
-	DrawTextShadowHLeftVCenter(S, BoxX + Settings.Style.EdgeSize, YPos, BoxH, FontScalar);
+	DrawTextShadowHLeftVCenter(S, BoxX + EdgeSize, YPos, BoxH, FontScalar);
 	
 	S = Owner.CurrentStyle.GetTimeString(KFGRI.ElapsedTime);
 	DrawTextShadowHVCenter(S, XPos + Width * 0.7, YPos, Width * 0.3, BoxH, FontScalar); // TODO: ?
@@ -415,7 +416,7 @@ function DrawMenu()
 		YPos,
 		Width + BorderSize * 4,
 		BoxH,
-		Settings.Style.EdgeSize,
+		EdgeSize,
 		Settings.Style.ShapeHeaderBox);
 
 	// Calc X offsets
@@ -431,7 +432,7 @@ function DrawMenu()
 		HealthWBox = PlayersList.GetItemHeight();
 	}
 	
-	PlayerXPos = HealthXPos + HealthWBox + PlayersList.GetItemHeight() + Settings.Style.EdgeSize;
+	PlayerXPos = HealthXPos + HealthWBox + PlayersList.GetItemHeight() + EdgeSize;
 	
 	Canvas.TextSize(class'KFGFxHUD_ScoreboardWidget'.default.PingString$" ", XL, YL, FontScalar, FontScalar);
 	PingWBox = XL < MinBoxW ? MinBoxW : XL;
@@ -501,7 +502,7 @@ function DrawMenu()
 			YPos + YL + BorderSize * 4,
 			ScrollBarWidth,
 			PlayerListSizeY,
-			Settings.Style.EdgeSize,
+			EdgeSize,
 			0);
 	}
 	
@@ -517,7 +518,7 @@ function DrawMenu()
 		YPos,
 		Width + BorderSize * 4,
 		BoxH * (MessageOfTheDayLines.Length > 0 ? MessageOfTheDayLines.Length : 1),
-		Settings.Style.EdgeSize,
+		EdgeSize,
 		152);
 	
 	if (MessageOfTheDay != "")
@@ -562,13 +563,14 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local int Ping;
 	local Rank Rank;
 	
-	local float BorderSize;
+	local float BorderSize, EdgeSize;
 	
 	local int Shape, ShapeHealth;
 	
 	local Color HealthBoxColor;
 	
 	BorderSize = Owner.HUDOwner.ScaledBorderSize;
+	EdgeSize = Owner.CurrentStyle.PickEdgeSize();
 	
 	YOffset *= PlayerEntryHeightMod;
 	
@@ -609,7 +611,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		YOffset,
 		HealthWBox,
 		Height,
-		Settings.Style.EdgeSize,
+		EdgeSize,
 		ShapeHealth);
 	
 	C.SetDrawColorStruct(Settings.Style.StateTextColorHealthHigh);
@@ -630,7 +632,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	Shape = Settings.Style.ShapePlayerBoxMidPlayer;
 
 	BoxWidth = DoshXPos - HealthWBox - BorderSize * 2;
-	Owner.CurrentStyle.DrawRectBox(XPos, YOffset, BoxWidth, Height, Settings.Style.EdgeSize, Shape);
+	Owner.CurrentStyle.DrawRectBox(XPos, YOffset, BoxWidth, Height, EdgeSize, Shape);
 	
 	XPos += BoxWidth;
 	
@@ -644,7 +646,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		YOffset,
 		BoxWidth,
 		Height,
-		Settings.Style.EdgeSize,
+		EdgeSize,
 		Shape);
 
 	// Perk

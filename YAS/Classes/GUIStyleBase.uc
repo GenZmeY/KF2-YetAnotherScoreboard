@@ -209,6 +209,15 @@ final function GetFillScreenSize(out float SizeX, out float SizeY)
 	SizeY = Base * 9;
 }
 
+final function float PickEdgeSize(float DefaultSize = 8.0f)
+{
+	local float FillSizeX, FillSizeY;
+	
+	GetFillScreenSize(FillSizeX, FillSizeY);
+	
+	return (FillSizeY / 1080.f) * DefaultSize;
+}
+
 final function DrawText(coerce string S)
 {
 	local float Scale;
@@ -519,7 +528,7 @@ final function DrawCornerTexNU(int SizeX, int SizeY, byte Dir ) // Draw non-unif
 	}
 }
 
-final function DrawCornerTex(int Size, byte Dir)
+final function DrawCornerTex(float Size, byte Dir)
 {
 	switch (Dir)
 	{
@@ -542,7 +551,7 @@ final function DrawWhiteBox(float XS, float YS, optional bool bClip)
 	Canvas.DrawTile(ItemTex, XS, YS, 19, 45, 1,1, ,bClip);
 }
 
-final function DrawCornerSmart(float X, float Y, int Edge, int CornerPosition, int CornerShape)
+final function DrawCornerSmart(float X, float Y, float Edge, int CornerPosition, int CornerShape)
 {
 	switch (CornerPosition)
 	{
@@ -621,7 +630,7 @@ final function DrawCornerSmart(float X, float Y, int Edge, int CornerPosition, i
 	}
 }
 
-final function DrawRectBoxSmart(float X, float Y, float W, float H, int Edge, int TopLeftShape, int TopRightShape, int BottomLeftShape, int BottomRightShape)
+final function DrawRectBoxSmart(float X, float Y, float W, float H, float Edge, int TopLeftShape, int TopRightShape, int BottomLeftShape, int BottomRightShape)
 {
 	local float BoxX, BoxW;
 	
@@ -666,7 +675,7 @@ final function DrawRectBoxSmart(float X, float Y, float W, float H, int Edge, in
 	DrawCornerSmart(X + W, Y + H, Edge, ECP_BottomRight, BottomRightShape);
 }
 
-final function DrawRectBox(float X, float Y, float Width, float Height, int Edge, optional byte Extrav)
+final function DrawRectBox(float X, float Y, float Width, float Height, float Edge, optional byte Extrav)
 {
 	if (Extrav == 2)
 		Edge=Min(FMin(Edge, (Width)*0.5), Height);// Verify size.
