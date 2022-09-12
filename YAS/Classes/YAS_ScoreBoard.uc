@@ -5,7 +5,7 @@ const HeaderWidthRatio         = 0.30f;
 const PlayerListWidthRatio     = 0.6f;
 const PlayerEntryHeightMod     = 1.05f;
 
-const CompactModePlayers = 12;
+const CompactModePlayers = 5;
 
 const ListItemsCompact = 16;
 const ListItemsDefault = 12;
@@ -13,17 +13,19 @@ const ListItemsDefault = 12;
 const FontScalarModCompact = 1.0f;
 const FontScalarModDefault = 1.25f;
 
-/*
-const IconRanked   = Texture2D'YAS.IconRanked';
-const IconCustom   = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I26';
-const IconUnranked = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I28';
-const IconPassword = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I20';
-const IconDosh     = Texture2D'UI_HUD.InGameHUD_SWF_I13A';
-const IconPlayer   = Texture2D'UI_HUD.InGameHUD_ZED_SWF_I1F5';
-const IconClock    = Texture2D'UI_HUD.InGameHUD_SWF_I17D';
-const IconSkull    = Texture2D'UI_Shared.AssetLib_I32';
-const IconHealth   = Texture2D'UI_VoiceComms_TEX.UI_VoiceCommand_Icon_Heal';
-*/
+//const IconRanked   = Texture2D'YAS.IconRanked';
+const IconCustom        = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I26';
+const IconUnranked      = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I28';
+const IconPassword      = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I20';
+const IconDosh          = Texture2D'UI_HUD.InGameHUD_SWF_I13A';
+const IconPlayer        = Texture2D'UI_HUD.InGameHUD_ZED_SWF_I1F5';
+const IconClock         = Texture2D'UI_HUD.InGameHUD_SWF_I17D';
+const IconSkull         = Texture2D'UI_Shared.AssetLib_I32';
+const IconSkullAndBones = Texture2D'UI_ZEDRadar_TEX.MapIcon_FailedSpawn';
+const IconHealth        = Texture2D'UI_VoiceComms_TEX.UI_VoiceCommand_Icon_Heal';
+const IconHealthAlt     = Texture2D'UI_Objective_Tex.UI_Obj_Healing_Loc';
+const IconHorzine       = Texture2D'UI_PerkIcons_TEX.UI_Horzine_H_Logo';
+const IconGlobe         = Texture2D'DailyObjective_UI.KF2_Dailies_Icon_Map';
 
 var public E_LogLevel LogLevel;
 
@@ -401,7 +403,7 @@ function DrawMenu()
 	DrawTextShadowHLeftVCenter(S, BoxX + EdgeSize, YPos, BoxH, FontScalar);
 	
 	S = Owner.CurrentStyle.GetTimeString(KFGRI.ElapsedTime);
-	DrawTextShadowHVCenter(S, XPos + Width * 0.7, YPos, Width * 0.3, BoxH, FontScalar); // TODO: ?
+	DrawTextShadowHVCenter(S, XPos + Width * 0.7, YPos, Width * 0.3, BoxH, FontScalar);
 	
 	YPos += BoxH;
 
@@ -474,9 +476,15 @@ function DrawMenu()
 	
 	ColorTMP = Settings.Style.ListHeaderTextColor;
 	ColorTMP.A = 150;
-	Canvas.SetDrawColorStruct(ColorTmp);
-	
-	DrawHealthIcon(XPos + HealthXPos, YPos, HealthWBox, BoxH);
+	Canvas.SetDrawColorStruct(ColorTMP);
+	Owner.CurrentStyle.DrawTexture(
+		IconHealthAlt,
+		XPos + HealthXPos + BoxH * 0.5f,
+		YPos + BorderSize,
+		BoxH - BorderSize * 2,
+		BoxH - BorderSize * 2,
+		256,
+		256);
 	
 	PlayersList.XPosition = ((Canvas.ClipX - Width) * 0.5) / InputPos[2];
 	PlayersList.YPosition = (YPos + YL + BorderSize * 4) / InputPos[3];
@@ -532,26 +540,6 @@ function DrawMenu()
 	}
 }
 
-function DrawHealthIcon(float X, float Y, float W, float H)
-{
-	local float XPos, YPos, Size, Part;
-	
-	Size = H * 0.65;
-	Part = Size / 3;
-	
-	XPos = X + (W * 0.5 - Part * 0.5);
-	YPos = Y + (H * 0.5 - Size * 0.5);
-	Owner.CurrentStyle.DrawRectBox(XPos, YPos, Part, Part, 4, 100);
-	
-	XPos = X + (W * 0.5 - Size * 0.5);
-	YPos = Y + (H * 0.5 - Part * 0.5);
-	Owner.CurrentStyle.DrawRectBox(XPos, YPos, Size, Part, 4, 100);
-	
-	XPos = X + (W * 0.5 - Part * 0.5);
-	YPos = Y + (H * 0.5 + Part * 0.5);
-	Owner.CurrentStyle.DrawRectBox(XPos, YPos, Part, Part, 4, 100);
-}
-
 function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float Width, bool bFocus)
 {
 	local string S, StrValue;
@@ -559,6 +547,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local float XPos, BoxWidth, RealPlayerWBox;
 	local KFPlayerReplicationInfo KFPRI;
 	local byte Level, PrestigeLevel;
+	local Color ColorTMP;
 	local bool bIsZED;
 	local int Ping;
 	local Rank Rank;
@@ -607,12 +596,38 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	
 	// Health box
 	C.SetDrawColorStruct(HealthBoxColor);
-	Owner.CurrentStyle.DrawRectBox(XPos,
+	Owner.CurrentStyle.DrawRectBox(
+		XPos,
 		YOffset,
 		HealthWBox,
 		Height,
 		EdgeSize,
 		ShapeHealth);
+	
+	if (!KFGRI.bMatchHasBegun)
+	{
+		ColorTMP = Settings.Style.ListHeaderTextColor;
+		ColorTMP.A = 200;
+		Canvas.SetDrawColorStruct(ColorTMP);
+		Owner.CurrentStyle.DrawTexture(
+			IconHorzine,
+			XPos + (HealthWBox - Height) * 0.5f + BorderSize * 2,
+			YOffset + BorderSize * 2,
+			Height - BorderSize * 4,
+			Height - BorderSize * 4);
+	}
+	else if (KFPRI.PlayerHealth <= 0 || KFPRI.PlayerHealthPercent <= 0)
+	{
+		ColorTMP = Settings.Style.ListHeaderTextColor;
+		ColorTMP.A = 200;
+		Canvas.SetDrawColorStruct(ColorTMP);
+		Owner.CurrentStyle.DrawTexture(
+			IconSkullAndBones,
+			XPos + BorderSize * 2,
+			YOffset + BorderSize * 2,
+			HealthWBox - BorderSize * 4,
+			Height - BorderSize * 4);
+	}
 	
 	C.SetDrawColorStruct(Settings.Style.StateTextColorHealthHigh);
 	

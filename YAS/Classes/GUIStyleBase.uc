@@ -1404,12 +1404,11 @@ final function DrawArrowBox(int Direction, float X, float Y, float Width, float 
 	DrawTileStretched(DirectionMat, X,Y, Width, Height);
 }
 
-function DrawTexture(Texture2D Tex, float X, float Y, float W, float H, Color TexColor)
+function DrawTexture(Texture2D Tex, float X, float Y, float W, float H, optional float UL, optional float VL)
 {
 	Canvas.SetPos(X, Y);
 	
-	Canvas.SetDrawColorStruct(TexColor);
-	Canvas.DrawTile(Tex, W, H, 0, 0, Tex.SizeX, Tex.SizeY);
+	Canvas.DrawTile(Tex, W, H, 0, 0, UL == 0.f ? float(Tex.SizeX) : UL, VL == 0.f ? float(Tex.SizeY) : VL);
 }
 
 final function DrawTileStretched(Texture Tex, float X, float Y, float XS, float YS)
