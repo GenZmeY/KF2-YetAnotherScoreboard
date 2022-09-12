@@ -13,14 +13,16 @@ const ListItemsDefault = 12;
 const FontScalarModCompact = 1.0f;
 const FontScalarModDefault = 1.25f;
 
-//const IconRanked        = Texture2D'YAS.IconRanked';
+const IconRanked        = Texture2D'DailyObjective_UI.KF2_Dailies_Icon_PerkLvl'; // where the hell is the right icon?
 const IconCustom        = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I26';
 const IconUnranked      = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I28';
+const IconUnrankedAlt   = Texture2D'UI_VoiceComms_TEX.UI_VoiceCommand_Icon_Negative';
 const IconPassword      = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I20';
 const IconDosh          = Texture2D'UI_HUD.InGameHUD_SWF_I13A';
 const IconPlayer        = Texture2D'UI_HUD.InGameHUD_ZED_SWF_I1F5';
 const IconClock         = Texture2D'UI_HUD.InGameHUD_SWF_I17D';
 const IconSkull         = Texture2D'UI_Shared.AssetLib_I32';
+const IconSkullAlt      = Texture2D'UI_ZEDRadar_TEX.MapIcon_Patriarch';
 const IconSkullAndBones = Texture2D'UI_ZEDRadar_TEX.MapIcon_FailedSpawn';
 const IconHealth        = Texture2D'UI_VoiceComms_TEX.UI_VoiceCommand_Icon_Heal';
 const IconHealthAlt     = Texture2D'UI_Objective_Tex.UI_Obj_Healing_Loc';
@@ -343,6 +345,7 @@ function DrawMenu()
 	ColorTMP = Settings.Style.ServerNameTextColor;
 	ColorTMP.A = 200;
 	Canvas.SetDrawColorStruct(ColorTMP);
+	
 	if (PasswordRequired)
 	{
 		Owner.CurrentStyle.DrawTexture(
@@ -352,6 +355,37 @@ function DrawMenu()
 			BoxH - BorderSize*4,
 			BoxH - BorderSize*4);
 	}
+	
+	if (UsesStats)
+	{
+		//if (Custom)
+		//{
+		//	Owner.CurrentStyle.DrawTexture(
+		//	IconCustom,
+		//	BoxX + BorderSize + (BoxW - SrvNameW) * 0.5f - BoxH,
+		//	YPos + BorderSize,
+		//	BoxH - BorderSize*2,
+		//	BoxH - BorderSize*2);
+		//}
+		//else
+		//{
+		DrawRankedIcon(
+			BoxX + BorderSize*2 + PasswordRequired ? BoxH - BorderSize*2 : 0.f,
+			YPos + BorderSize*2,
+			BoxH - BorderSize*4,
+			BoxH - BorderSize*4);
+		//}
+	}
+	//else
+	//{
+	//	Owner.CurrentStyle.DrawTexture(
+	//		IconUnrankedAlt,
+	//		BoxX + BorderSize*2 + PasswordRequired ? BoxH - BorderSize*2 : 0.f,
+	//		YPos + BorderSize*2,
+	//		BoxH - BorderSize*4,
+	//		BoxH - BorderSize*4,
+	//		256, 256);
+	//}
 	
 	YPos += BoxH;
 	
@@ -622,7 +656,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		ColorTMP.A = 200;
 		Canvas.SetDrawColorStruct(ColorTMP);
 		Owner.CurrentStyle.DrawTexture(
-			IconSkullAndBones,
+			IconSkullAlt,
 			XPos + BorderSize * 2,
 			YOffset + BorderSize * 2,
 			HealthWBox - BorderSize * 4,
@@ -962,6 +996,45 @@ function DrawTextShadowHRightVCenter(string Str, float XPos, float YPos, float B
 	Canvas.TextSize(Str, TextWidth, TextHeight, FontScalar, FontScalar);
 	
 	Owner.CurrentStyle.DrawTextShadow(Str, XPos + BoxWidth - TextWidth, YPos + (BoxHeight - TextHeight)/2, 1, FontScalar);
+}
+
+function DrawRankedIcon(float X, float Y, float W, float H)
+{
+	local int Position;
+	local float XPos, YPos, Size, Block;
+	
+	Size =  Min(W, H);
+	Block = Size * 0.25f;
+
+	for (Position = 0; Position < 2; ++Position)
+	{
+		XPos = X + (W > Size ? (W - Size) * 0.5f : 0.f);
+		YPos = Y + Position * Size * 0.5f;
+		
+		// 1
+		Canvas.SetPos(XPos, YPos + Block);
+		Owner.CurrentStyle.DrawCornerTex(Block, 0);
+		
+		// 2
+		Canvas.SetPos(XPos + Block, YPos + Block);
+		Owner.CurrentStyle.DrawCornerTex(Block, 3);
+		
+		// 3
+		Canvas.SetPos(XPos + Block, YPos);
+		Owner.CurrentStyle.DrawCornerTex(Block, 0);
+		
+		// 4
+		Canvas.SetPos(XPos + Block * 2, YPos);
+		Owner.CurrentStyle.DrawCornerTex(Block, 1);
+		
+		// 5
+		Canvas.SetPos(XPos + Block * 2, YPos + Block);
+		Owner.CurrentStyle.DrawCornerTex(Block, 2);
+		
+		// 6
+		Canvas.SetPos(XPos + Block * 3, YPos + Block);
+		Owner.CurrentStyle.DrawCornerTex(Block, 1);
+	}
 }
 
 defaultproperties
