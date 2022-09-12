@@ -781,7 +781,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		StrValue = GetNiceSize(int(KFPRI.Score));
 	}
 	DrawTextShadowHVCenter(StrValue, DoshXPos, YOffset, DoshWBox, Height, FontScalar);
-
+	
 	// Ping
 	if (KFPRI.bBot)
 	{
@@ -792,14 +792,13 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	{
 		Ping = int(KFPRI.Ping * `PING_SCALE);
 		C.SetDrawColorStruct(PingColorByPing(Ping));
-		S = string(Ping);
+		S = String(Ping);
 	}
-
+	
 	C.TextSize(S, XL, YL, FontScalar, FontScalar);
-	DrawTextShadowHVCenter(S, PingXPos, YOffset, Settings.Style.ShowPingBars ? PingWBox/2 : PingWBox, Height, FontScalar);
+	DrawTextShadowHVCenter(S, PingXPos, YOffset, PingWBox/2, Height, FontScalar);
 	C.SetDrawColor(250, 250, 250, 255);
-	if (Settings.Style.ShowPingBars)
-		DrawPingBars(C, YOffset + (Height/2) - ((Height*0.5)/2), Width - (Height*0.5) - (BorderSize*2), Height*0.5, Height*0.5, float(Ping));
+	DrawPingBars(C, YOffset + (Height/2) - ((Height*0.5)/2), Width - (Height*0.5) - (BorderSize*2), Height*0.5, Height*0.5, float(Ping));
 }
 
 final function DrawPingBars(Canvas C, float YOffset, float XOffset, float W, float H, float Ping)
@@ -807,12 +806,9 @@ final function DrawPingBars(Canvas C, float YOffset, float XOffset, float W, flo
 	local float PingMul, BarW, BarH, BaseH, XPos, YPos;
 	local byte i;
 
-	PingMul = 1.f - FClamp(FMax(Ping - Settings.Ping.Low, 1.f) / Settings.Ping.High, 0.f, 1.f);
+	PingMul = 1.f - FClamp(FMax(Ping - 30, 1.f) / 130, 0.f, 1.f);
 	BarW = W / PingBars;
 	BaseH = H / PingBars;
-
-	PingColor.R = (1.f - PingMul) * 255;
-	PingColor.G = PingMul * 255;
 
 	for (i=1; i < PingBars; i++)
 	{
@@ -827,7 +823,7 @@ final function DrawPingBars(Canvas C, float YOffset, float XOffset, float W, flo
 		if (PingMul >= (i / PingBars))
 		{
 			C.SetPos(XPos, YPos);
-			C.DrawColor = PingColor;
+			C.SetDrawColorStruct(PingColorByPing(Ping));
 			Owner.CurrentStyle.DrawWhiteBox(BarW, BarH);
 		}
 
