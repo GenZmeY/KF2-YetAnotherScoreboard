@@ -812,7 +812,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	else
 	{
 		C.SetDrawColorStruct(Settings.Style.DoshTextColorMid);
-		StrValue = "£" $ GetNiceSize(int(KFPRI.Score));
+		StrValue = GetNiceSize(int(KFPRI.Score));
 	}
 	DrawTextShadowHVCenter(StrValue, DoshXPos, YOffset, DoshWBox, Height, FontScalar);
 	
