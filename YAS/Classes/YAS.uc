@@ -214,7 +214,7 @@ private function PostInit()
 	}
 	
 	KFGI = KFGameInfo(WorldInfo.Game);
-	if (KFGI == None)
+	if (KFGI == None || KFGameInfo_VersusSurvival(KFGI) != None) // VersusSurvival is not supported (yet)
 	{
 		`Log_Fatal("Incompatible gamemode:" @ WorldInfo.Game);
 		SafeDestroy();
