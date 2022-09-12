@@ -4,7 +4,7 @@ class Ranks extends Object
 
 var public config SystemRank  Player;
 var public config SystemRank  Admin;
-var public config Array<Rank> Ranks;
+var public config Array<Rank> Rank;
 
 public static function InitConfig(int Version, int LatestVersion)
 {
@@ -35,7 +35,7 @@ private static function ApplyDefault()
 	default.Admin.RankColor   = MakeColor(250, 0, 0, 250);
 	default.Admin.PlayerColor = MakeColor(250, 0, 0, 250);
 	
-	default.Ranks.Length = 0;
+	default.Rank.Length = 0;
 	
 	// Example custom rank:
 	NewRank.RankID      = 1;
@@ -43,7 +43,7 @@ private static function ApplyDefault()
 	NewRank.RankColor   = MakeColor(0, 250, 0, 250);
 	NewRank.PlayerColor = MakeColor(250, 250, 250, 250);
 	
-	default.Ranks.AddItem(NewRank);
+	default.Rank.AddItem(NewRank);
 }
 
 defaultproperties

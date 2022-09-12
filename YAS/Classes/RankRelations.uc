@@ -2,7 +2,7 @@ class RankRelations extends Object
 	dependson(YAS_Types)
 	config(YAS);
 
-var public config Array<RankRelation> Relations;
+var public config Array<RankRelation> Relation;
 
 public static function InitConfig(int Version, int LatestVersion)
 {
@@ -24,13 +24,13 @@ private static function ApplyDefault()
 {
 	local RankRelation NewRankRelation;
 	
-	default.Relations.Length = 0;
+	default.Relation.Length = 0;
 	
 	// Example relation:
 	NewRankRelation.RankID   = 1; // "Man of culture" ID
 	NewRankRelation.ObjectID = "103582791429670253"; // HENTAI Group SteamID64
 	
-	default.Relations.AddItem(NewRankRelation);
+	default.Relation.AddItem(NewRankRelation);
 }
 
 defaultproperties

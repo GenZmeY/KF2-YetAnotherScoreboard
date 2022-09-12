@@ -129,7 +129,7 @@ private function InitRanks() // TODO: Ref
 	local Array<RankRelation> Relations;
 	local RankRelation Relation;
 	
-	Relations = CfgRankRelations.default.Relations;
+	Relations = CfgRankRelations.default.Relation;
 	
 	foreach Relations(Relation)
 	{
@@ -158,7 +158,7 @@ private function AddRelation(RankRelation Relation, out Array<CachedRankRelation
 	{
 		CachedRankRelation.RawID = Relation.ObjectID;
 		
-		Ranks = CfgRanks.default.Ranks;
+		Ranks = CfgRanks.default.Rank;
 		foreach Ranks(Rank)
 		{
 			if (Rank.RankID == Relation.RankID)
