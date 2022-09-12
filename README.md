@@ -1,7 +1,7 @@
 # YetAnotherScoreboard
 
 [![Steam Workshop](https://img.shields.io/static/v1?message=workshop&logo=steam&labelColor=gray&color=blue&logoColor=white&label=steam%20)](https://steamcommunity.com/sharedfiles/filedetails/?id=2521826524)
-[![Steam Subscriptions](https://img.shields.io/steam/subscriptions/2521826524)](https://steamcommunity.com/sharedfiles/filedetails/?id=2521826524)
+[![Steam Downloads](https://img.shields.io/steam/downloads/2521826524)](https://steamcommunity.com/sharedfiles/filedetails/?id=2521826524)
 [![Steam Favorites](https://img.shields.io/steam/favorites/2521826524)](https://steamcommunity.com/sharedfiles/filedetails/?id=2521826524)
 [![Steam Update Date](https://img.shields.io/steam/update-date/2521826524)](https://steamcommunity.com/sharedfiles/filedetails/?id=2521826524)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/GenZmeY/KF2-YetAnotherScoreboard)](https://github.com/GenZmeY/KF2-YetAnotherScoreboard/tags)
@@ -10,16 +10,6 @@
 # Description
 Yet another scoreboard...
 Based on the scoreboard from [ClassicHUD](https://steamcommunity.com/sharedfiles/filedetails/?id=1963099942) and heavily modified.
-
-# Features
-- Doesn't block the view with the mouse when active;
-- Correctly displayed in all available resolutions;
-- Close to KF2 interface style;
-- Displays a large number of players;
-- The scoreboard adjusts to the size of the content;
-- Customizing the appearance and elements of the scoreboard;
-- Dynamically changing colors for some elements (depending on their value);
-- Player ranks.
 
 # Usage
 [See steam workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=2521826524)
@@ -53,7 +43,7 @@ If you find a bug, go to the [issue page](https://github.com/GenZmeY/KF2-YetAnot
 Describe what the bug looks like and how reproduce it.  
 Attach screenshots if you think it might help.
 
-If it's a crash issue, be sure to include the `Launch.log` and `Launch_2.log` files. You can find them here:  
+If it's a crash issue, be sure to include the `Launch.log` files. You can find them here:  
 `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame\Logs\`  
 Please note that these files are overwritten every time you start the game/server. Therefore, you must take these files immediately after the game crashes in order not to lose information.
 
