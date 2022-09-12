@@ -47,7 +47,7 @@ var float PingBars;
 var localized String Players, Spectators;
 
 // Cache
-var public Array<YAS_RankRepInfo> RepInfos;
+var public Array<YAS_RepInfoRank> RepInfos;
 
 var public YAS_Settings Settings;
 var public String DynamicServerName, MessageOfTheDay;
@@ -61,7 +61,7 @@ var private float FontScalarMod;
 
 function Rank PlayerRank(KFPlayerReplicationInfo KFPRI)
 {
-	local YAS_RankRepInfo RepInfo;
+	local YAS_RepInfoRank RepInfo;
 	local Rank Rank;
 	local bool NeedClean, FoundRepInfo;
 	
@@ -90,7 +90,7 @@ function Rank PlayerRank(KFPlayerReplicationInfo KFPRI)
 	
 	if (!FoundRepInfo)
 	{
-		foreach KFPRI.DynamicActors(class'YAS_RankRepInfo', RepInfo)
+		foreach KFPRI.DynamicActors(class'YAS_RepInfoRank', RepInfo)
 		{
 			if (RepInfo.UID.Uid == KFPRI.UniqueId.Uid)
 			{

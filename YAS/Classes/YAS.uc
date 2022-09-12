@@ -259,10 +259,8 @@ private function PostInit()
 	
 	SetTimer(UpdateInterval, true, nameof(UpdateTimer));
 	
-	`Log_Base("MessageOfTheDayTimer Length:" @ CfgMessageOfTheDay.default.Message.Length);
 	if (CfgMessageOfTheDay.default.Message.Length > 0)
 	{
-		`Log_Base("init MessageOfTheDayTimer:");
 		MessageOfTheDayTimer();
 		SetTimer(CfgMessageOfTheDay.default.DisplayTime, true, nameof(MessageOfTheDayTimer));
 	}
@@ -305,8 +303,6 @@ private function MessageOfTheDayTimer()
 		MessageIndex = 0;
 	}
 	
-	`Log_Base("MessageOfTheDayTimer:" @ MessageIndex);
-	
 	foreach RepInfos(RepInfo)
 	{
 		RepInfo.MessageOfTheDay = CfgMessageOfTheDay.default.Message[MessageIndex];
@@ -348,12 +344,12 @@ public function NotifyLogout(Controller C)
 public function YAS_RepInfo CreateRepInfo(Controller C)
 {
 	local YAS_RepInfo OwnerRepInfo;
-	local YAS_RankRepInfo  RankRepInfo;
+	local YAS_RepInfoRank  RankRepInfo;
 	
 	`Log_Trace();
 	
 	OwnerRepInfo  = Spawn(class'YAS_RepInfo', C);
-	RankRepInfo = Spawn(class'YAS_RankRepInfo', C);
+	RankRepInfo = Spawn(class'YAS_RepInfoRank', C);
 	
 	if (OwnerRepInfo != None && RankRepInfo != None)
 	{

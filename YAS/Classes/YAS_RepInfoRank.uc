@@ -1,4 +1,4 @@
-class YAS_RankRepInfo extends ReplicationInfo;
+class YAS_RepInfoRank extends ReplicationInfo;
 
 var public  UniqueNetID UID;
 var public  Rank        Rank;

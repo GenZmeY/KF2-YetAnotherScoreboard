@@ -7,7 +7,7 @@ var public repnotify SystemRank RankPlayer, RankAdmin;
 var public repnotify String DynamicServerName, MessageOfTheDay;
 var public repnotify bool UsesStats, Custom, PasswordRequired;
 
-var public YAS_RankRepInfo RankRepInfo;
+var public YAS_RepInfoRank RankRepInfo;
 
 var private KFPlayerController        KFPC;
 var private YAS_ScoreBoard            SC;
@@ -38,8 +38,6 @@ public simulated function bool SafeDestroy()
 public simulated event ReplicatedEvent(name VarName)
 {
 	`Log_Trace();
-	
-	`Log_Base("ReplicatedEvent:" @ VarName);
 	
 	switch (VarName)
 	{
