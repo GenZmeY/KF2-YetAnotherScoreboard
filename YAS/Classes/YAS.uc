@@ -124,7 +124,7 @@ private function PreInit()
 	}
 }
 
-private function InitRanks() // TODO: Ref
+private function InitRanks()
 {
 	local Array<RankRelation> Relations;
 	local RankRelation Relation;

@@ -44,6 +44,8 @@ In this section you can customize the messages that will be shown at the bottom 
 [b][YAS.Ranks][/b]
 here you can set display settings for different player ranks.
 
+[b]Why?[/b] for example, to highlight admins... or players who have done a lot for the server - this does not change the gameplay in any way, but these people will be pleased. Or just for fun of course :3
+
 Edit [b]Player[/b] and [b]Admin[/b] lines to set how this is displayed:
 [list]
 [*][b]RankName[/b] - rank name. Leave blank if you don't want this to be shown.
