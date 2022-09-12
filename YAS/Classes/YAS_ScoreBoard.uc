@@ -13,7 +13,7 @@ const ListItemsDefault = 12;
 const FontScalarModCompact = 1.0f;
 const FontScalarModDefault = 1.25f;
 
-//const IconRanked   = Texture2D'YAS.IconRanked';
+//const IconRanked        = Texture2D'YAS.IconRanked';
 const IconCustom        = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I26';
 const IconUnranked      = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I28';
 const IconPassword      = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I20';
@@ -340,18 +340,18 @@ function DrawMenu()
 	DrawTextShadowHVCenter(S, BoxX, YPos, BoxW, BoxH, FontScalar);
 	
 	// icons
-	/*
-	IconIndent = BoxH * 0.1;
+	ColorTMP = Settings.Style.ServerNameTextColor;
+	ColorTMP.A = 200;
+	Canvas.SetDrawColorStruct(ColorTMP);
 	if (PasswordRequired)
 	{
-		Owner.CurrentStyle.DrawTexture(IconPassword,
-			BoxX + IconIndent,
-			YPos + IconIndent,
-			BoxH - IconIndent*2,
-			BoxH - IconIndent*2,
-			MakeColor(250,250,250,250));
+		Owner.CurrentStyle.DrawTexture(
+			IconPassword,
+			BoxX + BorderSize*2,
+			YPos + BorderSize*2,
+			BoxH - BorderSize*4,
+			BoxH - BorderSize*4);
 	}
-	*/
 	
 	YPos += BoxH;
 	
