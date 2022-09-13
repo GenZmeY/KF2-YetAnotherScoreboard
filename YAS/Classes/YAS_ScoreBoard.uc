@@ -5,7 +5,7 @@ const HeaderWidthRatio         = 0.30f;
 const PlayerListWidthRatio     = 0.6f;
 const PlayerEntryHeightMod     = 1.05f;
 
-const CompactModePlayers = 5;
+const CompactModePlayers = 16;
 
 const ListItemsCompact = 16;
 const ListItemsDefault = 12;
