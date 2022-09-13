@@ -38,7 +38,7 @@ In this section you can customize the messages that will be shown at the bottom 
 [list]
 [*][b]bRandomize[/b] - If True the message will be chosen randomly;
 [*][b]DisplayTime[/b] - message display time in seconds;
-[*][b]Message[/b] - Array of messages to display. Place multiple "Message=" below each other if you want to specify multiple messages. If you need a line break in a message, use '[b]\n[/b]'.
+[*][b]Message[/b] - Array of messages to display. Place multiple 'Message=' below each other if you want to specify multiple messages. If you need a line break in a message, use '[b]\n[/b]'.
 [/list]
 
 [b][YAS.Ranks][/b]
@@ -76,7 +76,7 @@ Use [b]Relation[/b] array to establish a relation between a player and their ran
 [/list]
 
 [b]Rank example[/b]
-When your config is generated for the first time there will be an example rank - "Man of Culture". It has green color and relation with ObjectID 103582791429670253 (which is the SteamID64 of [url=https://steamcommunity.com/groups/hentaii]this group[/url]). Thus, if you leave this setting, when someone from this group enters the game, he will have a green rank "Man of Culture".
+When your config is generated for the first time there will be an example rank - 'Man of Culture'. It has green color and relation with ObjectID 103582791429670253 (which is the SteamID64 of [url=https://steamcommunity.com/groups/hentaii]this group[/url]). Thus, if you leave this setting, when someone from this group enters the game, he will have a green rank 'Man of Culture'.
 You can use this as a template for creating your own ranks, or remove it if you don't need it.
 
 [h1]Getting IDs[/h1]
