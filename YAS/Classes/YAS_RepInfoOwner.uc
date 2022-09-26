@@ -1,4 +1,4 @@
-class YAS_RepInfo extends ReplicationInfo;
+class YAS_RepInfoOwner extends ReplicationInfo;
 
 var public YAS YAS;
 
@@ -7,7 +7,7 @@ var public repnotify SystemRank RankPlayer, RankAdmin;
 var public repnotify String DynamicServerName, MessageOfTheDay;
 var public repnotify bool UsesStats, Custom, PasswordRequired;
 
-var public YAS_RepInfoRank RankRepInfo;
+var public YAS_RepInfoPlayer PlayerRepInfo;
 
 var private KFPlayerController        KFPC;
 var private YAS_ScoreBoard            SC;
@@ -16,7 +16,8 @@ var private OnlineSubsystemSteamworks OSS;
 var private Array<UniqueNetID> PendingGroupIDs;
 
 const CheckGroupTimer = 0.2f;
-const MaxRetries      = 3;
+const UpdatePlayerStatsTimer = 2.0f;
+const MaxRetries = 3;
 var private int Retries;
 
 replication
@@ -92,6 +93,11 @@ public simulated event PreBeginPlay()
 		GetScoreboard();
 	}
 	
+	if (Role == ROLE_Authority || WorldInfo.NetMode == NM_StandAlone)
+	{
+		SetTimer(UpdatePlayerStatsTimer, true, nameof(UpdatePlayerStats));
+	}
+	
 	GetOnlineSubsystem();
 }
 
@@ -100,6 +106,22 @@ public simulated event PostBeginPlay()
 	if (bPendingDelete || bDeleteMe) return;
 	
 	Super.PostBeginPlay();
+}
+
+public function UpdatePlayerStats()
+{
+	if (GetKFPC() == None || KFPC.MatchStats == None) return;
+	
+	if (WorldInfo.GRI == None || KFGameReplicationInfo(WorldInfo.GRI) == None) return;
+	
+	// At the end of the wave, TotalDamageDealt is incremented by GetDamageDealtInWave(),
+	// but GetDamageDealtInWave() is not reset immediately.
+	// In order not to receive a short-term doubling of damage in statistics,
+	// Count damage only when the wave is active
+	if (KFGameReplicationInfo(WorldInfo.GRI).bWaveStarted)
+	{
+		PlayerRepInfo.DamageDealt = KFPC.MatchStats.TotalDamageDealt + KFPC.MatchStats.GetDamageDealtInWave();
+	}
 }
 
 public reliable client function CheckGroupRanks(String JoinedGroupIDs)
@@ -164,12 +186,12 @@ private reliable server function ServerApplyMembership(UniqueNetId GroupUID)
 	Rank = YAS.RankByGroupID(GroupUID);
 	if (Rank.RankID > 0)
 	{
-		RankRepInfo.Rank = Rank;
+		PlayerRepInfo.Rank = Rank;
 	}
 	else
 	{
 		`Log_Warn("Cant find related rank for groupUID");
-		RankRepInfo.Rank = class'YAS_Types'.static.FromSystemRank(RankPlayer);
+		PlayerRepInfo.Rank = class'YAS_Types'.static.FromSystemRank(RankPlayer);
 	}
 }
 

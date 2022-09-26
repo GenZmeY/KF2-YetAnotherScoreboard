@@ -24,7 +24,7 @@ var private KFOnlineGameSettings  KFOGS;
 
 var private OnlineSubsystemSteamworks OSS;
 
-var private Array<YAS_RepInfo> RepInfos;
+var private Array<YAS_RepInfoOwner> RepInfos;
 
 var private Array<CachedRankRelation> PlayerRelations;
 var private Array<CachedRankRelation> GroupRelations;
@@ -268,7 +268,7 @@ private function PostInit()
 
 private function UpdateTimer()
 {
-	local YAS_RepInfo RepInfo;
+	local YAS_RepInfoOwner RepInfo;
 	
 	foreach RepInfos(RepInfo)
 	{
@@ -281,7 +281,7 @@ private function UpdateTimer()
 
 private function MessageOfTheDayTimer()
 {
-	local YAS_RepInfo RepInfo;
+	local YAS_RepInfoOwner RepInfo;
 	local int MessageIndex;
 	
 	if (CfgMessageOfTheDay.default.bRandomize)
@@ -313,7 +313,7 @@ private function MessageOfTheDayTimer()
 
 public function NotifyLogin(Controller C)
 {
-	local YAS_RepInfo RepInfo;
+	local YAS_RepInfoOwner RepInfo;
 	
 	`Log_Trace();
 
@@ -329,7 +329,7 @@ public function NotifyLogin(Controller C)
 
 public function NotifyLogout(Controller C)
 {
-	local YAS_RepInfo RepInfo;
+	local YAS_RepInfoOwner RepInfo;
 	
 	`Log_Trace();
 	
@@ -341,34 +341,36 @@ public function NotifyLogout(Controller C)
 	}
 }
 
-public function YAS_RepInfo CreateRepInfo(Controller C)
+public function YAS_RepInfoOwner CreateRepInfo(Controller C)
 {
-	local YAS_RepInfo OwnerRepInfo;
-	local YAS_RepInfoRank  RankRepInfo;
+	local YAS_RepInfoOwner OwnerRepInfo;
+	local YAS_RepInfoPlayer  PlayerRepInfo;
 	
 	`Log_Trace();
 	
-	OwnerRepInfo  = Spawn(class'YAS_RepInfo', C);
-	RankRepInfo = Spawn(class'YAS_RepInfoRank', C);
+	OwnerRepInfo  = Spawn(class'YAS_RepInfoOwner', C);
+	PlayerRepInfo = Spawn(class'YAS_RepInfoPlayer', C);
 	
-	if (OwnerRepInfo != None && RankRepInfo != None)
+	if (OwnerRepInfo != None && PlayerRepInfo != None)
 	{
 		RepInfos.AddItem(OwnerRepInfo);
 		
-		OwnerRepInfo.RankRepInfo = RankRepInfo;
+		OwnerRepInfo.PlayerRepInfo = PlayerRepInfo;
 		OwnerRepInfo.YAS             = Self;
 		OwnerRepInfo.LogLevel        = LogLevel;
 		OwnerRepInfo.RankPlayer      = CfgRanks.default.Player;
 		OwnerRepInfo.RankAdmin       = CfgRanks.default.Admin;
 		OwnerRepInfo.MessageOfTheDay = CfgMessageOfTheDay.default.Message[LastMessageID];
+		
+		return OwnerRepInfo;
 	}
 	
-	return OwnerRepInfo;
+	return None;
 }
 
-private function YAS_RepInfo FindRepInfo(Controller C)
+private function YAS_RepInfoOwner FindRepInfo(Controller C)
 {
-	local YAS_RepInfo RepInfo;
+	local YAS_RepInfoOwner RepInfo;
 	
 	if (C == None) return None;
 	
@@ -383,20 +385,20 @@ private function YAS_RepInfo FindRepInfo(Controller C)
 	return None;
 }
 
-public function bool DestroyRepInfo(YAS_RepInfo RepInfo)
+public function bool DestroyRepInfo(YAS_RepInfoOwner RepInfo)
 {
 	`Log_Trace();
 	
 	if (RepInfo == None) return false;
 	
 	RepInfos.RemoveItem(RepInfo);
-	RepInfo.RankRepInfo.SafeDestroy();
+	RepInfo.PlayerRepInfo.SafeDestroy();
 	RepInfo.SafeDestroy();
 	
 	return true;
 }
 
-private function InitRank(YAS_RepInfo RepInfo)
+private function InitRank(YAS_RepInfoOwner RepInfo)
 {
 	local CachedRankRelation Rel;
 	local String JoinedGroupIDs;
@@ -417,12 +419,12 @@ private function InitRank(YAS_RepInfo RepInfo)
 	{
 		if (Rel.UID.Uid == PRI.UniqueID.Uid)
 		{
-			RepInfo.RankRepInfo.Rank = Rel.Rank;
+			RepInfo.PlayerRepInfo.Rank = Rel.Rank;
 			break;
 		}
 	}
 	
-	if (RepInfo.RankRepInfo.Rank.RankID <= 0 && !KFPC.bIsEosPlayer)
+	if (RepInfo.PlayerRepInfo.Rank.RankID <= 0 && !KFPC.bIsEosPlayer)
 	{
 		foreach GroupRelations(Rel)
 		{

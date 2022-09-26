@@ -13,6 +13,8 @@ const ListItemsDefault = 12;
 const FontScalarModCompact = 1.0f;
 const FontScalarModDefault = 1.25f;
 
+const ShowDamage = true; 
+
 const IconRanked        = Texture2D'DailyObjective_UI.KF2_Dailies_Icon_PerkLvl'; // where the hell is the right icon?
 const IconCustom        = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I26';
 const IconUnranked      = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I28';
@@ -51,7 +53,7 @@ var float PingBars;
 var localized String Players, Spectators;
 
 // Cache
-var public Array<YAS_RepInfoRank> RepInfos;
+var public Array<YAS_RepInfoPlayer> RepInfos;
 
 var public YAS_Settings Settings;
 var public String DynamicServerName, MessageOfTheDay;
@@ -63,55 +65,44 @@ var public SystemRank RankAdmin;
 var private int   ListItems;
 var private float FontScalarMod;
 
-function Rank PlayerRank(KFPlayerReplicationInfo KFPRI)
+function YAS_RepInfoPlayer FindRepInfo(KFPlayerReplicationInfo KFPRI)
 {
-	local YAS_RepInfoRank RepInfo;
+	local YAS_RepInfoPlayer RepInfo;
+	
+	foreach RepInfos(RepInfo)
+	{
+		if (RepInfo.UID.Uid == KFPRI.UniqueId.Uid)
+		{
+			return RepInfo;
+		}
+	}
+	
+	foreach KFPRI.DynamicActors(class'YAS_RepInfoPlayer', RepInfo)
+	{
+		if (RepInfo.UID.Uid == KFPRI.UniqueId.Uid)
+		{
+			RepInfos.AddItem(RepInfo);
+			return RepInfo;
+		}
+	}
+	
+	return None;
+}
+
+function Rank PlayerRank(YAS_RepInfoPlayer RepInfo, bool bAdmin)
+{
 	local Rank Rank;
-	local bool NeedClean, FoundRepInfo;
 	
 	`Log_Trace();
 	
 	Rank = class'YAS_Types'.static.FromSystemRank(RankPlayer);
 	
-	NeedClean    = false;
-	FoundRepInfo = false;
-	
-	foreach RepInfos(RepInfo)
+	if (RepInfo != None)
 	{
-		if (RepInfo == None)
-		{
-			NeedClean = true;
-			continue;
-		}
-		
-		if (RepInfo.UID.Uid == KFPRI.UniqueId.Uid)
-		{
-			Rank         = RepInfo.Rank;
-			FoundRepInfo = true;
-			break;
-		}
+		Rank = RepInfo.Rank;
 	}
 	
-	if (!FoundRepInfo)
-	{
-		foreach KFPRI.DynamicActors(class'YAS_RepInfoRank', RepInfo)
-		{
-			if (RepInfo.UID.Uid == KFPRI.UniqueId.Uid)
-			{
-				Rank = RepInfo.Rank;
-				FoundRepInfo = true;
-				RepInfos.AddItem(RepInfo);
-				break;
-			}
-		}
-	}
-	
-	if (NeedClean)
-	{
-		RepInfos.RemoveItem(None);
-	}
-	
-	if (KFPRI.bAdmin && !Rank.OverrideAdmin)
+	if (bAdmin && !Rank.OverrideAdmin)
 	{
 		Rank = class'YAS_Types'.static.FromSystemRank(RankAdmin);
 	}
@@ -504,7 +495,14 @@ function DrawMenu()
 	DrawTextShadowHLeftVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PlayerString, XPos + PlayerXPos, YPos, BoxH, FontScalar);
 	DrawTextShadowHLeftVCenter(class'KFGFxMenu_Inventory'.default.PerkFilterString, XPos + PerkXPos, YPos, BoxH, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.KillsString, XPos + KillsXPos, YPos, KillsWBox, BoxH, FontScalar);
-	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.AssistsString, XPos + AssistXPos, YPos, AssistWBox, BoxH, FontScalar);
+	if (ShowDamage)
+	{
+		DrawTextShadowHVCenter(class'KFGFxTraderContainer_ItemDetails'.default.DamageTitle, XPos + AssistXPos, YPos, AssistWBox, BoxH, FontScalar);
+	}
+	else
+	{
+		DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.AssistsString, XPos + AssistXPos, YPos, AssistWBox, BoxH, FontScalar);
+	}
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.DoshString, XPos + DoshXPos, YPos, DoshWBox, BoxH, FontScalar);
 	DrawTextShadowHVCenter(class'KFGFxHUD_ScoreboardWidget'.default.PingString, XPos + PingXPos, YPos, PingWBox, BoxH, FontScalar);
 	
@@ -580,6 +578,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	local float FontScalar, XL, YL, PerkIconPosX, PerkIconPosY, PerkIconSize, PrestigeIconScale;
 	local float XPos, BoxWidth, RealPlayerWBox;
 	local KFPlayerReplicationInfo KFPRI;
+	local YAS_RepInfoPlayer RepInfo;
 	local byte Level, PrestigeLevel;
 	local Color ColorTMP;
 	local bool bIsZED;
@@ -599,7 +598,8 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	
 	KFPRI = KFPRIArray[Index];
 	
-	Rank = PlayerRank(KFPRI);
+	RepInfo = FindRepInfo(KFPRI);
+	Rank = PlayerRank(RepInfo, KFPRI.bAdmin);
 	
 	if (KFGRI.bVersusGame)
 	{
@@ -797,11 +797,18 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 
 	// Kill
 	C.SetDrawColorStruct(Settings.Style.KillsTextColorMid);
-	DrawTextShadowHVCenter(string (KFPRI.Kills), KillsXPos, YOffset, KillsWBox, Height, FontScalar);
+	DrawTextShadowHVCenter(GetNiceSize(KFPRI.Kills), KillsXPos, YOffset, KillsWBox, Height, FontScalar);
 
 	// Assist
 	C.SetDrawColorStruct(Settings.Style.AssistsTextColorMid);
-	DrawTextShadowHVCenter(string (KFPRI.Assists), AssistXPos, YOffset, AssistWBox, Height, FontScalar);
+	if (ShowDamage)
+	{
+		DrawTextShadowHVCenter((RepInfo == None ? "0" : GetNiceSize(RepInfo.DamageDealt)), AssistXPos, YOffset, AssistWBox, Height, FontScalar);
+	}
+	else
+	{
+		DrawTextShadowHVCenter(GetNiceSize(KFPRI.Assists), AssistXPos, YOffset, AssistWBox, Height, FontScalar);
+	}
 	
 	// Dosh
 	if (bIsZED)

@@ -1,7 +1,8 @@
-class YAS_RepInfoRank extends ReplicationInfo;
+class YAS_RepInfoPlayer extends ReplicationInfo;
 
 var public  UniqueNetID UID;
 var public  Rank        Rank;
+var public  int         DamageDealt;
 
 replication
 {
@@ -9,7 +10,7 @@ replication
 		UID;
 	
 	if (bNetDirty)
-		Rank;
+		Rank, DamageDealt;
 }
 
 public simulated function bool SafeDestroy()
