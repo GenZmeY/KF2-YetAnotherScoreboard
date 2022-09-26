@@ -5,7 +5,10 @@ Yet another scoreboard...
 Based on the scoreboard from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1963099942]ClassicHUD[/url] and heavily modified. 
 
 [h1]Whitelisted?[/h1]
-No. This mod is not whitelisted and will de-rank your server. Any XP gained will not be saved.
+No. But I really hope that it will be whitelisted.
+
+[b]⚠️ I submitted whitelist request here:[/b]
+https://forums.tripwireinteractive.com/index.php?threads/whitelisting-mods-and-mutators.120340/page-3#post-2353668
 
 [h1]Usage (single player)[/h1]
 [olist]
