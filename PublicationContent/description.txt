@@ -5,7 +5,7 @@ Yet another scoreboard...
 Based on the scoreboard from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1963099942]ClassicHUD[/url] and heavily modified. 
 
 [h1]Whitelisted?[/h1]
-No. But I really hope that it will be whitelisted.
+[b]No.[/b] But I really hope that it will be whitelisted.
 
 [b]⚠️ I submitted whitelist request here:[/b]
 https://forums.tripwireinteractive.com/index.php?threads/whitelisting-mods-and-mutators.120340/page-3#post-2353668
@@ -33,9 +33,20 @@ https://forums.tripwireinteractive.com/index.php?threads/whitelisting-mods-and-m
 [*]Add mutator to server start parameters: [b]?Mutator=YAS.YASMut[/b] and restart the server.
 [/olist]
 
-[h1]Setup (KFYAS.ini)[/h1]
-Config will be created at the first start[b]*[/b].
+[h1]Important setup information[/h1]
+The config should be created on first start, but now the game contains a bug that initializes the config values ​​randomly if they are not explicitly set. Thus, the config may have incorrect values ​​or not be created at all.
+So if you are using this mutator for the first time, I highly recommend doing the following:
+[olist]
+[*]Create (modify) [b]KFYAS.ini[/b] manually. Put the following content there:
+[b][YAS.YAS]
+Version=0[/b]
+[*]Start the game/server with YAS to generate the contents of the config.
+[*]Close the game/server.
+[/olist]
+[b]Right now this is the only way to correctly create the default config.[/b]
+Unfortunately I can't do anything about it because it's a game problem (not mutator). I hope TWI fixes this someday.
 
+[h1]Setup (KFYAS.ini)[/h1]
 [b][YAS.MessageOfTheDay][/b]
 In this section you can customize the messages that will be shown at the bottom of the panel.
 [list]
@@ -100,14 +111,6 @@ If you need a SteamID64 for a steam group, open the group in a browser and add t
 
 [h1]Notes[/h1]
 📌 VersusSurvival mode not supported (yet).
-
-[h1]Troubleshooting[/h1]
-[b](*)[/b] If your config is not created for some reason, create it manually with the following content:
-[b][YAS.YAS]
-Version=0
-[/b]
-
-Then start the server and check the file again - config content should be generated.
 
 [h1]Sources[/h1]
 [url=https://github.com/GenZmeY/KF2-YetAnotherScoreboard]https://github.com/GenZmeY/KF2-YetAnotherScoreboard[/url] [b](GNU GPLv3)[/b]
