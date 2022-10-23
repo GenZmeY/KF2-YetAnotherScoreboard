@@ -343,8 +343,8 @@ public function NotifyLogout(Controller C)
 
 public function YAS_RepInfoOwner CreateRepInfo(Controller C)
 {
-	local YAS_RepInfoOwner OwnerRepInfo;
-	local YAS_RepInfoPlayer  PlayerRepInfo;
+	local YAS_RepInfoOwner  OwnerRepInfo;
+	local YAS_RepInfoPlayer PlayerRepInfo;
 	
 	`Log_Trace();
 	
@@ -355,7 +355,7 @@ public function YAS_RepInfoOwner CreateRepInfo(Controller C)
 	{
 		RepInfos.AddItem(OwnerRepInfo);
 		
-		OwnerRepInfo.PlayerRepInfo = PlayerRepInfo;
+		OwnerRepInfo.PlayerRepInfo   = PlayerRepInfo;
 		OwnerRepInfo.YAS             = Self;
 		OwnerRepInfo.LogLevel        = LogLevel;
 		OwnerRepInfo.RankPlayer      = CfgRanks.default.Player;

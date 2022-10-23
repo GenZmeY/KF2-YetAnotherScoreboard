@@ -73,7 +73,12 @@ function YAS_RepInfoPlayer FindRepInfo(KFPlayerReplicationInfo KFPRI)
 	{
 		if (RepInfo.UID.Uid == KFPRI.UniqueId.Uid)
 		{
-			return RepInfo;
+			if (RepInfo.bPendingDelete || RepInfo.bDeleteMe)
+			{
+				RepInfos.RemoveItem(RepInfo);
+				break;
+			}
+			else return RepInfo;
 		}
 	}
 	
@@ -81,6 +86,8 @@ function YAS_RepInfoPlayer FindRepInfo(KFPlayerReplicationInfo KFPRI)
 	{
 		if (RepInfo.UID.Uid == KFPRI.UniqueId.Uid)
 		{
+			if (RepInfo.bPendingDelete || RepInfo.bDeleteMe) continue;
+				
 			RepInfos.AddItem(RepInfo);
 			return RepInfo;
 		}
@@ -615,7 +622,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 	
 	ShapeHealth = Settings.Style.ShapeStateHealthBoxMidPlayer;
 	
-	if (!KFGRI.bMatchHasBegun)
+	if (!(KFGRI.bMatchHasBegun || KFGRI.bTraderIsOpen || KFGRI.bWaveIsActive))
 	{
 		HealthBoxColor = Settings.Style.StateBoxColorLobby;
 	}
@@ -638,7 +645,7 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 		EdgeSize,
 		ShapeHealth);
 	
-	if (!KFGRI.bMatchHasBegun)
+	if (!(KFGRI.bMatchHasBegun || KFGRI.bTraderIsOpen || KFGRI.bWaveIsActive))
 	{
 		ColorTMP = Settings.Style.ListHeaderTextColor;
 		ColorTMP.A = 200;
@@ -662,11 +669,9 @@ function DrawPlayerEntry(Canvas C, int Index, float YOffset, float Height, float
 			HealthWBox - BorderSize * 4,
 			Height - BorderSize * 4);
 	}
-	
-	C.SetDrawColorStruct(Settings.Style.StateTextColorHealthHigh);
-	
-	if (KFPRI.PlayerHealth > 0)
+	else
 	{
+		C.SetDrawColorStruct(Settings.Style.StateTextColorHealthHigh);
 		DrawTextShadowHVCenter(String(KFPRI.PlayerHealth), HealthXPos, YOffset, HealthWBox, Height, FontScalar);
 	}
 	
