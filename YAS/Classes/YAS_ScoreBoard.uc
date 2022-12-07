@@ -16,10 +16,10 @@ const FontScalarModDefault = 1.25f;
 const ShowDamage = true; 
 
 const IconRanked        = Texture2D'DailyObjective_UI.KF2_Dailies_Icon_PerkLvl'; // where the hell is the right icon?
-const IconCustom        = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I26';
-const IconUnranked      = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I28';
+//const IconCustom        = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I26';
+//const IconUnranked      = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I28';
 const IconUnrankedAlt   = Texture2D'UI_VoiceComms_TEX.UI_VoiceCommand_Icon_Negative';
-const IconPassword      = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I20';
+const IconPassword      = Texture2D'UI_Menus.ServerBrowserMenu_SWF_I27';
 //const IconDosh          = Texture2D'UI_HUD.InGameHUD_SWF_I13A';
 const IconPlayer        = Texture2D'UI_HUD.InGameHUD_ZED_SWF_I1F5';
 //const IconClock         = Texture2D'UI_HUD.InGameHUD_SWF_I17D';
