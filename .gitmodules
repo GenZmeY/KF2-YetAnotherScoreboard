@@ -1,3 +1,6 @@
 [submodule "tools"]
 	path = tools
 	url = https://github.com/GenZmeY/KF2-BuildTools
+[submodule "BoxPainterLib"]
+	path = BoxPainterLib
+	url = https://github.com/GenZmeY/KF2-BoxPainterLib
