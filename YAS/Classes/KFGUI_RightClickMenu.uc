@@ -28,7 +28,7 @@ final function ComputeSize()
 
 	if (OldSizeX == Owner.ScreenSize.X)
 		return;
- 
+
 	if (ItemRows.Length == 0)
 	{
 		YS = 0;
@@ -86,7 +86,7 @@ function PreDraw()
 	Super.PreDraw();
 }
 function DrawMenu()
-{   
+{
 	Owner.CurrentStyle.RenderRightClickMenu(Self);
 
 	if (bDrawToolTip)

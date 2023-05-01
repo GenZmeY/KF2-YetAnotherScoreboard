@@ -35,7 +35,7 @@ function DrawMenu()
 	Height = CompPos[3];
 
 	// Select the right font in the Canvas
-	Canvas.Font = Owner.CurrentStyle.PickFont(Sc); 
+	Canvas.Font = Owner.CurrentStyle.PickFont(Sc);
 
 	if (CaptionWidth > 0.0 && Width > 0 && Len(Caption) > 0)
 	{
@@ -79,7 +79,7 @@ function DrawMenu()
 		{
 			S = string(int(Value));
 		}
-		else 
+		else
 		{
 			S = string(int(High));
 		}

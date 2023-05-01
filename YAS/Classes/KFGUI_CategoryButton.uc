@@ -77,4 +77,5 @@ function DrawMenu()
 
 defaultproperties
 {
+
 }

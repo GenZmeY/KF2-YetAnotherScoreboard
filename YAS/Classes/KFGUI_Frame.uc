@@ -5,7 +5,7 @@ var() float HeaderSize[2]; // Pixels wide for edges (left, top).
 var() Texture FrameTex;
 var() bool bDrawHeader, bHeaderCenter, bUseLegacyDrawTile, bDrawBackground;
 var() float FontScale;
- 
+
 function InitMenu()
 {
 	Super(KFGUI_Page).InitMenu();
@@ -43,12 +43,12 @@ delegate OnDrawFrame(Canvas C, float W, Float H)
 	{
 		Owner.CurrentStyle.DrawTileStretched(FrameTex, 0,0, W,H);
 	}
-	else 
+	else
 	{
 		Canvas.SetPos(0.f, 0.f);
 		Canvas.DrawTileStretched(FrameTex, W,H, 0,0, FrameTex.GetSurfaceWidth(), FrameTex.GetSurfaceHeight());
 	}
-   
+
 	if (bDrawHeader && WindowTitle != "")
 	{
 		FRI.bClipText = true;
@@ -68,7 +68,7 @@ delegate OnDrawFrame(Canvas C, float W, Float H)
 		C.DrawText(WindowTitle, ,T, T,FRI);
 	}
 }
- 
+
 function PreDraw()
 {
 	local int i;
@@ -90,7 +90,7 @@ function PreDraw()
 		XPosition = Lerp(CenterX, default.XPosition, Frac);
 		YPosition = Lerp(CenterY, default.YPosition, Frac);
 	}
- 
+
 	ComputeCoords();
 	Canvas.SetDrawColor(255, 255, 255);
 	Canvas.SetOrigin(CompPos[0], CompPos[1]);
@@ -120,7 +120,7 @@ defaultproperties
 
 	HeaderSize(0)=26.f
 	HeaderSize(1)=8.f
-   
+
 	EdgeSize(0)=20
 	EdgeSize(1)=35
 	EdgeSize(2)=-40

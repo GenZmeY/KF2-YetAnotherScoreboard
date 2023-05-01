@@ -3,7 +3,7 @@ class GUIStyleBase extends Object
 
 var Texture2D ItemTex;
 var array<Texture2D> BorderTextures, ArrowTextures, ButtonTextures, TabTextures, ItemBoxTextures, PerkBox, CheckBoxTextures, ProgressBarTextures, SliderTextures;
-var Texture2D ScrollTexture, FavoriteIcon, BankNoteIcon; 
+var Texture2D ScrollTexture, FavoriteIcon, BankNoteIcon;
 
 var SoundCue MenuDown, MenuDrag, MenuEdit, MenuFade, MenuClick, MenuHover, MenuUp;
 
@@ -55,7 +55,7 @@ function InitStyle()
 	ItemTex=Texture2D(DynamicLoadObject("UI_LevelChevrons_TEX.UI_LevelChevron_Icon_02", class'Texture2D'));
 	if (ItemTex == None)
 		ItemTex=Texture2D'EngineMaterials.DefaultWhiteGrid';
-	
+
 	BoxPainter = new class'BoxPainterLib.BoxPainter';
 
 	NumberFont = Font(DynamicLoadObject("UI_Canvas_Fonts.Font_General", class'Font'));
@@ -185,35 +185,35 @@ function PickDefaultFontSize(float YRes)
 final function float ScreenScale(float Size, optional float MaxRes=1080.f)
 {
 	local float FillSizeX, FillSizeY;
-	
+
 	GetFillScreenSize(FillSizeX, FillSizeY);
-	
+
 	return Size * (FillSizeY / MaxRes);
 }
 
 final function float GetFontScaler()
 {
 	local float FillSizeX, FillSizeY, Scaler;
-	
+
 	GetFillScreenSize(FillSizeX, FillSizeY);
-	
+
 	if      (FillSizeY <= 1080.0f) { scaler = 0.750f; }
 	else if (FillSizeY <= 1440.0f) { scaler = 0.562f; }
 	else if (FillSizeY <= 2160.0f) { scaler = 0.377f; }
 	else                           { scaler = 0.190f; }
-	
+
 	return FClamp(FillSizeY * scaler / 1080.f, 0.175f, 1.0f);
 }
 
 final function GetFillScreenSize(out float SizeX, out float SizeY)
 {
 	local float Base, BaseX, BaseY;
-	
+
 	BaseX = HUDOwner.SizeX / 16;
 	BaseY = HUDOwner.SizeY / 9;
-	
+
 	Base = Min(BaseX, BaseY);
-	
+
 	SizeX = Base * 16;
 	SizeY = Base * 9;
 }
@@ -221,9 +221,9 @@ final function GetFillScreenSize(out float SizeX, out float SizeY)
 final function float PickEdgeSize(float DefaultSize = 8.0f)
 {
 	local float FillSizeX, FillSizeY;
-	
+
 	GetFillScreenSize(FillSizeX, FillSizeY);
-	
+
 	return (FillSizeY / 1080.f) * DefaultSize;
 }
 
@@ -275,7 +275,7 @@ final function DrawColoredText(coerce string S, float X, float Y, optional float
 	{
 		if (bUseOutline)
 			DrawTextShadow(S, X, Y, 1, Scale);
-		else 
+		else
 		{
 			Canvas.SetPos(X, Y);
 			Canvas.DrawText(S, ,Scale, Scale);
@@ -292,7 +292,7 @@ final function DrawColoredText(coerce string S, float X, float Y, optional float
 
 			if (bUseOutline)
 				DrawTextShadow(PrevT, X, Y, 1, Scale);
-			else 
+			else
 			{
 				Canvas.SetPos(X, Y);
 				Canvas.DrawText(PrevT, ,Scale, Scale);
@@ -319,7 +319,7 @@ final function DrawColoredText(coerce string S, float X, float Y, optional float
 
 			if (bUseOutline)
 				DrawTextShadow(T, X, Y, 1, Scale);
-			else 
+			else
 			{
 				Canvas.SetPos(X, Y);
 				Canvas.DrawText(T, ,Scale, Scale);
@@ -361,7 +361,7 @@ final function DrawTextOutline(coerce string S, float X, float Y, int Size, Colo
 
 	Size += 1;
 	Steps = (Size * 2) / 3;
-	if (Steps < 1 ) 
+	if (Steps < 1 )
 	{
 		Steps = 1;
 	}
@@ -672,7 +672,7 @@ final function DrawRoundedBoxHollowEx(float BorderSize, float X, float Y, float 
 	DrawWhiteBox(W - BorderSize * 2, BorderSize);
 
 	Canvas.SetPos(X, Y + BorderSize);
-	DrawWhiteBox(BorderSize, H - BorderSize * 2);	
+	DrawWhiteBox(BorderSize, H - BorderSize * 2);
 
 	Canvas.SetPos(X + W - BorderSize, Y + BorderSize);
 	DrawWhiteBox(BorderSize, H - BorderSize * 2);
@@ -728,7 +728,7 @@ final function DrawArrowBox(int Direction, float X, float Y, float Width, float 
 function DrawTexture(Texture2D Tex, float X, float Y, float W, float H, optional float UL, optional float VL)
 {
 	Canvas.SetPos(X, Y);
-	
+
 	Canvas.DrawTile(Tex, W, H, 0, 0, UL == 0.f ? float(Tex.SizeX) : UL, VL == 0.f ? float(Tex.SizeY) : VL);
 }
 
@@ -736,17 +736,17 @@ final function DrawTileStretched(Texture Tex, float X, float Y, float XS, float 
 {
 	local float mW, mH, MidX, MidY, SmallTileW, SmallTileH, fX, fY;
 	local int OptimizeTiles;
- 
+
 	if (Tex == None ) Tex = Texture2D'EngineMaterials.DefaultDiffuse';
- 
+
 	// Get the size of the image
 	mW = Tex.GetSurfaceWidth();
 	mH = Tex.GetSurfaceHeight();
- 
+
 	// Get the midpoints of the image
 	MidX = int(mW/2);
 	MidY = int(mH/2);
- 
+
 	// Grab info about the scaled image
 	SmallTileW = XS - mW;
 	SmallTileH = YS - mH;
@@ -762,18 +762,18 @@ final function DrawTileStretched(Texture Tex, float X, float Y, float XS, float 
 		OptimizeTiles += 1;
 
 	Canvas.PreOptimizeDrawTiles(OptimizeTiles, Tex);
- 
+
 	// Draw the spans first
 	// Top and Bottom
 	if (mW < XS)
 	{
 		fX = MidX;
- 
+
 		if (mH > YS)
 			fY = YS/2;
 		else
 			fY = MidY;
- 
+
 		Canvas.SetPos(X+fX, Y);
 		Canvas.DrawTile(Tex, SmallTileW, fY, MidX, 0,1, fY);
 		Canvas.SetPos(X+fX, Y+YS-fY);
@@ -781,12 +781,12 @@ final function DrawTileStretched(Texture Tex, float X, float Y, float XS, float 
 	}
 	else
 		fX = XS / 2;
- 
+
 	// Left and Right
 	if (mH < YS)
 	{
 		fY = MidY;
- 
+
 		Canvas.SetPos(X, Y+fY);
 		Canvas.DrawTile(Tex, fX, SmallTileH, 0,fY, fX, 1);
 		Canvas.SetPos(X+XS-fX, Y+fY);
@@ -794,14 +794,14 @@ final function DrawTileStretched(Texture Tex, float X, float Y, float XS, float 
 	}
 	else
 		fY = YS / 2;
- 
+
 	// Center
 	if ((mH < YS) && (mW < XS))
 	{
 		Canvas.SetPos(X+fX, Y+fY);
 		Canvas.DrawTile(Tex, SmallTileW, SmallTileH, fX, fY, 1,1);
 	}
- 
+
 	// Draw the 4 corners.
 	Canvas.SetPos(X, Y);
 	Canvas.DrawTile(Tex, fX, fY, 0,0, fX, fY);
@@ -870,7 +870,7 @@ defaultproperties
 	// Font'UI_Canvas_Fonts.Font_Main'
 	//MainFont=Font'KFYAS_Assets.Font.KFMainFont'
 	//InfiniteFont=Font'KFYAS_Assets.Font.KFInfiniteFont'
-	
+
 	MainFont=Font'UI_Canvas_Fonts.Font_Main'
 	NumberFont=Font'UI_Canvas_Fonts.Font_General'
 	InfiniteFont=Font'UI_Canvas_Fonts.Font_Main'

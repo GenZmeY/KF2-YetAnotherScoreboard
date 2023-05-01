@@ -2,7 +2,7 @@
 
 [h1]Description[/h1]
 Yet another scoreboard...
-Based on the scoreboard from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1963099942]ClassicHUD[/url] and heavily modified. 
+Based on the scoreboard from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1963099942]ClassicHUD[/url] and heavily modified.
 
 [h1]Whitelisted?[/h1]
 [b]No.[/b] But I really hope that it will be whitelisted.
@@ -13,7 +13,7 @@ https://forums.tripwireinteractive.com/index.php?threads/whitelisting-mods-and-m
 [h1]Usage (single player)[/h1]
 [olist]
 [*]Subscribe to this mutator;
-[*]Start KF2; 
+[*]Start KF2;
 [*]Open console (`) and input:
 [b]open KF-BioticsLab?Mutator=YAS.YASMut?[/b]
 (replace the map and add the parameters you need)

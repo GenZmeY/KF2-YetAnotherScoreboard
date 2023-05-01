@@ -59,4 +59,5 @@ function PreClientTravel(string PendingURL, ETravelType TravelType, bool bIsSeam
 
 defaultproperties
 {
+
 }

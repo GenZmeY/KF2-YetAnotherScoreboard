@@ -11,10 +11,10 @@ public static function InitConfig(int Version, int LatestVersion)
 	{
 		case `NO_CONFIG:
 			ApplyDefault();
-			
+
 		default: break;
 	}
-	
+
 	if (LatestVersion != Version)
 	{
 		StaticSaveConfig();
@@ -25,7 +25,7 @@ private static function ApplyDefault()
 {
 	default.DisplayTime = 30;
 	default.bRandomize  = true;
-	
+
 	default.Message.Length = 0;
 	default.Message.AddItem("UwU");
 	default.Message.AddItem("OwO");

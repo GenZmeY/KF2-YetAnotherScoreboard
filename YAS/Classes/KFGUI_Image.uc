@@ -77,7 +77,7 @@ function DrawMenu()
 
 			break;
 		case ISTY_Stretched:
-			if (X1 < 0 && X2 < 0 && Y1 < 0 && Y2 < 0 ) 
+			if (X1 < 0 && X2 < 0 && Y1 < 0 && Y2 < 0 )
 				Owner.CurrentStyle.DrawTileStretched(Image, 0.f, 0.f, CompPos[2], CompPos[3]);
 			else
 			{

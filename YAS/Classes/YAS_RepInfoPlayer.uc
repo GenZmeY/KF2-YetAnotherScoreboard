@@ -8,7 +8,7 @@ replication
 {
 	if (bNetInitial)
 		UID;
-	
+
 	if (bNetDirty)
 		Rank, DamageDealt;
 }
@@ -21,9 +21,9 @@ public simulated function bool SafeDestroy()
 public simulated event PreBeginPlay()
 {
 	if (bPendingDelete || bDeleteMe) return;
-	
+
 	Super.PreBeginPlay();
-	
+
 	if (Role == ROLE_Authority || WorldInfo.NetMode == NM_StandAlone)
 	{
 		if (Controller(Owner) != None && Controller(Owner).PlayerReplicationInfo != None)
@@ -37,7 +37,7 @@ defaultproperties
 {
 	Role       = ROLE_Authority
 	RemoteRole = ROLE_SimulatedProxy
-	
+
 	bAlwaysRelevant               = true
 	bSkipActorPropertyReplication = false
 }
