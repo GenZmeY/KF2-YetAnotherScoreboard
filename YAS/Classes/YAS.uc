@@ -34,71 +34,71 @@ var private int LastMessageID;
 public simulated function bool SafeDestroy()
 {
 	`Log_Trace();
-	
+
 	return (bPendingDelete || bDeleteMe || Destroy());
 }
 
 public event PreBeginPlay()
 {
 	`Log_Trace();
-	
+
 	if (WorldInfo.NetMode == NM_Client)
 	{
 		`Log_Fatal("NetMode == NM_Client");
 		SafeDestroy();
 		return;
 	}
-	
+
 	Super.PreBeginPlay();
-	
+
 	PreInit();
 }
 
 public event PostBeginPlay()
 {
 	`Log_Trace();
-	
+
 	if (bPendingDelete || bDeleteMe) return;
-	
+
 	Super.PostBeginPlay();
-	
+
 	PostInit();
 }
 
 private function PreInit()
 {
 	`Log_Trace();
-	
+
 	if (Version == `NO_CONFIG)
 	{
 		LogLevel = LL_Info;
 		SaveConfig();
 	}
-	
+
 	CfgRanks.static.InitConfig(Version, LatestVersion);
 	CfgRankRelations.static.InitConfig(Version, LatestVersion);
 	CfgMessageOfTheDay.static.InitConfig(Version, LatestVersion);
-	
+
 	switch (Version)
 	{
 		case `NO_CONFIG:
 			`Log_Info("Config created");
-			
+
 		case MaxInt:
 			`Log_Info("Config updated to version" @ LatestVersion);
 			break;
-			
+
 		case LatestVersion:
 			`Log_Info("Config is up-to-date");
 			break;
-			
+
 		default:
 			`Log_Warn("The config version is higher than the current version (are you using an old mutator?)");
 			`Log_Warn("Config version is" @ Version @ "but current version is" @ LatestVersion);
 			`Log_Warn("The config version will be changed to" @ LatestVersion);
 			break;
 	}
-	
+
 	if (LatestVersion != Version)
 	{
 		Version = LatestVersion;
@@ -112,7 +112,7 @@ private function PreInit()
 		SaveConfig();
 	}
 	`Log_Base("LogLevel:" @ LogLevel);
-	
+
 	OSS = OnlineSubsystemSteamworks(class'GameEngine'.static.GetOnlineSubsystem());
 	if (OSS != None)
 	{
@@ -128,9 +128,9 @@ private function InitRanks()
 {
 	local Array<RankRelation> Relations;
 	local RankRelation Relation;
-	
+
 	Relations = CfgRankRelations.default.Relation;
-	
+
 	foreach Relations(Relation)
 	{
 		if (IsUID(Relation.ObjectID) || IsPlayerSteamID64(Relation.ObjectID))
@@ -153,11 +153,11 @@ private function AddRelation(RankRelation Relation, out Array<CachedRankRelation
 	local CachedRankRelation CachedRankRelation;
 	local Array<Rank> Ranks;
 	local Rank Rank;
-	
+
 	if (AnyToUID(Relation.ObjectID, CachedRankRelation.UID))
 	{
 		CachedRankRelation.RawID = Relation.ObjectID;
-		
+
 		Ranks = CfgRanks.default.Rank;
 		foreach Ranks(Rank)
 		{
@@ -167,7 +167,7 @@ private function AddRelation(RankRelation Relation, out Array<CachedRankRelation
 				break;
 			}
 		}
-		
+
 		if (CachedRankRelation.Rank.RankID > 0)
 		{
 			OutArray.AddItem(CachedRankRelation);
@@ -206,13 +206,13 @@ private function bool AnyToUID(String ID, out UniqueNetId UID)
 private function PostInit()
 {
 	`Log_Trace();
-	
+
 	if (WorldInfo == None || WorldInfo.Game == None)
 	{
 		SetTimer(1.0f, false, nameof(PostInit));
 		return;
 	}
-	
+
 	KFGI = KFGameInfo(WorldInfo.Game);
 	if (KFGI == None || KFGameInfo_VersusSurvival(KFGI) != None) // VersusSurvival is not supported (yet)
 	{
@@ -220,15 +220,15 @@ private function PostInit()
 		SafeDestroy();
 		return;
 	}
-	
+
 	KFGI.HUDType = class'YAS_HUD';
-	
+
 	if (KFGI.GameReplicationInfo == None)
 	{
 		SetTimer(1.0f, false, nameof(PostInit));
 		return;
 	}
-	
+
 	KFGRI = KFGameReplicationInfo(KFGI.GameReplicationInfo);
 	if (KFGRI == None)
 	{
@@ -236,7 +236,7 @@ private function PostInit()
 		SafeDestroy();
 		return;
 	}
-	
+
 	if (KFGI.PlayfabInter != None && KFGI.PlayfabInter.GetGameSettings() != None)
 	{
 		KFOGS = KFOnlineGameSettings(KFGI.PlayfabInter.GetGameSettings());
@@ -247,18 +247,18 @@ private function PostInit()
 			KFGI.GameInterface.GetGameSettings(
 				KFGI.PlayerReplicationInfoClass.default.SessionName));
 	}
-	
+
 	if (KFOGS == None)
 	{
 		SetTimer(1.0f, false, nameof(PostInit));
 		return;
 	}
-	
+
 	KFGIS = KFGameInfo_Survival(KFGI);
 	KFGIE = KFGameInfo_Endless(KFGI);
-	
+
 	SetTimer(UpdateInterval, true, nameof(UpdateTimer));
-	
+
 	if (CfgMessageOfTheDay.default.Message.Length > 0)
 	{
 		MessageOfTheDayTimer();
@@ -269,7 +269,7 @@ private function PostInit()
 private function UpdateTimer()
 {
 	local YAS_RepInfoOwner RepInfo;
-	
+
 	foreach RepInfos(RepInfo)
 	{
 		RepInfo.DynamicServerName = KFOGS.OwningPlayerName;
@@ -283,7 +283,7 @@ private function MessageOfTheDayTimer()
 {
 	local YAS_RepInfoOwner RepInfo;
 	local int MessageIndex;
-	
+
 	if (CfgMessageOfTheDay.default.bRandomize)
 	{
 		MessageIndex = Rand(CfgMessageOfTheDay.default.Message.Length);
@@ -292,29 +292,29 @@ private function MessageOfTheDayTimer()
 	{
 		MessageIndex = LastMessageID + 1;
 	}
-	
+
 	if (MessageIndex == LastMessageID)
 	{
 		++MessageIndex;
 	}
-	
+
 	if (MessageIndex >= CfgMessageOfTheDay.default.Message.Length)
 	{
 		MessageIndex = 0;
 	}
-	
+
 	foreach RepInfos(RepInfo)
 	{
 		RepInfo.MessageOfTheDay = CfgMessageOfTheDay.default.Message[MessageIndex];
 	}
-	
+
 	LastMessageID = MessageIndex;
 }
 
 public function NotifyLogin(Controller C)
 {
 	local YAS_RepInfoOwner RepInfo;
-	
+
 	`Log_Trace();
 
 	RepInfo = CreateRepInfo(C);
@@ -323,18 +323,18 @@ public function NotifyLogin(Controller C)
 		`Log_Error("Can't create RepInfo for:" @ C);
 		return;
 	}
-	
+
 	InitRank(RepInfo);
 }
 
 public function NotifyLogout(Controller C)
 {
 	local YAS_RepInfoOwner RepInfo;
-	
+
 	`Log_Trace();
-	
+
 	RepInfo = FindRepInfo(C);
-	
+
 	if (!DestroyRepInfo(RepInfo))
 	{
 		`Log_Error("Can't destroy RepInfo of:" @ C);
@@ -345,35 +345,35 @@ public function YAS_RepInfoOwner CreateRepInfo(Controller C)
 {
 	local YAS_RepInfoOwner  OwnerRepInfo;
 	local YAS_RepInfoPlayer PlayerRepInfo;
-	
+
 	`Log_Trace();
-	
+
 	OwnerRepInfo  = Spawn(class'YAS_RepInfoOwner', C);
 	PlayerRepInfo = Spawn(class'YAS_RepInfoPlayer', C);
-	
+
 	if (OwnerRepInfo != None && PlayerRepInfo != None)
 	{
 		RepInfos.AddItem(OwnerRepInfo);
-		
+
 		OwnerRepInfo.PlayerRepInfo   = PlayerRepInfo;
 		OwnerRepInfo.YAS             = Self;
 		OwnerRepInfo.LogLevel        = LogLevel;
 		OwnerRepInfo.RankPlayer      = CfgRanks.default.Player;
 		OwnerRepInfo.RankAdmin       = CfgRanks.default.Admin;
 		OwnerRepInfo.MessageOfTheDay = CfgMessageOfTheDay.default.Message[LastMessageID];
-		
+
 		return OwnerRepInfo;
 	}
-	
+
 	return None;
 }
 
 private function YAS_RepInfoOwner FindRepInfo(Controller C)
 {
 	local YAS_RepInfoOwner RepInfo;
-	
+
 	if (C == None) return None;
-	
+
 	foreach RepInfos(RepInfo)
 	{
 		if (RepInfo.Owner == C)
@@ -381,20 +381,20 @@ private function YAS_RepInfoOwner FindRepInfo(Controller C)
 			return RepInfo;
 		}
 	}
-	
+
 	return None;
 }
 
 public function bool DestroyRepInfo(YAS_RepInfoOwner RepInfo)
 {
 	`Log_Trace();
-	
+
 	if (RepInfo == None) return false;
-	
+
 	RepInfos.RemoveItem(RepInfo);
 	RepInfo.PlayerRepInfo.SafeDestroy();
 	RepInfo.SafeDestroy();
-	
+
 	return true;
 }
 
@@ -405,16 +405,16 @@ private function InitRank(YAS_RepInfoOwner RepInfo)
 	local PlayerReplicationInfo PRI;
 	local KFPlayerController KFPC;
 	local Array<String> StringGroupIDs;
-	
+
 	`Log_Trace();
-	
+
 	KFPC = RepInfo.GetKFPC();
-	
+
 	if (KFPC == None) return;
-	
+
 	PRI = KFPC.PlayerReplicationInfo;
 	if (PRI == None) return;
-	
+
 	foreach PlayerRelations(Rel)
 	{
 		if (Rel.UID.Uid == PRI.UniqueID.Uid)
@@ -423,7 +423,7 @@ private function InitRank(YAS_RepInfoOwner RepInfo)
 			break;
 		}
 	}
-	
+
 	if (RepInfo.PlayerRepInfo.Rank.RankID <= 0 && !KFPC.bIsEosPlayer)
 	{
 		foreach GroupRelations(Rel)
@@ -438,7 +438,7 @@ private function InitRank(YAS_RepInfoOwner RepInfo)
 public function Rank RankByGroupID(UniqueNetId GroupUID)
 {
 	local CachedRankRelation Rel;
-	
+
 	foreach GroupRelations(Rel) if (Rel.UID == GroupUID) break;
 
 	return Rel.Rank;
@@ -446,5 +446,5 @@ public function Rank RankByGroupID(UniqueNetId GroupUID)
 
 DefaultProperties
 {
-	
+
 }

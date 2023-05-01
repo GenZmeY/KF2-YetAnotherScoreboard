@@ -18,7 +18,7 @@ function RenderFramedWindow(KFGUI_FloatingWindow P)
 	Canvas.DrawTileStretched(TabTextures[`TAB_TOP], XS, TitleHeight, 0,0, 128, 16);
 
 	// Frame itself.
-	
+
 	if (`BOX_SMALL_SLIGHTTRANSPARENT >= 0 && `BOX_SMALL_SLIGHTTRANSPARENT < BorderTextures.Length)
 	{
 		Canvas.SetPos(0, TitleHeight);
@@ -165,7 +165,7 @@ function RenderScrollBar(KFGUI_ScrollBarBase S)
 		Canvas.SetPos(0.f, S.ButtonOffset);
 		Canvas.DrawTileStretched(ScrollTexture, S.CompPos[2], S.SliderScale, 0,0, 32, 32);
 	}
-	else 
+	else
 	{
 		Canvas.SetPos(S.ButtonOffset, 0.f);
 		Canvas.DrawTileStretched(ScrollTexture, S.SliderScale, S.CompPos[3], 0,0, 32, 32);
@@ -229,7 +229,7 @@ function RenderComboList(KFGUI_ComboSelector C)
 
 	// Draw background.
 	Edge = C.Combo.BorderSize;
-	
+
 	if (`BOX_SMALL_SLIGHTTRANSPARENT >= 0 && `BOX_SMALL_SLIGHTTRANSPARENT < BorderTextures.Length)
 	{
 		Canvas.SetPos(0.f, 0.f);
@@ -422,4 +422,5 @@ function RenderButton(KFGUI_Button B)
 
 defaultproperties
 {
+
 }

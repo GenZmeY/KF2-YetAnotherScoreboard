@@ -50,7 +50,7 @@ final function KFGUI_Slider AddSlider(string Cap, name IDN, int MinValue, int Ma
 	Label.SetText(Cap);
 	Label.XSize = 0.45;
 	Label.FontScale = 1;
-	MC.AddComponent(Label);	
+	MC.AddComponent(Label);
 	ColorValueLabel = new(MC) class'KFGUI_TextLable';
 	ColorValueLabel.XPosition = 0.95;
 	ColorValueLabel.XSize = 0.1;

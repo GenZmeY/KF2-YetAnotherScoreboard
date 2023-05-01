@@ -1,5 +1,5 @@
 class YASMut extends KFMutator;
-	
+
 var private YAS YAS;
 
 public simulated function bool SafeDestroy()
@@ -10,19 +10,19 @@ public simulated function bool SafeDestroy()
 public event PreBeginPlay()
 {
 	Super.PreBeginPlay();
-	
+
 	if (WorldInfo.NetMode == NM_Client) return;
-	
+
 	foreach WorldInfo.DynamicActors(class'YAS', YAS)
 	{
 		break;
 	}
-	
+
 	if (YAS == None)
 	{
 		YAS = WorldInfo.Spawn(class'YAS');
 	}
-	
+
 	if (YAS == None)
 	{
 		`Log_Base("FATAL: Can't Spawn 'YAS'");
@@ -33,7 +33,7 @@ public event PreBeginPlay()
 public function AddMutator(Mutator Mut)
 {
 	if (Mut == Self) return;
-	
+
 	if (Mut.Class == Class)
 		Mut.Destroy();
 	else
@@ -43,14 +43,14 @@ public function AddMutator(Mutator Mut)
 public function NotifyLogin(Controller C)
 {
 	YAS.NotifyLogin(C);
-	
+
 	Super.NotifyLogin(C);
 }
 
 public function NotifyLogout(Controller C)
 {
 	YAS.NotifyLogout(C);
-	
+
 	Super.NotifyLogout(C);
 }
 

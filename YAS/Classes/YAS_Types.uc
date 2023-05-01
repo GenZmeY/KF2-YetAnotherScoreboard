@@ -1,10 +1,10 @@
 class YAS_Types extends Object;
 
 struct YAS_SettingsHealth
-{	
+{
 	var int Low;
 	var int High;
-	
+
 	Structdefaultproperties
 	{
 		Low  = 40
@@ -16,7 +16,7 @@ struct YAS_SettingsPing
 {
 	var int Low;
 	var int High;
-	
+
 	Structdefaultproperties
 	{
 		Low  = 60
@@ -28,7 +28,7 @@ struct YAS_SettingsLevel
 {
 	var int Low [4];
 	var int High[4];
-	
+
 	Structdefaultproperties
 	{
 		Low [0] = 0
@@ -165,7 +165,7 @@ struct YAS_Style
 	var bool      KillsTextSmoothColorChange;
 	var bool      AssistsTextSmoothColorChange;
 	var bool      PingTextSmoothColorChange;
-	
+
 	Structdefaultproperties
 	{
 		// Box shapes
@@ -183,27 +183,27 @@ struct YAS_Style
 		ShapeStatsBoxTopPlayer          = 0
 		ShapeStatsBoxMidPlayer          = 0
 		ShapeStatsBoxBottomPlayer       = 0
-		
+
 		// Server box
 		ServerNameBoxColor              = (R=75,  G=0,   B=0,   A=200)
 		ServerNameTextColor             = (R=250, G=250, B=250, A=255)
-		
+
 		// Game info box
 		GameInfoBoxColor                = (R=30,  G=30,  B=30,  A=200)
 		GameInfoTextColor               = (R=250, G=250, B=250, A=255)
-		
+
 		// Wave info box
 		WaveBoxColor                    = (R=10,  G=10,  B=10,  A=200)
 		WaveTextColor                   = (R=250, G=250, B=250, A=255)
-		
+
 		// Player count box
 		PlayerCountBoxColor             = (R=75,  G=0,   B=0,   A=200)
 		PlayerCountTextColor            = (R=250, G=250, B=250, A=255)
-		
+
 		// Header box
 		ListHeaderBoxColor              = (R=10,  G=10,  B=10,  A=200)
 		ListHeaderTextColor             = (R=250, G=250, B=250, A=255)
-		
+
 		// State box
 		StateBoxColorLobby              = (R=150, G=150, B=150, A=150)
 		StateBoxColorReady              = (R=150, G=150, B=150, A=150)
@@ -214,15 +214,15 @@ struct YAS_Style
 		StateBoxColorHealthLow          = (R=200, G=50,  B=50,  A=150)
 		StateBoxColorHealthMid          = (R=200, G=200, B=0,   A=150)
 		StateBoxColorHealthHigh         = (R=0,   G=200, B=0,   A=150)
-		
+
 		// Player box
 		PlayerOwnerBoxColor             = (R=100, G=10,  B=10,  A=150)
 		PlayerBoxColor                  = (R=30,  G=30,  B=30,  A=150)
-		
+
 		// Stats box
 		StatsOwnerBoxColor              = (R=10,  G=10,  B=10,  A=150)
 		StatsBoxColor                   = (R=10,  G=10,  B=10,  A=150)
-		
+
 		// State text
 		StateTextColorLobby             = (R=150, G=150, B=150, A=150)
 		StateTextColorReady             = (R=150, G=150, B=150, A=150)
@@ -233,18 +233,18 @@ struct YAS_Style
 		StateTextColorHealthLow         = (R=250, G=250, B=250, A=255)
 		StateTextColorHealthMid         = (R=250, G=250, B=250, A=255)
 		StateTextColorHealthHigh        = (R=250, G=250, B=250, A=255)
-		
+
 		// Rank text
 		RankTextColor                   = (R=250, G=250, B=250, A=255)
-		
+
 		// Player text
 		PlayerNameTextColor             = (R=250, G=250, B=250, A=255)
-		
+
 		// Level text
 		LevelTextColorLow               = (R=250, G=100, B=100, A=255)
 		LevelTextColorMid               = (R=250, G=250, B=0,   A=255)
 		LevelTextColorHigh              = (R=0,   G=250, B=0,   A=255)
-		
+
 		// Perk text
 		ZedTextColor                    = (R=255, G=0,   B=0,   A=255)
 		PerkNoneTextColor               = (R=250, G=250, B=250, A=255)
@@ -258,28 +258,28 @@ struct YAS_Style
 		PerkSharpshooterTextColor       = (R=250, G=250, B=250, A=255)
 		PerkSwatTextColor               = (R=250, G=250, B=250, A=255)
 		PerkSurvivalistTextColor        = (R=250, G=250, B=250, A=255)
-	
+
 		// Dosh text
 		DoshTextColorLow                = (R=250, G=250, B=100, A=255)
 		DoshTextColorMid                = (R=250, G=250, B=100, A=255)
 		DoshTextColorHigh               = (R=250, G=250, B=100, A=255)
-	
+
 		// Kills text
 		KillsTextColorLow               = (R=250, G=250, B=250, A=255)
 		KillsTextColorMid               = (R=250, G=250, B=250, A=255)
 		KillsTextColorHigh              = (R=250, G=250, B=250, A=255)
-	
+
 		// Assists text
 		AssistsTextColorLow             = (R=250, G=250, B=250, A=255)
 		AssistsTextColorMid             = (R=250, G=250, B=250, A=255)
 		AssistsTextColorHigh            = (R=250, G=250, B=250, A=255)
-		
+
 		// Ping text
 		PingTextColorNone               = (R=250, G=250, B=250, A=255)
 		PingTextColorLow                = (R=0,   G=250, B=0,   A=255)
 		PingTextColorMid                = (R=250, G=250, B=0,   A=255)
 		PingTextColorHigh               = (R=250, G=0,   B=0,   A=255)
-		
+
 		// Other settings
 		ShowPingBars                    = true
 	}
@@ -290,7 +290,7 @@ struct SystemRank
 	var String RankName;
 	var Color  RankColor;
 	var Color  PlayerColor;
-	
+
 	structdefaultproperties
 	{
 		RankName      = ""
@@ -306,7 +306,7 @@ struct Rank
 	var Color  RankColor;
 	var Color  PlayerColor;
 	var bool   OverrideAdmin;
-	
+
 	structdefaultproperties
 	{
 		RankID        = 0
@@ -341,17 +341,17 @@ struct YAS_Settings
 public static function Rank FromSystemRank(SystemRank SysRank)
 {
 	local Rank RV;
-	
+
 	RV.RankID        = 0;
 	RV.RankName      = SysRank.RankName;
 	RV.RankColor     = SysRank.RankColor;
 	RV.PlayerColor   = SysRank.PlayerColor;
 	RV.OverrideAdmin = false;
-	
+
 	return RV;
 }
 
 defaultproperties
 {
-	
+
 }

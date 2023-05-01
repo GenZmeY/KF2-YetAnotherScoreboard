@@ -10,10 +10,10 @@ public static function InitConfig(int Version, int LatestVersion)
 	{
 		case `NO_CONFIG:
 			ApplyDefault();
-			
+
 		default: break;
 	}
-	
+
 	if (LatestVersion != Version)
 	{
 		StaticSaveConfig();
@@ -23,13 +23,13 @@ public static function InitConfig(int Version, int LatestVersion)
 private static function ApplyDefault()
 {
 	local RankRelation NewRankRelation;
-	
+
 	default.Relation.Length = 0;
-	
+
 	// Example relation:
 	NewRankRelation.RankID   = 1; // "Man of culture" ID
 	NewRankRelation.ObjectID = "103582791429670253"; // HENTAI Group SteamID64
-	
+
 	default.Relation.AddItem(NewRankRelation);
 }
 

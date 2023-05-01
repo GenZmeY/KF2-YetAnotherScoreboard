@@ -366,8 +366,8 @@ simulated function MenuInput(float DeltaTime)
 
 	V = ClientViewport.GetMousePosition();
 
-	MousePosition.X = Clamp(V.X, 0, ScreenSize.X); 
-	MousePosition.Y = Clamp(V.Y, 0, ScreenSize.Y); 
+	MousePosition.X = Clamp(V.X, 0, ScreenSize.X);
+	MousePosition.Y = Clamp(V.Y, 0, ScreenSize.Y);
 
 	MouseMove();
 }
@@ -756,8 +756,8 @@ simulated function bool ReceivedInputKey(int ControllerId, name Key, EInputEvent
 	if (KeyboardFocus == None)
 	{
 		if (KFInput != None)
-		{	
-			KFInput.GetKeyBindFromCommand(BoundKey, "GBA_VoiceChat", false);	
+		{
+			KFInput.GetKeyBindFromCommand(BoundKey, "GBA_VoiceChat", false);
 			if (string(Key) ~= KFInput.GetBindDisplayName(BoundKey))
 			{
 				if (Event == IE_Pressed)
