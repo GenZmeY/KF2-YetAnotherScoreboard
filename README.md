@@ -3,7 +3,7 @@
 [![Steam Workshop](https://img.shields.io/static/v1?message=workshop&logo=steam&labelColor=gray&color=blue&logoColor=white&label=steam%20)](https://steamcommunity.com/sharedfiles/filedetails/?id=2521826524)
 [![Steam Downloads](https://img.shields.io/steam/downloads/2521826524)](https://steamcommunity.com/sharedfiles/filedetails/?id=2521826524)
 [![Steam Favorites](https://img.shields.io/steam/favorites/2521826524)](https://steamcommunity.com/sharedfiles/filedetails/?id=2521826524)
-[![Steam Update Date](https://img.shields.io/steam/update-date/2521826524)](https://steamcommunity.com/sharedfiles/filedetails/?id=2521826524)
+[![MegaLinter](https://github.com/GenZmeY/KF2-YetAnotherScoreboard/actions/workflows/mega-linter.yml/badge.svg)](https://github.com/GenZmeY/KF2-YetAnotherScoreboard/actions/workflows/mega-linter.yml)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/GenZmeY/KF2-YetAnotherScoreboard)](https://github.com/GenZmeY/KF2-YetAnotherScoreboard/tags)
 [![GitHub](https://img.shields.io/github/license/GenZmeY/KF2-YetAnotherScoreboard)](LICENSE)
 
