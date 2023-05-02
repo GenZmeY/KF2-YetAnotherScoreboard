@@ -8,13 +8,13 @@ tab_width = 4
 end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
-insert_final_newline = true
+insert_final_newline = unset
 
 # Unreal Engine 3 / Source
-[*.{uc,uci}]
+[*.uc]
 indent_style = tab
 
-[*.upkg]
+[*.{uci,upkg}]
 
 # Unreal Engine 3 / i18n
 [*.{chn,cht,cze,dan,deu,dut,esl,esn,fra,frc,hun,int,ita,jpn,kor,pol,por,ptb,rus,tur,ukr}]
@@ -24,12 +24,9 @@ charset = utf-16le
 [*.md]
 trim_trailing_whitespace = false
 
-[*.{txt,cfg}]
-insert_final_newline = unset
-
 [*.yml]
 indent_style = space
 indent_size = 2
 
-[.gitignore]
-insert_final_newline = unset
+[*.{txt,cfg,conf}]
+indent_style = tab
