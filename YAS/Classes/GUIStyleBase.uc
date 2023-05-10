@@ -56,7 +56,7 @@ function InitStyle()
 	if (ItemTex == None)
 		ItemTex=Texture2D'EngineMaterials.DefaultWhiteGrid';
 
-	BoxPainter = new class'BoxPainterLib.BoxPainter';
+	BoxPainter = new class'BoxPainter';
 
 	NumberFont = Font(DynamicLoadObject("UI_Canvas_Fonts.Font_General", class'Font'));
 
