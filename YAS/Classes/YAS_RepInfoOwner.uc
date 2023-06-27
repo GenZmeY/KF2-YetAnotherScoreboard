@@ -40,6 +40,8 @@ public simulated event ReplicatedEvent(name VarName)
 {
 	`Log_Trace();
 
+	`Log_Debug(`Location @ "Var:" @ VarName);
+
 	switch (VarName)
 	{
 		case 'LogLevel':
