@@ -31,13 +31,6 @@ Based on the scoreboard from [ClassicHUD](https://steamcommunity.com/sharedfiles
 5. The compiled files will be here:  
 `C:\Users\<USERNAME>\Documents\My Games\KillingFloor2\KFGame\Unpublished\BrewedPC\Script\`
 
-## Testing
-Open git-bash in the source folder and run command:  
-`./tools/builder -t`  
-(or `./tools/builder -ct` if you haven't compiled the mutator yet)  
-
-A local single-user test will be launched with parameters from `test.cfg` (edit this file if you want to test mutator with different parameters).
-
 ## Bug reports
 If you find a bug, go to the [issue page](https://github.com/GenZmeY/KF2-YetAnotherScoreboard/issues) and check if there is a description of your bug. If not, create a new issue.  
 Describe what the bug looks like and how reproduce it.  
