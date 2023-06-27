@@ -355,6 +355,7 @@ public function YAS_RepInfoOwner CreateRepInfo(Controller C)
 	{
 		RepInfos.AddItem(OwnerRepInfo);
 
+		PlayerRepInfo.Rank           = class'YAS_Types'.static.FromSystemRank(CfgRanks.default.Player);
 		OwnerRepInfo.PlayerRepInfo   = PlayerRepInfo;
 		OwnerRepInfo.YAS             = Self;
 		OwnerRepInfo.LogLevel        = LogLevel;
