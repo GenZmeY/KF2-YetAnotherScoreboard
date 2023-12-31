@@ -15,7 +15,7 @@ https://forums.tripwireinteractive.com/index.php?threads/whitelisting-mods-and-m
 [*]Subscribe to this mutator;
 [*]Start KF2;
 [*]Open console (`) and input:
-[b]open KF-BioticsLab?Mutator=YAS.YASMut?[/b]
+[b]open KF-BioticsLab?Mutator=YAS.Mut?[/b]
 (replace the map and add the parameters you need)
 [*]<Enter>.
 [/olist]
@@ -30,7 +30,7 @@ https://forums.tripwireinteractive.com/index.php?threads/whitelisting-mods-and-m
 [*]Add the following string to the [b][OnlineSubsystemSteamworks.KFWorkshopSteamworks][/b] section (create one if it doesn't exist):
 [b]ServerSubscribedWorkshopItems=2521826524[/b]
 [*]Start the server and wait until the mutator is downloading;
-[*]Add mutator to server start parameters: [b]?Mutator=YAS.YASMut[/b] and restart the server.
+[*]Add mutator to server start parameters: [b]?Mutator=YAS.Mut[/b] and restart the server.
 [/olist]
 
 [h1]Important setup information[/h1]
