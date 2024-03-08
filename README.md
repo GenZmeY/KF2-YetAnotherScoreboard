@@ -8,8 +8,8 @@
 [![GitHub](https://img.shields.io/github/license/GenZmeY/KF2-YetAnotherScoreboard)](LICENSE)
 
 ## Description
-Yet another scoreboard...
-Based on the scoreboard from [ClassicHUD](https://steamcommunity.com/sharedfiles/filedetails/?id=1963099942) and heavily modified.
+Yet another scoreboard...  
+Based on the scoreboard from [ClassicHUD](https://steamcommunity.com/sharedfiles/filedetails/?id=1963099942) and heavily modified.  
 
 ## Usage
 [See steam workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=2521826524)
