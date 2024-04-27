@@ -110,7 +110,10 @@ If you need a SteamID64 for a steam group, open the group in a browser and add t
 [img]https://raw.githubusercontent.com/GenZmeY/KF2-YetAnotherScoreboard/master/PublicationContent/ID4.png[/img]
 
 [h1]Notes[/h1]
-📌 VersusSurvival mode not supported (yet).
+📌 VersusSurvival mode not supported.
+
+[h1]Translators:[/h1]
+[url=https://steamcommunity.com/profiles/76561199126205919]cheungfatzong[/url] - Traditional [CHT] and Simplified [CHN] Chinese.
 
 [h1]Sources[/h1]
 [url=https://github.com/GenZmeY/KF2-YetAnotherScoreboard]https://github.com/GenZmeY/KF2-YetAnotherScoreboard[/url] [b](GNU GPLv3)[/b]
