@@ -1,4 +1,5 @@
 class YAS_ScoreBoard extends KFGUI_Page
+    config(YAS)
 	dependson(YAS_Types);
 
 const LocalMessage = class'YAS_LocalMessage';
@@ -245,6 +246,7 @@ function DrawMenu()
 	local float BorderSize, EdgeSize, PlayerListSizeY;
 	local Color ColorTMP;
 	local Array<String> MessageOfTheDayLines;
+	local int Y,M,DW,D,H,Min,Sec,MSec;
 
 	PC = GetPlayer();
 	if (GetKFGRI() == None)
@@ -429,11 +431,13 @@ function DrawMenu()
 		MakeColor(250,250,250,250));
 	*/
 
+	GetSystemTime(Y,M,DW,D,H,Min,Sec,MSec);
 	Canvas.SetDrawColorStruct(Settings.Style.PlayerCountTextColor);
-	S = LocalMessage.static.GetLocalizedString(YAS_Players) $ ":"
+    S = LocalMessage.static.GetLocalizedString(YAS_Players) $ ":"
 		@ NumPlayer @ "/" @ KFGRI.MaxHumanCount $ "    "
-		$ LocalMessage.static.GetLocalizedString(YAS_Spectators) $ ": " $ NumSpec; ;
-	Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
+		$ LocalMessage.static.GetLocalizedString(YAS_Spectators) $ ": " $ NumSpec
+        $ "    "$Y$"/"$M$"/"$D$"  "$H$":"$Min $":"$Sec; ;
+    Canvas.TextSize(S, XL, YL, FontScalar, FontScalar);
 	DrawTextShadowHLeftVCenter(S, BoxX + EdgeSize, YPos, BoxH, FontScalar);
 
 	S = Owner.CurrentStyle.GetTimeString(KFGRI.ElapsedTime);
