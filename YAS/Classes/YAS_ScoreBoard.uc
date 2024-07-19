@@ -1,5 +1,4 @@
 class YAS_ScoreBoard extends KFGUI_Page
-    config(YAS)
 	dependson(YAS_Types);
 
 const LocalMessage = class'YAS_LocalMessage';
