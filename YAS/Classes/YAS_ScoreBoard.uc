@@ -3,7 +3,7 @@ class YAS_ScoreBoard extends KFGUI_Page
 
 const LocalMessage = class'YAS_LocalMessage';
 
-const HeaderWidthRatio         = 0.30f;
+const HeaderWidthRatio         = 0.40f;
 const PlayerListWidthRatio     = 0.6f;
 const PlayerEntryHeightMod     = 1.05f;
 
