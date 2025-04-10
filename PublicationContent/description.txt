@@ -1,104 +1,89 @@
 [img]https://img.shields.io/static/v1?logo=GitHub&labelColor=gray&color=blue&logoColor=white&label=&message=Open Source[/img] [img]https://img.shields.io/github/license/GenZmeY/KF2-YetAnotherScoreboard[/img] [img]https://img.shields.io/steam/downloads/2521826524[/img] [img]https://img.shields.io/steam/favorites/2521826524[/img] [img]https://img.shields.io/steam/update-date/2521826524[/img] [url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2521826524][img]https://img.shields.io/github/v/tag/GenZmeY/KF2-YetAnotherScoreboard[/img][/url]
 
-[h1]Description[/h1]
+[h1]📋 Description[/h1]
 Yet another scoreboard...
-Based on the scoreboard from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1963099942]ClassicHUD[/url] and heavily modified.
+Based on [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1963099942]ClassicHUD[/url] and heavily modified.
 
-[h1]Whitelisted?[/h1]
-[b]No.[/b] But I really hope that it will be whitelisted.
+[h1]❌ Whitelisted?[/h1]
+No. This mod is not whitelisted and will de-rank your server. Any XP earned will not be saved.
 
-[b]⚠️ I submitted whitelist request here:[/b]
+But I hope that it will be whitelisted - I submitted whitelist request here:
 https://forums.tripwireinteractive.com/index.php?threads/whitelisting-mods-and-mutators.120340/page-3#post-2353668
 
-[h1]Usage (single player)[/h1]
+[h1]🎮 Usage (single player)[/h1]
 [olist]
-[*]Subscribe to this mutator;
-[*]Start KF2;
-[*]Open console (`) and input:
-[b]open KF-BioticsLab?Mutator=YAS.Mut?[/b]
-(replace the map and add the parameters you need)
-[*]<Enter>.
+[*]Subscribe to this mutator.
+[*]Create a file [b](*)[/b]: [code]C:\Users\<username>\Documents\My Games\KillingFloor2\KFGame\Config\KFYAS.ini[/code]
+with content:
+[code][YAS.YAS]
+Version=0[/code]
+[*]Launch KF2.
+[*]Open console (~) and start any map with the mutator (this will generate the default KFYAS.ini content):
+[code]open KF-BioticsLab?Mutator=YAS.Mut[/code]
+[*]Close the game and configure the mutator (see [b]⚙️ Setup (KFYAS.ini)[/b] below).
+[*]Launch KF2 again, open the console, and start the game:
+[code]open KF-BioticsLab?Game=KFGameContent.KFGameInfo_Survival?Difficulty=3?GameLength=2?Mutator=YAS.Mut[/code]
+(replace the map and set/add parameters you need).
 [/olist]
 
-[h1]Usage (server)[/h1]
-[b]Note:[/b] [i]If you don't understand what is written here, read the article [url=https://wiki.killingfloor2.com/index.php?title=Dedicated_Server_(Killing_Floor_2)][u]Dedicated Server (KF2 wiki)[/u][/url] before following these instructions.[/i]
+[h1]🖥️ Usage (server)[/h1]
+[b]Note:[/b] [i]If this is unclear, first read: [url=https://wiki.killingfloor2.com/index.php?title=Dedicated_Server_(Killing_Floor_2)][u]Dedicated Server Guide (KF2 wiki)[/u][/url][/i]
 [olist]
-[*]Open your [b]PCServer-KFEngine.ini[/b] / [b]LinuxServer-KFEngine.ini[/b];
-[*]Find the [b][IpDrv.TcpNetDriver][/b] section and make sure that there is a line (add if not):
-[b]DownloadManagers=OnlineSubsystemSteamworks.SteamWorkshopDownload[/b]
-❗️ If there are several [b]DownloadManagers=[/b] then the line above should be the first ❗️
+[*]Open [b]PCServer-KFEngine.ini[/b] / [b]LinuxServer-KFEngine.ini[/b].
+[*]Find [b][IpDrv.TcpNetDriver][/b] section and ensure line exists (add if missing):
+[code]DownloadManagers=OnlineSubsystemSteamworks.SteamWorkshopDownload[/code]
+(If there are several [b]DownloadManagers[/b] then the line above should be the first)
 [*]Add the following string to the [b][OnlineSubsystemSteamworks.KFWorkshopSteamworks][/b] section (create one if it doesn't exist):
-[b]ServerSubscribedWorkshopItems=2521826524[/b]
-[*]Start the server and wait until the mutator is downloading;
-[*]Add mutator to server start parameters: [b]?Mutator=YAS.Mut[/b] and restart the server.
+[code]ServerSubscribedWorkshopItems=2521826524[/code]
+[*]Start server and wait for mutator download.
+[*]When the download is complete, stop the server.
+[*]Create a file [b](*)[/b]: [code]<kf2-server>\KFGame\Config\KFYAS.ini[/code]
+with content:
+[code][YAS.YAS]
+Version=0[/code]
+[*]Add mutator to server start parameters: [code]?Mutator=YAS.Mut[/code] and start the server (this will generate the default KFYAS.ini content).
+[*]Stop the server and configure the mutator (see [b]⚙️ Setup (KFYAS.ini)[/b] below).
+[*]Start the server.
 [/olist]
 
-[h1]Important setup information[/h1]
-The config should be created on first start, but now the game contains a bug that initializes the config values ​​randomly if they are not explicitly set. Thus, the config may have incorrect values ​​or not be created at all.
-So if you are using this mutator for the first time, I highly recommend doing the following:
-[olist]
-[*]Create (modify) [b]KFYAS.ini[/b] manually. Put the following content there:
-[b][YAS.YAS]
-Version=0[/b]
-[*]Start the game/server with YAS to generate the contents of the config.
-[*]Close the game/server.
-[/olist]
-[b]Right now this is the only way to correctly create the default config.[/b]
-Unfortunately I can't do anything about it because it's a game problem (not mutator). I hope TWI fixes this someday.
+[h1]🐞 (*) Buggy config initialization[/h1]
+This mutator (like many others) relies on UnrealScript's default values (0 for int type) to detect first-time use and generate a config.
+However, the game contains a bug that initializes unset values to random data, which can lead to incorrect settings or missing configs.
 
-[h1]Setup (KFYAS.ini)[/h1]
+As a workaround, I recommend explicitly setting [b]Version=0[/b] in the config during the first initialization.
+
+Unfortunately, I can't fix this issue because it's a game engine problem (not the mutator's fault).
+
+[h1]⚙️ Setup (KFYAS.ini)[/h1]
 [b][YAS.MessageOfTheDay][/b]
-In this section you can customize the messages that will be shown at the bottom of the panel.
-[list]
-[*][b]bRandomize[/b] - If True the message will be chosen randomly;
-[*][b]DisplayTime[/b] - message display time in seconds;
-[*][b]Message[/b] - Array of messages to display. Place multiple 'Message=' below each other if you want to specify multiple messages. If you need a line break in a message, use '[b]\n[/b]'.
-[/list]
+Customize messages at the bottom of the panel.
+[list][*][b]bRandomize[/b] - If True the message will be chosen randomly.[*][b]DisplayTime[/b] - Message display time in seconds.[*][b]Message[/b] - Array of messages to display. Place multiple 'Message=' below each other if you want to specify multiple messages. If you need a line break in a message, use '[b]\n[/b]'.[/list]
 
 [b][YAS.Ranks][/b]
-here you can set display settings for different player ranks.
-
-[b]Why?[/b] for example, to highlight admins... or players who have done a lot for the server - this does not change the gameplay in any way, but these people will be pleased. Or just for fun of course :3
+Display settings for different player ranks.
 
 Edit [b]Player[/b] and [b]Admin[/b] lines to set how this is displayed:
-[list]
-[*][b]RankName[/b] - rank name. Leave blank if you don't want this to be shown.
-[*][b]RankColor[/b] - rank display color.
-[*][b]PlayerColor[/b] - player name display color of the player with this rank.
-[/list]
+[list][*][b]RankName[/b] - Rank name. Leave blank if you don't want this to be shown.[*][b]RankColor[/b] - Rank color.[*][b]PlayerColor[/b] - Player name color of the player with this rank.[/list]
 
 Use [b]Rank[/b] array to set your own ranks:
-[list]
-[*][b]RankName[/b] - same as above.
-[*][b]RankColor[/b] - same as above.
-[*][b]PlayerColor[/b] - same as above.
-[*][b]RankID[/b] - used to establish a relation between a player and his rank (more on that below), you can use any value greater than zero.
-[*][b]OverrideAdmin[/b] - If True then this rank will be displayed even if the player is an admin.
-[/list]
+[list][*][b]RankName[/b] - Same as above.[*][b]RankColor[/b] - Same as above.[*][b]PlayerColor[/b] - Same as above.[*][b]RankID[/b] - Used to establish a relation between a player and his rank.[*][b]OverrideAdmin[/b] - If True then this rank will be displayed even if the player is an admin.[/list]
 
 [b][YAS.RankRelations][/b]
 Use [b]Relation[/b] array to establish a relation between a player and their rank:
-[list]
-[*][b]RankID[/b] - RankID from the [b][YAS.Ranks][/b] section.
-[*][b]ObjectID[/b] - ID for which this rank will be applied. This can be a player's SteamID64, a player's UniqueID, or a steam group's SteamID64 (then the rank will be applied to all members of that group).
-[/list]
+[list][*][b]RankID[/b] - RankID from the [b][YAS.Ranks][/b] section.[*][b]ObjectID[/b] - ID for which this rank will be applied. This can be a player's SteamID64, UniqueID, or a steam group's SteamID64 (then the rank will be applied to all members of that group).[/list]
 
 [b]Ranks priority[/b]
-[list]
-[*]Personal ranks are higher in priority than group ranks, so if a player belongs to both the group rank and the personal rank, then the personal rank will be used.
-[*]The higher the position in [b][YAS.RankRelations][/b] the higher the rank priority. That is, if a player belongs to two group relations at once, the one that is higher in the list will be used.
-[/list]
+[list][*]Personal ranks are higher in priority than group ranks, so if a player belongs to both the group rank and the personal rank, then the personal rank will be used.[*]The higher the position in [b][YAS.RankRelations][/b] the higher the rank priority. That is, if a player belongs to two group relations at once, the one that is higher in the list will be used.[/list]
 
 [b]Rank example[/b]
 When your config is generated for the first time there will be an example rank - 'Man of Culture'. It has green color and relation with ObjectID 103582791429670253 (which is the SteamID64 of [url=https://steamcommunity.com/groups/hentaii]this group[/url]). Thus, if you leave this setting, when someone from this group enters the game, he will have a green rank 'Man of Culture'.
 You can use this as a template for creating your own ranks, or remove it if you don't need it.
 
-[h1]Getting IDs[/h1]
+[h1]🔎 Getting IDs[/h1]
 You can view the Steam ID and UniqueID in WebAdmin on the PLAYERS tab:
 [img]https://raw.githubusercontent.com/GenZmeY/KF2-YetAnotherScoreboard/master/PublicationContent/ID1.png[/img]
 
-But don't try to use the SteamID from here for EGS players - it won't work. SteamID is for Steam players only.
-UniqueID is suitable for all platforms.
+But don't try to use the SteamID from here for EGS players - it won't work. SteamID is for Steam players only. UniqueID is suitable for all platforms.
 
 SteamID can also be obtained from the player's profile, look at the URL:
 [img]https://raw.githubusercontent.com/GenZmeY/KF2-YetAnotherScoreboard/master/PublicationContent/ID2.png[/img]
@@ -109,11 +94,17 @@ If a player uses a nickname in a link to their profile, then add this to the pro
 If you need a SteamID64 for a steam group, open the group in a browser and add this to the url: [b]/memberslistxml/?xml=1[/b]
 [img]https://raw.githubusercontent.com/GenZmeY/KF2-YetAnotherScoreboard/master/PublicationContent/ID4.png[/img]
 
-[h1]Notes[/h1]
-📌 VersusSurvival mode not supported.
+[h1]📌 Notes[/h1]
+[list][*]VersusSurvival mode not supported.[/list]
 
-[h1]Translators:[/h1]
-[url=https://steamcommunity.com/profiles/76561199126205919]cheungfatzong[/url] - Traditional [CHT] and Simplified [CHN] Chinese.
+[h1]🌍 Credits[/h1]
+[list][*][url=https://steamcommunity.com/profiles/76561197975509070]Marco[/url] - GUI system.[*][url=https://steamcommunity.com/profiles/76561197997881512]ForrestMarkX[/url] - ClassicHUD.[*]The cat on the cover is Meawbin (original character by [url=https://x.com/horrormove]Cotton Valent[/url]).[/list]
+[b]Translators:[/b]
+[list][*][url=https://steamcommunity.com/profiles/76561199126205919]cheungfatzong[/url] - Traditional [CHT] and Simplified [CHN] Chinese.[/list]
 
-[h1]Sources[/h1]
-[url=https://github.com/GenZmeY/KF2-YetAnotherScoreboard]https://github.com/GenZmeY/KF2-YetAnotherScoreboard[/url] [b](GNU GPLv3)[/b]
+[h1]☑️ Status: Completed[/h1]
+✔️ The mutator works with the current version of the game (v1150) and I have implemented everything I planned.
+⛔️ Development has stopped: I no longer have the time or motivation to maintain this mod. No further updates or bug fixes are planned.
+
+[h1]📜 Sources[/h1]
+https://github.com/GenZmeY/KF2-YetAnotherScoreboard [b](GNU GPLv3)[/b]
