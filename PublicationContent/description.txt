@@ -107,4 +107,4 @@ If you need a SteamID64 for a steam group, open the group in a browser and add t
 ⛔️ Development has stopped: I no longer have the time or motivation to maintain this mod. No further updates or bug fixes are planned.
 
 [h1]📜 Sources[/h1]
-https://github.com/GenZmeY/KF2-YetAnotherScoreboard [b](GNU GPLv3)[/b]
+https://github.com/GenZmeY/KF2-YetAnotherScoreboard [b](GPL-3.0-or-later)[/b]
